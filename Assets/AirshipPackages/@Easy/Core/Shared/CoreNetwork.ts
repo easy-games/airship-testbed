@@ -10,12 +10,13 @@ import { TeamDto } from "./Team/Team";
 export const CoreNetwork = {
 	ClientToServer: {
 		Ready: new NetworkSignal("Ready"),
-		SetHeldSlot: new NetworkSignal<[invId: number, slot: number]>("SetHeldSlot"),
 		Inventory: {
 			SwapSlots: new NetworkSignal<[fromInvId: number, fromSlot: number, toInvId: number, toSlot: number]>(
 				"Inventory",
 			),
-			QuickMoveSlot: new NetworkSignal<[fromInvId: number, fromSlot: number, toInvId: number]>("QuickMoveSlot"),
+			QuickMoveSlot: new NetworkSignal<
+				[fromInvId: number, fromSlot: number, fromHotbarSize: number, toInvId: number]
+			>("QuickMoveSlot"),
 			MoveToSlot: new NetworkSignal<
 				[fromInvId: number, fromSlot: number, toInvId: number, toSlot: number, amount: number]
 			>("MoveToSlot"),
@@ -25,6 +26,7 @@ export const CoreNetwork = {
 			RequestCharacters: new NetworkFunction<[], CharacterDto[]>("RequestCharacters"),
 			EmoteRequest: new NetworkSignal<[emoteId: string]>("AirshipEmoteRequest"),
 			EmoteCancelRequest: new NetworkSignal("AirshipEmoteCancelRequest"),
+			SetHeldSlot: new NetworkSignal<[slot: number]>("SetHeldSlot"),
 		},
 		SendChatMessage: new NetworkSignal<[text: string]>("SendChatMessage"),
 		ChangedOutfit: new NetworkSignal("ChangedOutfit"),
@@ -39,9 +41,6 @@ export const CoreNetwork = {
 		/** Updates properties of an `ItemStack` without creating a new instance of an `ItemStack`. */
 		UpdateInventorySlot: new NetworkSignal<[invId: number, slot: number, itemType?: string, amount?: number]>(
 			"UpdateInventorySlot",
-		),
-		SetHeldInventorySlot: new NetworkSignal<[invId: number | undefined, slot: number, clientPredicted: boolean]>(
-			"SetHeldInventorySlot",
 		),
 		CharacterModelChanged: new NetworkSignal<[characterModelId: number]>("CharacterModelChanged"),
 		/** Fired when a player sends a chat message with the raw chat message */
@@ -85,6 +84,7 @@ export const CoreNetwork = {
 			),
 			EmoteStart: new NetworkSignal<[characterId: number, emoteId: string]>("AirshipEmoteStart"),
 			EmoteEnd: new NetworkSignal<[characterId: number]>("AirshipEmoteEnd"),
+			SetHeldSlot: new NetworkSignal<[charId: number, slot: number]>("SetHeldInventorySlot"),
 		},
 
 		Purchase: {

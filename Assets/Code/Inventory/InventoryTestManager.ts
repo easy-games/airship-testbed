@@ -24,8 +24,8 @@ export default class InventoryTestManager extends AirshipSingleton {
 			});
 		}
 
-        // Click to swap
-        Airship.Inventory.onInventorySlotClicked.Connect((interaction) => {
+		// Click to swap
+		Airship.Inventory.onInventorySlotClicked.Connect((interaction) => {
 			const inventoryUI = Airship.Inventory.ui;
 			if (!inventoryUI) return;
 
@@ -34,7 +34,11 @@ export default class InventoryTestManager extends AirshipSingleton {
 
 			if (!localInventory) return;
 			if (!externalInventory) {
-				Airship.Inventory.QuickMoveSlot(localInventory, interaction.slotIndex);
+				Airship.Inventory.QuickMoveSlot(
+					localInventory,
+					interaction.slotIndex,
+					Airship.Inventory.ui?.hotbarSlots ?? 0,
+				);
 			} else {
 				if (interaction.IsExternalInventory()) {
 					Airship.Inventory.MoveToInventory(externalInventory, interaction.slotIndex, localInventory);

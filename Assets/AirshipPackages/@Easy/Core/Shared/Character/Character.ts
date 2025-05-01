@@ -9,7 +9,11 @@ import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import AirshipEmoteSingleton from "../Emote/AirshipEmoteSingleton";
 import { Dependency } from "../Flamework";
+import { ItemStack } from "../Inventory/ItemStack";
+import { BeforeLocalInventoryHeldSlotChanged } from "../Inventory/Signal/BeforeLocalInventoryHeldSlotChanged";
 import NametagComponent from "../Nametag/NametagComponent";
+import { Keyboard, Mouse } from "../UserInput";
+import { TaskUtil } from "../Util/TaskUtil";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
 import { EmoteStartSignal } from "./Signal/EmoteStartSignal";
@@ -53,7 +57,7 @@ export default class Character extends AirshipBehaviour {
 	private maxHealth = 100;
 	/** A bin that is cleaned when the entity despawns. */
 	@NonSerialized() public readonly bin = new Bin();
-	@NonSerialized() public inventory: Inventory;
+
 	@NonSerialized() public outfitDto: OutfitDto | undefined;
 	@NonSerialized() public isEmoting = false;
 
@@ -66,18 +70,101 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public onEmoteStart = new Signal<EmoteStartSignal>();
 	@NonSerialized() public onEmoteEnd = new Signal<[]>();
 
+	// Inventory and related
+	@Header("Inventory")
+	@NonSerialized()
+	public inventory: Inventory;
+	@NonSerialized() public heldItem?: ItemStack;
+	@NonSerialized() public heldSlot = -1;
+	@NonSerialized() public readonly onHeldSlotChanged = new Signal<number>();
+	/** Used to cancel changing held item slots. */
+	@NonSerialized() public readonly onBeforeLocalHeldSlotChanged = new Signal<BeforeLocalInventoryHeldSlotChanged>();
+	private observeHeldItemBins: Bin[] = [];
+	private observeHeldSlotBins: Bin[] = [];
+
+	// Hotbar controlls
+	private controlsEnabled = true;
+	private lastScrollTime = 0;
+	private scrollCooldown = 0.05;
+
 	private displayName = "";
 	private initialized = false;
 	private despawned = false;
 	private prevOutfitEncoded = "";
 
-	/*
-	 * [Advanced]
-	 * Listen to custom data being sent through the movement system
-	 * Key Value pairs created using AddCustomMoveData will fire here during movement ticks that use them
-	 * Map<id, dataBlob>, inputData, isReplay
+	// Custom Move Data
+	private queuedCustomInputData = new Map<string, unknown>();
+	private queuedCustomSnapshotData = new Map<string, unknown>();
+
+	/**
+	 * Fires before a new command is created on the client. Use this signal to create anything that will need
+	 * to connect to OnAddCustomInputData for the tick about to be processed. Only fires for the local
+	 * character.
 	 */
-	public OnUseCustomMoveData = new Signal<[Map<string, unknown>, CharacterMovementState, boolean]>();
+	public PreCreateCommand = new Signal<[]>();
+	/**
+	 * Fires before command processing.
+	 *
+	 * This signal does not fire for observers.
+	 */
+	public PreProcessCommand = new Signal<[Map<string, unknown>, CharacterInputData, boolean]>();
+	/**
+	 * Allows you to process custom move data attached to character input before the move function is executed.
+	 *
+	 * This signal does not fire for observers.
+	 */
+	public OnUseCustomInputData = new Signal<[Map<string, unknown>, CharacterInputData, boolean]>();
+	/**
+	 * Allows you to process custom move data attached to character input after the move function is executed.
+	 *
+	 * This signal does not fire for observers.
+	 */
+	public OnUseCustomInputDataAfterMove = new Signal<[Map<string, unknown>, CharacterInputData, boolean]>();
+	/**
+	 * Signals when a new input command is begin generated. Use AddCustomInputData() to add custom data to the
+	 * command being generated.
+	 *
+	 * This signal does not fire for observers.
+	 */
+	public OnAddCustomInputData = new Signal<[commandNumber: number]>();
+	/**
+	 * Signals when a new snapshot of the current movement state is being generated. Use AddCustomStateData() to add
+	 * custom data to the snapshot being generated.
+	 *
+	 * This signal does not fire for observers.
+	 */
+	public OnAddCustomSnapshotData = new Signal<[]>();
+	/**
+	 * Signals that the movement system is being reset to a past snapshot. This will happen during re-simulation on
+	 * clients, and during lag compensation on the server. This signal will fire for an observed character if the local
+	 * client is replaying.
+	 */
+	public OnResetToSnapshot = new Signal<[Map<string, unknown>, CharacterSnapshotData]>();
+	/**
+	 * Signals that the movement system is displaying a character interpolating between the two provided snapshots.
+	 * This signal is fired every frame. This only fires for characters being observed. Does not fire on the server,
+	 * but may in the future.
+	 */
+	public OnInterpolateSnapshot = new Signal<
+		[Map<string, unknown>, CharacterSnapshotData, Map<string, unknown>, CharacterSnapshotData, number]
+	>();
+	/**
+	 * Signals that the movement system is displaying a character that has just reached the snapshot provided. This
+	 * fires during fixed update, but may not fire every fixed update. This only fires for characters being observed.
+	 * Will fire on the server for client authoritative characters.
+	 */
+	public OnInterpolateReachedSnapshot = new Signal<[Map<string, unknown>, CharacterSnapshotData]>();
+	private compareResult = true; // used internally for OnCompareSnapshot
+	/**
+	 * Signals that two snapshots are being compared. Use SetComparisonResult() in this signals callbacks
+	 * to modify the result of the comparison.
+	 *
+	 * This signal only fires when the local client needs to compare it's predicted state (first parameter), to the
+	 * server's authoritative state (second parameter).
+	 */
+	public OnCompareSnapshots = new Signal<
+		[Map<string, unknown>, CharacterSnapshotData, Map<string, unknown>, CharacterSnapshotData]
+	>();
 
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
@@ -131,34 +218,28 @@ export default class Character extends AirshipBehaviour {
 					this.SetHealth(newHealth);
 				}
 			}),
-		)
+		);
 
 		// Custom move command data handling:
 		if (this.movement) {
-			const customDataConn = this.movement.OnBeginMove((moveData, isReplay) => {
-				this.BeginMove(moveData, isReplay);
-			});
-			this.bin.Add(() => {
-				Bridge.DisconnectEvent(customDataConn);
-			});
-
-			{
-				// state change
-				const conn = this.movement.OnStateChanged((state) => {
-					if (this.state === state) return;
-					const oldState = this.state;
-					this.state = state;
-					this.onStateChanged.Fire(state, oldState);
-				});
-				this.bin.Add(() => {
-					Bridge.DisconnectEvent(conn);
-				});
-			}
+			this.SetupMovementConnections();
+		} else {
+			// We can still set up held item networking using regular signals if they
+			// have opted not to use our networked movement.
+			this.SetupHeldItemSignalNetworking();
 		}
 	}
 
 	public OnDisable(): void {
 		Airship.Characters.UnregisterCharacter(this);
+		for (const bin of this.observeHeldItemBins) {
+			bin.Clean();
+		}
+		this.observeHeldItemBins.clear();
+		for (const bin of this.observeHeldSlotBins) {
+			bin.Clean();
+		}
+		this.observeHeldSlotBins.clear();
 		if (Game.IsClient() && !this.despawned) {
 			this.bin.Clean();
 			this.despawned = true;
@@ -188,7 +269,10 @@ export default class Character extends AirshipBehaviour {
 		this.initialized = true;
 		this.displayName = displayName || "";
 
-		// print(`Character ${this.player?.username ?? "bot"} has outfitDto: ${inspect(outfitDto)}`);
+		// print("Outfitdto: " + inspect(outfitDto));
+		if (Game.IsClient() && this.IsLocalCharacter()) {
+			this.SetupHotbarControls();
+		}
 
 		// Client side: update the player's selected outfit to whatever this character has.
 		// This may cause an issue if the character is init'd with a random outfit.
@@ -201,16 +285,178 @@ export default class Character extends AirshipBehaviour {
 			}
 			this.LoadOutfit(outfitDto);
 		}
+	}
 
-		if (this.movement) {
-			// Apply the queued custom data to movement
-			const customDataFlushedConn = this.movement.OnSetCustomData(() => {
-				this.ProccessCustomMoveData();
+	/**
+	 * Allows the use of signal based networking event if desired even if state based networking for held
+	 * items is unavailable.
+	 */
+	private SetupHeldItemSignalNetworking() {
+		if (Game.IsServer()) {
+			this.bin.Add(
+				CoreNetwork.ClientToServer.Character.SetHeldSlot.server.OnClientEvent((player, slot) => {
+					const characterId = player.character?.id;
+					if (characterId === undefined) return;
+					if (characterId !== this.id) return;
+					if (slot === this.heldSlot) return;
+					this.SetHeldSlotInternal(slot);
+					CoreNetwork.ServerToClient.Character.SetHeldSlot.server.FireExcept(player, characterId, slot);
+				}),
+			);
+		} else {
+			this.bin.Add(
+				CoreNetwork.ServerToClient.Character.SetHeldSlot.client.OnServerEvent((charId, slot) => {
+					if (this.id !== charId) return;
+					if (slot === this.heldSlot) return;
+
+					this.SetHeldSlotInternal(slot);
+				}),
+			);
+		}
+	}
+
+	private SetupHeldItemStateNetworking() {
+		this.WaitForInit();
+
+		// Send client held slot to the server
+		if (this.IsLocalCharacter()) {
+			if (this.movement.IsAuthority()) {
+				// If we are authority, send held slot in the snapshot
+				this.bin.Add(
+					this.OnAddCustomSnapshotData.ConnectWithPriority(SignalPriority.MONITOR, () => {
+						this.AddCustomSnapshotData("heldSlot", this.heldSlot);
+					}),
+				);
+			} else {
+				// If we are not authority, send it in the input
+				this.bin.Add(
+					this.OnAddCustomInputData.ConnectWithPriority(SignalPriority.MONITOR, () => {
+						this.AddCustomInputData("heldSlot", this.heldSlot);
+					}),
+				);
+			}
+		}
+
+		// Networking for held slot (read held slot data and fire signals on change)
+		if (!this.IsLocalCharacter()) {
+			if (this.movement.IsAuthority()) {
+				let slot = this.heldSlot;
+				// Read from client input and set if we are authority. Client has authority over held slot
+				this.bin.Add(
+					this.OnUseCustomInputData.ConnectWithPriority(SignalPriority.HIGH, (data) => {
+						const held = data.get("heldSlot") as number;
+						if (held === undefined) return;
+						if (held === this.heldSlot) return;
+						this.SetHeldSlotInternal(held);
+						slot = this.heldSlot;
+					}),
+				);
+				// Add held item data to server snapshot so that observers can see it.
+				this.bin.Add(
+					this.OnAddCustomSnapshotData.ConnectWithPriority(SignalPriority.MONITOR, () => {
+						// We send what the client initially sent in the input since we want to client to
+						// be authoritative
+						this.AddCustomSnapshotData("heldSlot", slot);
+					}),
+				);
+			} else {
+				// Read from interpolated state and set held item.
+				this.bin.Add(
+					this.OnInterpolateReachedSnapshot.ConnectWithPriority(SignalPriority.HIGH, (data) => {
+						const held = data.get("heldSlot") as number;
+						if (held === undefined) return;
+						if (held === this.heldSlot) return;
+						this.SetHeldSlotInternal(held);
+					}),
+				);
+			}
+		}
+	}
+
+	private SetupMovementConnections() {
+		const movementWithSignals = this.movement as CharacterMovement & CharacterMovementEngineEvents;
+
+		this.bin.AddEngineEventConnection(
+			movementWithSignals.OnSetMode((mode) => {
+				this.SetupHeldItemStateNetworking();
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			movementWithSignals.OnProcessCommand((input, state, isReplay) => {
+				this.PreProcessCommand.Fire(this.ParseCustomInputData(input), input, isReplay);
+				this.ProcessCommand(input, state, isReplay);
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			movementWithSignals.OnProcessedCommand((input, state, isReplay) => {
+				this.ProcessCommandAfterMove(input, state, isReplay);
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			movementWithSignals.OnInterpolateState((lastState, nextState, delta) => {
+				const lastCustomData = this.ParseCustomSnapshotData(lastState);
+				const nextCustomData = this.ParseCustomSnapshotData(nextState);
+				this.OnInterpolateSnapshot.Fire(lastCustomData, lastState, nextCustomData, nextState, delta);
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			movementWithSignals.OnInterpolateReachedState((state) => {
+				const customData = this.ParseCustomSnapshotData(state);
+				this.OnInterpolateReachedSnapshot.Fire(customData, state);
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			movementWithSignals.OnCreateCommand((commandNumber) => {
+				this.PreCreateCommand.Fire();
+				this.CollectCustomInputData(commandNumber);
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			movementWithSignals.OnCaptureSnapshot(() => {
+				this.CollectCustomSnapshotData();
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			movementWithSignals.OnCompareSnapshots((a, b) => {
+				const aData = this.ParseCustomSnapshotData(a);
+				const bData = this.ParseCustomSnapshotData(b);
+				this.compareResult = true; // Reset to true for signal use
+				this.OnCompareSnapshots.Fire(aData, a, bData, b);
+				movementWithSignals.SetComparisonResult(this.compareResult); // TODO: test this works
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			movementWithSignals.OnSetSnapshot((snapshot) => {
+				const data = this.ParseCustomSnapshotData(snapshot); // TODO: this is empty for some reason :/
+				this.OnResetToSnapshot.Fire(data, snapshot);
+			}),
+		);
+
+		{
+			// state change
+			const conn = movementWithSignals.OnStateChanged((state) => {
+				if (this.state === state) return;
+				const oldState = this.state;
+				this.state = state;
+				this.onStateChanged.Fire(state, oldState);
 			});
 			this.bin.Add(() => {
-				Bridge.DisconnectEvent(customDataFlushedConn);
+				Bridge.DisconnectEvent(conn);
 			});
 		}
+	}
+
+	public SetComparisonResult(result: boolean) {
+		if (!this.compareResult) return;
+		this.compareResult = result;
 	}
 
 	public SetMeshCacheId(cacheId: string | undefined): void {
@@ -243,47 +489,81 @@ export default class Character extends AirshipBehaviour {
 		}
 	}
 
-	private queuedMoveData = new Map<string, unknown>();
 	/** Add custom data to the move data command stream. */
-	public AddCustomMoveData(key: string, value: unknown) {
-		this.queuedMoveData.set(key, value);
+	public AddCustomInputData(key: string, value: unknown) {
+		this.queuedCustomInputData.set(key, value);
 	}
 
-	private ProccessCustomMoveData() {
+	public AddCustomSnapshotData(key: string, value: unknown) {
+		this.queuedCustomSnapshotData.set(key, value);
+	}
+
+	private CollectCustomInputData(commandNumber: number) {
+		this.OnAddCustomInputData.Fire(commandNumber);
 		//Don't process if we have nothing queued
-		if (this.queuedMoveData.size() === 0) {
+		if (this.queuedCustomInputData.size() === 0) {
 			return;
 		}
 		//Convert queued data into binary blob
-		let customDataQueue: { key: string; value: unknown }[] = [];
-		this.queuedMoveData.forEach((value, key) => {
-			customDataQueue.push({ key: key, value: value });
+		let customInputDataQueue: { key: string; value: unknown }[] = [];
+		this.queuedCustomInputData.forEach((value, key) => {
+			customInputDataQueue.push({ key: key, value: value });
 		});
-		this.queuedMoveData.clear();
+		this.queuedCustomInputData.clear();
 		//Pass to C#
-		this.movement?.SetCustomData(new BinaryBlob(customDataQueue));
+		this.movement?.SetCustomInputData(new BinaryBlob(customInputDataQueue));
 	}
 
-	private BeginMove(stateData: CharacterMovementState, isReplay: boolean) {
+	private CollectCustomSnapshotData() {
+		this.OnAddCustomSnapshotData.Fire();
+		//Don't process if we have nothing queued
+		if (this.queuedCustomSnapshotData.size() === 0) {
+			return;
+		}
+		//Convert queued data into binary blob
+		let customSnapshotDataQueue: { key: string; value: unknown }[] = [];
+		this.queuedCustomSnapshotData.forEach((value, key) => {
+			customSnapshotDataQueue.push({ key: key, value: value });
+		});
+		this.queuedCustomSnapshotData.clear();
+		//Pass to C#
+		this.movement?.SetCustomSnapshotData(new BinaryBlob(customSnapshotDataQueue));
+	}
+
+	private ParseCustomSnapshotData(snapshot: CharacterSnapshotData): Map<string, unknown> {
 		//Decode binary block into usable key value array
-		const allData = stateData.currentMoveInput.customData
-			? (stateData.currentMoveInput.customData.Decode() as { key: string; value: unknown }[])
+		const allData = snapshot.customData
+			? (snapshot.customData.Decode() as { key: string; value: unknown }[])
 			: undefined;
 		const allCustomData: Map<string, unknown> = new Map();
-		let usingCustomData = false;
 		if (allData) {
-			//print("ALLDATA: " + inspect(allData));
 			for (const data of allData) {
-				//print("Found custom data " + data.key + " with value: " + data.value);
 				allCustomData.set(data.key, data.value);
-				usingCustomData = true;
 			}
 		}
+		return allCustomData;
+	}
 
-		if (usingCustomData) {
-			//Local signal for parsing the key value pairs
-			this.OnUseCustomMoveData.Fire(allCustomData, stateData, isReplay);
+	private ParseCustomInputData(input: CharacterInputData): Map<string, unknown> {
+		//Decode binary block into usable key value array
+		const allData = input.customData ? (input.customData.Decode() as { key: string; value: unknown }[]) : undefined;
+		const allCustomData: Map<string, unknown> = new Map();
+		if (allData) {
+			for (const data of allData) {
+				allCustomData.set(data.key, data.value);
+			}
 		}
+		return allCustomData;
+	}
+
+	private ProcessCommand(input: CharacterInputData, state: CharacterSnapshotData, isReplay: boolean) {
+		const data = this.ParseCustomInputData(input);
+		this.OnUseCustomInputData.Fire(data, input, isReplay);
+	}
+
+	private ProcessCommandAfterMove(input: CharacterInputData, state: CharacterSnapshotData, isReplay: boolean) {
+		const data = this.ParseCustomInputData(input);
+		this.OnUseCustomInputDataAfterMove.Fire(data, input, isReplay);
 	}
 
 	public IsInitialized() {
@@ -448,5 +728,228 @@ export default class Character extends AirshipBehaviour {
 		if (Game.IsServer()) {
 			CoreNetwork.ServerToClient.Character.EmoteEnd.server.FireAllClients(this.id);
 		}
+	}
+
+	public ObserveHeldSlot(
+		callback: (heldSlot: number) => CleanupFunc,
+		priority: SignalPriority = SignalPriority.NORMAL,
+	) {
+		const bin = new Bin();
+		this.observeHeldItemBins.push(bin);
+		let cleanup = callback(this.heldSlot);
+
+		bin.Add(
+			this.onHeldSlotChanged.ConnectWithPriority(priority, (newSlot) => {
+				if (cleanup !== undefined) {
+					task.spawn(() => {
+						cleanup!();
+					});
+				}
+				task.spawn(() => {
+					cleanup = callback(newSlot);
+				});
+			}),
+		);
+		bin.Add(() => {
+			cleanup?.();
+		});
+		return bin;
+	}
+
+	public ObserveHeldItem(
+		callback: (itemStack: ItemStack | undefined) => CleanupFunc,
+		priority: SignalPriority = SignalPriority.NORMAL,
+	): Bin {
+		const bin = new Bin();
+		this.observeHeldItemBins.push(bin);
+		let currentItemStack = this.inventory.GetItem(this.heldSlot);
+		let cleanup = callback(currentItemStack);
+
+		bin.Add(
+			this.onHeldSlotChanged.ConnectWithPriority(priority, (newSlot) => {
+				const selected = this.inventory.GetItem(newSlot);
+				if (selected?.itemType === currentItemStack?.itemType) return;
+
+				if (cleanup !== undefined) {
+					task.spawn(() => {
+						cleanup!();
+					});
+				}
+				currentItemStack = selected;
+				task.spawn(() => {
+					cleanup = callback(selected);
+				});
+			}),
+		);
+		bin.Add(
+			this.inventory.onSlotChanged.ConnectWithPriority(priority, (slot, itemStack) => {
+				if (slot === this.heldSlot) {
+					if (itemStack?.itemType === currentItemStack?.itemType) return;
+					if (cleanup !== undefined) {
+						task.spawn(() => {
+							cleanup!();
+						});
+					}
+					currentItemStack = itemStack;
+					task.spawn(() => {
+						cleanup = callback(itemStack);
+					});
+				}
+			}),
+		);
+		bin.Add(() => {
+			cleanup?.();
+		});
+		return bin;
+	}
+
+	public GetHeldItem(): ItemStack | undefined {
+		return this.inventory.GetItem(this.heldSlot);
+	}
+
+	public GetHeldSlot(): number {
+		return this.heldSlot;
+	}
+
+	/**
+	 * Sets the held slot on the character. Can be set for non-local players, but will
+	 * be overwritten when a new update is recieved.
+	 * @param slot
+	 * @returns
+	 */
+	public SetHeldSlot(slot: number): void {
+		if (this.heldSlot === slot) return;
+
+		// Only the client can set held slot.
+		if (this.IsLocalCharacter()) {
+			const before = this.onBeforeLocalHeldSlotChanged.Fire(
+				new BeforeLocalInventoryHeldSlotChanged(slot, this.heldSlot),
+			);
+			if (before.IsCancelled()) return;
+			// Only use signal networking if state based networking is unavailable.
+			if (!this.movement) {
+				if (Game.IsClient()) {
+					CoreNetwork.ClientToServer.Character.SetHeldSlot.client.FireServer(slot);
+				} else {
+					// If IsLocalCharacter on the server, that means it's a bot (todo)
+					CoreNetwork.ServerToClient.Character.SetHeldSlot.server.FireAllClients(this.id, slot);
+				}
+			}
+		}
+
+		this.SetHeldSlotInternal(slot);
+	}
+
+	private SetHeldSlotInternal(slot: number): void {
+		this.heldSlot = slot;
+		this.heldItem = this.GetHeldItem();
+		this.onHeldSlotChanged.Fire(slot);
+	}
+
+	private SetupHotbarControls() {
+		// Controls
+		const hotbarKeys = [
+			Key.Digit1,
+			Key.Digit2,
+			Key.Digit3,
+			Key.Digit4,
+			Key.Digit5,
+			Key.Digit6,
+			Key.Digit7,
+			Key.Digit8,
+			Key.Digit9,
+		];
+		for (const hotbarIndex of $range(0, hotbarKeys.size() - 1)) {
+			this.bin.Add(
+				Keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
+					if (event.uiProcessed) return;
+					this.SetHeldSlot(hotbarIndex);
+				}),
+			);
+		}
+
+		// Scroll to select held item:
+		this.bin.Add(
+			Mouse.onScrolled.Connect((event) => {
+				if (!this.controlsEnabled || event.uiProcessed || event.IsCancelled()) return;
+				if (Mouse.IsOverUI()) return;
+				// print("scroll: " + delta);
+				if (math.abs(event.delta) < 0.05) return;
+
+				const now = Time.time;
+				if (now - this.lastScrollTime < this.scrollCooldown) {
+					return;
+				}
+
+				this.lastScrollTime = now;
+
+				const selectedSlot = this.GetHeldSlot();
+				if (selectedSlot === undefined) return;
+
+				const inc = event.delta < 0 ? 1 : -1;
+				let trySlot = selectedSlot;
+
+				// Find the next available item in the hotbar:
+				for (const _ of $range(1, hotbarKeys.size())) {
+					trySlot += inc;
+
+					// Clamp index to hotbar items:
+					if (inc === 1 && trySlot >= hotbarKeys.size()) {
+						trySlot = 0;
+					} else if (inc === -1 && trySlot < 0) {
+						trySlot = hotbarKeys.size() - 1;
+					}
+
+					this.SetHeldSlot(trySlot);
+					break;
+				}
+			}),
+		);
+	}
+
+	/**
+	 * Allows the server to perform a lag compensated check against the clients view of the world at the
+	 * current server tick. Only works when using server authoritative character movement.
+	 * @param checkFunc This function should be used to perform read only checks against the clients view of the world. For example, perform a raycast
+	 * to check if the player actually hit another player.
+	 * @param completeFunc This function should be used to perform actions based on the result of your check and will run against the current real view
+	 * of the world as the server sees it. Use this function to apply damage or move the player.
+	 * @returns Returns immediately after scheduling the lag compensation check. The check and complete functions will be called later.
+	 */
+	public LagCompensationCheck<CheckResult>(
+		checkFunc: () => CheckResult,
+		completeFunc: (checkResult: CheckResult) => void,
+	) {
+		if (!Game.IsServer()) {
+			warn("Attempted to perform lag compensation check on the client. This is not allowed.");
+			return;
+		}
+
+		if (!this.movement) {
+			warn("Attempted to run lag compensation on character without movement system. This is not allowed.");
+			return;
+		}
+
+		const movementWithEvents = this.movement as CharacterMovement & CharacterMovementEngineEvents;
+		const checkId = movementWithEvents.RequestLagCompensationCheck();
+
+		let checkResult: CheckResult;
+		const checkConnection = movementWithEvents.OnLagCompensationCheck((id) => {
+			if (checkId !== id) return;
+			checkResult = TaskUtil.RunWithoutYield(() => {
+				return checkFunc();
+			});
+			Bridge.DisconnectEvent(checkConnection);
+		});
+		this.bin.AddEngineEventConnection(checkConnection);
+
+		const completeConnection = movementWithEvents.OnLagCompensationComplete((id) => {
+			if (checkId !== id) return;
+			TaskUtil.RunWithoutYield(() => {
+				completeFunc(checkResult);
+			});
+			Bridge.DisconnectEvent(completeConnection);
+		});
+		this.bin.AddEngineEventConnection(completeConnection);
 	}
 }

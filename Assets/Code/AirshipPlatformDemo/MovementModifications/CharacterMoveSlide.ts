@@ -1,7 +1,5 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { Game } from "@Easy/Core/Shared/Game";
-import { Binding } from "@Easy/Core/Shared/Input/Binding";
 
 export default class CharacterMoveSlide extends AirshipBehaviour {
 	private readonly SlideKey = "Slide";
@@ -48,7 +46,7 @@ export default class CharacterMoveSlide extends AirshipBehaviour {
 			if (Airship.Input.IsDown(this.SlideKey)) {
 				let characterState = this.character.movement!.GetState();
 				if (characterState === CharacterState.Running || characterState === CharacterState.Sprinting) {
-					this.character.AddCustomMoveData(this.SlideKey, this.startTick);
+					this.character.AddCustomInputData(this.SlideKey, this.startTick);
 				}
 			}
 		}

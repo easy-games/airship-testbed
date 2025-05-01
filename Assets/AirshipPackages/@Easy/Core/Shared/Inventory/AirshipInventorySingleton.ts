@@ -8,7 +8,7 @@ import { Game } from "../Game";
 import { ItemDef } from "../Item/ItemDefinitionTypes";
 import { NetworkFunction } from "../Network/NetworkFunction";
 import { Bin } from "../Util/Bin";
-import { Signal } from "../Util/Signal";
+import { Signal, SignalPriority } from "../Util/Signal";
 import AirshipInventoryUI from "./AirshipInventoryUI";
 import Inventory, { InventoryDto } from "./Inventory";
 import { InventoryUIVisibility } from "./InventoryUIVisibility";
@@ -287,7 +287,10 @@ export class AirshipInventorySingleton {
 		);
 
 		CoreNetwork.ClientToServer.Inventory.QuickMoveSlot.server.OnClientEvent(
-			(player, fromInvId, fromSlot, toInvId) => {
+			(player, fromInvId, fromSlot, fromHotbarSize, toInvId) => {
+				const character = player.character;
+				if (!character) return;
+
 				const fromInv = this.GetInventory(fromInvId);
 				if (!fromInv) return;
 
@@ -307,13 +310,13 @@ export class AirshipInventorySingleton {
 				const itemStack = fromInv.GetItem(fromSlot);
 				if (!itemStack) return;
 
-				if (fromSlot < fromInv.GetHotbarSlotCount()) {
+				if (fromSlot < fromHotbarSize) {
 					// move to backpack
 
 					let completed = false;
 
 					// find slots to merge
-					for (let i = fromInv.GetHotbarSlotCount(); i < fromInv.GetMaxSlots(); i++) {
+					for (let i = fromHotbarSize; i < fromInv.GetMaxSlots(); i++) {
 						const otherItemStack = fromInv.GetItem(i);
 						if (otherItemStack?.CanMerge(itemStack)) {
 							if (otherItemStack.amount < otherItemStack.GetMaxStackSize()) {
@@ -337,7 +340,7 @@ export class AirshipInventorySingleton {
 
 					if (!completed) {
 						// find empty slot
-						for (let i = fromInv.GetHotbarSlotCount(); i < fromInv.GetMaxSlots(); i++) {
+						for (let i = fromHotbarSize; i < fromInv.GetMaxSlots(); i++) {
 							if (fromInv.GetItem(i) === undefined) {
 								this.SwapSlots(fromInv, fromSlot, toInv, i, {
 									clientPredicted: true,
@@ -354,7 +357,7 @@ export class AirshipInventorySingleton {
 					const itemMeta = itemStack.GetMeta();
 
 					// find slots to merge
-					for (let i = 0; i < fromInv.GetHotbarSlotCount(); i++) {
+					for (let i = 0; i < fromHotbarSize; i++) {
 						const otherItemStack = fromInv.GetItem(i);
 						if (otherItemStack?.CanMerge(itemStack)) {
 							if (otherItemStack.amount < otherItemStack.GetMaxStackSize()) {
@@ -378,7 +381,7 @@ export class AirshipInventorySingleton {
 
 					if (!completed) {
 						// find empty slot
-						for (let i = 0; i < fromInv.GetHotbarSlotCount(); i++) {
+						for (let i = 0; i < fromHotbarSize; i++) {
 							if (fromInv.GetItem(i) === undefined) {
 								this.SwapSlots(fromInv, fromSlot, fromInv, i, {
 									clientPredicted: true,
@@ -488,18 +491,18 @@ export class AirshipInventorySingleton {
 		this.inventories.delete(inventory.id);
 	}
 
-	public QuickMoveSlot(inv: Inventory, slot: number): void {
+	public QuickMoveSlot(inv: Inventory, slot: number, hotbarSize: number): void {
 		const itemStack = inv.GetItem(slot);
 		if (!itemStack) return;
 
-		if (slot < inv.GetHotbarSlotCount()) {
+		if (slot < hotbarSize) {
 			// move to backpack
 
 			let completed = false;
 
 			// find slots to merge
 			if (!completed) {
-				for (let i = inv.GetHotbarSlotCount(); i < inv.GetMaxSlots(); i++) {
+				for (let i = hotbarSize; i < inv.GetMaxSlots(); i++) {
 					const otherItemStack = inv.GetItem(i);
 					if (otherItemStack?.CanMerge(itemStack)) {
 						if (otherItemStack.amount < otherItemStack.GetMaxStackSize()) {
@@ -520,7 +523,7 @@ export class AirshipInventorySingleton {
 
 			if (!completed) {
 				// find empty slot
-				for (let i = inv.GetHotbarSlotCount(); i < inv.GetMaxSlots(); i++) {
+				for (let i = hotbarSize; i < inv.GetMaxSlots(); i++) {
 					if (inv.GetItem(i) === undefined) {
 						this.SwapSlots(inv, slot, inv, i, {
 							clientPredicted: RunUtil.IsClient(),
@@ -538,7 +541,7 @@ export class AirshipInventorySingleton {
 
 			// find slots to merge
 			if (!completed) {
-				for (let i = 0; i < inv.GetHotbarSlotCount(); i++) {
+				for (let i = 0; i < hotbarSize; i++) {
 					const otherItemStack = inv.GetItem(i);
 					if (otherItemStack?.CanMerge(itemStack)) {
 						if (otherItemStack.amount < otherItemStack.GetMaxStackSize()) {
@@ -559,7 +562,7 @@ export class AirshipInventorySingleton {
 
 			if (!completed) {
 				// find empty slot
-				for (let i = 0; i < inv.GetHotbarSlotCount(); i++) {
+				for (let i = 0; i < hotbarSize; i++) {
 					if (inv.GetItem(i) === undefined) {
 						this.SwapSlots(inv, slot, inv, i, {
 							clientPredicted: RunUtil.IsClient(),
@@ -572,7 +575,7 @@ export class AirshipInventorySingleton {
 		}
 
 		if (Game.IsClient()) {
-			CoreNetwork.ClientToServer.Inventory.QuickMoveSlot.client.FireServer(inv.id, slot, inv.id);
+			CoreNetwork.ClientToServer.Inventory.QuickMoveSlot.client.FireServer(inv.id, slot, hotbarSize, inv.id);
 		}
 
 		// SetTimeout(0.1, () => {
@@ -687,7 +690,10 @@ export class AirshipInventorySingleton {
 		this.localInventoryChanged.Fire(inventory);
 	}
 
-	public ObserveLocalInventory(callback: (inv: Inventory) => CleanupFunc): Bin {
+	public ObserveLocalInventory(
+		callback: (inv: Inventory) => CleanupFunc,
+		priority: SignalPriority = SignalPriority.NORMAL,
+	): Bin {
 		const bin = new Bin();
 		let cleanup: CleanupFunc;
 		if (this.localInventory) {
@@ -697,7 +703,7 @@ export class AirshipInventorySingleton {
 		}
 
 		bin.Add(
-			this.localInventoryChanged.Connect((inv) => {
+			this.localInventoryChanged.ConnectWithPriority(priority, (inv) => {
 				task.spawn(() => {
 					cleanup = callback(inv);
 				});
@@ -709,31 +715,36 @@ export class AirshipInventorySingleton {
 		return bin;
 	}
 
-	public ObserveLocalHeldItem(callback: (itemStack: ItemStack | undefined) => CleanupFunc): Bin {
+	public ObserveLocalHeldItem(
+		callback: (itemStack: ItemStack | undefined) => CleanupFunc,
+		priority: SignalPriority = SignalPriority.NORMAL,
+	): Bin {
 		const bin = new Bin();
 
 		let cleanup: CleanupFunc;
 
-		const invBin = new Bin();
+		const charBin = new Bin();
 		bin.Add(
-			this.ObserveLocalInventory((inv) => {
-				invBin.Clean();
-				if (inv) {
-					invBin.Add(
-						inv.ObserveHeldItem((itemStack) => {
-							task.spawn(() => {
-								cleanup?.();
-								cleanup = callback(itemStack);
-							});
-						}),
-					);
-				} else {
-					task.spawn(() => {
-						cleanup = callback(undefined);
-					});
+			Game.localPlayer.ObserveCharacter((character) => {
+				if (!character) {
+					task.spawn(() => (cleanup = callback(undefined)));
+					return;
 				}
+				charBin.Add(
+					character.ObserveHeldItem((itemStack) => {
+						task.spawn(() => {
+							cleanup?.();
+							cleanup = callback(itemStack);
+						});
+					}, priority),
+				);
+				return () => charBin.Clean();
 			}),
 		);
+		bin.Add(() => {
+			charBin.Clean();
+			cleanup?.();
+		});
 		return bin;
 	}
 

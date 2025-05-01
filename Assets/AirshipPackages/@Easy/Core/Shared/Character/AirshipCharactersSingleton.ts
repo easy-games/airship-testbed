@@ -195,7 +195,7 @@ export class AirshipCharactersSingleton {
 
 	private WatchForHeldItemAccessories() {
 		this.ObserveCharacters((character) => {
-			character.inventory?.ObserveHeldItem((itemStack) => {
+			character.ObserveHeldItem((itemStack) => {
 				const itemDef = itemStack?.itemDef;
 
 				let viewmodelAccessoryBuilder: AccessoryBuilder | undefined;
@@ -239,7 +239,7 @@ export class AirshipCharactersSingleton {
 
 				//We aren't combineing held items
 				// this.entity.accessoryBuilder.TryCombineMeshes();
-			}, SignalPriority.HIGH);
+			}, SignalPriority.HIGHEST);
 		});
 	}
 
@@ -318,7 +318,7 @@ export class AirshipCharactersSingleton {
 			error("Trying to spawn a character prefab without a character component on it!");
 		}
 		if (config?.lookDirection && characterComponent.movement) {
-			characterComponent.movement.startingLookVector = config.lookDirection;
+			characterComponent.movement.SetLookVector(config.lookDirection); // TODO: this might be broken now
 		}
 		characterComponent.Init(undefined, Airship.Characters.MakeNewId(), undefined, 100, 100, go.name);
 		const rb = go.GetComponent<Rigidbody>();
