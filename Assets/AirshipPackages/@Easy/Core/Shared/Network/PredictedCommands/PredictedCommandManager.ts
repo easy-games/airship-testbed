@@ -565,6 +565,12 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				time: character.movement.GetLocalSimulationTimeFromCommandNumber(commandNumber),
 				snapshot: { data: undefined as unknown as Readonly<unknown>, finished: true },
 			});
+
+			warn(
+				"Client attempted to run " +
+					commandIdentifierStr +
+					", but the command failed validation on the server. Resimulating.",
+			);
 			character.movement.RequestResimulation(commandNumber);
 		});
 
@@ -699,6 +705,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 		bin.Add(
 			this.onInstanceCreated.ConnectWithPriority(priority, (identifier) => {
+				if (identifier.characterId !== character.id) return;
 				if (identifier.commandId !== commandId) return;
 				callbackBin?.();
 				callbackBin = callback(identifier);
@@ -706,6 +713,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		);
 		bin.Add(
 			this.onInstanceDestroyed.ConnectWithPriority(priority, (identifier) => {
+				if (identifier.characterId !== character.id) return;
 				if (identifier.commandId !== commandId) return;
 				callbackBin?.();
 				callbackBin = callback(undefined);
