@@ -172,7 +172,7 @@ export class ClientChatSingleton {
 	public AddMessage(rawText: string, nameWithPrefix: string | undefined, senderClientId: number | undefined): void {
 		let sender: ProtectedPlayer | undefined;
 		if (senderClientId !== undefined) {
-			sender = Protected.ProtectedPlayers.FindByClientId(senderClientId);
+			sender = Protected.ProtectedPlayers.FindByConnectionId(senderClientId);
 			if (sender) {
 				if (Dependency<MainMenuBlockSingleton>().IsUserIdBlocked(sender.userId)) {
 					return;

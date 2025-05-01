@@ -11,9 +11,14 @@ interface SpeakingLevelEntry {
 @Singleton()
 export class ProtectedVoiceChatSingleton implements OnStart {
 	public connectionIdToSpeakingLevel = new Map<number, SpeakingLevelEntry>();
+	public uniVoiceNetwork: AirshipUniVoiceNetwork;
+
+	private mutedUserIds = new Set<string>();
 
 	constructor() {
 		Protected.VoiceChat = this;
+
+		this.uniVoiceNetwork = Bridge.GetAirshipVoiceChatNetwork();
 
 		contextbridge.callback("VoiceChat:GetSpeakingLevel", (from, connectionId: number) => {
 			// if (Game.IsEditor()) {
@@ -23,16 +28,32 @@ export class ProtectedVoiceChatSingleton implements OnStart {
 		});
 	}
 
+	public SetMuted(userId: string, muted: boolean): void {
+		if (muted) {
+			this.mutedUserIds.add(userId);
+		} else {
+			this.mutedUserIds.delete(userId);
+		}
+
+		const player = Protected.ProtectedPlayers.FindByUserId(userId);
+		if (player) {
+			this.uniVoiceNetwork.SetConnectionMuted(player.connectionId, muted);
+		}
+	}
+
+	public IsMuted(userId: string): boolean {
+		return this.mutedUserIds.has(userId);
+	}
+
 	OnStart(): void {
-		const uniVoiceNetwork = Bridge.GetAirshipVoiceChatNetwork();
-		uniVoiceNetwork.onPlayerSpeakingLevel.Connect((connectionId, speakingLevel) => {
+		this.uniVoiceNetwork.onPlayerSpeakingLevel.Connect((connectionId, speakingLevel) => {
 			// print(`Player speaking connectionId=${connectionId} speakingLevel=${speakingLevel}`);
 			this.connectionIdToSpeakingLevel.set(connectionId, {
 				speakingLevel,
 				time: Time.time,
 			});
 		});
-		uniVoiceNetwork.onLocalSpeakingLevel.Connect((speakingLevel) => {
+		this.uniVoiceNetwork.onLocalSpeakingLevel.Connect((speakingLevel) => {
 			this.connectionIdToSpeakingLevel.set(Game.localPlayer.connectionId, {
 				speakingLevel,
 				time: Time.time,
