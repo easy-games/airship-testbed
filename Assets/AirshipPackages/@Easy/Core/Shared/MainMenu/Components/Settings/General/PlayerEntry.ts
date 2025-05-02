@@ -30,16 +30,24 @@ export default class PlayerEntry extends AirshipBehaviour {
 	public muteBtn: Button;
 	public muteOverlay: GameObject;
 
+	private player: ProtectedPlayer;
+
 	private bin = new Bin();
 
 	public OnEnable(): void {}
 
 	public Init(player: ProtectedPlayer): void {
+		this.player = player;
 		this.reportBtn.gameObject.SetActive(false);
 		this.addToPartyBtn.gameObject.SetActive(false);
 		this.addFriendBtn.gameObject.SetActive(false);
-
 		this.usernameText.text = player.username;
+
+		this.UpdateVisuals();
+	}
+
+	public UpdateVisuals(): void {
+		const player = this.player;
 
 		// Profile picture
 		task.spawn(async () => {
@@ -67,10 +75,8 @@ export default class PlayerEntry extends AirshipBehaviour {
 				this.bin.AddEngineEventConnection(
 					CanvasAPI.OnClickEvent(this.addToPartyBtn.gameObject, () => {
 						task.spawn(() => {
+							this.addToPartyOverlay.SetActive(true);
 							const [res] = Dependency<ProtectedPartyController>().InviteToParty(player.userId).await();
-							if (res) {
-								this.addToPartyOverlay.SetActive(true);
-							}
 						});
 					}),
 				);
@@ -82,10 +88,8 @@ export default class PlayerEntry extends AirshipBehaviour {
 		if (showAddFriend) {
 			this.bin.AddEngineEventConnection(
 				CanvasAPI.OnClickEvent(this.addFriendBtn.gameObject, async () => {
+					this.addFriendOverlay.SetActive(true);
 					const res = Dependency<ProtectedFriendsController>().SendFriendRequest(player.username);
-					if (res) {
-						this.addFriendOverlay.SetActive(true);
-					}
 				}),
 			);
 		}
@@ -123,10 +127,6 @@ export default class PlayerEntry extends AirshipBehaviour {
 		} else {
 			this.muteBtn.gameObject.SetActive(false);
 		}
-	}
-
-	public SetEven(): void {
-		// this.bgImage.color = new Color(0, 0, 0, 0.3);
 	}
 
 	public OnDisable(): void {
