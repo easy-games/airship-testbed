@@ -81,7 +81,7 @@ export default class PlayerEntry extends AirshipBehaviour {
 		this.addFriendBtn.gameObject.SetActive(showAddFriend);
 		if (showAddFriend) {
 			this.bin.AddEngineEventConnection(
-				CanvasAPI.OnClickEvent(this.addFriendBtn.gameObject, () => {
+				CanvasAPI.OnClickEvent(this.addFriendBtn.gameObject, async () => {
 					const res = Dependency<ProtectedFriendsController>().SendFriendRequest(player.username);
 					if (res) {
 						this.addFriendOverlay.SetActive(true);
