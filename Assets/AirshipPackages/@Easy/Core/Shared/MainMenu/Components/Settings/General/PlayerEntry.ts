@@ -66,10 +66,12 @@ export default class PlayerEntry extends AirshipBehaviour {
 			if (showAddParty) {
 				this.bin.AddEngineEventConnection(
 					CanvasAPI.OnClickEvent(this.addToPartyBtn.gameObject, () => {
-						const [res] = Dependency<ProtectedPartyController>().InviteToParty(player.userId).await();
-						if (res) {
-							this.addToPartyOverlay.SetActive(true);
-						}
+						task.spawn(() => {
+							const [res] = Dependency<ProtectedPartyController>().InviteToParty(player.userId).await();
+							if (res) {
+								this.addToPartyOverlay.SetActive(true);
+							}
+						});
 					}),
 				);
 			}
