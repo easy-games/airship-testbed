@@ -651,7 +651,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: 3deb3c79-0c65-41a5-a1d9-8dae0acb4826
-  hash: 847e18c38775d3cc899784dbafee55d1
+  hash: 2d142d524e00a4451e00f83f5e83490d
   script: {fileID: -8502596097384394428, guid: 231b41c7c69568446b98353c21d6785d, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Character.lua
   forceContext: 0
@@ -1183,7 +1183,7 @@ MonoBehaviour:
   drawDebugGizmos_STATES: 0
   useExtraLogging: 0
   autoCalibrateSkiddingSpeed: 1
-  observerRotationLerpMod: 1
+  ownerRotationLerpMod: 6
   playAnimationOnServer: 1
   compareResult: 0
 --- !u!114 &7270479773071441371
