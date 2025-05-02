@@ -7,7 +7,7 @@ import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 
 export class PartyCommand extends ChatCommand {
 	constructor() {
-		super("party", [], "<add> <player>");
+		super("party", ["p"], "<add> <player>");
 	}
 
 	public Execute(player: Player, args: string[]): void {
