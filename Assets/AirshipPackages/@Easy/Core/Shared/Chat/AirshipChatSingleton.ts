@@ -1,3 +1,7 @@
+import {
+	ModerateChatMessageResponse,
+	ProtectedModerationService,
+} from "@Easy/Core/Server/ProtectedServices/Airship/Moderation/ModerationService";
 import { AddInventoryCommand } from "@Easy/Core/Server/Services/Chat/Commands/AddInventoryCommand";
 import { BotCommand } from "@Easy/Core/Server/Services/Chat/Commands/BotCommand";
 import { DamageCommand } from "@Easy/Core/Server/Services/Chat/Commands/DamageCommand";
@@ -9,6 +13,7 @@ import { JoinCodeCommand } from "@Easy/Core/Server/Services/Chat/Commands/JoinCo
 import { KickCommand } from "@Easy/Core/Server/Services/Chat/Commands/KickCommand";
 import { KillCommand } from "@Easy/Core/Server/Services/Chat/Commands/KillCommand";
 import { LagCommand } from "@Easy/Core/Server/Services/Chat/Commands/LagCommand";
+import { PartyCommand } from "@Easy/Core/Server/Services/Chat/Commands/PartyCommand";
 import { SetTeamCommand } from "@Easy/Core/Server/Services/Chat/Commands/SetTeamCommand";
 import { TeamChatCommand } from "@Easy/Core/Server/Services/Chat/Commands/TeamChatCommand";
 import { TeamCommand } from "@Easy/Core/Server/Services/Chat/Commands/TeamCommand";
@@ -27,7 +32,6 @@ import { Cancellable } from "../Util/Cancellable";
 import { ChatUtil } from "../Util/ChatUtil";
 import ObjectUtils from "../Util/ObjectUtils";
 import { Signal } from "../Util/Signal";
-import { ModerateChatMessageResponse, ProtectedModerationService } from "@Easy/Core/Server/ProtectedServices/Airship/Moderation/ModerationService";
 
 class ChatMessageEvent extends Cancellable {
 	/**
@@ -114,17 +118,22 @@ export class AirshipChatSingleton {
 				}
 
 				let moderationResult: ModerateChatMessageResponse;
-				
+
 				if (!Game.IsEditor()) {
-					moderationResult = this.moderationService.ModerateChatMessage("public_chat", player.userId, text).expect();
+					moderationResult = this.moderationService
+						.ModerateChatMessage("public_chat", player.userId, text)
+						.expect();
 				} else {
 					moderationResult = {
 						messageBlocked: false,
-					}
+					};
 				}
 				if (moderationResult.messageBlocked) {
 					if (moderationResult.messageBlockedReasons.size() > 0) {
-						player.SendMessage("Your message was blocked for violating our community guidelines for the following reason(s): " + moderationResult.messageBlockedReasons.join(", "));
+						player.SendMessage(
+							"Your message was blocked for violating our community guidelines for the following reason(s): " +
+								moderationResult.messageBlockedReasons.join(", "),
+						);
 					} else {
 						player.SendMessage("Your message was blocked for violating our community guidelines.");
 					}
@@ -192,6 +201,7 @@ export class AirshipChatSingleton {
 		this.RegisterCommand(new TeamChatCommand());
 		this.RegisterCommand(new KickCommand());
 		this.RegisterCommand(new TeamsCommand());
+		this.RegisterCommand(new PartyCommand());
 	}
 
 	/**
