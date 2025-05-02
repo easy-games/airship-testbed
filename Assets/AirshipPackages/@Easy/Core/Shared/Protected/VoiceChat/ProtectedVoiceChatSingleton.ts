@@ -45,17 +45,21 @@ export class ProtectedVoiceChatSingleton implements OnStart {
 		return this.mutedUserIds.has(userId);
 	}
 
+	private NormalizeSpeakingLevel(speakingLevel: number): number {
+		return math.lerp(0, 1, speakingLevel / 0.7);
+	}
+
 	OnStart(): void {
 		this.uniVoiceNetwork.onPlayerSpeakingLevel.Connect((connectionId, speakingLevel) => {
 			// print(`Player speaking connectionId=${connectionId} speakingLevel=${speakingLevel}`);
 			this.connectionIdToSpeakingLevel.set(connectionId, {
-				speakingLevel,
+				speakingLevel: this.NormalizeSpeakingLevel(speakingLevel),
 				time: Time.time,
 			});
 		});
 		this.uniVoiceNetwork.onLocalSpeakingLevel.Connect((speakingLevel) => {
 			this.connectionIdToSpeakingLevel.set(Game.localPlayer.connectionId, {
-				speakingLevel,
+				speakingLevel: this.NormalizeSpeakingLevel(speakingLevel),
 				time: Time.time,
 			});
 		});
