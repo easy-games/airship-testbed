@@ -13,7 +13,6 @@ import { JoinCodeCommand } from "@Easy/Core/Server/Services/Chat/Commands/JoinCo
 import { KickCommand } from "@Easy/Core/Server/Services/Chat/Commands/KickCommand";
 import { KillCommand } from "@Easy/Core/Server/Services/Chat/Commands/KillCommand";
 import { LagCommand } from "@Easy/Core/Server/Services/Chat/Commands/LagCommand";
-import { PartyCommand } from "@Easy/Core/Server/Services/Chat/Commands/PartyCommand";
 import { SetTeamCommand } from "@Easy/Core/Server/Services/Chat/Commands/SetTeamCommand";
 import { TeamChatCommand } from "@Easy/Core/Server/Services/Chat/Commands/TeamChatCommand";
 import { TeamCommand } from "@Easy/Core/Server/Services/Chat/Commands/TeamCommand";
@@ -201,7 +200,6 @@ export class AirshipChatSingleton {
 		this.RegisterCommand(new TeamChatCommand());
 		this.RegisterCommand(new KickCommand());
 		this.RegisterCommand(new TeamsCommand());
-		this.RegisterCommand(new PartyCommand());
 	}
 
 	/**

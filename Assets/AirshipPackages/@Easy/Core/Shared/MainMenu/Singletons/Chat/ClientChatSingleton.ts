@@ -5,6 +5,7 @@ import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { PartyCommand } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientCommands/PartyCommand";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { ProtectedPlayer } from "@Easy/Core/Shared/Player/ProtectedPlayer";
 import { Protected } from "@Easy/Core/Shared/Protected";
@@ -129,6 +130,7 @@ export class ClientChatSingleton {
 		if (Game.IsProtectedLuauContext()) {
 			this.RegisterCommand(new MessageCommand());
 			this.RegisterCommand(new ReplyCommand());
+			this.RegisterCommand(new PartyCommand());
 
 			contextbridge.callback<() => boolean>("ClientChatSingleton:IsOpen", () => {
 				return this.IsOpen();

@@ -1,5 +1,4 @@
 import { Party } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
-import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
@@ -100,14 +99,6 @@ export class ProtectedPartyController {
 			if (Game.IsInGame()) {
 				contextbridge.invoke(PartyControllerBridgeTopics.OnPartyChange, LuauContext.Game, data);
 			}
-		});
-
-		CoreNetwork.ServerToClient.Commands.PartyAdd.client.OnServerEvent((userId) => {
-			this.InviteToParty(userId);
-		});
-
-		CoreNetwork.ServerToClient.Commands.PartyRemove.client.OnServerEvent((userId) => {
-			this.RemoveFromParty(userId);
 		});
 	}
 }

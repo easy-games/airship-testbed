@@ -1,6 +1,7 @@
+import { ProtectedPartyController } from "@Easy/Core/Client/ProtectedControllers/Airship/Party/PartyController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
-import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 
@@ -24,11 +25,11 @@ export class PartyCommand extends ChatCommand {
 		}
 
 		if (action === "add") {
-			CoreNetwork.ServerToClient.Commands.PartyAdd.server.FireClient(player, targetPlayer.userId);
+			Dependency<ProtectedPartyController>().InviteToParty(targetPlayer.userId);
 		} else if (action === "remove") {
-			CoreNetwork.ServerToClient.Commands.PartyRemove.server.FireClient(player, targetPlayer.userId);
+			Dependency<ProtectedPartyController>().RemoveFromParty(targetPlayer.userId);
 		} else {
-			player.SendMessage(ChatColor.Red("Invalid action. Use 'add' to add a player to your party."));
+			player.SendMessage(ChatColor.Red("Usage: /party <add | remove> <player>"));
 		}
 	}
 }
