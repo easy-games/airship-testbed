@@ -1,9 +1,10 @@
 import { Party } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
+import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 import { SocketController } from "../../Socket/SocketController";
 
 export const enum PartyControllerBridgeTopics {
@@ -42,9 +43,9 @@ export class ProtectedPartyController {
 	}
 
 	public async GetParty(): Promise<ReturnType<ClientBridgeApiGetParty>> {
-		const res = await this.httpRetry(() =>
-			InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/parties/party/self`),
-			"GetParty"
+		const res = await this.httpRetry(
+			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/parties/party/self`),
+			"GetParty",
 		);
 
 		if (!res.success || res.statusCode > 299) {
@@ -56,12 +57,16 @@ export class ProtectedPartyController {
 	}
 
 	public async InviteToParty(userId: string) {
-		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/parties/party/invite",
-			json.encode({
-				userToAdd: userId,
-			}),
-		), "InviteToParty");
+		const res = await this.httpRetry(
+			() =>
+				InternalHttpManager.PostAsync(
+					AirshipUrl.GameCoordinator + "/parties/party/invite",
+					json.encode({
+						userToAdd: userId,
+					}),
+				),
+			"InviteToParty",
+		);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to invite user to party. Status Code: ${res.statusCode}\n`, res.error);
@@ -70,12 +75,16 @@ export class ProtectedPartyController {
 	}
 
 	public async RemoveFromParty(userId: string) {
-		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/parties/party/remove",
-			json.encode({
-				userToRemove: userId,
-			}),
-		), "RemoveFromParty");
+		const res = await this.httpRetry(
+			() =>
+				InternalHttpManager.PostAsync(
+					AirshipUrl.GameCoordinator + "/parties/party/remove",
+					json.encode({
+						userToRemove: userId,
+					}),
+				),
+			"RemoveFromParty",
+		);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to remove user from party. Status Code: ${res.statusCode}\n`, res.error);
@@ -91,6 +100,14 @@ export class ProtectedPartyController {
 			if (Game.IsInGame()) {
 				contextbridge.invoke(PartyControllerBridgeTopics.OnPartyChange, LuauContext.Game, data);
 			}
+		});
+
+		CoreNetwork.ServerToClient.Commands.PartyAdd.client.OnServerEvent((userId) => {
+			this.InviteToParty(userId);
+		});
+
+		CoreNetwork.ServerToClient.Commands.PartyRemove.client.OnServerEvent((userId) => {
+			this.RemoveFromParty(userId);
 		});
 	}
 }

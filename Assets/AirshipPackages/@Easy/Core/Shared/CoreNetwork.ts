@@ -93,5 +93,9 @@ export const CoreNetwork = {
 				[displayed: boolean]
 			>("PromptPurchase"),
 		},
+		Commands: {
+			PartyAdd: new NetworkSignal<[targetPlayerId: string]>("PartyAdd"),
+			PartyRemove: new NetworkSignal<[targetPlayerId: string]>("PartyRemove"),
+		},
 	},
 };
