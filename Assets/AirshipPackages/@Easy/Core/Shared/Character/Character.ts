@@ -762,12 +762,12 @@ export default class Character extends AirshipBehaviour {
 	): Bin {
 		const bin = new Bin();
 		this.observeHeldItemBins.push(bin);
-		let currentItemStack = this.inventory.GetItem(this.heldSlot);
+		let currentItemStack = this.inventory?.GetItem(this.heldSlot);
 		let cleanup = callback(currentItemStack);
 
 		bin.Add(
 			this.onHeldSlotChanged.ConnectWithPriority(priority, (newSlot) => {
-				const selected = this.inventory.GetItem(newSlot);
+				const selected = this.inventory?.GetItem(newSlot);
 				if (selected?.itemType === currentItemStack?.itemType) return;
 
 				if (cleanup !== undefined) {
@@ -781,22 +781,25 @@ export default class Character extends AirshipBehaviour {
 				});
 			}),
 		);
-		bin.Add(
-			this.inventory.onSlotChanged.ConnectWithPriority(priority, (slot, itemStack) => {
-				if (slot === this.heldSlot) {
-					if (itemStack?.itemType === currentItemStack?.itemType) return;
-					if (cleanup !== undefined) {
+		if (this.inventory) {
+			bin.Add(
+				this.inventory.onSlotChanged.ConnectWithPriority(priority, (slot, itemStack) => {
+					if (slot === this.heldSlot) {
+						if (itemStack?.itemType === currentItemStack?.itemType) return;
+						if (cleanup !== undefined) {
+							task.spawn(() => {
+								cleanup!();
+							});
+						}
+						currentItemStack = itemStack;
 						task.spawn(() => {
-							cleanup!();
+							cleanup = callback(itemStack);
 						});
 					}
-					currentItemStack = itemStack;
-					task.spawn(() => {
-						cleanup = callback(itemStack);
-					});
-				}
-			}),
-		);
+				}),
+			);
+		}
+
 		bin.Add(() => {
 			cleanup?.();
 		});
