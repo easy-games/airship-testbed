@@ -18,7 +18,9 @@ import {
 	CancellableInventorySlotInteractionEvent,
 	SlotDragEndedEvent,
 	InventorySlotMouseClickEvent as InventorySlotMouseClickEvent,
+	InventoryEvent,
 } from "./Signal/SlotInteractionEvent";
+import { OpenExternalInventoryError } from "./InventoryTypes";
 
 interface InventoryEntry {
 	Inv: Inventory;
@@ -71,6 +73,15 @@ export class AirshipInventorySingleton {
 	 * - `consume` on the event will be true if it is dropping on another slot, that can be handled via {@link onMovingToSlot}.
 	 */
 	public readonly onInventorySlotDragEnd = new Signal<SlotDragEndedEvent>();
+
+	/**
+	 * Event invoked when an inventory is opened
+	 */
+	public readonly onInventoryOpened = new Signal<InventoryEvent>();
+	/**
+	 * Event invoked when an inventory is closed
+	 */
+	public readonly onInventoryClosed = new Signal<InventoryEvent>();
 
 	/**
 	 * If `true`, the Inventory UI will immediately be enabled for the player.
@@ -857,12 +868,38 @@ export class AirshipInventorySingleton {
 	}
 
 	/**
-	 * Allows you to open another inventory
+	 * Opens an external inventory alongside the user's inventory
+	 * @param inventory The external inventory to open
+	 * @param onExternalInventoryClose An optional handler for when the external inventory closes
+	 * @returns A tuple - if `success` is true - the callback to close, otherwise the reason why the inventory could not be opened
 	 */
-	public OpenExternalInventory(inventory: Inventory, onComplete?: () => void): CleanupFunc {
-		const ui = this.ui;
-		if (!ui) return;
+	public OpenExternalInventory(
+		inventory: Inventory,
+		onExternalInventoryClose?: () => void,
+	): LuaTuple<[success: true, close: () => void] | [success: false, reason: OpenExternalInventoryError]> {
+		assert(Game.IsClient(), "An inventory can only be opened by a client");
 
-		return ui.OpenBackpackWithExternalInventory(inventory, onComplete);
+		if (!inventory.CanPlayerModifyInventory(Game.localPlayer)) {
+			return $tuple(false, OpenExternalInventoryError.UserHasNoPermission);
+		}
+
+		const ui = this.ui;
+		if (!ui) return $tuple(false, OpenExternalInventoryError.NoInventoryUI);
+
+		const bin = ui.OpenBackpackWithExternalInventory(inventory);
+		if (!bin) return $tuple(false, OpenExternalInventoryError.FailedSetup);
+
+		if (typeIs(onExternalInventoryClose, "function")) {
+			// We can listen to the closed event for this :-)
+			let disconnect = this.onInventoryClosed.Connect((event) => {
+				if (event.inventory !== inventory) return;
+				onExternalInventoryClose();
+				disconnect();
+			});
+		}
+
+		return $tuple(true, () => {
+			bin.Clean();
+		});
 	}
 }
