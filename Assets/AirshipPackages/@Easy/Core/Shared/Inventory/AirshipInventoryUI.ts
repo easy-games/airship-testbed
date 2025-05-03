@@ -164,13 +164,10 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		}
 	}
 
-	public OpenBackpackWithExternalInventory(inventory: Inventory, onClosed?: () => void) {
+	public OpenBackpackWithExternalInventory(inventory: Inventory) {
 		const closed = this.SetupExternalInventory(inventory);
 		if (!closed) return;
 
-		if (onClosed) {
-			this.backpackOpenBin.Add(onClosed);
-		}
 		this.backpackOpenBin.Add(closed);
 		this.backpackOpenBin.Add(() => Airship.Inventory.onInventoryClosed.Fire(new InventoryEvent(inventory)));
 

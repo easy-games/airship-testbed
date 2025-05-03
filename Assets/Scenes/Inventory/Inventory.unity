@@ -225,13 +225,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guid: 
-  hash: 
+  guid: 8d008e8f-749a-4a1d-ad74-60f623fc37a7
   script: {fileID: -5940671091838212077, guid: 9595bed5c65c1984e9f9952a0b7d511b, type: 3}
   scriptPath: Assets/Code/Inventory/InventoryTestManager.lua
   forceContext: 0
   metadata:
-    name: 
+    name: InventoryTestManager
     singleton: 0
     decorators: []
     properties: []
@@ -249,13 +248,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guid: 
-  hash: 
+  guid: 8937c0ab-cf9b-47dd-901c-250c3a0caadb
   script: {fileID: 4534876074585211741, guid: 7ea7debb016d50c439f448d662249b2c, type: 3}
   scriptPath: Assets/Code/Components/InventoryDemoManager.lua
   forceContext: 0
   metadata:
-    name: 
+    name: InventoryDemoManager
     singleton: 0
     decorators: []
     properties: []
@@ -368,7 +366,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: 42f29455-28b3-4a57-8217-94e35b0bbe54
-  hash: c1490ba2b3e81b78d3121a15893b7c89
   script: {fileID: 3874102147928444048, guid: d7cc5f546129a45968eb53cc5ac77acb, type: 3}
   scriptPath: Assets/Code/Components/CharacterSpawner.lua
   forceContext: 0
@@ -425,7 +422,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: 55bd3e54-c98b-4bfc-818f-b07d6ba34f20
-  hash: e578ffd497b3a420e4bd00bf7e8512d6
   script: {fileID: -9172979162140031692, guid: 5fda4c8dc3d264609ac0b015cef0edc4, type: 3}
   scriptPath: Assets/Code/Components/CubeSpawner.lua
   forceContext: 0
@@ -467,7 +463,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: cba26e8f-5bf9-45d3-97bf-de5f1aef4ee0
-  hash: 43ee1411fd78f63f432e27aae0aa39b7
   script: {fileID: 796400153169862170, guid: c4fa48bfb1281a04baca6e795001cd63, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterConfigSetup.lua
   forceContext: 0

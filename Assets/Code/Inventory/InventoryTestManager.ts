@@ -24,6 +24,13 @@ export default class InventoryTestManager extends AirshipSingleton {
 			});
 		}
 
+		Airship.Inventory.onInventoryOpened.Connect((event) => {
+			print("inventory was opened", event.inventory.id);
+		});
+		Airship.Inventory.onInventoryClosed.Connect((event) => {
+			print("inventory was closed", event.inventory.id);
+		});
+
 		// Click to swap
 		Airship.Inventory.onInventorySlotClicked.Connect((interaction) => {
 			const inventoryUI = Airship.Inventory.ui;
