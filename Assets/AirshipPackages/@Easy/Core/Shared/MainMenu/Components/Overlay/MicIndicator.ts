@@ -86,7 +86,7 @@ export default class MicIndicator extends AirshipBehaviour {
 
 			const connectionId = Game.localPlayer.connectionId;
 			const UpdateFill = () => {
-				let speakingLevel = contextbridge.invoke(
+				let speakingLevel: number = contextbridge.invoke(
 					"VoiceChat:GetSpeakingLevel",
 					LuauContext.Protected,
 					connectionId,
