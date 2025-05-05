@@ -12,7 +12,13 @@ export default class Chest extends AirshipBehaviour {
 		if (Game.IsClient()) {
 			const prompt = Airship.Input.CreateProximityPrompt("Interact", "Chest", "Open", this.transform);
 			prompt.onActivated.Connect(() => {
-				Airship.Inventory.OpenExternalInventory(this.inventory);
+				const closeInventory = Airship.Inventory.OpenExternalInventory(this.inventory, () => {
+					print("user closed the inventory");
+				});
+
+				if (closeInventory) {
+					print("user opened the inventory");
+				}
 			});
 		}
 	}

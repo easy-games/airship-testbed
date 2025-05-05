@@ -10,7 +10,7 @@ import { NetworkFunction } from "../Network/NetworkFunction";
 import { Bin } from "../Util/Bin";
 import { Signal, SignalPriority } from "../Util/Signal";
 import AirshipInventoryUI from "./AirshipInventoryUI";
-import Inventory, { InventoryDto } from "./Inventory";
+import Inventory, { InventoryDto, InventoryModifyPermission } from "./Inventory";
 import { InventoryUIVisibility } from "./InventoryUIVisibility";
 import { ItemStack } from "./ItemStack";
 import { InventoryMovingToSlotEvent } from "./Signal/MovingToSlotEvent";
@@ -18,6 +18,7 @@ import {
 	CancellableInventorySlotInteractionEvent,
 	SlotDragEndedEvent,
 	InventorySlotMouseClickEvent as InventorySlotMouseClickEvent,
+	InventoryEvent,
 } from "./Signal/SlotInteractionEvent";
 
 interface InventoryEntry {
@@ -46,7 +47,6 @@ export class AirshipInventorySingleton {
 
 	/**
 	 * Event that is invoked when the inventory slot is clicked on the client
-	 * @client
 	 *
 	 * Can be used to implement custom inventory functionality, e.g. "quick move" on shift left-click:
 	 * ```ts
@@ -56,6 +56,8 @@ export class AirshipInventorySingleton {
 	 *		}
 	 * });
 	 * ```
+	 *
+	 * @client Client-only event
 	 */
 	public readonly onInventorySlotClicked = new Signal<InventorySlotMouseClickEvent>();
 	/**
@@ -64,13 +66,26 @@ export class AirshipInventorySingleton {
 	 * - You can cancel dragging through this event
 	 * - To listen for the drag end - use {@link onInventorySlotDragEnd}
 	 * - To listen for a slot being dropped on another slot - use {@link onMovingToSlot}.
+	 * @client Client-only event
 	 */
 	public readonly onInventorySlotDragBegin = new Signal<CancellableInventorySlotInteractionEvent>();
 	/**
 	 * Event that's invoked if a slot that's being dragged, is no longer being dragged
 	 * - `consume` on the event will be true if it is dropping on another slot, that can be handled via {@link onMovingToSlot}.
+	 * @client Client-only event
 	 */
 	public readonly onInventorySlotDragEnd = new Signal<SlotDragEndedEvent>();
+
+	/**
+	 * Event invoked when an inventory is opened on the client
+	 * @client Client-only event
+	 */
+	public readonly onInventoryOpened = new Signal<InventoryEvent>();
+	/**
+	 * Event invoked when an inventory is closed on the client
+	 * @client Client-only event
+	 */
+	public readonly onInventoryClosed = new Signal<InventoryEvent>();
 
 	/**
 	 * If `true`, the Inventory UI will immediately be enabled for the player.
@@ -857,12 +872,52 @@ export class AirshipInventorySingleton {
 	}
 
 	/**
-	 * Allows you to open another inventory
+	 * Opens an external inventory alongside the user's inventory
+	 *
+	 * Note: If you want to check the user has permissions - use {@link Inventory.CanPlayerModifyInventory} first - inventory permissions can be obtained via {@link Inventory.GetModifyPermission}
+	 *
+	 * @param inventory The external inventory to open
+	 * @param onExternalInventoryClose An optional handler for when the external inventory closes
+	 * @returns A function to close the inventory, or `undefined` if it was unable to open
 	 */
-	public OpenExternalInventory(inventory: Inventory, onComplete?: () => void): CleanupFunc {
-		const ui = this.ui;
-		if (!ui) return;
+	public OpenExternalInventory(inventory: Inventory, onExternalInventoryClose?: () => void) {
+		assert(Game.IsClient(), "An inventory can only be opened by a client");
 
-		return ui.OpenBackpackWithExternalInventory(inventory, onComplete);
+		if (!inventory.CanPlayerModifyInventory(Game.localPlayer)) {
+			const modifyPermission = inventory.GetModifyPermission();
+			switch (modifyPermission) {
+				case InventoryModifyPermission.NetworkOwner:
+					warn("[OpenExternalInventory] User is not network owner of this inventory");
+			}
+			return;
+		}
+
+		const ui = this.ui;
+		if (!ui) {
+			return;
+		}
+
+		const bin = ui.OpenBackpackWithExternalInventory(inventory);
+		if (!bin) {
+			return;
+		}
+
+		if (typeIs(onExternalInventoryClose, "function")) {
+			// We can listen to the closed event for this :-)
+			let disconnect = this.onInventoryClosed.Connect((event) => {
+				if (event.inventory !== inventory) return;
+				onExternalInventoryClose();
+				disconnect();
+			});
+		}
+
+		return () => {
+			if (ui.GetActiveExternalInventory() === undefined) return;
+
+			// Close the external inventory
+			bin.Clean();
+
+			// Close the main inventory
+		};
 	}
 }

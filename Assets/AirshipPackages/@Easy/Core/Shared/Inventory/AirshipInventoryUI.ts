@@ -17,6 +17,7 @@ import {
 	CancellableInventorySlotInteractionEvent,
 	InventorySlotMouseClickEvent,
 	SlotDragEndedEvent,
+	InventoryEvent,
 } from "./Signal/SlotInteractionEvent";
 
 export default class AirshipInventoryUI extends AirshipBehaviour {
@@ -154,19 +155,27 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			},
 			noDarkBackground: this.darkBackground === false,
 		});
+
+		if (Airship.Inventory.localInventory) {
+			Airship.Inventory.onInventoryOpened.Fire(new InventoryEvent(Airship.Inventory.localInventory));
+			this.backpackOpenBin.Add(() =>
+				Airship.Inventory.onInventoryClosed.Fire(new InventoryEvent(Airship.Inventory.localInventory!)),
+			);
+		}
 	}
 
-	public OpenBackpackWithExternalInventory(inventory: Inventory, onComplete?: () => void) {
+	public OpenBackpackWithExternalInventory(inventory: Inventory) {
 		const closed = this.SetupExternalInventory(inventory);
 		if (!closed) return;
 
-		if (onComplete) {
-			this.backpackOpenBin.Add(onComplete);
-		}
 		this.backpackOpenBin.Add(closed);
+		this.backpackOpenBin.Add(() => Airship.Inventory.onInventoryClosed.Fire(new InventoryEvent(inventory)));
 
 		// Open the regular backpack plspls
 		this.OpenBackpack();
+
+		Airship.Inventory.onInventoryOpened.Fire(new InventoryEvent(inventory));
+		return this.backpackOpenBin;
 	}
 
 	public GetHotbarSlotCount(): number {
