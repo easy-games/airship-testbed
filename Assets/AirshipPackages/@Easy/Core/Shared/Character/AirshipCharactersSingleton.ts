@@ -318,7 +318,10 @@ export class AirshipCharactersSingleton {
 			error("Trying to spawn a character prefab without a character component on it!");
 		}
 		if (config?.lookDirection && characterComponent.movement) {
-			characterComponent.movement.SetLookVector(config.lookDirection); // TODO: this might be broken now
+			// try catch to not require c# update
+			try {
+				characterComponent.movement.startingLookVector = config.lookDirection;
+			} catch (err) {}
 		}
 		characterComponent.Init(undefined, Airship.Characters.MakeNewId(), undefined, 100, 100, go.name);
 		const rb = go.GetComponent<Rigidbody>();

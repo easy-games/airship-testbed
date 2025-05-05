@@ -335,37 +335,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 125159977}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &131862465
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 131862466}
-  m_Layer: 0
-  m_Name: SpawnPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &131862466
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 131862465}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1239065292}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &162433958
 GameObject:
   m_ObjectHideFlags: 0
@@ -2621,7 +2590,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: fee00a79-9106-47f6-9bd6-dd941334c102
-  hash: 43ee1411fd78f63f432e27aae0aa39b7
   script: {fileID: 796400153169862170, guid: c4fa48bfb1281a04baca6e795001cd63, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterConfigSetup.lua
   forceContext: 0
@@ -3333,7 +3301,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: 403003b2-3886-421c-b159-550df9053944
-  hash: 43ee1411fd78f63f432e27aae0aa39b7
   script: {fileID: 796400153169862170, guid: c4fa48bfb1281a04baca6e795001cd63, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterConfigSetup.lua
   forceContext: 0
@@ -4279,7 +4246,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: abb348d9-b95c-4c35-a282-863b484ca7d9
-  hash: 39a88b65a3f1c651dcfd9a2c44bb0e5a
   script: {fileID: -8126574244563333576, guid: fd958897383c97546bf057c713bccfeb, type: 3}
   scriptPath: Assets/Code/AirshipPlatformDemo/ClientPrediction/ClientPredictionManager.lua
   forceContext: 0
@@ -4405,7 +4371,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: 054fcab6-e538-4192-9786-b751f074f5f6
-  hash: 703ba84875eac8c75b696d4ba932f32a
   script: {fileID: -938344475688608531, guid: ea70673a889c767468ce1b291ca92c1a, type: 3}
   scriptPath: Assets/Code/AirshipPlatformDemo/CharacterMovementTestKeys.lua
   forceContext: 0
@@ -4519,7 +4484,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: 41dac2cf-f55b-47e4-9d5c-79ccbc585f27
-  hash: 01cf4124f6d29a55e76e926b89d0da76
   script: {fileID: 1503148616603724034, guid: 7c6ed26240ff242caa728b7876c547b3, type: 3}
   scriptPath: Assets/Code/TestLocalCharacter.lua
   forceContext: 0
@@ -5436,7 +5400,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: 7dd5b486-dddd-4637-931a-ca9cff22b41a
-  hash: c1490ba2b3e81b78d3121a15893b7c89
   script: {fileID: 3874102147928444048, guid: d7cc5f546129a45968eb53cc5ac77acb, type: 3}
   scriptPath: Assets/Code/Components/CharacterSpawner.lua
   forceContext: 0
@@ -5473,14 +5436,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1239065290}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 131862466}
+  m_Children: []
   m_Father: {fileID: 1077937132}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1251695098
 GameObject:
   m_ObjectHideFlags: 0

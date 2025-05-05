@@ -651,7 +651,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: 3deb3c79-0c65-41a5-a1d9-8dae0acb4826
-  hash: 2d142d524e00a4451e00f83f5e83490d
   script: {fileID: -8502596097384394428, guid: 231b41c7c69568446b98353c21d6785d, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Character.lua
   forceContext: 0
@@ -845,7 +844,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: 63d77f38-b5e5-4d0b-bb8a-e4a11b6390cd
-  hash: 5bd2f497ee13522e7be3f0dacd1697e9
   script: {fileID: 3379845904423814631, guid: b265ca149231a634a8b651b688c7a486, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterRendering.lua
   forceContext: 0
@@ -950,7 +948,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: dcc56b78-a9b6-4218-bcbb-3bfb25941ac0
-  hash: 16d4d9a1a66aad333149ac11ae577529
   script: {fileID: 6641073800188671112, guid: 8a394f76659097e498fcb014078bae54, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/Inventory.lua
   forceContext: 0
@@ -1038,7 +1035,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: eb4661d5-016a-4fe7-9335-065c54e235bf
-  hash: 964be68097b2b4aaff1b95a5697848ea
   script: {fileID: 5399347344820012199, guid: 1d9ff343e68ebb247bb7a1dd2270fd63, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Animation/CharacterAnimation.ts
   forceContext: 0
@@ -1183,7 +1179,7 @@ MonoBehaviour:
   drawDebugGizmos_STATES: 0
   useExtraLogging: 0
   autoCalibrateSkiddingSpeed: 1
-  ownerRotationLerpMod: 6
+  ownerRotationLerpMod: 9
   playAnimationOnServer: 1
   compareResult: 0
 --- !u!114 &7270479773071441371

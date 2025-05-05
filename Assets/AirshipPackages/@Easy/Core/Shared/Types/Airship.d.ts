@@ -235,6 +235,7 @@ interface CharacterMovement extends Component {
 	currentAnimState: CharacterAnimationSyncData;
 	currentCharacterHeight: number;
 	standingCharacterHeight: number;
+	startingLookVector: Vector3;
 	characterRadius: number;
 	characterHalfExtents: Vector3;
 	//isGrounded: boolean;
