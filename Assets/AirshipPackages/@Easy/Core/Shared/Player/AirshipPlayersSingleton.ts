@@ -823,7 +823,7 @@ export class AirshipPlayersSingleton {
 	 * @returns Profile picture from image id (with caching)
 	 * @internal
 	 */
-	private async GetProfilePictureFromImageId(imageId: string, useLocalCache = true): Promise<Texture2D | undefined> {
+	public async GetProfilePictureFromImageId(imageId: string, useLocalCache = true): Promise<Texture2D | undefined> {
 		// First check cache for image
 		if (useLocalCache) {
 			const existingTexture = this.cachedProfilePictureByImageId.get(imageId);
