@@ -1179,8 +1179,9 @@ MonoBehaviour:
   drawDebugGizmos_STATES: 0
   useExtraLogging: 0
   autoCalibrateSkiddingSpeed: 1
-  ownerRotationLerpMod: 9
+  ownerRotationLerpMod: 10
   playAnimationOnServer: 1
+  startingLookVector: {x: 0, y: 0, z: 0}
   compareResult: 0
 --- !u!114 &7270479773071441371
 MonoBehaviour:
@@ -1201,8 +1202,8 @@ MonoBehaviour:
   useAccelerationMovement: 0
   speed: 4.666667
   sprintSpeed: 6.666667
-  accelerationForce: 1
-  sprintAccelerationForce: 1.4
+  accelerationForce: 4
+  sprintAccelerationForce: 4
   minAccelerationDelta: 0
   inAirDirectionalControl: 1
   accelerationTurnFriction: 0
@@ -1216,12 +1217,12 @@ MonoBehaviour:
   jumpCoyoteTime: 0.14
   allowDebugFlying: 1
   flySpeedMultiplier: 3
-  verticalFlySpeed: 14
+  verticalFlySpeed: 2
   jumpUpBlockCooldown: 0.4
   useGravity: 1
   useGravityWhileGrounded: 0
   alwaysSnapToGround: 0
-  gravityMultiplier: 2
+  gravityMultiplier: 5
   upwardsGravityMultiplier: 1
   groundCollisionLayerMask:
     serializedVersion: 2
@@ -1229,14 +1230,14 @@ MonoBehaviour:
   terminalVelocity: 50
   minimumVelocity: 1
   useMinimumVelocityInAir: 0
-  preventWallClipping: 0
-  drag: 0.1
+  preventWallClipping: 1
+  drag: 0.25
   airDragMultiplier: 1
   airSpeedMultiplier: 1
   detectStepUps: 1
   alwaysStepUp: 0
   assistedLedgeJump: 1
-  maxStepUpHeight: 0.5
+  maxStepUpHeight: 0.3
   stepUpRampDistance: 0.75
   detectSlopes: 0
   slopeForce: 45
