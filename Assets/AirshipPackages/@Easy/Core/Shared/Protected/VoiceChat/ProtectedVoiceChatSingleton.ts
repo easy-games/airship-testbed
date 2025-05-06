@@ -50,6 +50,8 @@ export class ProtectedVoiceChatSingleton implements OnStart {
 	}
 
 	OnStart(): void {
+		if (!Game.IsInGame()) return;
+
 		this.uniVoiceNetwork.onPlayerSpeakingLevel.Connect((connectionId, speakingLevel) => {
 			// print(`Player speaking connectionId=${connectionId} speakingLevel=${speakingLevel}`);
 			this.connectionIdToSpeakingLevel.set(connectionId, {
