@@ -1228,7 +1228,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2305
   terminalVelocity: 50
-  minimumVelocity: 1
+  minimumVelocity: 7
   useMinimumVelocityInAir: 0
   preventWallClipping: 1
   drag: 0.25
