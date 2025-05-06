@@ -25,11 +25,11 @@ import { DirectMessage } from "./DirectMessage";
 import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 
 interface SendMessageSuccess {
-    messageSent: true;
+	messageSent: true;
 }
 interface SendMessageFailure {
-    messageSent: false;
-    reason: string;
+	messageSent: false;
+	reason: string;
 }
 
 type SendMessageResponse = SendMessageSuccess | SendMessageFailure;
@@ -80,7 +80,7 @@ export class DirectMessageController {
 		private readonly friendsController: ProtectedFriendsController,
 		private readonly socketController: SocketController,
 		private readonly partyController: MainMenuPartyController,
-	) {}
+	) { }
 
 	protected OnStart(): void {
 		this.Setup();
@@ -269,7 +269,21 @@ export class DirectMessageController {
 		}
 
 		if (message === "") return;
-		const {data} = this.httpRetry(() => InternalHttpManager.PostAsync(
+
+		this.inputField!.text = "";
+		let sentMessage: DirectMessage = {
+			sender: Game.localPlayer.userId,
+			sentAt: os.time(),
+			text: message,
+		};
+		this.GetMessages(uid).push(sentMessage);
+		AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/SendMessage.ogg", {
+			volumeScale: 0.8,
+			pitch: 1.5,
+		});
+		const messageObj = this.RenderChatMessage(sentMessage, true);
+
+		const { data } = this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/chat/message/direct",
 			json.encode({
 				target: uid,
@@ -277,20 +291,7 @@ export class DirectMessageController {
 			}),
 		), "SendDirectMessage").expect();
 		const sendResponse = json.decode(data) as SendMessageResponse;
-		this.inputField!.text = "";
 		if (sendResponse.messageSent) {
-			let sentMessage: DirectMessage = {
-				sender: Game.localPlayer.userId,
-				sentAt: os.time(),
-				text: message,
-			};
-			this.GetMessages(uid).push(sentMessage);
-			this.RenderChatMessage(sentMessage, true);
-			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/SendMessage.ogg", {
-				volumeScale: 0.8,
-				pitch: 1.5,
-			});
-
 			if (Game.coreContext === CoreContext.GAME) {
 				let text =
 					ColorUtil.ColoredText(Theme.pink, "To ") +
@@ -299,6 +300,9 @@ export class DirectMessageController {
 				Dependency<ClientChatSingleton>().RenderChatMessage(text);
 			}
 		} else {
+			messageObj.delete();
+			this.GetMessages(uid).filter((m) => m !== sentMessage);
+			this.inputField!.text = message + this.inputField!.text;
 			let sentMessage: DirectMessage = {
 				sender: Game.localPlayer.userId,
 				sentAt: os.time(),
@@ -313,34 +317,40 @@ export class DirectMessageController {
 
 	public SendPartyMessage(message: string): void {
 		if (message === "") return;
-		const {data} = this.httpRetry(() => InternalHttpManager.PostAsync(
+		this.inputField!.text = "";
+
+		const sentMessage: DirectMessage = {
+			sender: Game.localPlayer.userId,
+			sentAt: os.time(),
+			text: message,
+		};
+		this.GetMessages("party").push(sentMessage);
+		AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/SendMessage.ogg", {
+			volumeScale: 0.8,
+			pitch: 1.5,
+		});
+		const messageObj = this.RenderChatMessage(sentMessage, true, true);
+
+		const { data } = this.httpRetry(() => InternalHttpManager.PostAsync(
 			AirshipUrl.GameCoordinator + "/chat/message/party",
 			json.encode({
 				text: message,
 			}),
 		), "SendPartyMessage").expect();
+
 		const sendResponse = json.decode(data) as SendMessageResponse;
-		if (sendResponse.messageSent) {
-			this.inputField!.text = "";
-			const sentMessage: DirectMessage = {
-				sender: Game.localPlayer.userId,
-				sentAt: os.time(),
-				text: message,
-			};
-			this.GetMessages("party").push(sentMessage);
-			this.RenderChatMessage(sentMessage, true, true);
-			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/SendMessage.ogg", {
-				volumeScale: 0.8,
-				pitch: 1.5,
-			});
-		} else {
-			let sentMessage: DirectMessage = {
+
+		if (!sendResponse.messageSent) {
+			messageObj.delete();
+			this.GetMessages("party").filter((m) => m !== sentMessage);
+			this.inputField!.text = message + this.inputField!.text;
+			let errorMessage: DirectMessage = {
 				sender: Game.localPlayer.userId,
 				sentAt: os.time(),
 				text: sendResponse.reason,
 			};
-			this.GetMessages("party").push(sentMessage);
-			this.RenderChatMessage(sentMessage, true, true);
+			this.GetMessages("party").push(errorMessage);
+			this.RenderChatMessage(errorMessage, true, true);
 			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Error.ogg");
 		}
 
@@ -354,7 +364,7 @@ export class DirectMessageController {
 		// }
 	}
 
-	private RenderChatMessage(dm: DirectMessage, receivedWhileOpen: boolean, isParty?: boolean): void {
+	private RenderChatMessage(dm: DirectMessage, receivedWhileOpen: boolean, isParty?: boolean): { delete: () => void } {
 		let outgoing = dm.sender === Game.localPlayer.userId;
 
 		let messageGo: GameObject;
@@ -393,6 +403,14 @@ export class DirectMessageController {
 		if (doScroll) {
 			this.scrollRect!.velocity = new Vector2(0, 0);
 			this.scrollRect!.verticalNormalizedPosition = 0;
+		}
+
+		return {
+			delete: () => {
+				if (messageGo) {
+					Object.Destroy(messageGo);
+				}
+			},
 		}
 	}
 
