@@ -20,6 +20,8 @@ export default class SettingsBlockPage extends AirshipBehaviour {
 			blockedGame?.Init(game.id, game.name);
 		}
 		for (let user of blockSingleton.blockedUsers) {
+			if (!user.uid) continue;
+
 			const go = Object.Instantiate(this.blockedUserPrefab, this.userContent);
 			const blockedUser = go.GetAirshipComponent<BlockedUser>();
 			blockedUser?.Init(user.uid, user.name);
