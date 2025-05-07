@@ -61,7 +61,7 @@ export class MainMenuBlockSingleton {
 	}
 
 	public BlockUserAsync(uid: string, username: string): void {
-		if (uid === "") return;
+		if (uid === "" || uid === undefined) return;
 
 		if (!this.blockedUserIds.has(uid)) {
 			this.blockedUserIds.add(uid);
