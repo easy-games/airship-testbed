@@ -6,7 +6,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import NametagComponent from "@Easy/Core/Shared/Nametag/NametagComponent";
 import { Team } from "@Easy/Core/Shared/Team/Team";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 
 @Controller({})
@@ -18,6 +18,10 @@ export class NametagController {
 	// Clean to destroy nametag & related connections
 	private nametagBins = new Map<Character, Bin>();
 	private allNametags: NametagComponent[] = [];
+	private nametagPrefab: GameObject;
+
+	public readonly onNametagCreated = new Signal<[nametag: NametagComponent]>();
+	public readonly onNametagDestroyed = new Signal<[nametag: NametagComponent]>();
 
 	protected OnStart(): void {
 		Airship.Characters.onCharacterSpawned.ConnectWithPriority(SignalPriority.HIGH, (character) => {
@@ -92,12 +96,28 @@ export class NametagController {
 		return bin;
 	}
 
+	/**
+	 * Sets a custom nametag to use for characters in the game
+	 * @param prefab The nametag prefab to use
+	 */
+	public SetNametagPrefab(prefab: GameObject) {
+		if (prefab === this.nametagPrefab) return;
+		this.nametagPrefab = prefab;
+
+		for (const player of Airship.Players.GetPlayers()) {
+			if (!player.character) continue;
+			this.nametagBins.get(player.character)?.Clean(); // cleanup old nametag
+			this.UpdateNametag(player.character); // create new nametag
+		}
+	}
+
 	public CreateNametag(parent: Transform, character?: Character): NametagComponent {
 		if (parent === undefined) {
 			error("Must pass in a valid transform to CreateNametag");
 		}
-		const nametagPrefab = Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/Nametag.prefab");
-		const nametagGo = Object.Instantiate(nametagPrefab, parent);
+
+		this.nametagPrefab ??= Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/Nametag.prefab");
+		const nametagGo = Object.Instantiate(this.nametagPrefab, parent);
 		nametagGo.name = this.nameTagId;
 
 		const nametag = nametagGo.GetAirshipComponent<NametagComponent>();
