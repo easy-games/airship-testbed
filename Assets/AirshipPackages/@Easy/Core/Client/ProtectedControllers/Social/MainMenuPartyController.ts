@@ -4,6 +4,7 @@ import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import PartyCard from "@Easy/Core/Shared/MainMenu/Components/Party/PartyCard";
 import PartyMember from "@Easy/Core/Shared/MainMenu/Components/PartyMember";
@@ -18,7 +19,7 @@ import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
 import { ProtectedFriendsController } from "./FriendsController";
 import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { SocialNotificationType } from "./SocialNotificationType";
 
 @Controller({})
 export class MainMenuPartyController {
@@ -73,30 +74,41 @@ export class MainMenuPartyController {
 			this.partyCard.UpdateInfo(partyLeader);
 		});
 
+		Dependency<ProtectedFriendsController>().socialNotificationHandlers.set(
+			SocialNotificationType.PartyInvite,
+			(username, userId, result, extraData) => {
+				const data = extraData as Party;
+				if (result) {
+					const res = this.httpRetry(
+						() =>
+							InternalHttpManager.PostAsync(
+								AirshipUrl.GameCoordinator + "/parties/party/join",
+								json.encode({
+									partyId: data.partyId,
+								}),
+							),
+						"JoinParty",
+					).expect();
+					if (res.success) {
+						Dependency<ProtectedFriendsController>().FireNotificationKey("party-invite:" + data.leader);
+					} else {
+						Debug.LogError(res.error);
+					}
+				} else {
+					// We don't have an endpoint for declining party invite. just close the UI.
+					Dependency<ProtectedFriendsController>().FireNotificationKey("party-invite:" + data.leader);
+				}
+			},
+		);
+
 		this.socketController.On<Party>("game-coordinator/party-invite", (data) => {
 			Dependency<ProtectedFriendsController>().AddSocialNotification(
+				SocialNotificationType.PartyInvite,
 				"party-invite:" + data.leader,
 				"Party Invite",
 				data.members[0].username,
 				data.members[0].uid,
-				(result) => {
-					if (result) {
-						const res = this.httpRetry(() => InternalHttpManager.PostAsync(
-							AirshipUrl.GameCoordinator + "/parties/party/join",
-							json.encode({
-								partyId: data.partyId,
-							}),
-						), "JoinParty").expect();
-						if (res.success) {
-							Dependency<ProtectedFriendsController>().FireNotificationKey("party-invite:" + data.leader);
-						} else {
-							Debug.LogError(res.error);
-						}
-					} else {
-						// We don't have an endpoint for declining party invite. just close the UI.
-						Dependency<ProtectedFriendsController>().FireNotificationKey("party-invite:" + data.leader);
-					}
-				},
+				data,
 			);
 			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/FriendRequest.wav", {
 				volumeScale: 0.3,
@@ -215,12 +227,16 @@ export class MainMenuPartyController {
 		}
 
 		CanvasAPI.OnClickEvent(leaveButton, () => {
-			this.httpRetry(() => InternalHttpManager.PostAsync(
-				AirshipUrl.GameCoordinator + "/parties/party/remove",
-				json.encode({
-					userToRemove: Game.localPlayer.userId,
-				}),
-			), "LeaveParty").expect();
+			this.httpRetry(
+				() =>
+					InternalHttpManager.PostAsync(
+						AirshipUrl.GameCoordinator + "/parties/party/remove",
+						json.encode({
+							userToRemove: Game.localPlayer.userId,
+						}),
+					),
+				"LeaveParty",
+			).expect();
 		});
 	}
 
@@ -229,10 +245,14 @@ export class MainMenuPartyController {
 	 * @param userIdToAdd The userId of the user to invite
 	 */
 	public async InviteUser(userIdToAdd: string): Promise<Result<undefined, undefined>> {
-		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/parties/party/invite",
-			json.encode({ userToAdd: userIdToAdd }),
-		), "InviteUserToParty");
+		const res = await this.httpRetry(
+			() =>
+				InternalHttpManager.PostAsync(
+					AirshipUrl.GameCoordinator + "/parties/party/invite",
+					json.encode({ userToAdd: userIdToAdd }),
+				),
+			"InviteUserToParty",
+		);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to invite user to party. Status Code: ${res.statusCode}\n`, res.error);
@@ -251,12 +271,16 @@ export class MainMenuPartyController {
 	 * @param userIdToRemove
 	 */
 	public async RemoveUser(userIdToRemove: string): Promise<Result<undefined, undefined>> {
-		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/parties/party/remove",
-			json.encode({
-				userToRemove: userIdToRemove,
-			}),
-		), "RemoveUserFromParty");
+		const res = await this.httpRetry(
+			() =>
+				InternalHttpManager.PostAsync(
+					AirshipUrl.GameCoordinator + "/parties/party/remove",
+					json.encode({
+						userToRemove: userIdToRemove,
+					}),
+				),
+			"RemoveUserFromParty",
+		);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to remove user from party. Status Code: ${res.statusCode}\n`, res.error);
@@ -274,10 +298,14 @@ export class MainMenuPartyController {
 	 * @param partyId The id of the party
 	 */
 	public async JoinParty(partyId: string): Promise<Result<undefined, undefined>> {
-		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/parties/party/join",
-			json.encode({ partyId }),
-		), "JoinParty");
+		const res = await this.httpRetry(
+			() =>
+				InternalHttpManager.PostAsync(
+					AirshipUrl.GameCoordinator + "/parties/party/join",
+					json.encode({ partyId }),
+				),
+			"JoinParty",
+		);
 
 		if (!res.success || res.statusCode > 299) {
 			warn(`Unable to join party. Status Code: ${res.statusCode}\n`, res.error);
