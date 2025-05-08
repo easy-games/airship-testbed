@@ -22,12 +22,6 @@ import { NametagController } from "@Easy/Core/Client/Controllers/Entity/Nametag/
  */
 @Singleton()
 export class AirshipCharactersSingleton {
-	/**
-	 * Namespace for character nametags in Airship
-	 * @client Client-only API
-	 */
-	public readonly Nametags: NametagController;
-
 	private characters = new Set<Character>();
 
 	public onCharacterSpawned = new Signal<Character>();
@@ -70,10 +64,6 @@ export class AirshipCharactersSingleton {
 		public readonly footsteps: AirshipCharacterFootstepsSingleton,
 	) {
 		Airship.Characters = this;
-
-		if (Game.IsClient()) {
-			this.Nametags = Dependency<NametagController>();
-		}
 	}
 
 	protected OnStart(): void {
