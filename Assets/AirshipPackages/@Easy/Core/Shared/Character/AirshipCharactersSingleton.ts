@@ -1,6 +1,6 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { Singleton } from "@Easy/Core/Shared/Flamework";
+import { Dependency, Modding, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
@@ -12,6 +12,7 @@ import Character from "./Character";
 import { CharacterDto } from "./CharacterDto";
 import { AirshipCharacterFootstepsSingleton } from "./Footstep/AirshipCharacterFootstepsSingleton";
 import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleton";
+import { NametagController } from "@Easy/Core/Client/Controllers/Entity/Nametag/NametagController";
 
 /**
  * Access using {@link Airship.Characters}. Characters singleton provides utilities for working with the {@link Character}
@@ -21,6 +22,12 @@ import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleto
  */
 @Singleton()
 export class AirshipCharactersSingleton {
+	/**
+	 * Namespace for character nametags in Airship
+	 * @client Client-only API
+	 */
+	public readonly Nametags: NametagController;
+
 	private characters = new Set<Character>();
 
 	public onCharacterSpawned = new Signal<Character>();
@@ -63,6 +70,10 @@ export class AirshipCharactersSingleton {
 		public readonly footsteps: AirshipCharacterFootstepsSingleton,
 	) {
 		Airship.Characters = this;
+
+		if (Game.IsClient()) {
+			this.Nametags = Dependency<NametagController>();
+		}
 	}
 
 	protected OnStart(): void {

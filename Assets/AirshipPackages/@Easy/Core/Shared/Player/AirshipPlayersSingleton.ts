@@ -18,6 +18,7 @@ import { Levenshtein } from "../Util/Strings/Levenshtein";
 import { OnUpdate } from "../Util/Timer";
 import { BridgedPlayer } from "./BridgedPlayer";
 import { Player, PlayerDto } from "./Player";
+import { NametagController } from "@Easy/Core/Client/Controllers/Entity/Nametag/NametagController";
 
 /*
  * This class is instantiated in BOTH Game and Protected context.
