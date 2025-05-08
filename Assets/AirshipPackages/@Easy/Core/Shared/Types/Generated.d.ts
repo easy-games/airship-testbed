@@ -53156,6 +53156,7 @@ interface AnimationEventDataConstructor {
 declare const AnimationEventData: AnimationEventDataConstructor;
     
 interface VoxelWorld extends MonoBehaviour {
+    useSimplifiedVoxels: boolean;
     doVisuals: boolean;
     debugReloadOnScriptReloadMode: boolean;
     focusPosition: Vector3;
