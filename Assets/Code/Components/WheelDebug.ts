@@ -5,7 +5,12 @@ export default class WheelDebug extends AirshipBehaviour {
 
 	override Start(): void {
 		SetInterval(1, () => {
-			print("radius: " + this.wheelCollider.radius);
+			print("[WheelDebug] radius: " + this.wheelCollider.radius);
+
+			print("[WheelDebug] ground hit: " + this.wheelCollider.GetGroundHit()?.collider.name);
+
+			const [pos, quat] = this.wheelCollider.GetWorldPose();
+			print("[WheelDebug] world pose: " + pos);
 		});
 	}
 

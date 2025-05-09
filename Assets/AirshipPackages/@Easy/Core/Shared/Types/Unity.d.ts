@@ -5136,3 +5136,144 @@ interface MonoBehaviourConstructor {
 	print(message: unknown): void;
 }
 declare const MonoBehaviour: MonoBehaviourConstructor;
+
+interface WheelFrictionCurveStatic {
+	new (): WheelFrictionCurve;
+}
+declare const WheelFrictionCurve: WheelFrictionCurveStatic;
+
+interface WheelCollider extends Collider {
+	/**
+	 * The center of the wheel, measured in the object's local space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider-center.html | WheelCollider.center}
+	 */
+	center: Vector3;
+	/**
+	 * The radius of the wheel, measured in local space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider-radius.html | WheelCollider.radius}
+	 */
+	radius: number;
+	/**
+	 * Maximum extension distance of wheel suspension, measured in local space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider-suspensionDistance.html | WheelCollider.suspensionDistance}
+	 */
+	suspensionDistance: number;
+	/**
+	 * The parameters of wheel's suspension. The suspension attempts to reach a target position by applying a linear force and a damping force.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider-suspensionSpring.html | WheelCollider.suspensionSpring}
+	 */
+	suspensionSpring: JointSpring;
+	/**
+	 * Limits the expansion velocity of the Wheel Collider's suspension. If you set this property on a Rigidbody that has several Wheel Colliders, such as a vehicle, then it affects all other Wheel Colliders on the Rigidbody.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider-suspensionExpansionLimited.html | WheelCollider.suspensionExpansionLimited}
+	 */
+	suspensionExpansionLimited: boolean;
+	/**
+	 * Application point of the suspension and tire forces measured from the base of the resting wheel.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider-forceAppPointDistance.html | WheelCollider.forceAppPointDistance}
+	 */
+	forceAppPointDistance: number;
+	/**
+	 * The mass of the wheel, expressed in kilograms. Must be larger than zero. Typical values would be in range (20,80).
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider-mass.html | WheelCollider.mass}
+	 */
+	mass: number;
+	/**
+	 * The damping rate of the wheel. Must be larger than zero.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider-wheelDampingRate.html | WheelCollider.wheelDampingRate}
+	 */
+	wheelDampingRate: number;
+	/**
+	 * Properties of tire friction in the direction the wheel is pointing in.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider-forwardFriction.html | WheelCollider.forwardFriction}
+	 */
+	forwardFriction: WheelFrictionCurve;
+	/**
+	 * Properties of tire friction in the sideways direction.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider-sidewaysFriction.html | WheelCollider.sidewaysFriction}
+	 */
+	sidewaysFriction: WheelFrictionCurve;
+	/**
+	 * Motor torque on the wheel axle expressed in Newton metres. Positive or negative depending on direction.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider-motorTorque.html | WheelCollider.motorTorque}
+	 */
+	motorTorque: number;
+	/**
+	 * Brake torque expressed in Newton metres.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider-brakeTorque.html | WheelCollider.brakeTorque}
+	 */
+	brakeTorque: number;
+	/**
+	 * Steering angle in degrees, always around the local y-axis.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider-steerAngle.html | WheelCollider.steerAngle}
+	 */
+	steerAngle: number;
+	/**
+	 * Indicates whether the wheel currently collides with something (Read Only).
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider-isGrounded.html | WheelCollider.isGrounded}
+	 */
+	readonly isGrounded: boolean;
+	/**
+	 * Current wheel axle rotation speed, in rotations per minute (Read Only).
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider-rpm.html | WheelCollider.rpm}
+	 */
+	readonly rpm: number;
+	/**
+	 * The mass supported by this WheelCollider.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider-sprungMass.html | WheelCollider.sprungMass}
+	 */
+	sprungMass: number;
+	/**
+	 * Rotation speed of the wheel, measured in degrees per second.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider-rotationSpeed.html | WheelCollider.rotationSpeed}
+	 */
+	rotationSpeed: number;
+
+	/**
+	 * Configure vehicle sub-stepping parameters.
+	 * @param speedThreshold The speed threshold of the sub-stepping algorithm.
+	 * @param stepsBelowThreshold Amount of simulation sub-steps when vehicle's speed is below speedThreshold.
+	 * @param stepsAboveThreshold Amount of simulation sub-steps when vehicle's speed is above speedThreshold.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider.ConfigureVehicleSubsteps.html | WheelCollider.ConfigureVehicleSubsteps}
+	 */
+	ConfigureVehicleSubsteps(speedThreshold: number, stepsBelowThreshold: number, stepsAboveThreshold: number): void;
+	/**
+	 * Gets ground collision data for the wheel.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider.GetGroundHit.html | WheelCollider.GetGroundHit}
+	 */
+	GetGroundHit(): WheelHit | undefined;
+	/**
+	 * Gets the world space pose of the wheel accounting for ground contact, suspension limits, steer angle, and rotation angle (angles in degrees).
+	 *
+	 * pos: Position of the wheel in world space.
+	 * quat: Rotation of the wheel in world space.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider.GetWorldPose.html | WheelCollider.GetWorldPose}
+	 */
+	GetWorldPose(): LuaTuple<[pos: Position, quat: Quaternion]>;
+	/**
+	 * Reset the sprung masses of the vehicle.
+	 *
+	 * More info: {@link https://docs.unity3d.com/ScriptReference/WheelCollider.ResetSprungMasses.html | WheelCollider.ResetSprungMasses}
+	 */
+	ResetSprungMasses(): void;
+}

@@ -43309,43 +43309,6 @@ interface JointSpring {
 
 }
     
-interface WheelFrictionCurve {
-    /**
-     * Extremum point slip (default 1).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/WheelFrictionCurve-extremumSlip.html | WheelFrictionCurve.extremumSlip}
-     */
-    extremumSlip: number;
-    /**
-     * Force at the extremum slip (default 20000).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/WheelFrictionCurve-extremumValue.html | WheelFrictionCurve.extremumValue}
-     */
-    extremumValue: number;
-    /**
-     * Asymptote point slip (default 2).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/WheelFrictionCurve-asymptoteSlip.html | WheelFrictionCurve.asymptoteSlip}
-     */
-    asymptoteSlip: number;
-    /**
-     * Force at the asymptote slip (default 10000).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/WheelFrictionCurve-asymptoteValue.html | WheelFrictionCurve.asymptoteValue}
-     */
-    asymptoteValue: number;
-    /**
-     * Multiplier for the extremumValue and asymptoteValue values (default 1).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/WheelFrictionCurve-stiffness.html | WheelFrictionCurve.stiffness}
-     */
-    stiffness: number;
-
-
-
-
-
-}
     
 interface WheelColliderConstructor {
 
@@ -50690,6 +50653,62 @@ interface UniversalRenderPipelineAssetConstructor {
 
 }
 declare const UniversalRenderPipelineAsset: UniversalRenderPipelineAssetConstructor;
+    
+interface WheelHit {
+    /**
+     * The other Collider the wheel is hitting.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/WheelHit-collider.html | WheelHit.collider}
+     */
+    collider: Collider;
+    /**
+     * The point of contact between the wheel and the ground.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/WheelHit-point.html | WheelHit.point}
+     */
+    point: Vector3;
+    /**
+     * The normal at the point of contact.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/WheelHit-normal.html | WheelHit.normal}
+     */
+    normal: Vector3;
+    /**
+     * The direction the wheel is pointing in.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/WheelHit-forwardDir.html | WheelHit.forwardDir}
+     */
+    forwardDir: Vector3;
+    /**
+     * The sideways direction of the wheel.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/WheelHit-sidewaysDir.html | WheelHit.sidewaysDir}
+     */
+    sidewaysDir: Vector3;
+    /**
+     * The magnitude of the force being applied for the contact.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/WheelHit-force.html | WheelHit.force}
+     */
+    force: number;
+    /**
+     * Tire slip in the rolling direction. Acceleration slip is negative, braking slip is positive.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/WheelHit-forwardSlip.html | WheelHit.forwardSlip}
+     */
+    forwardSlip: number;
+    /**
+     * Tire slip in the sideways direction.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/WheelHit-sidewaysSlip.html | WheelHit.sidewaysSlip}
+     */
+    sidewaysSlip: number;
+
+
+
+
+
+}
     
 interface NetworkServer {
 
