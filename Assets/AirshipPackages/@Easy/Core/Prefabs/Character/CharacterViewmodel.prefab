@@ -47,7 +47,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: 77e71930-ab7e-46d0-8227-0f3505a44b6f
-  hash: a0ffbb6c9014abb05620b7b4acc556f7
   script: {fileID: 6633029097602837381, guid: 497bee22a2ce34f22b21ada3505acd61, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Viewmodel/AirshipCharacterViewmodel.lua
   forceContext: 0

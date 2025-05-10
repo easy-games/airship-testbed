@@ -630,8 +630,55 @@ declare namespace math {
 	/** Interpolates `current` toward `target` with smoothing. */
 	function smoothStep(current: number, target: number, t: number): number;
 
+	/**
+	 * Gradually moves `current` value towards `target`.
+	 * @param current Current value.
+	 * @param target Target value.
+	 * @param currentVelocity Current velocity.
+	 * @param smoothTime Approximate time to reach the target.
+	 * @param deltaTime Delta time.
+	 * @param maxSpeed Max speed (defaults to infinity).
+	 *
+	 * ```ts
+	 * [current, velocity] = math.smoothDamp(current, target, velocity, smoothTime, dt);
+	 * ```
+	 */
+	function smoothDamp(
+		current: number,
+		target: number,
+		currentVelocity: number,
+		smoothTime: number,
+		deltaTime: number,
+		maxSpeed?: number,
+	): LuaTuple<[value: number, velocity: number]>;
+
+	/**
+	 * Gradually moves `current` angle towards `target` angle (in degrees).
+	 * @param current Current value.
+	 * @param target Target value.
+	 * @param currentVelocity Current velocity.
+	 * @param smoothTime Approximate time to reach the target.
+	 * @param deltaTime Delta time.
+	 * @param maxSpeed Max speed (defaults to infinity).
+	 *
+	 * ```ts
+	 * [current, velocity] = math.smoothDampAngle(current, target, velocity, smoothTime, dt);
+	 * ```
+	 */
+	function smoothDampAngle(
+		current: number,
+		target: number,
+		currentVelocity: number,
+		smoothTime: number,
+		deltaTime: number,
+		maxSpeed?: number,
+	): LuaTuple<[angle: number, velocity: number]>;
+
 	/** Checks if `value` is NaN. */
 	function isNaN(value: number | Vector2 | Vector3 | Vector4): boolean;
+
+	/** Returns `n` mapped from one range `[inMin, inMax]` to another `[outMin, outMax]`. */
+	function map(n: number, inMin: number, inMax: number, outMin: number, outMax: number): number;
 }
 
 interface buffer {

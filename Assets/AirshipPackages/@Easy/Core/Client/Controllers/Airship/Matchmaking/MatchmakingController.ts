@@ -11,7 +11,8 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 @Controller({})
 export class AirshipMatchmakingController {
-	public readonly onGroupChange: Signal<Group> = new Signal();
+	public readonly onGroupChange: Signal<[newGroup: Group, oldGroup?: Group]> = new Signal();
+	private currentGroup: Group | undefined;
 
 	constructor() {
 		if (!Game.IsClient()) return;
@@ -19,7 +20,9 @@ export class AirshipMatchmakingController {
 		Platform.Client.Matchmaking = this;
 
 		contextbridge.callback(MatchmakingControllerBridgeTopics.OnGroupChange, (_, group) => {
-			this.onGroupChange.Fire(group);
+			const previous = this.currentGroup;
+			this.currentGroup = group;
+			this.onGroupChange.Fire(group, previous);
 		});
 	}
 

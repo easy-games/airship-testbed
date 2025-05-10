@@ -5,6 +5,7 @@ declare const AirshipPlatformUrl: {
 	contentService: string;
 	dataStoreService: string;
 	deploymentService: string;
+	moderationService: string;
 	cdn: string;
 	gameCdn: string;
 };
@@ -14,6 +15,7 @@ export const AirshipUrl = {
 	ContentService: AirshipPlatformUrl.contentService,
 	DataStoreService: AirshipPlatformUrl.dataStoreService,
 	DeploymentService: AirshipPlatformUrl.deploymentService,
+	ModerationService: AirshipPlatformUrl.moderationService,
 	CDN: AirshipPlatformUrl.cdn,
 	GameCDN: AirshipPlatformUrl.gameCdn,
 };

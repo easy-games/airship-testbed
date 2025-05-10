@@ -2,6 +2,7 @@ import { ProtectedUserController } from "../Client/ProtectedControllers/Airship/
 import { ProtectedPlayersSingleton } from "./MainMenu/Singletons/ProtectedPlayersSingleton";
 import { ProtectedSettingsSingleton } from "./MainMenu/Singletons/Settings/ProtectedSettingsSingleton";
 import { ProtectedAvatarSingleton } from "./Protected/Avatar/ProtectedAvatarSingleton";
+import { ProtectedVoiceChatSingleton } from "./Protected/VoiceChat/ProtectedVoiceChatSingleton";
 
 /**
  * It's like the Airship global but for protected stuff only.
@@ -12,4 +13,5 @@ export const Protected = {
 	ProtectedPlayers: undefined! as ProtectedPlayersSingleton,
 	Settings: undefined! as ProtectedSettingsSingleton,
 	Avatar: undefined! as ProtectedAvatarSingleton,
+	VoiceChat: undefined! as ProtectedVoiceChatSingleton,
 };

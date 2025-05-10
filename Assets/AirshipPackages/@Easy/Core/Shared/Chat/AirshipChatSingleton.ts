@@ -1,3 +1,7 @@
+import {
+	ModerateChatMessageResponse,
+	ProtectedModerationService,
+} from "@Easy/Core/Server/ProtectedServices/Airship/Moderation/ModerationService";
 import { AddInventoryCommand } from "@Easy/Core/Server/Services/Chat/Commands/AddInventoryCommand";
 import { BotCommand } from "@Easy/Core/Server/Services/Chat/Commands/BotCommand";
 import { DamageCommand } from "@Easy/Core/Server/Services/Chat/Commands/DamageCommand";
@@ -48,6 +52,7 @@ class ChatMessageEvent extends Cancellable {
 @Singleton({})
 export class AirshipChatSingleton {
 	private commands = new Map<string, ChatCommand>();
+	private readonly moderationService: ProtectedModerationService;
 
 	public readonly canUseRichText = true;
 	/**
@@ -61,6 +66,7 @@ export class AirshipChatSingleton {
 
 	constructor() {
 		Airship.Chat = this;
+		this.moderationService = new ProtectedModerationService();
 	}
 
 	protected OnStart(): void {
@@ -110,9 +116,39 @@ export class AirshipChatSingleton {
 					return;
 				}
 
+				let moderationResult: ModerateChatMessageResponse;
+
+				if (!Game.IsEditor()) {
+					moderationResult = this.moderationService
+						.ModerateChatMessage("public_chat", player.userId, text)
+						.expect();
+				} else {
+					moderationResult = {
+						messageBlocked: false,
+					};
+				}
+				if (moderationResult.messageBlocked) {
+					if (moderationResult.messageBlockedReasons.size() > 0) {
+						player.SendMessage(
+							"Your message was blocked for violating our community guidelines for the following reason(s): " +
+								moderationResult.messageBlockedReasons.join(", "),
+						);
+					} else {
+						player.SendMessage("Your message was blocked for violating our community guidelines.");
+					}
+					return;
+				}
+				const textToSend = moderationResult.transformedMessage ?? text;
+
 				let nameWithPrefix = player.username + ": ";
-				const result = this.onChatMessage.Fire(new ChatMessageEvent(player, nameWithPrefix, text));
-				CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients(result.message, result.nametag, player.connectionId);
+				const result = this.onChatMessage.Fire(new ChatMessageEvent(player, nameWithPrefix, textToSend));
+
+				if (result.IsCancelled()) return;
+				CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients(
+					result.message,
+					result.nametag,
+					player.connectionId,
+				);
 			},
 		);
 	}

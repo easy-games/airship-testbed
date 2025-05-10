@@ -54,7 +54,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: c4d0bd90-5a7b-4030-a86c-8ccea71123c2
-  hash: 43e7ef683cbbf03e0c9892a1caf54850
   script: {fileID: 2274059817351834353, guid: 79ffce5c465f94752bf5024d90c26922, type: 3}
   scriptPath: Assets/Code/Components/SimpleCharacterMovement.lua
   forceContext: 0
@@ -273,7 +272,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: e8445481-a64b-40b3-a151-c5cfdb22ed4e
-  hash: ddd75c2ac7bfa25a3e102653d54159aa
   script: {fileID: -8502596097384394428, guid: 231b41c7c69568446b98353c21d6785d, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Character.lua
   forceContext: 0

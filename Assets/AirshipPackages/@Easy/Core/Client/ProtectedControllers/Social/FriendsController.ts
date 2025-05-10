@@ -7,6 +7,7 @@ import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
+import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import FriendCard from "@Easy/Core/Shared/MainMenu/Components/Friends/FriendCard";
 import NoFriendsCardComponent from "@Easy/Core/Shared/MainMenu/Components/Friends/NoFriendsCardComponent";
@@ -31,7 +32,16 @@ import { TransferController } from "../Transfer/TransferController";
 import { RightClickMenuButton } from "../UI/RightClickMenu/RightClickMenuButton";
 import { User } from "../User/User";
 import { DirectMessageController } from "./DirectMessages/DirectMessageController";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { SocialNotificationType } from "./SocialNotificationType";
+
+interface PendingSocialNotification {
+	type: SocialNotificationType;
+	key: string;
+	title: string;
+	username: string;
+	userId: string;
+	extraData: unknown;
+}
 
 @Controller({})
 export class ProtectedFriendsController {
@@ -57,6 +67,12 @@ export class ProtectedFriendsController {
 
 	private friendsScrollRect!: ScrollRect;
 
+	public pendingSocialNotifications: PendingSocialNotification[] = [];
+	public socialNotificationHandlers = new Map<
+		SocialNotificationType,
+		(username: string, userId: string, result: boolean, extraData: unknown) => void
+	>();
+
 	constructor(
 		private readonly authController: AuthController,
 		private readonly socketController: SocketController,
@@ -69,12 +85,28 @@ export class ProtectedFriendsController {
 	}
 
 	public AddSocialNotification(
+		socialNotificationType: SocialNotificationType,
 		key: string,
 		title: string,
 		username: string,
 		userId: string,
-		onResult: (result: boolean) => void,
+		extraData: unknown,
 	): void {
+		const pendingNotif: PendingSocialNotification = {
+			type: socialNotificationType,
+			key,
+			title,
+			username,
+			userId,
+			extraData,
+		};
+		this.pendingSocialNotifications.push(pendingNotif);
+
+		task.spawn(() => {
+			const saveRaw = json.encode(this.pendingSocialNotifications);
+			StateManager.SetString("main-menu:social-notifications", saveRaw);
+		});
+
 		this.socialNotificationBin.Clean();
 		this.socialNotificationKey = key;
 		this.socialNotification.gameObject.SetActive(false);
@@ -82,7 +114,19 @@ export class ProtectedFriendsController {
 
 		this.socialNotification.titleText.text = title.upper();
 		this.socialNotification.usernameText.text = username;
-		this.socialNotification.onResult.Connect(onResult);
+		this.socialNotification.onResult.Connect((result) => {
+			let index = this.pendingSocialNotifications.indexOf(pendingNotif);
+			if (index > -1) {
+				this.pendingSocialNotifications.remove(index);
+			}
+
+			const callback = this.socialNotificationHandlers.get(socialNotificationType);
+			if (callback === undefined) {
+				error("Unable to find callback handler for social notification type: " + socialNotificationType);
+			}
+
+			callback(username, userId, result, extraData);
+		});
 
 		task.spawn(async () => {
 			const texture = await Airship.Players.GetProfilePictureAsync(userId);
@@ -133,12 +177,41 @@ export class ProtectedFriendsController {
 			this.UpdateFriendsList();
 		}
 
+		const cachedNotifications = StateManager.GetString("main-menu:social-notifications");
+		if (cachedNotifications) {
+			let pending: PendingSocialNotification[] = json.decode(cachedNotifications);
+			for (let notif of pending) {
+				this.AddSocialNotification(
+					notif.type,
+					notif.key,
+					notif.title,
+					notif.username,
+					notif.userId,
+					notif.extraData,
+				);
+			}
+		}
+
 		this.authController.WaitForAuthed().then(() => {
 			// Game context will send status update when client receives server info.
 			if (Game.coreContext === CoreContext.MAIN_MENU) {
 				this.SendStatusUpdateYielding();
 			}
 			this.FetchFriends();
+		});
+
+		this.socialNotificationHandlers.set(SocialNotificationType.FriendRequest, (username, userId, result) => {
+			if (result) {
+				task.spawn(async () => {
+					this.socialNotification.gameObject.SetActive(false);
+					await this.AcceptFriendRequestAsync(username, userId);
+				});
+			} else {
+				task.spawn(async () => {
+					this.socialNotification.gameObject.SetActive(false);
+					await this.RejectFriendRequestAsync(userId);
+				});
+			}
 		});
 
 		this.socketController.On<{ initiatorId: string }>("user-service/friend-requested", (data) => {
@@ -152,23 +225,12 @@ export class ProtectedFriendsController {
 				this.socialNotification.usernameText.text = foundUser.username;
 
 				this.AddSocialNotification(
+					SocialNotificationType.FriendRequest,
 					"friend-request:" + data.initiatorId,
 					"Friend Request",
 					foundUser.username,
 					foundUser.uid,
-					(result) => {
-						if (result) {
-							task.spawn(async () => {
-								this.socialNotification.gameObject.SetActive(false);
-								await this.AcceptFriendRequestAsync(foundUser.username, foundUser.uid);
-							});
-						} else {
-							task.spawn(async () => {
-								this.socialNotification.gameObject.SetActive(false);
-								await this.RejectFriendRequestAsync(foundUser.uid);
-							});
-						}
-					},
+					{},
 				);
 
 				// this.socialNotification.bin.Add(
@@ -305,14 +367,14 @@ export class ProtectedFriendsController {
 		// CoreLogger.Log("send status update: " + json.encode(status));
 		this.httpRetry(
 			() => InternalHttpManager.PutAsync(AirshipUrl.GameCoordinator + "/user-status/self", json.encode(status)),
-			"SendStatusUpdate"
+			"SendStatusUpdate",
 		).expect();
 	}
 
 	public FetchFriends(): void {
 		const res = this.httpRetry(
 			() => InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/friends/requests/self"),
-			"FetchFriends"
+			"FetchFriends",
 		).expect();
 		if (!res.success) {
 			return;
@@ -354,12 +416,16 @@ export class ProtectedFriendsController {
 	}
 
 	public async AcceptFriendRequestAsync(username: string, userId: string): Promise<boolean> {
-		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/friends/requests/self",
-			json.encode({
-				username: username,
-			}),
-		), "AcceptFriendRequest");
+		const res = await this.httpRetry(
+			() =>
+				InternalHttpManager.PostAsync(
+					AirshipUrl.GameCoordinator + "/friends/requests/self",
+					json.encode({
+						username: username,
+					}),
+				),
+			"AcceptFriendRequest",
+		);
 
 		if (res.success) {
 			this.SetIncomingFriendRequests(this.incomingFriendRequests.filter((u) => u.uid !== userId));
@@ -400,12 +466,16 @@ export class ProtectedFriendsController {
 
 	public SendFriendRequest(username: string): boolean {
 		print('adding friend: "' + username + '"');
-		const res = this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/friends/requests/self",
-			json.encode({
-				username: username,
-			}),
-		), "SendFriendRequest").expect();
+		const res = this.httpRetry(
+			() =>
+				InternalHttpManager.PostAsync(
+					AirshipUrl.GameCoordinator + "/friends/requests/self",
+					json.encode({
+						username: username,
+					}),
+				),
+			"SendFriendRequest",
+		).expect();
 		if (res.success) {
 			print("Sent friend request to " + username);
 			return true;
@@ -517,13 +587,17 @@ export class ProtectedFriendsController {
 								text: "Join Party",
 								onClick: () => {
 									task.spawn(async () => {
-										const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
-											AirshipUrl.GameCoordinator + "/parties/party/join",
-											json.encode({
-												uid: friend.userId,
-												// partyId: friend,
-											}),
-										), "JoinParty");
+										const res = await this.httpRetry(
+											() =>
+												InternalHttpManager.PostAsync(
+													AirshipUrl.GameCoordinator + "/parties/party/join",
+													json.encode({
+														uid: friend.userId,
+														// partyId: friend,
+													}),
+												),
+											"JoinParty",
+										);
 										if (!res.success) {
 											Debug.LogError(res.error);
 										}

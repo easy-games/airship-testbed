@@ -18,6 +18,7 @@ import { Levenshtein } from "../Util/Strings/Levenshtein";
 import { OnUpdate } from "../Util/Timer";
 import { BridgedPlayer } from "./BridgedPlayer";
 import { Player, PlayerDto } from "./Player";
+import { NametagController } from "@Easy/Core/Client/Controllers/Entity/Nametag/NametagController";
 
 /*
  * This class is instantiated in BOTH Game and Protected context.
@@ -823,7 +824,7 @@ export class AirshipPlayersSingleton {
 	 * @returns Profile picture from image id (with caching)
 	 * @internal
 	 */
-	private async GetProfilePictureFromImageId(imageId: string, useLocalCache = true): Promise<Texture2D | undefined> {
+	public async GetProfilePictureFromImageId(imageId: string, useLocalCache = true): Promise<Texture2D | undefined> {
 		// First check cache for image
 		if (useLocalCache) {
 			const existingTexture = this.cachedProfilePictureByImageId.get(imageId);

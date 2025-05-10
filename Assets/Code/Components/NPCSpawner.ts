@@ -22,17 +22,17 @@ export default class NPCSpawner extends AirshipBehaviour {
 
 		if (!inv) return;
 		// inv.SetItem(1, new ItemStack("WoodSword"));
-		inv.SetHeldSlot(1);
+		character.SetHeldSlot(1);
 
 		task.spawn(() => {
-			let i = inv.heldSlot;
+			let i = character.heldSlot;
 			while (task.wait(1)) {
 				if (i === 0) {
 					i = 1;
 				} else {
 					i = 0;
 				}
-				inv.SetHeldSlot(i);
+				character.SetHeldSlot(i);
 			}
 		});
 	}

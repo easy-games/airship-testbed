@@ -17,7 +17,7 @@ export default class OneWayPlatform extends AirshipBehaviour {
 			}
 
 			//Locally we want to refresh our colliders during replays
-			character.OnUseCustomMoveData.Connect(() => {
+			character.OnUseCustomInputData.Connect(() => {
 				this.RefreshForCharacter(character);
 			});
 		});

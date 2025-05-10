@@ -27,6 +27,12 @@ interface BinaryBlob {
 	Decode(): unknown;
 }
 
+interface SyncedBlob extends NetworkBehaviour {
+	OnChanged(callback: (oldBlob: BinaryBlob, newBlob: BinaryBlob) => void): EngineEventConnection;
+	SetBlob(blob: BinaryBlob);
+	blob: BinaryBlob;
+}
+
 interface BinaryBlobConstructor {
 	new (data: unknown): BinaryBlob;
 }
@@ -73,44 +79,144 @@ interface MoveModifier {
 	blockJump: boolean;
 }
 
+declare const enum NetworkStateSystemMode {
+	Input = 0,
+	Authority = 1,
+	Observer = 2,
+}
+
+/**
+ * These events are part of the CharacterMovement API, but are not included in the default type
+ * to encourage the use of the signals provided on player.character. Using the signals defined below
+ * may have challenges in interacting with those signals due to the order of execution being determined
+ * by C# rather than our lua runtime.
+ */
+interface CharacterMovementEngineEvents {
+	// Processing events
+	OnCreateCommand(callback: (commandNumber: number) => void): EngineEventConnection;
+	OnProcessCommand(
+		callback: (inputData: CharacterInputData, stateData: CharacterSnapshotData, isReplay: boolean) => void,
+	): EngineEventConnection;
+	OnProcessedCommand(
+		callback: (inputData: CharacterInputData, stateData: CharacterSnapshotData, isReplay: boolean) => void,
+	): EngineEventConnection;
+	OnSetSnapshot(callback: (stateData: CharacterSnapshotData) => void): EngineEventConnection;
+	OnCaptureSnapshot(callback: (commandNumber: number, time: number) => void): EngineEventConnection;
+	OnInterpolateState(
+		callback: (lastState: CharacterSnapshotData, nextState: CharacterSnapshotData, delta: number) => void,
+	): EngineEventConnection;
+	OnInterpolateReachedState(callback: (state: CharacterSnapshotData) => void): EngineEventConnection;
+	OnCompareSnapshots(callback: (a: CharacterSnapshotData, b: CharacterSnapshotData) => void): EngineEventConnection;
+	OnSetMode(callback: (mode: NetworkStateSystemMode) => void): EngineEventConnection;
+
+	// Used for communicating back snapshot comparison results
+	SetComparisonResult(result: boolean);
+
+	OnLagCompensationCheck(callback: (id: string) => void): EngineEventConnection;
+	OnLagCompensationComplete(callback: (id: string) => void): EngineEventConnection;
+	/** Returns the id that will be passed in the lag compensation engine events */
+	RequestLagCompensationCheck(): string;
+}
+
+interface StateSnapshot {
+	lastProcessedCommand: number;
+	time: number;
+}
+
+interface CharacterSnapshotData extends StateSnapshot {
+	position: Vector3;
+	velocity: Vector3;
+	impulseVelocity: Vector3;
+	currentSpeed: number;
+	inputDisabled: boolean;
+	isFlying: boolean;
+	isSprinting: boolean;
+	jumpCount: number;
+	airborneFromImpulse: boolean;
+	alreadyJumped: boolean;
+	prevMoveDir: Vector3;
+	lastGroundedMoveDir: Vector3;
+	isCrouching: boolean;
+	prevStepUp: boolean;
+	isGrounded: boolean;
+	animGrounded: boolean;
+	state: CharacterState;
+	prevState: CharacterState;
+	timeSinceBecameGrounded: number;
+	timeSinceWasGrounded: number;
+	timeSinceJump: number;
+	lookVector: Vector3;
+	customData: BinaryBlob;
+}
+
+interface InputCommand {
+	commandNumber: number;
+	time: number;
+}
+
+interface CharacterInputData extends InputCommand {
+	moveDir: Vector3;
+	jump: boolean;
+	crouch: boolean;
+	sprint: boolean;
+	lookVector: Vector3;
+	customData: BinaryBlob;
+}
+
+interface CharacterNetworkedStateManager extends Component {
+	serverAuth: boolean;
+	serverGeneratesCommands: boolean;
+}
+
 interface CharacterMovement extends Component {
+	// Interaction events
 	OnStateChanged(callback: (state: CharacterState) => void): EngineEventConnection;
-	OnSetCustomData(callback: () => void): EngineEventConnection;
-	OnBeginMove(callback: (stateData: CharacterMovementState, isReplay: boolean) => void): EngineEventConnection;
-	OnEndMove(callback: (stateData: CharacterMovementState, isReplay: boolean) => void): EngineEventConnection;
-	OnDispatchCustomData(callback: (tick: number, customData: BinaryBlob) => void): EngineEventConnection;
 	OnImpactWithGround(callback: (velocity: Vector3, hitInfo: RaycastHit) => void): EngineEventConnection;
-	OnAdjustMove(callback: (modifier: MoveModifier) => void): EngineEventConnection;
 	OnMoveDirectionChanged(callback: (direction: Vector3) => void): EngineEventConnection;
 	OnJumped(callback: (velocity: Vector3) => void): EngineEventConnection;
 	OnNewLookVector(callback: (newLookVector: Vector3) => void): EngineEventConnection;
-	GetLookVector(): Vector3;
 
+	// Functions
+	GetLookVector(): Vector3;
+	GetMoveDir(): Vector3;
 	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouch: boolean, moveDirMode: number): void;
 	SetMovementEnabled(isEnabled: boolean): void;
 	SetLookVector(lookVector: Vector3): void;
 	SetLookVectorRecurring(lookVector: Vector3): void;
 	SetLookVectorRecurringToMoveDir(): void;
-	SetCustomData(customData: BinaryBlob): void;
+	SetCustomInputData(customData: BinaryBlob): void;
+	SetCustomSnapshotData(customData: BinaryBlob): void;
 	SetFlying(enabled: boolean): void;
 	SetDebugFlying(enabled: boolean): void;
 	IsFlying(): boolean;
 	Teleport(position: Vector3): void;
-	TeleportWithoutReconcile(position: Vector3): void;
+	// TeleportWithoutReconcile(position: Vector3): void;
 	TeleportAndLook(position: Vector3, lookVector: Vector3): void;
-	TeleportAndLookWithoutReconcile(position: Vector3, lookVector: Vector3): void;
+	// TeleportAndLookWithoutReconcile(position: Vector3, lookVector: Vector3): void;
 	AddImpulse(impulse: Vector3): void;
-	AddImpulseWithoutReconcile(impulse: Vector3): void;
+	// AddImpulseWithoutReconcile(impulse: Vector3): void;
 	SetImpulse(impulse: Vector3): void;
-	SetImpulseWithoutReconcile(impulse: Vector3): void;
+	// SetImpulseWithoutReconcile(impulse: Vector3): void;
 	IgnoreGroundCollider(collider: Collider, ignore: boolean): void;
 	IsIgnoringCollider(collider: Collider): boolean;
 	SetVelocity(velocity: Vector3): void;
 	GetVelocity(): Vector3;
+	GetPosition(): Vector3;
 	GetState(): CharacterState;
 	GetTimeSinceWasGrounded(): number;
 	GetTimeSinceBecameGrounded(): number;
-	GetCurrentMoveInputData(): MoveInputData;
+	// GetCurrentMoveInputData(): MoveInputData;
+	RequestResimulation(commandNumber: number): boolean;
+	/**
+	 * Get's the simulation time that generated the provided command number. This returns the time in the local
+	 * simulation timeline.
+	 *
+	 * **Note: This only works for command numbers which have been completed, meaning that using this function in the OnTick and passing the input command number
+	 * will result in 0 as the simulation time. The local simulation time for an input is always included with the command number in the input object.**
+	 * */
+	GetLocalSimulationTimeFromCommandNumber(commandNumber: number): number;
+	/** If this character movement has final authority on character position and values. */
+	IsAuthority(): boolean;
 
 	//Public
 	enabled: boolean;
@@ -120,21 +226,45 @@ interface CharacterMovement extends Component {
 	airshipTransform: Transform; //The transform controlled by the movement script
 	graphicTransform: Transform; //A transform we can animate
 	slopeVisualizer: Transform; //A Transform that rotates to match the slope you are standing on
-	moveData: CharacterMovementData;
+	movementSettings: CharacterMovementSettings;
 	animationHelper: CharacterAnimationHelper;
 	mainCollider: BoxCollider;
-	startingLookVector: Vector3;
 
-	//Public Getters Private Setters
-	currentMoveState: CharacterMovementState;
+	// Public Getters Private Setters
+	currentMoveSnapshot: CharacterSnapshotData;
+	currentAnimState: CharacterAnimationSyncData;
 	currentCharacterHeight: number;
 	standingCharacterHeight: number;
+	startingLookVector: Vector3;
 	characterRadius: number;
 	characterHalfExtents: Vector3;
-	isGrounded: boolean;
-	isSprinting: boolean;
+	//isGrounded: boolean;
+	//isSprinting: boolean;
 	groundedRaycastHit: RaycastHit;
 }
+
+interface AirshipSimulationManager extends MonoBehaviour {
+	replaying: boolean;
+	// TODO: these events likely do not work yet
+	// OnSetPaused(callback: (paused: boolean) => void): EngineEventConnection;
+	OnSetSnapshot(callback: (time: number) => void): EngineEventConnection;
+	// OnLagCompensationCheck(
+	// 	callback: (clientId: number, currentTime: number, latency: number) => void,
+	// ): EngineEventConnection;
+	// OnPerformTick(callback: (time: number, replay: boolean) => void): EngineEventConnection;
+	OnTick(callback: (time: number, replay: boolean) => void): EngineEventConnection;
+	// OnCaptureSnapshot(callback: (time: number, replay: boolean) => void): EngineEventConnection;
+	OnHistoryLifetimeReached(callback: (time: number) => void): EngineEventConnection;
+
+	GetLastSimulationTime(time: number): number;
+	// ScheduleLagCompensation(client: NetworkConnectionToClient, checkCallback: CheckWorld, completeCallback: RollbackComplete): void;
+	// ScheduleResimulation(callback: PerformResimulationCallback): void;
+}
+
+interface AirshipSimulationManagerConstructor {
+	Instance: AirshipSimulationManager;
+}
+declare const AirshipSimulationManager: AirshipSimulationManagerConstructor;
 
 interface Nullable<T> {
 	HasValue: boolean;
@@ -596,7 +726,8 @@ interface CharacterStateData {
 	crouching: boolean;
 	localVelocity: Vector3;
 }
-interface CharacterAnimationHelper extends MonoBehaviour {
+
+interface CharacterAnimationHelper extends Component {
 	animator: Animator;
 	animationEvents?: AnimationEventListener;
 	isSkidding: boolean;
@@ -1096,3 +1227,115 @@ interface OcclusionCamConstructor {
 	new (): OcclusionCam;
 }
 declare const OcclusionCam: OcclusionCamConstructor;
+
+interface InternalCameraScreenshotRecorderConstructor {
+	onPictureTaken: OnPictureTaken;
+	readonly GetScreenshotTexture: Texture2D;
+
+	new (): CameraScreenshotRecorder;
+
+	TakeScreenshot(fileName: string, superSampleSize: number, png: boolean): void;
+	TakeCameraScreenshot(camera: Camera, fileName: string, superSampleSize: number): void;
+}
+declare const InternalCameraScreenshotRecorder: InternalCameraScreenshotRecorderConstructor;
+
+interface CameraScreenshotRecorder extends MonoBehaviour {
+	saveFolder: SaveFolder;
+	shouldSaveCaptures: boolean;
+	resWidth: number;
+	resHeight: number;
+	readonly FolderName: string;
+}
+
+interface CameraScreenshotResponse {
+	path: string;
+	filesize: number;
+	extension: string;
+}
+
+interface CameraScreenshotResponseConstructor {
+	new (): CameraScreenshotResponse;
+}
+declare const CameraScreenshotResponse: CameraScreenshotResponseConstructor;
+
+interface AirshipUniVoiceNetworkConstructor {
+	new (): AirshipUniVoiceNetwork;
+}
+declare const AirshipUniVoiceNetwork: AirshipUniVoiceNetworkConstructor;
+
+interface AirshipUniVoiceNetwork extends NetworkBehaviour, IChatroomNetwork {
+	agent: ChatroomAgent;
+	readonly OwnID: number;
+	readonly PeerIDs: Readonly<number[]>;
+
+	onPlayerSpeakingLevel: MonoSignal<[connectionId: number, speakingLevel: number]>;
+	onLocalSpeakingLevel: MonoSignal<[connectionId: number, speakingLevel: number]>;
+	readonly OnCreatedChatroom: MonoSignal<void>;
+	readonly OnChatroomCreationFailed: MonoSignal<unknown>;
+	readonly OnClosedChatroom: MonoSignal<void>;
+	readonly OnJoinedChatroom: MonoSignal<number>;
+	readonly OnChatroomJoinFailed: MonoSignal<unknown>;
+	readonly OnLeftChatroom: MonoSignal<void>;
+	readonly OnPeerJoinedChatroom: MonoSignal<number, number, AudioSource>;
+	readonly OnPeerLeftChatroom: MonoSignal<number>;
+	readonly OnAudioReceived: MonoSignal<number, ChatroomAudioSegment>;
+	readonly OnAudioBroadcasted: MonoSignal<ChatroomAudioSegment>;
+
+	BroadcastAudioSegment(data: ChatroomAudioSegment): void;
+	CloseChatroom(data: unknown): void;
+	Dispose(): void;
+	FromByteArray<T>(data: Readonly<number[]>): T;
+	GetSpeakingLevel(connectionId: number): number;
+	HostChatroom(data: unknown): void;
+	JoinChatroom(data: unknown): void;
+	LeaveChatroom(data: unknown): void;
+	NetworkServer_OnDisconnected(connection: NetworkConnectionToClient): void;
+	OnReadyCommand(sender: NetworkConnectionToClient): void;
+	OnStartServer(): void;
+	ToByteArray<T>(obj: T): Readonly<number[]>;
+	Weaved(): boolean;
+	SetConnectionMuted(connectionId: number, muted: boolean): void;
+}
+
+interface IChatroomNetwork {
+	readonly OwnID: number;
+	readonly PeerIDs: Readonly<number[]>;
+
+	readonly OnCreatedChatroom: MonoSignal<void>;
+	readonly OnChatroomCreationFailed: MonoSignal<unknown>;
+	readonly OnClosedChatroom: MonoSignal<void>;
+	readonly OnJoinedChatroom: MonoSignal<number>;
+	readonly OnChatroomJoinFailed: MonoSignal<unknown>;
+	readonly OnLeftChatroom: MonoSignal<void>;
+	readonly OnPeerJoinedChatroom: MonoSignal<number, number, AudioSource>;
+	readonly OnPeerLeftChatroom: MonoSignal<number>;
+	readonly OnAudioReceived: MonoSignal<number, ChatroomAudioSegment>;
+	readonly OnAudioBroadcasted: MonoSignal<ChatroomAudioSegment>;
+
+	BroadcastAudioSegment(data: ChatroomAudioSegment): void;
+	CloseChatroom(data: unknown): void;
+	HostChatroom(data: unknown): void;
+	JoinChatroom(data: unknown): void;
+	LeaveChatroom(data: unknown): void;
+}
+
+interface ChatroomAudioSegment {
+	segmentIndex: number;
+	frequency: number;
+	channelCount: number;
+	samples: Readonly<number[]>;
+}
+
+interface ChatroomAgent {
+	PeerOutputs: CSDictionary<number, IAudioOutput>;
+	OnModeChanged: unknown;
+	PeerSettings: CSDictionary<number, ChatroomPeerSettings>;
+	readonly Network: IChatroomNetwork;
+	readonly AudioInput: IAudioInput;
+	readonly AudioOutputFactory: IAudioOutputFactory;
+	readonly CurrentMode: ChatroomAgentMode;
+	MuteOthers: boolean;
+	MuteSelf: boolean;
+
+	Dispose(): void;
+}

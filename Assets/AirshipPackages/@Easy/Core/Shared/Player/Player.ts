@@ -183,7 +183,10 @@ export class Player {
 		go.name = `Character_${this.username}`;
 		const characterComponent = go.GetAirshipComponent<Character>()!;
 		if (config?.lookDirection && characterComponent.movement) {
-			characterComponent.movement.startingLookVector = config.lookDirection;
+			// try catch to not require c# update
+			try {
+				characterComponent.movement.startingLookVector = config.lookDirection;
+			} catch (err) {}
 		}
 
 		if (!this.outfitLoaded) {
@@ -215,6 +218,11 @@ export class Player {
 		characterComponent.Init(this, Airship.Characters.MakeNewId(), this.selectedOutfit, 100, 100);
 		this.SetCharacter(characterComponent);
 		if (this.IsBot()) {
+			const movementNetworking = go.GetComponent<CharacterNetworkedStateManager>();
+			if (movementNetworking) {
+				movementNetworking.serverAuth = true;
+				movementNetworking.serverGeneratesCommands = true;
+			}
 			NetworkServer.Spawn(go);
 		} else {
 			NetworkServer.Spawn(go, this.networkIdentity.connectionToClient!);
@@ -318,6 +326,7 @@ export class Player {
 			}),
 		);
 
+		bin.Add(() => cleanup?.());
 		this.bin.Add(bin);
 		return bin;
 	}
