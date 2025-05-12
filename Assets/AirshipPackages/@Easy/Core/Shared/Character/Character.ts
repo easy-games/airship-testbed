@@ -13,7 +13,6 @@ import { ItemStack } from "../Inventory/ItemStack";
 import { BeforeLocalInventoryHeldSlotChanged } from "../Inventory/Signal/BeforeLocalInventoryHeldSlotChanged";
 import NametagComponent from "../Nametag/NametagComponent";
 import { Keyboard, Mouse } from "../UserInput";
-import { TaskUtil } from "../Util/TaskUtil";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
 import { EmoteStartSignal } from "./Signal/EmoteStartSignal";
@@ -908,51 +907,5 @@ export default class Character extends AirshipBehaviour {
 				}
 			}),
 		);
-	}
-
-	/**
-	 * Allows the server to perform a lag compensated check against the clients view of the world at the
-	 * current server tick. Only works when using server authoritative character movement.
-	 * @param checkFunc This function should be used to perform read only checks against the clients view of the world. For example, perform a raycast
-	 * to check if the player actually hit another player.
-	 * @param completeFunc This function should be used to perform actions based on the result of your check and will run against the current real view
-	 * of the world as the server sees it. Use this function to apply damage or move the player.
-	 * @returns Returns immediately after scheduling the lag compensation check. The check and complete functions will be called later.
-	 */
-	public LagCompensationCheck<CheckResult>(
-		checkFunc: () => CheckResult,
-		completeFunc: (checkResult: CheckResult) => void,
-	) {
-		if (!Game.IsServer()) {
-			warn("Attempted to perform lag compensation check on the client. This is not allowed.");
-			return;
-		}
-
-		if (!this.movement) {
-			warn("Attempted to run lag compensation on character without movement system. This is not allowed.");
-			return;
-		}
-
-		const movementWithEvents = this.movement as CharacterMovement & CharacterMovementEngineEvents;
-		const checkId = movementWithEvents.RequestLagCompensationCheck();
-
-		let checkResult: CheckResult;
-		const checkConnection = movementWithEvents.OnLagCompensationCheck((id) => {
-			if (checkId !== id) return;
-			checkResult = TaskUtil.RunWithoutYield(() => {
-				return checkFunc();
-			});
-			Bridge.DisconnectEvent(checkConnection);
-		});
-		this.bin.AddEngineEventConnection(checkConnection);
-
-		const completeConnection = movementWithEvents.OnLagCompensationComplete((id) => {
-			if (checkId !== id) return;
-			TaskUtil.RunWithoutYield(() => {
-				completeFunc(checkResult);
-			});
-			Bridge.DisconnectEvent(completeConnection);
-		});
-		this.bin.AddEngineEventConnection(completeConnection);
 	}
 }

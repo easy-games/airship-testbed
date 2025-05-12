@@ -6,6 +6,7 @@ import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
+import { TaskUtil } from "../Util/TaskUtil";
 
 /** @internal */
 export interface PlayerDto {
@@ -378,5 +379,56 @@ export class Player {
 		} else {
 			error("Player.Kick() must be called from game context.");
 		}
+	}
+
+	/**
+	 * Allows the server to perform a lag compensated check against the clients view of the world at the
+	 * current server tick.
+	 * @param checkFunc This function should be used to perform read only checks against the clients view of the world. For example, perform a raycast
+	 * to check if the player actually hit another player.
+	 * @param completeFunc This function should be used to perform actions based on the result of your check and will run against the current real view
+	 * of the world as the server sees it. Use this function to apply damage or move the player.
+	 * @returns Returns immediately after scheduling the lag compensation check. The check and complete functions will be called later.
+	 */
+	public LagCompensationCheck<CheckResult>(
+		checkFunc: () => CheckResult,
+		completeFunc: (checkResult: CheckResult) => void,
+	) {
+		if (!Game.IsServer()) {
+			warn("Attempted to perform lag compensation check on the client. This is not allowed.");
+			return;
+		}
+
+		const simulationManager = AirshipSimulationManager.Instance as AirshipSimulationManager &
+			AirshipSimulationManagerWithLagCompensation;
+		const checkId = simulationManager.RequestLagCompensationCheck(this.connectionId);
+		if (!checkId) {
+			warn(
+				"Unable to schedule lag compensation for " +
+					this.username +
+					" (" +
+					this.connectionId +
+					"). Is the connection ID correct?",
+			);
+		}
+
+		let checkResult: CheckResult;
+		const checkConnection = simulationManager.OnLagCompensationRequestCheck((id) => {
+			if (checkId !== id) return;
+			checkResult = TaskUtil.RunWithoutYield(() => {
+				return checkFunc();
+			});
+			Bridge.DisconnectEvent(checkConnection);
+		});
+		this.bin.AddEngineEventConnection(checkConnection);
+
+		const completeConnection = simulationManager.OnLagCompensationRequestComplete((id) => {
+			if (checkId !== id) return;
+			TaskUtil.RunWithoutYield(() => {
+				completeFunc(checkResult);
+			});
+			Bridge.DisconnectEvent(completeConnection);
+		});
+		this.bin.AddEngineEventConnection(completeConnection);
 	}
 }

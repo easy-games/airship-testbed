@@ -111,11 +111,6 @@ interface CharacterMovementEngineEvents {
 
 	// Used for communicating back snapshot comparison results
 	SetComparisonResult(result: boolean);
-
-	OnLagCompensationCheck(callback: (id: string) => void): EngineEventConnection;
-	OnLagCompensationComplete(callback: (id: string) => void): EngineEventConnection;
-	/** Returns the id that will be passed in the lag compensation engine events */
-	RequestLagCompensationCheck(): string;
 }
 
 interface StateSnapshot {
@@ -245,20 +240,16 @@ interface CharacterMovement extends Component {
 
 interface AirshipSimulationManager extends MonoBehaviour {
 	replaying: boolean;
-	// TODO: these events likely do not work yet
-	// OnSetPaused(callback: (paused: boolean) => void): EngineEventConnection;
 	OnSetSnapshot(callback: (time: number) => void): EngineEventConnection;
-	// OnLagCompensationCheck(
-	// 	callback: (clientId: number, currentTime: number, latency: number) => void,
-	// ): EngineEventConnection;
-	// OnPerformTick(callback: (time: number, replay: boolean) => void): EngineEventConnection;
 	OnTick(callback: (time: number, replay: boolean) => void): EngineEventConnection;
-	// OnCaptureSnapshot(callback: (time: number, replay: boolean) => void): EngineEventConnection;
 	OnHistoryLifetimeReached(callback: (time: number) => void): EngineEventConnection;
-
 	GetLastSimulationTime(time: number): number;
-	// ScheduleLagCompensation(client: NetworkConnectionToClient, checkCallback: CheckWorld, completeCallback: RollbackComplete): void;
-	// ScheduleResimulation(callback: PerformResimulationCallback): void;
+}
+
+interface AirshipSimulationManagerWithLagCompensation {
+	OnLagCompensationRequestCheck(callback: (id: string) => void): EngineEventConnection;
+	OnLagCompensationRequestComplete(callback: (id: string) => void): EngineEventConnection;
+	RequestLagCompensationCheck(clientId: number): string;
 }
 
 interface AirshipSimulationManagerConstructor {
