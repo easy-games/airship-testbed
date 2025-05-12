@@ -1,4 +1,5 @@
 import { HttpCallback, HttpRetryInstance } from "../Http/HttpRetry";
+import { ArrayUtil } from "../Util/ArrayUtil";
 import { entries } from "../Util/ObjectUtils";
 // note (Corey Shupe):
 //  These types could come from any type package.
@@ -52,9 +53,9 @@ export function isUnityMakeRequestError(err: unknown): err is UnityMakeRequestEr
 export function UnityMakeRequest(baseUrl: string): MakeRequest {
 	return async <T>(request: HttpRequestParams<object>) => {
 		const pathWithoutQueryString = baseUrl + request.path;
-		const queryString = request.query === undefined ? "" : encodeQueryString(request.query);
+		const queryString = request.query !== undefined ? encodeQueryString(request.query) : "";
 		const fullyResolvedPath = pathWithoutQueryString + queryString;
-		const data: string | undefined = request.body ? json.encode(request.body) : undefined;
+		const data: string | undefined = request.body !== undefined ? json.encode(request.body) : undefined;
 
 		let executor: HttpCallback;
 
