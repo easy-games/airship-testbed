@@ -5,6 +5,19 @@ import { entries } from "../Util/ObjectUtils";
 //  These types could come from any type package.
 import { HttpRequestParams, MakeRequest } from "./content-service-types";
 
+function isArrayLike<T extends defined>(value: unknown): value is T[] {
+	if (!typeIs(value, "table")) return false;
+
+	// a table always will start with a numeric key if it has an array part
+	const [idx] = next(value);
+	if (!typeIs(idx, "number") && !typeIs(idx, "nil")) return false;
+
+	// To get the first dictionary "key" of a table, it's the size of the array (last index)
+	const size = (value as defined[]).size();
+	const [key] = next(value, size); // we check there's no dictionary component to the table
+	return typeIs(key, "nil"); // an array should contain no dictionary keys
+}
+
 export function encodeURIComponent(component: string): string {
 	const [encodedComponent] = string.gsub(component, "[^%a%d%-%_%.!~%*%'%(%)]", (value) => {
 		const bytes = string.byte(value, 1, value.size());
@@ -30,10 +43,8 @@ function encodeQueryString(query: object) {
 
 		const encodedKey = encodeURIComponent(tostring(key));
 
-		// todo: ask about this
-		if (typeIs(value, "vector")) {
-			const arrType = value as unknown as (string | number | boolean)[];
-			queryString += `${encodedKey}[]=${arrType.map(tostring).map(encodeURIComponent).join(`&${encodedKey}[]=`)}`;
+		if (isArrayLike<string | boolean | number>(value)) {
+			queryString += `${encodedKey}[]=${value.map(tostring).map(encodeURIComponent).join(`&${encodedKey}[]=`)}`;
 		} else {
 			queryString += `${tostring(key)}=${encodeURIComponent(tostring(value))}`;
 		}
