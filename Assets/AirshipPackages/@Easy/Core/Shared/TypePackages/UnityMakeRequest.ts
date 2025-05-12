@@ -1,5 +1,4 @@
 import { HttpCallback, HttpRetryInstance } from "../Http/HttpRetry";
-import { ArrayUtil } from "../Util/ArrayUtil";
 import { entries } from "../Util/ObjectUtils";
 // note (Corey Shupe):
 //  These types could come from any type package.
