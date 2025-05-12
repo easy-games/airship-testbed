@@ -43309,6 +43309,43 @@ interface JointSpring {
 
 }
     
+interface WheelFrictionCurve {
+    /**
+     * Extremum point slip (default 1).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/WheelFrictionCurve-extremumSlip.html | WheelFrictionCurve.extremumSlip}
+     */
+    extremumSlip: number;
+    /**
+     * Force at the extremum slip (default 20000).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/WheelFrictionCurve-extremumValue.html | WheelFrictionCurve.extremumValue}
+     */
+    extremumValue: number;
+    /**
+     * Asymptote point slip (default 2).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/WheelFrictionCurve-asymptoteSlip.html | WheelFrictionCurve.asymptoteSlip}
+     */
+    asymptoteSlip: number;
+    /**
+     * Force at the asymptote slip (default 10000).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/WheelFrictionCurve-asymptoteValue.html | WheelFrictionCurve.asymptoteValue}
+     */
+    asymptoteValue: number;
+    /**
+     * Multiplier for the extremumValue and asymptoteValue values (default 1).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/WheelFrictionCurve-stiffness.html | WheelFrictionCurve.stiffness}
+     */
+    stiffness: number;
+
+
+
+
+
+}
     
 interface WheelColliderConstructor {
 
