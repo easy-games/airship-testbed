@@ -94,7 +94,9 @@ export function UnityMakeRequest(baseUrl: string): MakeRequest {
 			case "HEAD":
 				throw error("HEAD is not implemented for airship clients.");
 			default:
-				throw error("Could not determine method when executing http.");
+				throw error(
+					"Could not determine method when executing http: " + request.method + " : " + request.routeId,
+				);
 		}
 
 		const response = await UNITY_MAKE_REQUEST_RETRY(executor, { retryKey: request.retryKey });
