@@ -375,7 +375,12 @@ export class ProtectedFriendsController {
 	}
 
 	public FetchFriends(): void {
-		const result = client.friends.getRequests().expect();
+		let result;
+		try {
+			result = client.friends.getRequests().expect();
+		} catch {
+			return;
+		}
 
 		this.friends = result.friends;
 		this.SetIncomingFriendRequests(result.incomingRequests);

@@ -355,7 +355,7 @@ export class ProtectedAvatarSingleton {
 			if (isUnityMakeRequestError(err)) {
 				CoreLogger.Error("Error getting item image resource: " + err.message);
 			}
-			throw err;
+			return "";
 		}
 	}
 

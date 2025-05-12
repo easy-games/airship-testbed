@@ -41,7 +41,12 @@ export class SocketController {
 			this.cancelSessionReportTask = SetInterval(
 				60 * 5,
 				async () => {
-					const serverMap = await client.servers.getPingServers();
+					let serverMap;
+					try {
+						serverMap = await client.servers.getPingServers();
+					} catch {
+						return warn("Unable to retrieve ping servers from GC. Region selection may not be possible.");
+					}
 					const regionLatencies: { [regionId: string]: number } = {};
 					// Use the best of three tests.
 					for (let i = 0; i < 3; i++) {

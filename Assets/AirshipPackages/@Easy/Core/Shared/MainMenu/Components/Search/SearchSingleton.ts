@@ -47,7 +47,7 @@ export default class SearchSingleton {
 		try {
 			let data = contentServiceClient.memberships.getUserGameOwnership({ liveStats: true }).expect();
 			data = data.filter((g) => g.lastVersionUpdate !== undefined);
-			this.myGames = data as (Omit<(typeof data)[number], "lastVersionUpdate"> & { lastVersionUpdate: string })[];
+			this.myGames = data;
 			this.myGamesIds.clear();
 			this.myGames = this.myGames.sort((a, b) => {
 				const aTime =
