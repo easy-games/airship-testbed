@@ -6,9 +6,9 @@ import {
 	UserServiceBridgeTopics,
 } from "@Easy/Core/Server/ProtectedServices/Airship/User/UserService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { AirshipPlayerLocation, PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { GameCoordinatorUsers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 
 /**
  * Provides access to user information.
@@ -28,7 +28,7 @@ export class AirshipUserService {
 	 * @param username The username of the user.
 	 * @returns A user object
 	 */
-	public async GetUserByUsername(username: string): Promise<PublicUser | undefined> {
+	public async GetUserByUsername(username: string): Promise<GameCoordinatorUsers.PublicUser | undefined> {
 		return contextbridge.invoke<ServerBridgeApiGetUserByUsername>(
 			UserServiceBridgeTopics.GetUserByUsername,
 			LuauContext.Protected,
@@ -41,7 +41,7 @@ export class AirshipUserService {
 	 * @param userId The users ID
 	 * @returns A user object
 	 */
-	public async GetUserById(userId: string): Promise<PublicUser | undefined> {
+	public async GetUserById(userId: string): Promise<GameCoordinatorUsers.PublicUser | undefined> {
 		return contextbridge.invoke<ServerBridgeApiGetUserById>(
 			UserServiceBridgeTopics.GetUserById,
 			LuauContext.Protected,
@@ -57,7 +57,10 @@ export class AirshipUserService {
 	 * succeed even if not all userIds resolve to a user.
 	 * @returns An array of user objects.
 	 */
-	public async GetUsersById(userIds: string[], strict: boolean = false): Promise<Record<string, PublicUser>> {
+	public async GetUsersById(
+		userIds: string[],
+		strict: boolean = false,
+	): Promise<Record<string, GameCoordinatorUsers.PublicUser>> {
 		return contextbridge.invoke<ServerBridgeApiGetUsersById>(
 			UserServiceBridgeTopics.GetUsersById,
 			LuauContext.Protected,
@@ -71,7 +74,12 @@ export class AirshipUserService {
 	 * @param userId The userId of the player.
 	 * @returns The location of the player. If the player could not be found or is not playing the game, returns undefined.
 	 */
-	public async GetUserLocationById(userId: string): Promise<AirshipPlayerLocation | undefined> {
+	public async GetUserLocationById(userId: string): Promise<
+		| {
+				serverId: string;
+		  }
+		| undefined
+	> {
 		const result = await this.GetUserLocationsById([userId]);
 		return result[userId];
 	}
@@ -81,9 +89,13 @@ export class AirshipUserService {
 	 * @param userId The userIds of the players.
 	 * @returns A map of userId to location. If a player could not be found or is not playing the game, they are not included in the map.
 	 */
-	public async GetUserLocationsById(
-		userIds: string[],
-	): Promise<{ [userId: string]: AirshipPlayerLocation | undefined }> {
+	public async GetUserLocationsById(userIds: string[]): Promise<{
+		[userId: string]:
+			| {
+					serverId: string;
+			  }
+			| undefined;
+	}> {
 		return contextbridge.invoke<ServerBridgeApiGetUserLocationsById>(
 			UserServiceBridgeTopics.GetUserLocationsById,
 			LuauContext.Protected,

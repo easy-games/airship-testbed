@@ -1,4 +1,3 @@
-import { GameDto } from "@Easy/Core/Client/Components/HomePage/API/GamesAPI";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
@@ -12,8 +11,11 @@ import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
 import GameSearchResult from "./GameSearchResult";
 import { SearchResultDto } from "./SearchAPI";
 import SearchResult from "./SearchResult";
-import SearchSingleton from "./SearchSingleton";
-import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
+import SearchSingleton, { SearchGame } from "./SearchSingleton";
+import { ContentServiceGames } from "@Easy/Core/Shared/TypePackages/content-service-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+
+const gamesClient = new ContentServiceGames.Client(UnityMakeRequest(AirshipUrl.ContentService));
 
 export default class SearchFocused extends AirshipBehaviour {
 	@Header("References")
@@ -156,32 +158,22 @@ export default class SearchFocused extends AirshipBehaviour {
 
 		this.queryId++;
 		let thisQuery = this.queryId;
-		const url =
-			AirshipUrl.ContentService +
-			"/games/autocomplete?name=" +
-			text +
-			"&platform=" +
-			ProtectedUtil.GetLocalPlatformString();
-		// print("search url: " + url);
-		const res = HttpRetry(
-			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games/autocomplete?name=" + text),
-			"get/content-service/games/autocomplete",
-		).expect();
 
-		if (res.error) {
-			Debug.LogError("search error: " + res.error);
-		} else {
-			print("search result: " + res.data);
-		}
-		if (thisQuery !== this.queryId) return;
-		let games: GameDto[];
-		if (res.success) {
-			games = json.decode<GameDto[]>(res.data);
+		let games: SearchGame[];
+		try {
+			const res = gamesClient
+				.autocompleteGame({
+					name: text,
+					// this was not actually running in prod:
+					// platform: ProtectedUtil.GetLocalPlatformString() as ContentServiceGames.DeploymentPlatform,
+				})
+				.expect();
+			games = res;
+			if (thisQuery !== this.queryId) return;
 			if (games.size() === 0) {
 				games = [...Dependency<SearchSingleton>().games];
 			}
-		} else {
-			Debug.LogError("Search error: " + res.error);
+		} catch {
 			games = [...Dependency<SearchSingleton>().games];
 		}
 

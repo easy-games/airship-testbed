@@ -18,13 +18,10 @@ import {
 	ServerManagerServiceBridgeTopics,
 } from "@Easy/Core/Server/ProtectedServices/Airship/ServerManager/ProtectedServerManagerService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import {
-	AirshipServerAccessMode,
-	AirshipServerConfig,
-} from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipServerManager";
-import { AirshipServerData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
+import { AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { GameCoordinatorServers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 
 /**
  * Allows access to and modification of the game server list.
@@ -45,7 +42,7 @@ export class AirshipServerManagerService {
 	 * provided during deployment.
 	 * @returns The id of the new server. Undefined if the server was not able to be created.
 	 */
-	public async CreateServer(config?: AirshipServerConfig): Promise<AirshipServerData> {
+	public async CreateServer(config?: AirshipServerConfig): Promise<GameCoordinatorServers.PublicServerData> {
 		return contextbridge.invoke<ServerBridgeApiCreateServer>(
 			ServerManagerServiceBridgeTopics.CreateServer,
 			LuauContext.Protected,
@@ -58,7 +55,7 @@ export class AirshipServerManagerService {
 	 * @param serverId The server ID to retrieve
 	 * @returns The server data if it exists. Returns undefined if the server could not be found.
 	 */
-	public async GetServer(serverId: string): Promise<AirshipServerData | undefined> {
+	public async GetServer(serverId: string): Promise<GameCoordinatorServers.PublicServerData | undefined> {
 		const result = await this.GetServers([serverId]);
 		return result[serverId];
 	}
@@ -68,7 +65,9 @@ export class AirshipServerManagerService {
 	 * @param serverIds An array of server IDs to retrieve
 	 * @returns A map of server ID to server data. If the server could not be found, it will not be included in the map.
 	 */
-	public async GetServers(serverIds: string[]): Promise<{ [serverId: string]: AirshipServerData | undefined }> {
+	public async GetServers(
+		serverIds: string[],
+	): Promise<{ [serverId: string]: GameCoordinatorServers.PublicServerData | undefined }> {
 		return contextbridge.invoke<ServerBridgeApiGetServers>(
 			ServerManagerServiceBridgeTopics.GetServers,
 			LuauContext.Protected,
@@ -111,7 +110,7 @@ export class AirshipServerManagerService {
 	 * Gets a page of the server list.
 	 * @param page The page to retrieve. Starts at 0.
 	 */
-	public async GetServerList(page: number = 0): Promise<{ entries: AirshipServerData[] }> {
+	public async GetServerList(page: number = 0): Promise<{ entries: GameCoordinatorServers.PublicServerData[] }> {
 		return contextbridge.invoke<ServerBridgeApiGetServerList>(
 			ServerManagerServiceBridgeTopics.GetServerList,
 			LuauContext.Protected,
@@ -121,7 +120,7 @@ export class AirshipServerManagerService {
 	/**
 	 * Updates the access mode of the server.
 	 */
-	public async SetAccessMode(mode: AirshipServerAccessMode): Promise<boolean> {
+	public async SetAccessMode(mode: GameCoordinatorServers.AccessMode): Promise<boolean> {
 		return contextbridge.invoke<ServerBridgeApiSetAccessMode>(
 			ServerManagerServiceBridgeTopics.SetAccessMode,
 			LuauContext.Protected,

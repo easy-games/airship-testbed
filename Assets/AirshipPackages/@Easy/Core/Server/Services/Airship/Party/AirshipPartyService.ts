@@ -4,9 +4,9 @@ import {
 	ServerBridgeApiGetPartyForUserId,
 } from "@Easy/Core/Server/ProtectedServices/Airship/Party/PartyService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { GameServerPartyData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { GameCoordinatorParty } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 
 /**
  * Allows access to player party information.
@@ -26,7 +26,7 @@ export class AirshipPartyService {
 	 * must be playing the current game.
 	 * @param userId The id of the user
 	 */
-	public async GetPartyForUserId(userId: string): Promise<GameServerPartyData | undefined> {
+	public async GetPartyForUserId(userId: string): Promise<GameCoordinatorParty.GameParty | undefined> {
 		return contextbridge.invoke<ServerBridgeApiGetPartyForUserId>(
 			PartyServiceBridgeTopics.GetPartyForUserId,
 			LuauContext.Protected,
@@ -39,7 +39,7 @@ export class AirshipPartyService {
 	 * the current game.
 	 * @param partyId The id of the party
 	 */
-	public async GetPartyById(partyId: string): Promise<GameServerPartyData | undefined> {
+	public async GetPartyById(partyId: string): Promise<GameCoordinatorParty.GameParty | undefined> {
 		return contextbridge.invoke<ServerBridgeApiGetPartyById>(
 			PartyServiceBridgeTopics.GetPartyById,
 			LuauContext.Protected,

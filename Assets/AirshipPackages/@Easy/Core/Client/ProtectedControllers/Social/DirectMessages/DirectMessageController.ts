@@ -1,6 +1,5 @@
 import { SocketController } from "@Easy/Core/Client/ProtectedControllers//Socket/SocketController";
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
@@ -23,17 +22,13 @@ import { ProtectedFriendsController } from "../FriendsController";
 import { MainMenuPartyController } from "../MainMenuPartyController";
 import { DirectMessage } from "./DirectMessage";
 import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import {
+	GameCoordinatorClient,
+	GameCoordinatorUserStatus,
+} from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 
-interface SendMessageSuccess {
-	messageSent: true;
-}
-interface SendMessageFailure {
-	messageSent: false;
-	reason: string;
-}
-
-type SendMessageResponse = SendMessageSuccess | SendMessageFailure;
-
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Controller({})
 export class DirectMessageController {
@@ -62,7 +57,7 @@ export class DirectMessageController {
 	private doScrollToBottom = 0;
 	private inputFieldSelected = false;
 
-	public lastMessagedFriend: UserStatusData | undefined;
+	public lastMessagedFriend: GameCoordinatorUserStatus.UserStatusData | undefined;
 
 	public onDirectMessageReceived = new Signal<DirectMessage>();
 
@@ -80,7 +75,7 @@ export class DirectMessageController {
 		private readonly friendsController: ProtectedFriendsController,
 		private readonly socketController: SocketController,
 		private readonly partyController: MainMenuPartyController,
-	) { }
+	) {}
 
 	protected OnStart(): void {
 		this.Setup();
@@ -256,7 +251,7 @@ export class DirectMessageController {
 		});
 	}
 
-	public GetFriendLastMessaged(): UserStatusData | undefined {
+	public GetFriendLastMessaged(): GameCoordinatorUserStatus.UserStatusData | undefined {
 		return this.lastMessagedFriend;
 	}
 
@@ -283,15 +278,8 @@ export class DirectMessageController {
 		});
 		const messageObj = this.RenderChatMessage(sentMessage, true);
 
-		const { data } = this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/chat/message/direct",
-			json.encode({
-				target: uid,
-				text: message,
-			}),
-		), "SendDirectMessage").expect();
-		const sendResponse = json.decode(data) as SendMessageResponse;
-		if (sendResponse.messageSent) {
+		const data = client.chat.sendDirectMessage({ target: uid, text: message }).expect();
+		if (data.messageSent) {
 			if (Game.coreContext === CoreContext.GAME) {
 				let text =
 					ColorUtil.ColoredText(Theme.pink, "To ") +
@@ -306,13 +294,12 @@ export class DirectMessageController {
 			let sentMessage: DirectMessage = {
 				sender: Game.localPlayer.userId,
 				sentAt: os.time(),
-				text: sendResponse.reason,
+				text: data.reason,
 			};
 			this.GetMessages(uid).push(sentMessage);
 			this.RenderChatMessage(sentMessage, true);
 			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Error.ogg");
 		}
-
 	}
 
 	public SendPartyMessage(message: string): void {
@@ -331,14 +318,7 @@ export class DirectMessageController {
 		});
 		const messageObj = this.RenderChatMessage(sentMessage, true, true);
 
-		const { data } = this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/chat/message/party",
-			json.encode({
-				text: message,
-			}),
-		), "SendPartyMessage").expect();
-
-		const sendResponse = json.decode(data) as SendMessageResponse;
+		const sendResponse = client.chat.sendPartyMessage({ text: message }).expect();
 
 		if (!sendResponse.messageSent) {
 			messageObj.delete();
@@ -364,7 +344,11 @@ export class DirectMessageController {
 		// }
 	}
 
-	private RenderChatMessage(dm: DirectMessage, receivedWhileOpen: boolean, isParty?: boolean): { delete: () => void } {
+	private RenderChatMessage(
+		dm: DirectMessage,
+		receivedWhileOpen: boolean,
+		isParty?: boolean,
+	): { delete: () => void } {
 		let outgoing = dm.sender === Game.localPlayer.userId;
 
 		let messageGo: GameObject;
@@ -411,10 +395,10 @@ export class DirectMessageController {
 					Object.Destroy(messageGo);
 				}
 			},
-		}
+		};
 	}
 
-	public UpdateOfflineNotice(friendStatus: UserStatusData): void {
+	public UpdateOfflineNotice(friendStatus: GameCoordinatorUserStatus.UserStatusData): void {
 		if (friendStatus.status !== "offline") {
 			this.offlineNoticeWrapper?.SetActive(false);
 		} else {

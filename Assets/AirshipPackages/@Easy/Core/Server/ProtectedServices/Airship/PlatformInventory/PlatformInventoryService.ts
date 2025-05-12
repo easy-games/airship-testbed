@@ -1,9 +1,8 @@
-import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipPlatformInventory";
+import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 import {
-	ContentServiceBaseClient,
+	ContentServiceClient,
 	ContentServiceItems,
 	ContentServicePrisma,
 } from "@Easy/Core/Shared/TypePackages/content-service-types";
@@ -28,11 +27,11 @@ export type ServerBridgeApiPerformTrade = (
 	user2: { uid: string; itemInstanceIds: string[] },
 ) => ContentServicePrisma.Transaction;
 
-@Service({})
-export class ProtectedPlatformInventoryService extends ContentServiceBaseClient {
-	constructor() {
-		super(UnityMakeRequest(AirshipUrl.ContentService, HttpRetryInstance()));
+const client = new ContentServiceClient(UnityMakeRequest(AirshipUrl.ContentService));
 
+@Service({})
+export class ProtectedPlatformInventoryService {
+	constructor() {
 		if (!Game.IsServer()) return;
 
 		contextbridge.callback<ServerBridgeApiGrantItem>(
@@ -65,40 +64,34 @@ export class ProtectedPlatformInventoryService extends ContentServiceBaseClient 
 	}
 
 	public async GrantItem(userId: string, classId: string): Promise<ReturnType<ServerBridgeApiGrantItem>> {
-		return await this.items.grantItemForResource({ uid: userId, classId }, { retryKey: "GrantItem" });
+		return await client.items.grantItemForResource({ uid: userId, classId });
 	}
 
 	public async DeleteItem(instanceId: string): Promise<ReturnType<ServerBridgeApiDeleteItem>> {
-		return await this.items.deleteItemForResource({ itemId: instanceId }, { retryKey: "DeleteItem" });
+		return await client.items.deleteItemForResource({ itemId: instanceId });
 	}
 
 	public async GetItems(userId: string, query?: ItemQueryParameters): Promise<ReturnType<ServerBridgeApiGetItems>> {
-		return await this.items.getUserInventoryForResource(
-			{
-				params: {
-					uid: userId,
-				},
-				query: {
-					queryType: query?.queryType,
-					query: query?.queryType === "tag" ? query?.tags : query?.classIds,
-					resourceIds: query?.resourceIds,
-				},
+		return await client.items.getUserInventoryForResource({
+			params: {
+				uid: userId,
 			},
-			{ retryKey: "GetItems" },
-		);
+			query: {
+				queryType: query?.queryType,
+				query: query?.queryType === "tag" ? query?.tags : query?.classIds,
+				resourceIds: query?.resourceIds,
+			},
+		});
 	}
 
 	public async PerformTrade(
 		user1: { uid: string; itemInstanceIds: string[] },
 		user2: { uid: string; itemInstanceIds: string[] },
 	): Promise<ReturnType<ServerBridgeApiPerformTrade>> {
-		return await this.itemTransactions.trade(
-			{
-				leftTradeHalf: user1,
-				rightTradeHalf: user2,
-			},
-			{ retryKey: "PerformTrade" },
-		);
+		return await client.itemTransactions.trade({
+			leftTradeHalf: user1,
+			rightTradeHalf: user2,
+		});
 	}
 
 	protected OnStart(): void {}

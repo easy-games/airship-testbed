@@ -1,11 +1,7 @@
-import {
-	AirshipDataStoreLockData,
-	AirshipDataStoreLockedMetadata,
-	AirshipDataStoreLockMode,
-} from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipDataStore";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { DataStoreServiceData, DataStoreServicePrisma } from "@Easy/Core/Shared/TypePackages/data-store-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum DataStoreServiceBridgeTopics {
@@ -16,30 +12,27 @@ export const enum DataStoreServiceBridgeTopics {
 	GetLockData = "DataStore:GetLockData",
 }
 
-export type ServerBridgeApiDataGetKey<T> = (key: string) => DataStoreRecord<T> | undefined;
-export type ServerBridgeApiDataSetKey<T> = (key: string, data: T, etag?: string) => DataStoreRecord<T>;
-export type ServerBridgeApiDataDeleteKey<T> = (key: string, etag?: string) => DataStoreRecord<T> | undefined;
+export type ServerBridgeApiDataGetKey<T> = (key: string) => DataStoreServiceData.BlobDataRecord<T> | undefined;
+export type ServerBridgeApiDataSetKey<T> = (
+	key: string,
+	data: T,
+	etag?: string,
+) => DataStoreServiceData.BlobDataRecord<T>;
+export type ServerBridgeApiDataDeleteKey<T> = (
+	key: string,
+	etag?: string,
+) => DataStoreServiceData.BlobDataRecord<T> | undefined;
 export type ServerBridgeApiDataSetLock = (
 	key: string,
-	mode?: AirshipDataStoreLockMode,
+	mode?: DataStoreServicePrisma.BlobLockMode,
 	stealFromOwnerId?: string,
 ) => boolean;
-export type ServerBridgeApiDataGetLockData = (key: string) => AirshipDataStoreLockData;
+export type ServerBridgeApiDataGetLockData = (key: string) => DataStoreServiceData.IsDataLocked;
 
-export interface DataStoreRecord<T> {
-	value: T;
-	metadata: {
-		etag: string;
-		createdAt: string;
-		lastUpdated: string | null;
-		lockData?: AirshipDataStoreLockedMetadata;
-	};
-}
+const client = new DataStoreServiceData.Client(UnityMakeRequest(AirshipUrl.DataStoreService));
 
 @Service({})
 export class ProtectedDataStoreService {
-	private readonly httpRetry = HttpRetryInstance();
-
 	constructor() {
 		if (!Game.IsServer()) return;
 
@@ -74,77 +67,34 @@ export class ProtectedDataStoreService {
 	}
 
 	public async GetKey<T>(key: string): Promise<ReturnType<ServerBridgeApiDataGetKey<T>>> {
-		const result = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/data/key/${key}`),
-			"GetDataKey",
-		);
-		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to get data key. Status Code: ${result.statusCode}.\n`, result.error);
-			throw result.error;
-		}
-
-		return json.decode<{ record: DataStoreRecord<T> | undefined }>(result.data).record;
+		const result = await client.get<T>({ key });
+		return result.record;
 	}
 
 	public async SetKey<T>(key: string, data: T, etag?: string): Promise<ReturnType<ServerBridgeApiDataSetKey<T>>> {
-		const query = etag ? `?etag=${etag}` : "";
-		const result = await this.httpRetry(
-			() => InternalHttpManager.PostAsync(
-				`${AirshipUrl.DataStoreService}/data/key/${key}${query}`,
-				json.encode(data),
-			),
-			"SetDataKey",
-		);
-		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to set data key. Status Code: ${result.statusCode}.\n`, result.error);
-			throw result.error;
-		}
-
-		return json.decode<{ record: DataStoreRecord<T> }>(result.data).record;
+		const result = await client.set<T>({ params: { key }, data, query: { etag } });
+		return result.record;
 	}
 
 	public async DeleteKey<T>(key: string, etag?: string): Promise<ReturnType<ServerBridgeApiDataDeleteKey<T>>> {
-		const query = etag ? `?etag=${etag}` : "";
-		const result = await this.httpRetry(
-			() => InternalHttpManager.DeleteAsync(`${AirshipUrl.DataStoreService}/data/key/${key}${query}`),
-			"DeleteDataKey",
-		);
-		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to delete data key. Status Code: ${result.statusCode}.\n`, result.error);
-			throw result.error;
-		}
-
-		return json.decode<{ record: DataStoreRecord<T> | undefined }>(result.data).record;
+		const result = await client.delete<T>({ params: { key }, query: { etag } });
+		return result.record;
 	}
 
 	public async SetLockForKey(
 		key: string,
-		lockMode?: AirshipDataStoreLockMode,
+		lockMode?: DataStoreServicePrisma.BlobLockMode,
 		stealFromOwnerId?: string,
 	): Promise<ReturnType<ServerBridgeApiDataSetLock>> {
-		const result = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			`${AirshipUrl.DataStoreService}/data/key/${key}/lock`,
-			json.encode({
-				lockMode,
-				forceIfWriterId: stealFromOwnerId,
-			}),
-		), "SetLock");
-		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to lock data key. Status Code: ${result.statusCode}.\n`, result.error);
-			throw result.error;
-		}
-
-		return json.decode<{ success: boolean }>(result.data).success;
+		const result = await client.setLock({
+			params: { key },
+			data: { forceIfWriterId: stealFromOwnerId, mode: lockMode },
+		});
+		return result.success;
 	}
 
 	public async GetLockDataForKey(key: string): Promise<ReturnType<ServerBridgeApiDataGetLockData>> {
-		const result = await this.httpRetry(() => InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/data/key/${key}/lock`), "GetLock");
-		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to get lock data for key. Status Code: ${result.statusCode}.\n`, result.error);
-			throw result.error;
-		}
-
-		return json.decode<AirshipDataStoreLockData>(result.data);
+		return await client.getLock({ key });
 	}
 
 	protected OnStart(): void {}

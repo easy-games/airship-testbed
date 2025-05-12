@@ -4,6 +4,8 @@ import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 import { Protected } from "@Easy/Core/Shared/Protected";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
@@ -13,6 +15,8 @@ interface ProfileManager {
 	UploadProfilePictureMobileYielding(previewImage: RawImage | undefined, ownerId: string): boolean;
 }
 declare const ProfileManager: ProfileManager;
+
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 export default class SettingsProfilePage extends AirshipBehaviour {
 	@Header("References")
@@ -80,19 +84,10 @@ export default class SettingsProfilePage extends AirshipBehaviour {
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.removeProfileImageBtn.gameObject, () => {
 				task.spawn(async () => {
-					const res = await HttpRetry(() => InternalHttpManager.PatchAsync(
-						AirshipUrl.GameCoordinator + "/users",
-						json.encode({
-							profileImageId: "",
-						}),
-					), "patch/game-coordinator/users");
-					if (res.success) {
-						Airship.Players.ClearProfilePictureCache(Game.localPlayer.userId);
-						Protected.User.localUser!.profileImageId = undefined;
-						this.UpdateProfilePicturePreviews(false);
-					} else {
-						Debug.LogError(res.error);
-					}
+					await client.users.update({ profileImageId: "" });
+					Airship.Players.ClearProfilePictureCache(Game.localPlayer.userId);
+					Protected.User.localUser!.profileImageId = undefined;
+					this.UpdateProfilePicturePreviews(false);
 				});
 			}),
 		);

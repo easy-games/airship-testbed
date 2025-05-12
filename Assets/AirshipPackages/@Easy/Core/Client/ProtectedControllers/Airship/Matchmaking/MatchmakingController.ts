@@ -1,9 +1,9 @@
-import { Group } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipMatchmaking";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { SocketController } from "../../Socket/SocketController";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { GameCoordinatorClient, GameCoordinatorGroups } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 
 export const enum MatchmakingControllerBridgeTopics {
 	GetGroupForSelf = "MatchmakingController:GetGroupForSelf",
@@ -11,13 +11,13 @@ export const enum MatchmakingControllerBridgeTopics {
 	OnGroupChange = "MatchmakingController:OnGroupChange",
 }
 
-export type ClientBridgeApiGetGroupForSelf = () => Group | undefined;
+export type ClientBridgeApiGetGroupForSelf = () => GameCoordinatorGroups.Group | undefined;
 export type ClientBridgeApiLeaveQueue = () => undefined;
+
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Controller({})
 export class ProtectedMatchmakingController {
-	private readonly httpRetry = HttpRetryInstance();
-
 	constructor(private readonly socketController: SocketController) {
 		if (!Game.IsClient()) return;
 
@@ -29,44 +29,18 @@ export class ProtectedMatchmakingController {
 			this.LeaveQueue().expect(),
 		);
 
-		this.socketController.On<Group>("game-coordinator/group-change", (data) => {
+		this.socketController.On<GameCoordinatorGroups.Group>("game-coordinator/group-change", (data) => {
 			contextbridge.invoke(MatchmakingControllerBridgeTopics.OnGroupChange, LuauContext.Game, data);
 		});
 	}
 
 	public async GetCurrentGroup(): Promise<ReturnType<ClientBridgeApiGetGroupForSelf>> {
-		const currentGameId = Game.gameId;
-		const result = await this.httpRetry(() => InternalHttpManager.GetAsync(
-			`${AirshipUrl.GameCoordinator}/groups/game-id/${currentGameId}/self`,
-		), "GetCurrentGroup");
-
-		if (!result.success || result.statusCode > 299) {
-			warn(
-				`An error occurred while trying to find group for game ${currentGameId}. Status Code: ${result.statusCode}.\n`,
-				result.error,
-			);
-			throw result.error;
-		}
-
-		return json.decode<{ group: Group | undefined }>(result.data).group;
+		const result = await client.groups.getGameGroupForSelf({ gameId: Game.gameId });
+		return result.group;
 	}
 
 	public async LeaveQueue(): Promise<ReturnType<ClientBridgeApiLeaveQueue>> {
-		const currentGameId = Game.gameId;
-		const result = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			`${AirshipUrl.GameCoordinator}/matchmaking/queue/leave/self`,
-			json.encode({
-				gameId: currentGameId,
-			}),
-		), "LeaveQueue");
-
-		if (!result.success || result.statusCode > 299) {
-			warn(
-				`An error occurred while trying to leave queue for game ${currentGameId}. Status Code: ${result.statusCode}.\n`,
-				result.error,
-			);
-			throw result.error;
-		}
+		await client.matchmaking.leaveQueueSelf({ gameId: Game.gameId });
 	}
 
 	protected OnStart(): void {}

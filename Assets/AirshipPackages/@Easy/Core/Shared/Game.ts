@@ -1,7 +1,7 @@
-import { GameDto } from "../Client/Components/HomePage/API/GamesAPI";
 import { CoreContext } from "./CoreClientContext";
 import { CoreNetwork } from "./CoreNetwork";
 import { Player } from "./Player/Player";
+import { ContentServiceGames } from "./TypePackages/content-service-types";
 import { RunUtil } from "./Util/RunUtil";
 import { Signal } from "./Util/Signal";
 
@@ -70,13 +70,13 @@ export class Game {
 
 	public static startingScene = Bridge.GetActiveScene();
 
-	public static gameData: GameDto | undefined;
-	public static onGameDataLoaded = new Signal<GameDto>();
+	public static gameData: ContentServiceGames.PublicGameWithOrg | undefined;
+	public static onGameDataLoaded = new Signal<ContentServiceGames.PublicGameWithOrg>();
 
 	/**
 	 * Yields until {@link Game.gameData} has been loaded.
 	 */
-	public static WaitForGameData(): GameDto {
+	public static WaitForGameData(): ContentServiceGames.PublicGameWithOrg {
 		if (this.gameData) return this.gameData;
 		return this.onGameDataLoaded.Wait();
 	}

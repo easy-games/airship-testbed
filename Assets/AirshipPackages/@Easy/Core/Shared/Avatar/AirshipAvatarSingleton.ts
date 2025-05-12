@@ -1,6 +1,6 @@
 import { Airship } from "../Airship";
-import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Singleton } from "../Flamework";
+import { ContentServiceOutfits } from "../TypePackages/content-service-types";
 import { ColorUtil } from "../Util/ColorUtil";
 /**
  * Access using {@link Airship.Avatar}. Avatar singleton provides utilities for working with visual elements of a character
@@ -124,7 +124,7 @@ export class AirshipAvatarSingleton {
 	 */
 	public async LoadOutfit(
 		builder: AccessoryBuilder,
-		outfit: OutfitDto,
+		outfit: ContentServiceOutfits.SelectedOutfit,
 		options: { removeOldClothingAccessories?: boolean } = {},
 	) {
 		// print("Loading outfit: " + inspect(outfit) + " " + debug.traceback());
@@ -171,7 +171,7 @@ export class AirshipAvatarSingleton {
 		builder.UpdateCombinedMesh();
 	}
 
-	public async GetUserEquippedOutfitDto(userId: string): Promise<OutfitDto | undefined> {
+	public async GetUserEquippedOutfitDto(userId: string): Promise<ContentServiceOutfits.SelectedOutfit | undefined> {
 		return new Promise((resolve) => {
 			const outfit = contextbridge.invoke("Avatar:GetUserEquippedOutfitDto", LuauContext.Protected, userId);
 			resolve(outfit);

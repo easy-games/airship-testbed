@@ -2,10 +2,10 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Game } from "@Easy/Core/Shared/Game";
-import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
+import { ContentServiceOutfits } from "../TypePackages/content-service-types";
 
 /** @internal */
 export interface PlayerDto {
@@ -57,7 +57,7 @@ export class Player {
 	 *
 	 * OutfitDto's can be passed to Character.LoadUserOutfit()
 	 */
-	public selectedOutfit: OutfitDto | undefined;
+	public selectedOutfit: ContentServiceOutfits.SelectedOutfit | undefined;
 	public outfitLoaded = false;
 
 	private hasDevPermissions = false;

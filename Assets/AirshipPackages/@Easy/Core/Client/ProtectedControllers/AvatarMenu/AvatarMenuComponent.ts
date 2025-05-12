@@ -1,8 +1,3 @@
-import {
-	GearCategory,
-	GearInstanceDto,
-	OutfitDto,
-} from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
 import AvatarViewComponent from "@Easy/Core/Shared/Avatar/AvatarViewComponent";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
@@ -26,6 +21,8 @@ import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import AvatarRenderComponent from "./AvatarRenderComponent";
 import OutfitButton from "./Outfit/OutfitButtonComponent";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
+import { ContentServiceGear, ContentServiceOutfits } from "@Easy/Core/Shared/TypePackages/content-service-types";
+import { GearCategory } from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -77,7 +74,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private activeSubIndex = -1;
 	private activeAccessories = new Map<AccessorySlot, string>();
 	//private currentSlot: AccessorySlot = AccessorySlot.Root;
-	private viewedOutfit?: OutfitDto;
+	private viewedOutfit?: ContentServiceOutfits.SelectedOutfit;
 	private currentUserOutfitIndex = -1;
 	private currentContentBtns: { id: string; button: AvatarAccessoryBtn }[] = [];
 	private clientId = -1;
@@ -444,7 +441,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.mainMenu?.avatarView?.CameraFocusSlot(slot);
 	}
 
-	private async DisplayClothingItems(clothing: GearInstanceDto[]) {
+	private async DisplayClothingItems(clothing: ContentServiceGear.SelectedGearItem[]) {
 		// const ownedItems = await Platform.Client.Inventory.GetItems({ queryType: "tag", tags: ["Clothing"] });
 		// for (let item of ownedItems) {
 		// 	const clothing = Clothing.DownloadYielding(item.classId, "airId", "versionHash");
@@ -519,7 +516,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private AddItemButton(clothingDto: GearInstanceDto, onClickCallback: () => void) {
+	private AddItemButton(clothingDto: ContentServiceGear.SelectedGearItem, onClickCallback: () => void) {
 		//let newButton = PoolManager.SpawnObject(this.itemButtonTemplate, this.mainContentHolder);
 		const newButton = Object.Instantiate(this.itemButtonTemplate!, this.mainContentHolder!);
 		this.itemButtonBin.AddEngineEventConnection(
@@ -585,7 +582,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private async SelectItem(clothingDto: GearInstanceDto): Promise<void> {
+	private async SelectItem(clothingDto: ContentServiceGear.SelectedGearItem): Promise<void> {
 		if (clothingDto.class.gear.airAssets.size() === 0 || !clothingDto.class.gear.subcategory) return;
 		const slot = Protected.Avatar.GearClothingSubcategoryToSlot(clothingDto.class.gear.subcategory);
 
@@ -624,7 +621,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		);
 	}
 
-	private async SelectFaceItem(face: GearInstanceDto): Promise<void> {
+	private async SelectFaceItem(face: ContentServiceGear.SelectedGearItem): Promise<void> {
 		if (!face) {
 			print("Missing face item: " + face);
 			return;

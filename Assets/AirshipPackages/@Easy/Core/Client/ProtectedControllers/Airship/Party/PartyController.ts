@@ -1,10 +1,11 @@
-import { Party } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SocketController } from "../../Socket/SocketController";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+import { GameCoordinatorClient, GameCoordinatorParty } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 
 export const enum PartyControllerBridgeTopics {
 	GetParty = "PartyController:GetParty",
@@ -13,14 +14,16 @@ export const enum PartyControllerBridgeTopics {
 	OnPartyChange = "PartyController:OnPartyChange",
 }
 
-export type ClientBridgeApiGetParty = () => Party;
+export type ClientBridgeApiGetParty = () => GameCoordinatorParty.PartySnapshot;
 export type ClientBridgeApiInviteToParty = (userId: string) => void;
 export type ClientBridgeApiRemoveFromParty = (userId: string) => void;
+
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Controller({})
 export class ProtectedPartyController {
 	private readonly httpRetry = HttpRetryInstance();
-	public readonly onPartyChange = new Signal<Party>();
+	public readonly onPartyChange = new Signal<GameCoordinatorParty.PartySnapshot>();
 
 	constructor(private readonly socketController: SocketController) {
 		if (!Game.IsClient()) return;
@@ -42,57 +45,20 @@ export class ProtectedPartyController {
 	}
 
 	public async GetParty(): Promise<ReturnType<ClientBridgeApiGetParty>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/parties/party/self`),
-			"GetParty",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get user pary. Status Code: ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		return json.decode<{ party: Party }>(res.data).party;
+		const result = await client.party.getSelfParty();
+		return result.party;
 	}
 
 	public async InviteToParty(userId: string) {
-		const res = await this.httpRetry(
-			() =>
-				InternalHttpManager.PostAsync(
-					AirshipUrl.GameCoordinator + "/parties/party/invite",
-					json.encode({
-						userToAdd: userId,
-					}),
-				),
-			"InviteToParty",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to invite user to party. Status Code: ${res.statusCode}\n`, res.error);
-			throw res.error;
-		}
+		await client.party.inviteUser({ userToAdd: userId });
 	}
 
 	public async RemoveFromParty(userId: string) {
-		const res = await this.httpRetry(
-			() =>
-				InternalHttpManager.PostAsync(
-					AirshipUrl.GameCoordinator + "/parties/party/remove",
-					json.encode({
-						userToRemove: userId,
-					}),
-				),
-			"RemoveFromParty",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to remove user from party. Status Code: ${res.statusCode}\n`, res.error);
-			throw res.error;
-		}
+		await client.party.removeFromParty({ userToRemove: userId });
 	}
 
 	protected OnStart(): void {
-		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
+		this.socketController.On<GameCoordinatorParty.PartySnapshot>("game-coordinator/party-update", (data) => {
 			this.onPartyChange.Fire(data);
 
 			// We only invoke when in-game because it's the only time a callback is registered.

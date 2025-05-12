@@ -13,6 +13,10 @@ import { OnFixedUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { ProtectedUserController } from "../Airship/User/UserController";
 import { AuthController } from "../Auth/AuthController";
 import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { GameCoordinatorUsers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { isUnityMakeRequestError, UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+
+const usersClient = new GameCoordinatorUsers.Client(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Controller({})
 export class ChangeUsernameController {
@@ -76,14 +80,9 @@ export class ChangeUsernameController {
 
 	public SubmitNameChange(): void {
 		const text = this.inputField.text;
-		const res = this.httpRetry(() => HttpManager.PatchAsync(
-			AirshipUrl.GameCoordinator + "/users",
-			json.encode({
-				username: text,
-			}),
-			this.authController.GetAuthHeaders(),
-		), "ChangeUsername").expect();
-		if (res.success) {
+
+		try {
+			usersClient.update({ username: text }).expect();
 			this.SetResponseText("success", `Success! Your name has been changed to "${text}".`);
 			(
 				Game.localPlayer as unknown as {
@@ -93,9 +92,11 @@ export class ChangeUsernameController {
 			Dependency<ProtectedUserController>().FetchLocalUser();
 			this.submitButton.SetActive(false);
 			this.submitButtonDisabled.SetActive(true);
-		} else if (res.statusCode === 409) {
-			this.SetResponseText("error", `The username "${text}" is taken.`);
-		} else {
+		} catch (err) {
+			if (isUnityMakeRequestError(err) && err.status === 409) {
+				this.SetResponseText("error", `The username "${text}" is taken.`);
+				return;
+			}
 			this.SetResponseText("error", "Failed to change username.");
 		}
 	}
@@ -120,21 +121,16 @@ export class ChangeUsernameController {
 		}
 
 		this.lastCheckedUsername = username;
-		const res = this.httpRetry(
-			() => InternalHttpManager.GetAsync(
-				AirshipUrl.GameCoordinator + "/users/availability?username=" + username,
-			),
-			"CheckUsername"
-		).expect();
-		if (res.success) {
-			const data = json.decode<{ available: boolean }>(res.data);
+
+		try {
+			const data = usersClient.getUsernameAvailability({ username }).expect();
 			if (data.available) {
 				this.SetResponseText("success", "");
 			} else {
 				this.SetResponseText("none", "");
 			}
-		} else {
-			this.SetResponseText("none", "");
+		} catch {
+			this.SetResponseText("error", "Error checking availability.");
 		}
 	}
 

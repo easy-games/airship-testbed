@@ -5,7 +5,6 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
-import { GamesDto } from "../../../Client/Components/HomePage/API/GamesAPI";
 import SortComponent from "../../../Client/Components/HomePage/Sort/SortComponent";
 import { SortId } from "../../../Client/Components/HomePage/Sort/SortId";
 import { MainMenuBlockSingleton } from "../../../Client/ProtectedControllers//Settings/MainMenuBlockSingleton";
@@ -18,6 +17,10 @@ import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 import DiscordHero from "./DiscordHero";
 import MainMenuPageComponent from "./MainMenuPageComponent";
 import { HttpRetry } from "../../Http/HttpRetry";
+import { ContentServiceGames } from "../../TypePackages/content-service-types";
+import { UnityMakeRequest } from "../../TypePackages/UnityMakeRequest";
+
+const gamesClient = new ContentServiceGames.Client(UnityMakeRequest(AirshipUrl.ContentService));
 
 export default class HomePageComponent extends MainMenuPageComponent {
 	public mainContent!: Transform;
@@ -118,11 +121,14 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	}
 
 	public FetchGames(): void {
-		const res = HttpRetry(
-			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games?platform=" + ProtectedUtil.GetLocalPlatformString()),
-			"get/content-service/games",
-		).expect();
-		if (!res.success) {
+		let res;
+		try {
+			res = gamesClient
+				.getGameSorts({
+					platform: ProtectedUtil.GetLocalPlatformString() as ContentServiceGames.DeploymentPlatform,
+				})
+				.expect();
+		} catch {
 			// warn("Failed to fetch games. Retrying in 1s..");
 			this.bin.Add(
 				SetTimeout(1, () => {
@@ -132,8 +138,6 @@ export default class HomePageComponent extends MainMenuPageComponent {
 			return;
 		}
 
-		const data = json.decode<GamesDto>(res.data);
-
 		let sorts: SortId[];
 		sorts = ObjectUtils.keys(this.sorts);
 
@@ -142,7 +146,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		for (let sortId of sorts) {
 			const sortComponent = this.sorts.get(sortId)!;
 
-			let games = data[sortId].filter(
+			let games = res[sortId].filter(
 				(g) => g.lastVersionUpdate !== undefined && !blockSingleton.IsGameIdBlocked(g.id),
 			);
 			games = games.filter((g) => {
@@ -163,7 +167,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		}
 
 		task.spawn(() => {
-			Dependency<SearchSingleton>().AddGames([...data.recentlyUpdated, ...data.popular]);
+			Dependency<SearchSingleton>().AddGames([...res.recentlyUpdated, ...res.popular]);
 		});
 
 		if (!this.addedDiscordHero && !Game.IsMobile()) {

@@ -9,7 +9,10 @@ import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import AirshipButton from "../AirshipButton";
-import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { isUnityMakeRequestError, UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 export default class SendFriendRequestModal extends AirshipBehaviour {
 	public inputField!: TMP_InputField;
@@ -75,29 +78,34 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 			successfulRecommendations++;
 			const rec = sortedRecommendations[i];
 
-			Dependency<ProtectedUserController>().GetUserById(rec.uid).then((user) => {
-				if (!user) {
-					Dependency<RecommendedFriendsController>().DeleteRecommendation(rec.uid);
-					return;
-				}
+			Dependency<ProtectedUserController>()
+				.GetUserById(rec.uid)
+				.then((user) => {
+					if (!user) {
+						Dependency<RecommendedFriendsController>().DeleteRecommendation(rec.uid);
+						return;
+					}
 
-				if (!this.recentlyPlayedWithText.activeInHierarchy) {
-					this.recentlyPlayedWithText.SetActive(true);
-					this.recommendationsContent.SetActive(true);
-					NativeTween.GraphicAlpha(this.recentlyPlayedWithText, 1, 0.06).SetUseUnscaledTime(true);
-				}
+					if (!this.recentlyPlayedWithText.activeInHierarchy) {
+						this.recentlyPlayedWithText.SetActive(true);
+						this.recommendationsContent.SetActive(true);
+						NativeTween.GraphicAlpha(this.recentlyPlayedWithText, 1, 0.06).SetUseUnscaledTime(true);
+					}
 
-				const cardObj = Object.Instantiate(this.recommendationCardPrefab, this.recommendationsContent.transform);
-				const card = cardObj.GetAirshipComponent<FriendRecommendation>()!;
-				card.Setup(user, rec.recommendation.context);
-				
-				cardObj.transform.parent = this.recommendationsContent.transform;
-				cardObj.transform.localScale = new Vector3(1, 1, 1); // Why is this necessary? Defaults to 0.5,0.5,0.5
-				cardObj.transform.localScale = Vector3.zero;
-				cardObj.GetComponent<CanvasGroup>()!.alpha = 0;
-				NativeTween.CanvasGroupAlpha(cardObj, 1, 0.06).SetUseUnscaledTime(true);
-				NativeTween.LocalScale(cardObj, Vector3.one, 0.06).SetUseUnscaledTime(true);
-			});
+					const cardObj = Object.Instantiate(
+						this.recommendationCardPrefab,
+						this.recommendationsContent.transform,
+					);
+					const card = cardObj.GetAirshipComponent<FriendRecommendation>()!;
+					card.Setup(user, rec.recommendation.context);
+
+					cardObj.transform.parent = this.recommendationsContent.transform;
+					cardObj.transform.localScale = new Vector3(1, 1, 1); // Why is this necessary? Defaults to 0.5,0.5,0.5
+					cardObj.transform.localScale = Vector3.zero;
+					cardObj.GetComponent<CanvasGroup>()!.alpha = 0;
+					NativeTween.CanvasGroupAlpha(cardObj, 1, 0.06).SetUseUnscaledTime(true);
+					NativeTween.LocalScale(cardObj, Vector3.one, 0.06).SetUseUnscaledTime(true);
+				});
 			remainingRecommendations--;
 		}
 	}
@@ -109,17 +117,13 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 		let username = this.inputField.text;
 		if (username === "") return;
 
-		const res = HttpRetry(
-			() => InternalHttpManager.PostAsync(
-				AirshipUrl.GameCoordinator + "/friends/requests/self",
-				json.encode({
-					username,
-				}),
-			),
-			"post/game-coordinator/friends/requests/self",
-		).expect();
-		if (!res.success) {
-			if (res.statusCode === 422) {
+		try {
+			client.friends.requestFriendship({ username }).expect();
+			this.responseText.text = `Done! You sent a friend request to <b>${username}</b>`;
+			this.responseText.color = ColorUtil.HexToColor("#3BE267");
+			this.inputOutlineGO.SetActive(true);
+		} catch (err) {
+			if (isUnityMakeRequestError(err) && err.status === 422) {
 				this.responseText.text = `Player "${username}\" does not exist.`;
 			} else {
 				this.responseText.text = "Failed to send friend requst. Please try again later.";
@@ -128,12 +132,7 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 			task.unscaledDelay(0, () => {
 				this.inputField.Select();
 			});
-			return;
 		}
-
-		this.responseText.text = `Done! You sent a friend request to <b>${username}</b>`;
-		this.responseText.color = ColorUtil.HexToColor("#3BE267");
-		this.inputOutlineGO.SetActive(true);
 	}
 
 	override OnDestroy(): void {

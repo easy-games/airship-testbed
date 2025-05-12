@@ -1,7 +1,8 @@
-import { AirshipPlayerLocation, PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { GameCoordinatorClient, GameCoordinatorUsers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum UserServiceBridgeTopics {
@@ -11,12 +12,21 @@ export const enum UserServiceBridgeTopics {
 	GetUserLocationsById = "UserService:GetUserLocationsById",
 }
 
-export type ServerBridgeApiGetUserByUsername = (username: string) => PublicUser | undefined;
-export type ServerBridgeApiGetUserById = (userId: string) => PublicUser | undefined;
-export type ServerBridgeApiGetUsersById = (userIds: string[], strict?: boolean) => { [userId: string]: PublicUser };
+export type ServerBridgeApiGetUserByUsername = (username: string) => GameCoordinatorUsers.PublicUser | undefined;
+export type ServerBridgeApiGetUserById = (userId: string) => GameCoordinatorUsers.PublicUser | undefined;
+export type ServerBridgeApiGetUsersById = (
+	userIds: string[],
+	strict?: boolean,
+) => { [userId: string]: GameCoordinatorUsers.PublicUser };
 export type ServerBridgeApiGetUserLocationsById = (userIds: string[]) => {
-	[userId: string]: AirshipPlayerLocation | undefined;
+	[userId: string]:
+		| {
+				serverId: string;
+		  }
+		| undefined;
 };
+
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Service({})
 export class ProtectedUserService {
@@ -52,33 +62,13 @@ export class ProtectedUserService {
 	}
 
 	public async GetUserByUsername(username: string): Promise<ReturnType<ServerBridgeApiGetUserByUsername>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(
-				`${AirshipUrl.GameCoordinator}/users/user?descriminatedUsername=${username}`,
-			),
-			"GetUserByUsername",
-		)
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		return json.decode<{ user: PublicUser | undefined }>(res.data).user;
+		const result = await client.users.findByUsername({ username });
+		return result.user;
 	}
 
 	public async GetUserById(userId: string): Promise<ReturnType<ServerBridgeApiGetUserById>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`),
-			"GetUserById",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		return json.decode<{ user: PublicUser | undefined }>(res.data).user;
+		const result = await client.users.getByUid({ uid: userId });
+		return result.user;
 	}
 
 	public async GetUsersById(
@@ -89,26 +79,8 @@ export class ProtectedUserService {
 			return {};
 		}
 
-		const res = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(
-				`${AirshipUrl.GameCoordinator}/users?users[]=${userIds.join("&users[]=")}&strict=${
-					strict ? "true" : "false"
-				}`,
-			),
-			"GetUsersById",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		if (!res.data) {
-			return {};
-		}
-
-		let array = json.decode(res.data) as PublicUser[];
-		const map: Record<string, PublicUser> = {};
+		let array = await client.users.find({ users: userIds, strict });
+		const map: Record<string, GameCoordinatorUsers.PublicUser> = {};
 		array.forEach((u) => (map[u.uid] = u));
 
 		return map;
@@ -119,23 +91,7 @@ export class ProtectedUserService {
 			return {};
 		}
 
-		const res = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(
-				`${AirshipUrl.GameCoordinator}/user-locations?userIds[]=${userIds.join("&userIds[]=")}`,
-			),
-			"GetUserLocationsById",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get user locations. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		if (!res.data) {
-			return {};
-		}
-
-		return json.decode(res.data) as ReturnType<ServerBridgeApiGetUserLocationsById>;
+		return await client.userLocations.find({ userIds });
 	}
 
 	protected OnStart(): void {}

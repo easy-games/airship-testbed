@@ -1,11 +1,11 @@
-import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
+import { ContentServiceOutfits } from "../TypePackages/content-service-types";
 
 export interface CharacterDto {
 	id: number;
 	netId: number;
 	displayName?: string;
 	ownerConnectionId?: number;
-	outfitDto?: OutfitDto;
+	outfitDto?: ContentServiceOutfits.SelectedOutfit;
 	health: number;
 	maxHealth: number;
 }

@@ -6,7 +6,7 @@ import {
 	ServerBridgeApiPerformTrade,
 } from "@Easy/Core/Server/ProtectedServices/Airship/PlatformInventory/PlatformInventoryService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipPlatformInventory";
+import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ContentServiceItems, ContentServicePrisma } from "@Easy/Core/Shared/TypePackages/content-service-types";

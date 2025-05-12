@@ -7,12 +7,9 @@ import {
 	ServerBridgeApiDataSetLock,
 } from "@Easy/Core/Server/ProtectedServices/Airship/DataStore/DataStoreService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import {
-	AirshipDataStoreLockData,
-	AirshipDataStoreLockMode,
-} from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipDataStore";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { DataStoreServiceData, DataStoreServicePrisma } from "@Easy/Core/Shared/TypePackages/data-store-types";
 
 /**
  * The Data Store provides simple key/value persistent storage.
@@ -225,7 +222,7 @@ export class AirshipDataStoreService {
 	 */
 	public async LockKeyOrStealSafely(
 		key: string,
-		mode: AirshipDataStoreLockMode = AirshipDataStoreLockMode.ReadWrite,
+		mode: DataStoreServicePrisma.BlobLockMode = "READ_WRITE",
 	): Promise<boolean> {
 		this.CheckKey(key);
 
@@ -285,7 +282,7 @@ export class AirshipDataStoreService {
 	 */
 	public async LockKey(
 		key: string,
-		mode: AirshipDataStoreLockMode = AirshipDataStoreLockMode.ReadWrite,
+		mode: DataStoreServicePrisma.BlobLockMode = "READ_WRITE",
 		stealFromOwnerId?: string,
 	): Promise<boolean> {
 		this.CheckKey(key);
@@ -335,7 +332,7 @@ export class AirshipDataStoreService {
 	 * @param key The key to get lock information for.
 	 * @returns The lock information.
 	 */
-	public async GetLockDataForKey(key: string): Promise<AirshipDataStoreLockData> {
+	public async GetLockDataForKey(key: string): Promise<DataStoreServiceData.IsDataLocked> {
 		this.CheckKey(key);
 
 		if (Game.IsEditor()) {

@@ -1,8 +1,7 @@
-import { LeaderboardUpdate } from "@Easy/Core/Server/Services/Airship/Leaderboard/AirshipLeaderboardService";
-import { RankData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipLeaderboard";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { DataStoreServiceLeaderboards } from "@Easy/Core/Shared/TypePackages/data-store-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum LeaderboardServiceBridgeTopics {
@@ -14,8 +13,14 @@ export const enum LeaderboardServiceBridgeTopics {
 	GetRankRange = "LeaderboardService:GetRankRange",
 }
 
-export type ServerBridgeApiLeaderboardUpdate = (leaderboardName: string, update: LeaderboardUpdate) => void;
-export type ServerBridgeApiLeaderboardGetRank = (leaderboardName: string, id: string) => RankData | undefined;
+export type ServerBridgeApiLeaderboardUpdate = (
+	leaderboardName: string,
+	update: DataStoreServiceLeaderboards.PushStatsType,
+) => void;
+export type ServerBridgeApiLeaderboardGetRank = (
+	leaderboardName: string,
+	id: string,
+) => DataStoreServiceLeaderboards.Ranking | undefined;
 export type ServerBridgeApiLeaderboardDeleteEntry = (leaderboardName: string, id: string) => void;
 export type ServerBridgeApiLeaderboardDeleteEntries = (leaderboardName: string, ids: string[]) => void;
 export type ServerBridgeApiLeaderboardResetLeaderboard = (leaderboardName: string) => void;
@@ -23,12 +28,12 @@ export type ServerBridgeApiLeaderboardGetRankRange = (
 	leaderboardName: string,
 	startIndex?: number,
 	count?: number,
-) => RankData[];
+) => DataStoreServiceLeaderboards.Ranking[];
+
+const client = new DataStoreServiceLeaderboards.Client(UnityMakeRequest(AirshipUrl.DataStoreService));
 
 @Service({})
 export class ProtectedLeaderboardService {
-	private readonly httpRetry = HttpRetryInstance();
-
 	constructor() {
 		if (!Game.IsServer()) return;
 
@@ -77,85 +82,36 @@ export class ProtectedLeaderboardService {
 
 	public async Update(
 		name: string,
-		update: LeaderboardUpdate,
+		update: DataStoreServiceLeaderboards.PushStatsType,
 	): Promise<ReturnType<ServerBridgeApiLeaderboardUpdate>> {
-		const result = await this.httpRetry(
-			() => InternalHttpManager.PostAsync(
-				`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/stats`,
-				json.encode({
-					stats: update,
-				}),
-			),
-			"UpdateLeaderboard",
-		);
-
-		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to update leaderboard. Status Code: ${result.statusCode}.\n`, result.error);
-			throw result.error;
-		}
+		await client.postLeaderboardStats({
+			params: {
+				leaderboardId: name,
+			},
+			data: {
+				stats: update,
+			},
+		});
 	}
 
 	public async GetRank(name: string, id: string): Promise<ReturnType<ServerBridgeApiLeaderboardGetRank>> {
-		const result = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(
-				`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/id/${id}/ranking`,
-			),
-			"GetLeaderboardRank",
-		);
-		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to get leaderboard rank. Status Code: ${result.statusCode}.\n`, result.error);
-			throw result.error;
-		}
-
-		return json.decode<{ ranking: RankData | undefined }>(result.data).ranking;
+		const result = await client.getRanking({ leaderboardId: name, id });
+		return result.ranking;
 	}
 
 	public async DeleteEntry(name: string, id: string): Promise<ReturnType<ServerBridgeApiLeaderboardDeleteEntry>> {
-		const result = await this.httpRetry(
-			() => InternalHttpManager.DeleteAsync(
-				`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/id/${id}/stats`,
-			),
-			"DeleteLeaderboardEntry",
-		);
-
-		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to update leaderboard. Status Code: ${result.statusCode}.\n`, result.error);
-			throw result.error;
-		}
+		await client.deleteStat({ leaderboardId: name, id });
 	}
 
 	public async DeleteEntries(
 		name: string,
 		ids: string[],
 	): Promise<ReturnType<ServerBridgeApiLeaderboardDeleteEntries>> {
-		const result = await this.httpRetry(
-			() => InternalHttpManager.PostAsync(
-				`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/stats/batch-delete`,
-				json.encode({
-					ids,
-				}),
-			),
-			"DeleteLeaderboardEntries",
-		);
-
-		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to update leaderboard. Status Code: ${result.statusCode}.\n`, result.error);
-			throw result.error;
-		}
+		await client.deleteStats({ params: { leaderboardId: name }, data: { ids } });
 	}
 
 	public async ResetLeaderboard(name: string): Promise<ReturnType<ServerBridgeApiLeaderboardResetLeaderboard>> {
-		const result = await this.httpRetry(
-			() => InternalHttpManager.PostAsync(
-				`${AirshipUrl.DataStoreService}/leaderboards/game-id/${Game.gameId}/leaderboard-id/${name}/reset`,
-			),
-			"ResetLeaderboard",
-		);
-
-		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to reset leaderboard. Status Code: ${result.statusCode}.\n`, result.error);
-			throw result.error;
-		}
+		await client.resetLeaderboard({ leaderboardId: name, gameId: Game.gameId });
 	}
 
 	public async GetRankRange(
@@ -165,22 +121,15 @@ export class ProtectedLeaderboardService {
 	): Promise<ReturnType<ServerBridgeApiLeaderboardGetRankRange>> {
 		count = math.clamp(count, 1, 1000 - startIndex); // ensure they don't reach past 1000;
 
-		const result = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(
-				`${AirshipUrl.DataStoreService}/leaderboards/leaderboard-id/${name}/rankings?skip=${startIndex}&limit=${count}`,
-			),
-			"GetLeaderboardRankRange",
-		);
-		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to get leaderboard rankings. Status Code: ${result.statusCode}.\n`, result.error);
-			throw result.error;
-		}
+		const result = await client.getRankings({
+			params: { leaderboardId: name },
+			query: {
+				skip: startIndex,
+				limit: count,
+			},
+		});
 
-		if (!result.data) {
-			return [];
-		}
-
-		return json.decode(result.data) as RankData[];
+		return result;
 	}
 
 	protected OnStart(): void {}

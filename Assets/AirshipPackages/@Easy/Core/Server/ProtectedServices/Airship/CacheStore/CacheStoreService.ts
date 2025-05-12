@@ -1,6 +1,7 @@
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { DataStoreServiceCache, DataStoreServiceClient } from "@Easy/Core/Shared/TypePackages/data-store-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum CacheStoreServiceBridgeTopics {
@@ -9,22 +10,21 @@ export const enum CacheStoreServiceBridgeTopics {
 	SetKeyTTL = "CacheStore:SetKeyTTL",
 }
 
-export type ServerBridgeApiCacheGetKey<T> = (key: string, expireTimeSec?: number) => CacheStoreRecord<T> | undefined;
+export type ServerBridgeApiCacheGetKey<T> = (
+	key: string,
+	expireTimeSec?: number,
+) => DataStoreServiceCache.CacheRecord<T> | undefined;
 export type ServerBridgeApiCacheSetKey<T> = (
 	key: string,
 	data: T,
 	expireTimeSec: number,
-) => CacheStoreRecord<T> | undefined;
+) => DataStoreServiceCache.CacheRecord<T> | undefined;
 export type ServerBridgeApiCacheSetKeyTTL = (key: string, expireTimeSec: number) => number;
 
-export interface CacheStoreRecord<T> {
-	value: T;
-	metadata: {};
-}
+const client = new DataStoreServiceCache.Client(UnityMakeRequest(AirshipUrl.DataStoreService));
 
 @Service({})
 export class ProtectedCacheStoreService {
-	private readonly httpRetry = HttpRetryInstance();
 	/** Reflects backend data-store-service settings */
 	private maxExpireSec = 60 * 60 * 24; // 24h in seconds
 
@@ -54,18 +54,9 @@ export class ProtectedCacheStoreService {
 	}
 
 	public async GetKey<T>(key: string, expireTimeSec?: number): Promise<ReturnType<ServerBridgeApiCacheGetKey<T>>> {
-		const expireTime = expireTimeSec !== undefined ? math.clamp(expireTimeSec, 0, this.maxExpireSec) : undefined;
-		const query = expireTime !== undefined ? `?expiry=${expireTime}` : "";
-		const result = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(`${AirshipUrl.DataStoreService}/cache/key/${key}${query}`),
-			"GetCacheKey",
-		);
-		if (!result.success) {
-			warn(`Unable to get cache key. Status Code: ${result.statusCode}.\n`, result.error);
-			throw result.error;
-		}
-
-		return json.decode<{ record: CacheStoreRecord<T> | undefined }>(result.data).record;
+		const expiry = expireTimeSec !== undefined ? math.clamp(expireTimeSec, 0, this.maxExpireSec) : undefined;
+		const result = await client.get<T>({ params: { key }, query: { expiry } });
+		return result.record;
 	}
 
 	public async SetKey<T>(
@@ -73,39 +64,26 @@ export class ProtectedCacheStoreService {
 		data: T,
 		expireTimeSec: number,
 	): Promise<ReturnType<ServerBridgeApiCacheSetKey<T>>> {
-		const expireTime = math.clamp(expireTimeSec, 0, this.maxExpireSec);
-		const result = await this.httpRetry(
-			() => InternalHttpManager.PostAsync(
-				`${AirshipUrl.DataStoreService}/cache/key/${key}?expiry=${expireTime}`,
-				json.encode(data),
-			),
-			"SetCacheKey",
-		);
-		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to set cache key. Status Code: ${result.statusCode}.\n`, result.error);
-			throw result.error;
-		}
-
-		return json.decode<{ record: CacheStoreRecord<T> | undefined }>(result.data).record;
+		const expiry = expireTimeSec !== undefined ? math.clamp(expireTimeSec, 0, this.maxExpireSec) : undefined;
+		const result = await client.set<T>({
+			data: {
+				__airship_dto_version__: 1,
+				data,
+			} satisfies DataStoreServiceCache.SetBodyDto<T>,
+			params: {
+				key,
+			},
+			query: {
+				expiry,
+			},
+		});
+		return result.record;
 	}
 
 	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<ReturnType<ServerBridgeApiCacheSetKeyTTL>> {
-		const result = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(
-				`${AirshipUrl.DataStoreService}/cache/key/${key}/ttl?expiry=${math.clamp(
-					expireTimeSec,
-					0,
-					this.maxExpireSec,
-				)}`,
-			),
-			"SetCacheKeyTTL",
-		);
-		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to set cache key ttl. Status Code: ${result.statusCode}.\n`, result.error);
-			throw result.error;
-		}
-
-		return (json.decode(result.data) as { ttl: number }).ttl;
+		const expiry = math.clamp(expireTimeSec, 0, this.maxExpireSec);
+		await client.get({ params: { key }, query: { expiry } }).then((record) => record.record);
+		return expiry;
 	}
 
 	protected OnStart(): void {}

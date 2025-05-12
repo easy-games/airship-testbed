@@ -1,4 +1,3 @@
-import { OutfitDto } from "./Airship/Types/Outputs/AirshipPlatformInventory";
 import { CharacterDto } from "./Character/CharacterDto";
 import { InventoryDto } from "./Inventory/Inventory";
 import { ItemStackDto } from "./Inventory/ItemStack";
@@ -6,6 +5,7 @@ import { NetworkFunction } from "./Network/NetworkFunction";
 import { NetworkSignal } from "./Network/NetworkSignal";
 import { PlayerDto } from "./Player/Player";
 import { TeamDto } from "./Team/Team";
+import { ContentServiceOutfits } from "./TypePackages/content-service-types";
 
 export const CoreNetwork = {
 	ClientToServer: {
@@ -76,9 +76,9 @@ export const CoreNetwork = {
 			SetHealth: new NetworkSignal<[characterId: number, health: number]>("AirshipSetHealth"),
 			SetNametag: new NetworkSignal<[characterId: number, displayName: string]>("AirshipSetNametag"),
 			SetMaxHealth: new NetworkSignal<[characterId: number, health: number]>("AirshipSetMaxHealth"),
-			ChangeOutfit: new NetworkSignal<[characterId: number, outfitDto: OutfitDto | undefined]>(
-				"AirshipChangeOutfit",
-			),
+			ChangeOutfit: new NetworkSignal<
+				[characterId: number, outfitDto: ContentServiceOutfits.SelectedOutfit | undefined]
+			>("AirshipChangeOutfit"),
 			SetCharacter: new NetworkSignal<[connectionId: number, characterId: number | undefined]>(
 				"AirshipSetCharacter",
 			),

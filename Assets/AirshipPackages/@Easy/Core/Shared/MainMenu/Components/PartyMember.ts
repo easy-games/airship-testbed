@@ -1,12 +1,12 @@
 import { ProtectedPartyController } from "@Easy/Core/Client/ProtectedControllers/Airship/Party/PartyController";
 import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
 import { Airship } from "../../Airship";
-import { PublicUser } from "../../Airship/Types/Outputs/AirshipUser";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
 import { Protected } from "../../Protected";
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI, HoverState } from "../../Util/CanvasAPI";
+import { GameCoordinatorUsers } from "../../TypePackages/game-coordinator-types";
 
 export default class PartyMember extends AirshipBehaviour {
 	@Header("References")
@@ -18,7 +18,7 @@ export default class PartyMember extends AirshipBehaviour {
 	public kickOverlay: GameObject;
 
 	public partyLeaderContainer!: GameObject;
-	private user!: PublicUser;
+	private user!: GameCoordinatorUsers.PublicUser;
 	private isLocalPlayerThePartyLeader = false;
 
 	/** Holds add friend button functionality */
@@ -45,7 +45,11 @@ export default class PartyMember extends AirshipBehaviour {
 		});
 	}
 
-	public SetUser(user: PublicUser, isUserLeader: boolean, isLocalPlayerThePartyLeader: boolean): void {
+	public SetUser(
+		user: GameCoordinatorUsers.PublicUser,
+		isUserLeader: boolean,
+		isLocalPlayerThePartyLeader: boolean,
+	): void {
 		this.isLocalPlayerThePartyLeader = isLocalPlayerThePartyLeader;
 		this.layoutElement.layoutPriority = isUserLeader ? 2 : 1;
 

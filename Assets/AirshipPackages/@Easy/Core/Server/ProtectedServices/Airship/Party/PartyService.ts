@@ -1,7 +1,7 @@
-import { GameServerPartyData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { GameCoordinatorClient, GameCoordinatorParty } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum PartyServiceBridgeTopics {
@@ -9,13 +9,13 @@ export const enum PartyServiceBridgeTopics {
 	GetPartyById = "PartyService:GetPartyById",
 }
 
-export type ServerBridgeApiGetPartyForUserId = (userId: string) => GameServerPartyData | undefined;
-export type ServerBridgeApiGetPartyById = (partyId: string) => GameServerPartyData | undefined;
+export type ServerBridgeApiGetPartyForUserId = (userId: string) => GameCoordinatorParty.GameParty | undefined;
+export type ServerBridgeApiGetPartyById = (partyId: string) => GameCoordinatorParty.GameParty | undefined;
+
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Service({})
 export class ProtectedPartyService {
-	private readonly httpRetry = HttpRetryInstance();
-
 	constructor() {
 		if (!Game.IsServer()) return;
 
@@ -32,31 +32,13 @@ export class ProtectedPartyService {
 	}
 
 	public async GetPartyForUserId(userId: string): Promise<ReturnType<ServerBridgeApiGetPartyForUserId>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/parties/uid/${userId}`),
-			"GetPartyForUserId",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get party for user. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		return json.decode<{ party: GameServerPartyData | undefined }>(res.data).party;
+		const result = await client.party.getUserParty({ uid: userId });
+		return result.party;
 	}
 
 	public async GetPartyById(partyId: string): Promise<ReturnType<ServerBridgeApiGetPartyById>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/parties/party-id/${partyId}`),
-			"GetPartyById",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get party for user. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		return json.decode<{ party: GameServerPartyData | undefined }>(res.data).party;
+		const result = await client.party.getParty({ partyId });
+		return result.party;
 	}
 
 	protected OnStart(): void {}
