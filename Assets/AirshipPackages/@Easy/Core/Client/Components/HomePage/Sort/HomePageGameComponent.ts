@@ -1,7 +1,8 @@
 import { TransferController } from "@Easy/Core/Client/ProtectedControllers//Transfer/TransferController";
+import { GameDto } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
 import DateParser from "@Easy/Core/Shared/DateParser";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
-import SearchSingleton, { SearchGame } from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
+import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -25,7 +26,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 
 	public shadow!: TrueShadow;
 
-	public gameDto!: SearchGame;
+	public gameDto!: GameDto;
 	public loadingOverlay!: GameObject;
 
 	@SerializeField()
@@ -76,7 +77,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		this.redirectDrag.redirectTarget = target;
 	}
 
-	public Init(gameDto: SearchGame, index: number) {
+	public Init(gameDto: GameDto, index: number) {
 		this.gameDto = gameDto;
 		this.index = index;
 		this.transform.gameObject.name = gameDto.name;

@@ -1,6 +1,6 @@
-import { SearchGame } from "./SearchSingleton";
+import { GameDto } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
 
 export interface SearchResultDto {
-	game?: SearchGame;
+	game?: GameDto;
 	friend?: never;
 }

@@ -1,7 +1,7 @@
+import { GameDto } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
 import DateParser from "@Easy/Core/Shared/DateParser";
 import { Controller, Service } from "@Easy/Core/Shared/Flamework/flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
 import { ContentServiceClient, ContentServiceGames } from "@Easy/Core/Shared/TypePackages/content-service-types";
 import { isUnityMakeRequestError, UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
@@ -10,16 +10,12 @@ import { ProtectedUtil } from "@Easy/Core/Shared/Util/ProtectedUtil";
 
 const contentServiceClient = new ContentServiceClient(UnityMakeRequest(AirshipUrl.ContentService));
 
-export type SearchGame = Omit<ContentServiceGames.AutocompleteSearchGame, "lastVersionUpdate"> & {
-	lastVersionUpdate?: string;
-};
-
 @Service({ loadOrder: -1000 })
 @Controller({ loadOrder: -1000 })
 // @Singleton()
 export default class SearchSingleton {
-	public games: SearchGame[] = [];
-	public myGames: SearchGame[] = [];
+	public games: GameDto[] = [];
+	public myGames: GameDto[] = [];
 	public myGamesIds = new Set<string>();
 
 	protected OnStart(): void {
@@ -33,7 +29,7 @@ export default class SearchSingleton {
 		}
 	}
 
-	public AddGames(dtos: SearchGame[]): void {
+	public AddGames(dtos: GameDto[]): void {
 		for (let dto of dtos) {
 			// update existing
 			let existing = this.games.find((g) => g.id === dto.id);

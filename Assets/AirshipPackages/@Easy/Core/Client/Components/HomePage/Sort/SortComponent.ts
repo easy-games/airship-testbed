@@ -3,7 +3,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import HomePageGameComponent from "./HomePageGameComponent";
-import { SearchGame } from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
+import { GameDto } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
 
 export default class SortComponent extends AirshipBehaviour {
 	public titleText!: GameObject;
@@ -13,7 +13,7 @@ export default class SortComponent extends AirshipBehaviour {
 	public gridLayoutGroup!: GridLayoutGroup;
 	public layoutElement!: LayoutElement;
 	public gameMap = new Map<string, HomePageGameComponent>();
-	@NonSerialized() public games: SearchGame[] = [];
+	@NonSerialized() public games: GameDto[] = [];
 
 	private bin = new Bin();
 
@@ -82,7 +82,7 @@ export default class SortComponent extends AirshipBehaviour {
 		}
 	}
 
-	public SetGames(games: SearchGame[], indexOffset: number): HomePageGameComponent[] {
+	public SetGames(games: GameDto[], indexOffset: number): HomePageGameComponent[] {
 		this.games = games;
 		this.titleText.gameObject.SetActive(games.size() > 0);
 
