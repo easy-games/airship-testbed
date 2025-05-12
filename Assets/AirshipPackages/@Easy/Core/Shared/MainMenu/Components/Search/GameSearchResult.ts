@@ -83,7 +83,6 @@ export default class GameSearchResult extends SearchResult {
 		const timeUpdatedSeconds = DateParser.FromISO(gameDto.lastVersionUpdate!);
 		const timeDiff = os.time() - timeUpdatedSeconds;
 		this.gameText.text =
-			// todo what do we actually want to do here when there's no org?
 			`${gameDto.organization?.name ?? ""}${playerCountText}  •  updated ` +
 			TimeUtil.FormatTimeAgo(timeDiff, { includeAgo: true }) +
 			`  •  ${gameDto.plays} plays`;
