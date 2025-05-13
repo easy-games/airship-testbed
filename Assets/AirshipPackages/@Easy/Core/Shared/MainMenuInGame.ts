@@ -16,7 +16,7 @@ import { AirshipUrl } from "./Util/AirshipUrl";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
 import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
-import { ContentServiceGames } from "./TypePackages/content-service-types";
+import { ContentServiceClient, ContentServiceGames } from "./TypePackages/content-service-types";
 import { UnityMakeRequest } from "./TypePackages/UnityMakeRequest";
 
 CoreRefs.Init();
@@ -107,7 +107,7 @@ if (Game.IsClient()) {
 	});
 }
 
-const gamesClient = new ContentServiceGames.Client(UnityMakeRequest(AirshipUrl.ContentService));
+const client = new ContentServiceClient(UnityMakeRequest(AirshipUrl.ContentService));
 
 task.spawn(async () => {
 	while (Game.gameId === undefined) {
@@ -115,7 +115,7 @@ task.spawn(async () => {
 		continue;
 	}
 	try {
-		const res = await gamesClient.getGameById({ params: { id: Game.gameId } });
+		const res = await client.games.getGameById({ params: { id: Game.gameId } });
 		Game.gameData = res.game;
 		if (Game.gameData) {
 			Game.onGameDataLoaded.Fire(Game.gameData);

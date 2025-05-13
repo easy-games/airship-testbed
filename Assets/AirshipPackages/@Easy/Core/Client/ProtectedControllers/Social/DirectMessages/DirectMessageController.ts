@@ -21,7 +21,6 @@ import { MainMenuController } from "../../MainMenuController";
 import { ProtectedFriendsController } from "../FriendsController";
 import { MainMenuPartyController } from "../MainMenuPartyController";
 import { DirectMessage } from "./DirectMessage";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { UserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
@@ -30,7 +29,6 @@ const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordin
 
 @Controller({})
 export class DirectMessageController {
-	private readonly httpRetry = HttpRetryInstance();
 	private incomingMessagePrefab = AssetBridge.Instance.LoadAsset(
 		"AirshipPackages/@Easy/Core/Prefabs/UI/Messages/IncomingMessage.prefab",
 	) as GameObject;

@@ -1,9 +1,9 @@
-import { GameCoordinatorTransfers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
-const client = new GameCoordinatorTransfers.Client(UnityMakeRequest(AirshipUrl.GameCoordinator));
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 export default class TransferToast extends AirshipBehaviour {
 	public gameName: TMP_Text;
@@ -23,7 +23,7 @@ export default class TransferToast extends AirshipBehaviour {
 		this.bin.Add(
 			this.cancelButton.onClick.Connect(() => {
 				task.spawn(async () => {
-					await client.cancelTransfer();
+					await client.transfers.cancelTransfer();
 					if (this.gameObject.activeInHierarchy) {
 						Object.Destroy(this.gameObject);
 					}
