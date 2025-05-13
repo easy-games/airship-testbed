@@ -1,7 +1,7 @@
 import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControllers//Social/FriendsController";
 import { Airship } from "@Easy/Core/Shared/Airship";
+import { AirshipUser } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
-import { GameCoordinatorUsers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 
@@ -11,12 +11,12 @@ export default class IncomingFriendRequestCard extends AirshipBehaviour {
 	public acceptButton!: Button;
 	public declineButton!: Button;
 
-	@NonSerialized() private user!: GameCoordinatorUsers.PublicUser;
+	@NonSerialized() private user!: AirshipUser;
 	private bin = new Bin();
 
 	override Start(): void {}
 
-	public Init(user: GameCoordinatorUsers.PublicUser): void {
+	public Init(user: AirshipUser): void {
 		this.user = user;
 		this.usernameText.text = user.username;
 

@@ -6,7 +6,7 @@ import { Game } from "../../Game";
 import { Protected } from "../../Protected";
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI, HoverState } from "../../Util/CanvasAPI";
-import { GameCoordinatorUsers } from "../../TypePackages/game-coordinator-types";
+import { AirshipUser } from "../../Airship/Types/AirshipUser";
 
 export default class PartyMember extends AirshipBehaviour {
 	@Header("References")
@@ -18,7 +18,7 @@ export default class PartyMember extends AirshipBehaviour {
 	public kickOverlay: GameObject;
 
 	public partyLeaderContainer!: GameObject;
-	private user!: GameCoordinatorUsers.PublicUser;
+	private user!: AirshipUser;
 	private isLocalPlayerThePartyLeader = false;
 
 	/** Holds add friend button functionality */
@@ -45,11 +45,7 @@ export default class PartyMember extends AirshipBehaviour {
 		});
 	}
 
-	public SetUser(
-		user: GameCoordinatorUsers.PublicUser,
-		isUserLeader: boolean,
-		isLocalPlayerThePartyLeader: boolean,
-	): void {
+	public SetUser(user: AirshipUser, isUserLeader: boolean, isLocalPlayerThePartyLeader: boolean): void {
 		this.isLocalPlayerThePartyLeader = isLocalPlayerThePartyLeader;
 		this.layoutElement.layoutPriority = isUserLeader ? 2 : 1;
 

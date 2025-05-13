@@ -1,6 +1,6 @@
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { DataStoreServiceCache, DataStoreServiceClient } from "@Easy/Core/Shared/TypePackages/data-store-types";
+import { DataStoreServiceCache } from "@Easy/Core/Shared/TypePackages/data-store-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 

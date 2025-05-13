@@ -5,8 +5,9 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { MainMenuPartyController } from "../Social/MainMenuPartyController";
 import { SocketController } from "../Socket/SocketController";
-import { GameCoordinatorClient, GameCoordinatorTransfers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+import { ConnectableGameServer } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
@@ -16,7 +17,7 @@ export class TransferController {
 
 	protected OnStart(): void {
 		this.socketController.On<{
-			gameServer: GameCoordinatorTransfers.GameServer;
+			gameServer: ConnectableGameServer;
 			gameId: string;
 			gameVersion: number;
 			requestTime: number;

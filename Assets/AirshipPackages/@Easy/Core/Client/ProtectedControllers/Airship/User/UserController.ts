@@ -7,8 +7,9 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { AuthController } from "../../Auth/AuthController";
 import { ProtectedFriendsController } from "../../Social/FriendsController";
-import { GameCoordinatorClient, GameCoordinatorUsers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { isUnityMakeRequestError, UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+import { AirshipUser } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 
 export const enum UserControllerBridgeTopics {
 	GetUserByUsername = "UserController:GetUserByUsername",
@@ -18,22 +19,22 @@ export const enum UserControllerBridgeTopics {
 	IsFriendsWith = "UserController:IsFriendsWith",
 }
 
-export type BridgeApiGetUserByUsername = (username: string) => GameCoordinatorUsers.PublicUser | undefined;
-export type BridgeApiGetUserById = (userId: string) => GameCoordinatorUsers.PublicUser | undefined;
+export type BridgeApiGetUserByUsername = (username: string) => AirshipUser | undefined;
+export type BridgeApiGetUserById = (userId: string) => AirshipUser | undefined;
 export type BridgeApiGetUsersById = (
 	userIds: string[],
 	strict?: boolean,
-) => { map: Record<string, GameCoordinatorUsers.PublicUser>; array: GameCoordinatorUsers.PublicUser[] };
-export type BridgeApiGetFriends = () => GameCoordinatorUsers.PublicUser[];
+) => { map: Record<string, AirshipUser>; array: AirshipUser[] };
+export type BridgeApiGetFriends = () => AirshipUser[];
 export type BrigdeApiIsFriendsWith = (userId: string) => boolean;
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Controller({})
 export class ProtectedUserController {
-	public localUser: GameCoordinatorUsers.PublicUser | undefined;
+	public localUser: AirshipUser | undefined;
 
-	public onLocalUserUpdated = new Signal<GameCoordinatorUsers.PublicUser>();
+	public onLocalUserUpdated = new Signal<AirshipUser>();
 	private localUserLoaded = false;
 
 	constructor(private readonly authController: AuthController) {
@@ -109,7 +110,7 @@ export class ProtectedUserController {
 		}
 
 		const array = await client.users.find({ users: userIds, strict });
-		const map: Record<string, GameCoordinatorUsers.PublicUser> = {};
+		const map: Record<string, AirshipUser> = {};
 		array.forEach((u) => (map[u.uid] = u));
 
 		return {
@@ -168,7 +169,7 @@ export class ProtectedUserController {
 		}
 	}
 
-	public WaitForLocalUser(): GameCoordinatorUsers.PublicUser {
+	public WaitForLocalUser(): AirshipUser {
 		while (!this.localUser) {
 			task.wait();
 		}

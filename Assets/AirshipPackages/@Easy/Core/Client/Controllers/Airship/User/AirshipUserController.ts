@@ -8,9 +8,9 @@ import {
 	UserControllerBridgeTopics,
 } from "@Easy/Core/Client/ProtectedControllers/Airship/User/UserController";
 import { Platform } from "@Easy/Core/Shared/Airship";
+import { AirshipUser } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { GameCoordinatorUsers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 
 /**
  * Provides access to user information.
@@ -20,7 +20,7 @@ export class AirshipUserController {
 	// Local cache of username (lowercase) -> user id
 	private usernameToUidCache = new Map<string, string>();
 	// Local cache of user id -> public user (if they exist)
-	private userCache = new Map<string, { user?: GameCoordinatorUsers.PublicUser }>();
+	private userCache = new Map<string, { user?: AirshipUser }>();
 
 	constructor() {
 		if (!Game.IsClient()) return;
@@ -38,10 +38,7 @@ export class AirshipUserController {
 	 * @returns A result with a user object. If success is true but data is undefined that means the request succeeded
 	 * but no user exists with the given id.
 	 */
-	public async GetUserByUsername(
-		username: string,
-		useLocalCache = true,
-	): Promise<GameCoordinatorUsers.PublicUser | undefined> {
+	public async GetUserByUsername(username: string, useLocalCache = true): Promise<AirshipUser | undefined> {
 		// First check local cache for user
 		if (useLocalCache) {
 			const uid = this.usernameToUidCache.get(username.lower());
@@ -82,10 +79,7 @@ export class AirshipUserController {
 	 * @returns A result with a user object. If success is true but data is undefined that means the request succeeded
 	 * but no user exists with the given id.
 	 */
-	public async GetUserById(
-		userId: string,
-		useLocalCache = true,
-	): Promise<GameCoordinatorUsers.PublicUser | undefined> {
+	public async GetUserById(userId: string, useLocalCache = true): Promise<AirshipUser | undefined> {
 		// First check local cache for user
 		if (useLocalCache) {
 			const existing = this.userCache.get(userId);
@@ -121,8 +115,8 @@ export class AirshipUserController {
 		userIds: string[],
 		strict = true,
 	): Promise<{
-		map: Record<string, GameCoordinatorUsers.PublicUser>;
-		array: GameCoordinatorUsers.PublicUser[];
+		map: Record<string, AirshipUser>;
+		array: AirshipUser[];
 	}> {
 		return contextbridge.invoke<BridgeApiGetUsersById>(
 			UserControllerBridgeTopics.GetUsersById,
@@ -136,7 +130,7 @@ export class AirshipUserController {
 	 * Gets the users friends list.
 	 * @returns A list of friends.
 	 */
-	public async GetFriends(): Promise<GameCoordinatorUsers.PublicUser[]> {
+	public async GetFriends(): Promise<AirshipUser[]> {
 		return contextbridge.invoke<BridgeApiGetFriends>(UserControllerBridgeTopics.GetFriends, LuauContext.Protected);
 	}
 
@@ -153,7 +147,7 @@ export class AirshipUserController {
 		);
 	}
 
-	private AddUserToCache(userId: string, user?: GameCoordinatorUsers.PublicUser) {
+	private AddUserToCache(userId: string, user?: AirshipUser) {
 		if (user) {
 			this.usernameToUidCache.set(user.username.lower(), user.uid);
 		}

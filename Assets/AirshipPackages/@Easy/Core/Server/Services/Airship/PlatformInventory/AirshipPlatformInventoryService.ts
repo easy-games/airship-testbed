@@ -6,10 +6,13 @@ import {
 	ServerBridgeApiPerformTrade,
 } from "@Easy/Core/Server/ProtectedServices/Airship/PlatformInventory/PlatformInventoryService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
+import {
+	AirshipItem,
+	ItemQueryParameters,
+	Transaction,
+} from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { ContentServiceItems, ContentServicePrisma } from "@Easy/Core/Shared/TypePackages/content-service-types";
 
 /**
  * Allows management of platform inventory for a player. These functions manipluate a persistent inventory
@@ -41,7 +44,7 @@ export class AirshipPlatformInventoryService {
 	/**
 	 * Grants a user the provided item.
 	 */
-	public async GrantItem(userId: string, classId: string): Promise<ContentServiceItems.SelectedItem> {
+	public async GrantItem(userId: string, classId: string): Promise<AirshipItem> {
 		return contextbridge.invoke<ServerBridgeApiGrantItem>(
 			PlatformInventoryServiceBridgeTopics.GrantItem,
 			LuauContext.Protected,
@@ -53,7 +56,7 @@ export class AirshipPlatformInventoryService {
 	/**
 	 * Deletes the given item instance from the users inventory.
 	 */
-	public async DeleteItem(instanceId: string): Promise<ContentServiceItems.SelectedItem> {
+	public async DeleteItem(instanceId: string): Promise<AirshipItem> {
 		return contextbridge.invoke<ServerBridgeApiDeleteItem>(
 			PlatformInventoryServiceBridgeTopics.DeleteItem,
 			LuauContext.Protected,
@@ -64,7 +67,7 @@ export class AirshipPlatformInventoryService {
 	/**
 	 * Gets all items in a users inventory.
 	 */
-	public async GetItems(userId: string, query?: ItemQueryParameters): Promise<ContentServiceItems.SelectedItem[]> {
+	public async GetItems(userId: string, query?: ItemQueryParameters): Promise<AirshipItem[]> {
 		return contextbridge.invoke<ServerBridgeApiGetItems>(
 			PlatformInventoryServiceBridgeTopics.GetItems,
 			LuauContext.Protected,
@@ -83,7 +86,7 @@ export class AirshipPlatformInventoryService {
 	public async PerformTrade(
 		user1: { uid: string; itemInstanceIds: string[] },
 		user2: { uid: string; itemInstanceIds: string[] },
-	): Promise<ContentServicePrisma.Transaction> {
+	): Promise<Transaction> {
 		return contextbridge.invoke<ServerBridgeApiPerformTrade>(
 			PlatformInventoryServiceBridgeTopics.PerformTrade,
 			LuauContext.Protected,

@@ -16,7 +16,6 @@ import { ProtectedUtil } from "../../Util/ProtectedUtil";
 import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 import DiscordHero from "./DiscordHero";
 import MainMenuPageComponent from "./MainMenuPageComponent";
-import { HttpRetry } from "../../Http/HttpRetry";
 import { ContentServiceGames } from "../../TypePackages/content-service-types";
 import { UnityMakeRequest } from "../../TypePackages/UnityMakeRequest";
 

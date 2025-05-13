@@ -17,7 +17,7 @@ import { Levenshtein } from "../Util/Strings/Levenshtein";
 import { OnUpdate } from "../Util/Timer";
 import { BridgedPlayer } from "./BridgedPlayer";
 import { Player, PlayerDto } from "./Player";
-import { ContentServiceOutfits } from "../TypePackages/content-service-types";
+import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
 
 /*
  * This class is instantiated in BOTH Game and Protected context.
@@ -373,7 +373,7 @@ export class AirshipPlayersSingleton {
 		// disable to test networking:
 		// ignoreCache = true;
 
-		const SetOutfit = (outfitDto: ContentServiceOutfits.SelectedOutfit | undefined) => {
+		const SetOutfit = (outfitDto: AirshipOutfit | undefined) => {
 			player.selectedOutfit = outfitDto;
 			player.outfitLoaded = true;
 			// print("SetOutfit. userId: " + player.userId + ", outfit: " + inspect(outfitDto));
@@ -388,7 +388,7 @@ export class AirshipPlayersSingleton {
 			//print("Using editor cache: " + player.userId);
 			const data = EditorSessionState.GetString("player_" + player.userId + "_outfit5");
 			if (data && data !== "") {
-				const outfitDto = json.decode<ContentServiceOutfits.SelectedOutfit>(data);
+				const outfitDto = json.decode<AirshipOutfit>(data);
 				if (outfitDto) {
 					SetOutfit(outfitDto);
 					return true;

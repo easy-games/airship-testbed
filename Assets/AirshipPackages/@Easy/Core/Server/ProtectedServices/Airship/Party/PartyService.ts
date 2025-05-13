@@ -1,6 +1,7 @@
+import { GameParty } from "@Easy/Core/Shared/Airship/Types/AirshipParty";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { GameCoordinatorClient, GameCoordinatorParty } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
@@ -9,8 +10,8 @@ export const enum PartyServiceBridgeTopics {
 	GetPartyById = "PartyService:GetPartyById",
 }
 
-export type ServerBridgeApiGetPartyForUserId = (userId: string) => GameCoordinatorParty.GameParty | undefined;
-export type ServerBridgeApiGetPartyById = (partyId: string) => GameCoordinatorParty.GameParty | undefined;
+export type ServerBridgeApiGetPartyForUserId = (userId: string) => GameParty | undefined;
+export type ServerBridgeApiGetPartyById = (partyId: string) => GameParty | undefined;
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 

@@ -2,8 +2,9 @@ import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { SocketController } from "../../Socket/SocketController";
-import { GameCoordinatorClient, GameCoordinatorGroups } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+import { Group } from "@Easy/Core/Shared/Airship/Types/Matchmaking";
 
 export const enum MatchmakingControllerBridgeTopics {
 	GetGroupForSelf = "MatchmakingController:GetGroupForSelf",
@@ -11,7 +12,7 @@ export const enum MatchmakingControllerBridgeTopics {
 	OnGroupChange = "MatchmakingController:OnGroupChange",
 }
 
-export type ClientBridgeApiGetGroupForSelf = () => GameCoordinatorGroups.Group | undefined;
+export type ClientBridgeApiGetGroupForSelf = () => Group | undefined;
 export type ClientBridgeApiLeaveQueue = () => undefined;
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
@@ -29,7 +30,7 @@ export class ProtectedMatchmakingController {
 			this.LeaveQueue().expect(),
 		);
 
-		this.socketController.On<GameCoordinatorGroups.Group>("game-coordinator/group-change", (data) => {
+		this.socketController.On<Group>("game-coordinator/group-change", (data) => {
 			contextbridge.invoke(MatchmakingControllerBridgeTopics.OnGroupChange, LuauContext.Game, data);
 		});
 	}

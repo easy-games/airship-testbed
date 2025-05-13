@@ -32,10 +32,10 @@ import { DirectMessageController } from "./DirectMessages/DirectMessageControlle
 import { SocialNotificationType } from "./SocialNotificationType";
 import {
 	GameCoordinatorClient,
-	GameCoordinatorUsers,
 	GameCoordinatorUserStatus,
 } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+import { AirshipUser, UserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 
 interface PendingSocialNotification {
 	type: SocialNotificationType;
@@ -50,14 +50,14 @@ const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordin
 
 @Controller({})
 export class ProtectedFriendsController {
-	public friends: GameCoordinatorUsers.PublicUser[] = [];
-	public incomingFriendRequests: GameCoordinatorUsers.PublicUser[] = [];
-	public outgoingFriendRequests: GameCoordinatorUsers.PublicUser[] = [];
-	public friendStatuses: GameCoordinatorUserStatus.UserStatusData[] = [];
+	public friends: AirshipUser[] = [];
+	public incomingFriendRequests: AirshipUser[] = [];
+	public outgoingFriendRequests: AirshipUser[] = [];
+	public friendStatuses: UserStatusData[] = [];
 	private renderedFriendUids = new Set<string>();
 	private statusText = "";
 	private friendBinMap = new Map<string, Bin>();
-	public friendStatusChanged = new Signal<GameCoordinatorUserStatus.UserStatusData>();
+	public friendStatusChanged = new Signal<UserStatusData>();
 	private customGameTitle: string | undefined;
 
 	private socialNotification!: SocialNotificationComponent;
@@ -267,31 +267,28 @@ export class ProtectedFriendsController {
 			this.FetchFriends();
 		});
 
-		this.socketController.On<GameCoordinatorUserStatus.UserStatusData[]>(
-			"game-coordinator/friend-status-update-multi",
-			(data) => {
-				// print("status updates: " + json.encode(data));
-				let lukeOnSteam = data.find((d) => d.usernameLower === "luke_on_steam");
-				if (lukeOnSteam) {
-					CoreLogger.Log("luke: " + json.encode(lukeOnSteam));
-				}
+		this.socketController.On<UserStatusData[]>("game-coordinator/friend-status-update-multi", (data) => {
+			// print("status updates: " + json.encode(data));
+			let lukeOnSteam = data.find((d) => d.usernameLower === "luke_on_steam");
+			if (lukeOnSteam) {
+				CoreLogger.Log("luke: " + json.encode(lukeOnSteam));
+			}
 
-				for (const newFriend of data) {
-					const existing = this.friendStatuses.find((f) => f.userId === newFriend.userId);
-					if (existing) {
-						ObjectUtils.assign(existing, newFriend);
-						this.friendStatusChanged.Fire(existing);
-					} else {
-						this.friendStatuses.push(newFriend);
-						this.friendStatusChanged.Fire(newFriend);
-					}
+			for (const newFriend of data) {
+				const existing = this.friendStatuses.find((f) => f.userId === newFriend.userId);
+				if (existing) {
+					ObjectUtils.assign(existing, newFriend);
+					this.friendStatusChanged.Fire(existing);
+				} else {
+					this.friendStatuses.push(newFriend);
+					this.friendStatusChanged.Fire(newFriend);
 				}
-				this.UpdateFriendsList();
+			}
+			this.UpdateFriendsList();
 
-				const saveRaw = json.encode(this.friendStatuses);
-				StateManager.SetString("main-menu:friend-statuses", saveRaw);
-			},
-		);
+			const saveRaw = json.encode(this.friendStatuses);
+			StateManager.SetString("main-menu:friend-statuses", saveRaw);
+		});
 
 		this.socketController.On("game-coordinator/status-update-request", (data) => {
 			this.SendStatusUpdateYielding();
@@ -300,7 +297,7 @@ export class ProtectedFriendsController {
 		this.Setup();
 	}
 
-	public SetIncomingFriendRequests(friendRequests: GameCoordinatorUsers.PublicUser[]): void {
+	public SetIncomingFriendRequests(friendRequests: AirshipUser[]): void {
 		this.incomingFriendRequests = friendRequests;
 
 		const count = friendRequests.size();
@@ -330,15 +327,15 @@ export class ProtectedFriendsController {
 		});
 	}
 
-	public FuzzySearchFriend(name: string): GameCoordinatorUsers.PublicUser | undefined {
+	public FuzzySearchFriend(name: string): AirshipUser | undefined {
 		return undefined;
 	}
 
-	public GetFriendByUsername(username: string): GameCoordinatorUsers.PublicUser | undefined {
+	public GetFriendByUsername(username: string): AirshipUser | undefined {
 		return this.friends.find((f) => f.username.lower() === username.lower());
 	}
 
-	public GetFriendById(uid: string): GameCoordinatorUsers.PublicUser | undefined {
+	public GetFriendById(uid: string): AirshipUser | undefined {
 		return this.friends.find((u) => u.uid === uid);
 	}
 
@@ -656,12 +653,12 @@ export class ProtectedFriendsController {
 		}
 	}
 
-	public GetFriendStatus(uid: string): GameCoordinatorUserStatus.UserStatusData | undefined {
+	public GetFriendStatus(uid: string): UserStatusData | undefined {
 		return this.friendStatuses.find((f) => f.userId === uid);
 	}
 
 	public UpdateFriendStatusUI(
-		friend: GameCoordinatorUserStatus.UserStatusData,
+		friend: UserStatusData,
 		refs: GameObjectReferences,
 		config: {
 			loadImage: boolean;

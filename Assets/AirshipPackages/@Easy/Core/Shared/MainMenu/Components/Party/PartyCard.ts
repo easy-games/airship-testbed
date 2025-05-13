@@ -10,7 +10,7 @@ import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import FriendCard from "../Friends/FriendCard";
-import { GameCoordinatorUserStatus } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 
 export default class PartyCard extends AirshipBehaviour {
 	public layoutElement!: LayoutElement;
@@ -91,7 +91,7 @@ export default class PartyCard extends AirshipBehaviour {
 		// this.defaultContents.SetActive(hovering === false);
 	}
 
-	public UpdateInfo(userStatus: GameCoordinatorUserStatus.UserStatusData | undefined) {
+	public UpdateInfo(userStatus: UserStatusData | undefined) {
 		const party = Dependency<MainMenuPartyController>().party;
 		const isLeader = party?.leader === Protected.User.localUser?.uid;
 

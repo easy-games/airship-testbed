@@ -1,11 +1,11 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { GameCoordinatorGroups } from "../TypePackages/game-coordinator-types";
+import { Group } from "../Airship/Types/Matchmaking";
 
 @Singleton({})
 export class AirshipSettingsSingleton {
-	public readonly onGroupChange: Signal<GameCoordinatorGroups.Group> = new Signal();
+	public readonly onGroupChange: Signal<Group> = new Signal();
 
 	private leaveMatchBtnCallback: (() => void) | undefined;
 

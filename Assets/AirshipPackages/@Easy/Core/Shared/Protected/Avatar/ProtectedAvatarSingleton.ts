@@ -8,13 +8,9 @@ import { AirshipUrl } from "../../Util/AirshipUrl";
 import { ColorUtil } from "../../Util/ColorUtil";
 import { RandomUtil } from "../../Util/RandomUtil";
 import { Signal } from "../../Util/Signal";
-import {
-	ContentServiceClient,
-	ContentServiceGear,
-	ContentServiceOutfits,
-} from "../../TypePackages/content-service-types";
+import { ContentServiceClient, ContentServiceOutfits } from "../../TypePackages/content-service-types";
 import { isUnityMakeRequestError, UnityMakeRequest } from "../../TypePackages/UnityMakeRequest";
-import { GearClothingSubcategory } from "../../Airship/Types/AirshipPlatformInventory";
+import { AirshipGearItem, AirshipOutfit, GearClothingSubcategory } from "../../Airship/Types/AirshipPlatformInventory";
 
 const contentServiceClient = new ContentServiceClient(UnityMakeRequest(AirshipUrl.ContentService));
 
@@ -24,9 +20,9 @@ export class ProtectedAvatarSingleton {
 	public isInventoryLoaded = false;
 	public onInventoryLoaded = new Signal();
 
-	public outfits: ContentServiceOutfits.SelectedOutfit[] = [];
-	public ownedClothing: ContentServiceGear.SelectedGearItem[] = [];
-	public equippedOutfit: ContentServiceOutfits.SelectedOutfit | undefined;
+	public outfits: AirshipOutfit[] = [];
+	public ownedClothing: AirshipGearItem[] = [];
+	public equippedOutfit: AirshipOutfit | undefined;
 
 	private readonly httpRetry = HttpRetryInstance();
 
@@ -79,7 +75,7 @@ export class ProtectedAvatarSingleton {
 
 		const promises: Promise<void>[] = [];
 
-		let loadedOutfitFromBackend: ContentServiceOutfits.SelectedOutfit | undefined;
+		let loadedOutfitFromBackend: AirshipOutfit | undefined;
 
 		// Get all owned clothing and map them to usable values
 		promises.push(
@@ -183,11 +179,11 @@ export class ProtectedAvatarSingleton {
 		return `${AirshipUrl.CDN}/images/${imageId}.png`;
 	}
 
-	public async GetAllOutfits(): Promise<ContentServiceOutfits.SelectedOutfit[] | undefined> {
+	public async GetAllOutfits(): Promise<AirshipOutfit[] | undefined> {
 		return await contentServiceClient.outfits.getOutfits();
 	}
 
-	public async GetEquippedOutfit(): Promise<ContentServiceOutfits.SelectedOutfit | undefined> {
+	public async GetEquippedOutfit(): Promise<AirshipOutfit | undefined> {
 		try {
 			const result = await contentServiceClient.outfits.getActiveOutfit();
 			return result.outfit;
@@ -199,7 +195,7 @@ export class ProtectedAvatarSingleton {
 		}
 	}
 
-	public async GetUserEquippedOutfit(userId: string): Promise<ContentServiceOutfits.SelectedOutfit | undefined> {
+	public async GetUserEquippedOutfit(userId: string): Promise<AirshipOutfit | undefined> {
 		try {
 			const result = await contentServiceClient.outfits.getUserActiveOutfit({ uid: userId });
 			return result.outfit;
@@ -211,7 +207,7 @@ export class ProtectedAvatarSingleton {
 		}
 	}
 
-	public async GetAvatarOutfit(outfitId: string): Promise<ContentServiceOutfits.SelectedOutfit | undefined> {
+	public async GetAvatarOutfit(outfitId: string): Promise<AirshipOutfit | undefined> {
 		try {
 			const result = await contentServiceClient.outfits.getOutfit({ outfitId });
 			return result.outfit;

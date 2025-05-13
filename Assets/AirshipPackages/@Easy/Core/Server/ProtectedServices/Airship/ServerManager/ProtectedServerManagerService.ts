@@ -2,10 +2,9 @@ import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { ShutdownService } from "../../Shutdown/ShutdownService";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
-import { GameCoordinatorClient, GameCoordinatorServers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import { AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
+import { AccessMode, AirshipServer, AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 
 export const enum ServerManagerServiceBridgeTopics {
 	CreateServer = "ServerManagerService:CreateServer",
@@ -27,15 +26,15 @@ export const enum ServerManagerServiceBridgeTopics {
 	GetRegions = "ServerManagerService:GetRegions",
 }
 
-export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => GameCoordinatorServers.PublicServerData;
+export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => AirshipServer;
 export type ServerBridgeApiGetServers = (serverIds: string[]) => {
-	[serverId: string]: GameCoordinatorServers.PublicServerData | undefined;
+	[serverId: string]: AirshipServer | undefined;
 };
 export type ServerBridgeApiShutdownServer = () => void;
 export type ServerBridgeApiListServer = (config?: { name?: string; description?: string }) => boolean;
 export type ServerBridgeApiDelistServer = () => boolean;
-export type ServerBridgeApiGetServerList = (page?: number) => { entries: GameCoordinatorServers.PublicServerData[] };
-export type ServerBridgeApiSetAccessMode = (mode: GameCoordinatorServers.AccessMode) => boolean;
+export type ServerBridgeApiGetServerList = (page?: number) => { entries: AirshipServer[] };
+export type ServerBridgeApiSetAccessMode = (mode: AccessMode) => boolean;
 export type ServerBridgeApiGetGameConfig<T> = () => T | undefined;
 export type ServerBridgeApiGetAllowedPlayers = () => Readonly<string[]>;
 export type ServerBridgeApiHasAllowedPlayer = (userId: string) => boolean;
@@ -189,9 +188,7 @@ export class ProtectedServerManagerService {
 		return await client.servers.getServerList({ params: { gameId: Game.gameId }, query: { page } });
 	}
 
-	public async SetAccessMode(
-		mode: GameCoordinatorServers.AccessMode,
-	): Promise<ReturnType<ServerBridgeApiSetAccessMode>> {
+	public async SetAccessMode(mode: AccessMode): Promise<ReturnType<ServerBridgeApiSetAccessMode>> {
 		const res = await AgonesCore.Agones.SetLabel("AccessMode", mode);
 		return res;
 	}

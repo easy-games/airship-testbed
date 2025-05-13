@@ -1,7 +1,7 @@
+import type { AirshipGameWithOrg } from "./Airship/Types/AirshipGame";
 import { CoreContext } from "./CoreClientContext";
 import { CoreNetwork } from "./CoreNetwork";
 import { Player } from "./Player/Player";
-import { ContentServiceGames } from "./TypePackages/content-service-types";
 import { RunUtil } from "./Util/RunUtil";
 import { Signal } from "./Util/Signal";
 
@@ -70,13 +70,13 @@ export class Game {
 
 	public static startingScene = Bridge.GetActiveScene();
 
-	public static gameData: ContentServiceGames.PublicGameWithOrg | undefined;
-	public static onGameDataLoaded = new Signal<ContentServiceGames.PublicGameWithOrg>();
+	public static gameData: AirshipGameWithOrg | undefined;
+	public static onGameDataLoaded = new Signal<AirshipGameWithOrg>();
 
 	/**
 	 * Yields until {@link Game.gameData} has been loaded.
 	 */
-	public static WaitForGameData(): ContentServiceGames.PublicGameWithOrg {
+	public static WaitForGameData(): AirshipGameWithOrg {
 		if (this.gameData) return this.gameData;
 		return this.onGameDataLoaded.Wait();
 	}

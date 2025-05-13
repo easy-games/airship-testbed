@@ -1,7 +1,8 @@
+import { AirshipServer, AirshipServerWithFriends } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
-import { GameCoordinatorClient, GameCoordinatorServers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
@@ -10,8 +11,8 @@ export const enum ServerListControllerBridgeTopics {
 	GetFriendServers = "ServerListController:GetFriendServers",
 }
 
-export type ClientBridgeApiGetServerList = (page?: number) => { entries: GameCoordinatorServers.PublicServerData[] };
-export type ClientBridgeApiGetFriendServers = () => { entries: GameCoordinatorServers.ServerListEntryWithFriends[] };
+export type ClientBridgeApiGetServerList = (page?: number) => { entries: AirshipServer[] };
+export type ClientBridgeApiGetFriendServers = () => { entries: AirshipServerWithFriends[] };
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 

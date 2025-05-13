@@ -1,11 +1,11 @@
-import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
+import {
+	AirshipItem,
+	ItemQueryParameters,
+	Transaction,
+} from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import {
-	ContentServiceClient,
-	ContentServiceItems,
-	ContentServicePrisma,
-} from "@Easy/Core/Shared/TypePackages/content-service-types";
+import { ContentServiceClient } from "@Easy/Core/Shared/TypePackages/content-service-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
@@ -16,16 +16,13 @@ export const enum PlatformInventoryServiceBridgeTopics {
 	PerformTrade = "PlatformInventoryService:PerformTrade",
 }
 
-export type ServerBridgeApiGrantItem = (userId: string, classId: string) => ContentServiceItems.SelectedItem;
-export type ServerBridgeApiDeleteItem = (instanceId: string) => ContentServiceItems.SelectedItem;
-export type ServerBridgeApiGetItems = (
-	userId: string,
-	query?: ItemQueryParameters,
-) => ContentServiceItems.SelectedItem[];
+export type ServerBridgeApiGrantItem = (userId: string, classId: string) => AirshipItem;
+export type ServerBridgeApiDeleteItem = (instanceId: string) => AirshipItem;
+export type ServerBridgeApiGetItems = (userId: string, query?: ItemQueryParameters) => AirshipItem[];
 export type ServerBridgeApiPerformTrade = (
 	user1: { uid: string; itemInstanceIds: string[] },
 	user2: { uid: string; itemInstanceIds: string[] },
-) => ContentServicePrisma.Transaction;
+) => Transaction;
 
 const client = new ContentServiceClient(UnityMakeRequest(AirshipUrl.ContentService));
 

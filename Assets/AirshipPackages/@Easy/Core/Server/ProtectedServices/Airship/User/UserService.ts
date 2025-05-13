@@ -1,7 +1,8 @@
+import { AirshipUser } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
-import { GameCoordinatorClient, GameCoordinatorUsers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
@@ -12,12 +13,9 @@ export const enum UserServiceBridgeTopics {
 	GetUserLocationsById = "UserService:GetUserLocationsById",
 }
 
-export type ServerBridgeApiGetUserByUsername = (username: string) => GameCoordinatorUsers.PublicUser | undefined;
-export type ServerBridgeApiGetUserById = (userId: string) => GameCoordinatorUsers.PublicUser | undefined;
-export type ServerBridgeApiGetUsersById = (
-	userIds: string[],
-	strict?: boolean,
-) => { [userId: string]: GameCoordinatorUsers.PublicUser };
+export type ServerBridgeApiGetUserByUsername = (username: string) => AirshipUser | undefined;
+export type ServerBridgeApiGetUserById = (userId: string) => AirshipUser | undefined;
+export type ServerBridgeApiGetUsersById = (userIds: string[], strict?: boolean) => { [userId: string]: AirshipUser };
 export type ServerBridgeApiGetUserLocationsById = (userIds: string[]) => {
 	[userId: string]:
 		| {
@@ -80,7 +78,7 @@ export class ProtectedUserService {
 		}
 
 		let array = await client.users.find({ users: userIds, strict });
-		const map: Record<string, GameCoordinatorUsers.PublicUser> = {};
+		const map: Record<string, AirshipUser> = {};
 		array.forEach((u) => (map[u.uid] = u));
 
 		return map;

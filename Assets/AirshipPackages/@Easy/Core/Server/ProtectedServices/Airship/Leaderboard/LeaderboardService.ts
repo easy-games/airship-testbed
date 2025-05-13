@@ -1,3 +1,4 @@
+import { Ranking, UpdateStatsData } from "@Easy/Core/Shared/Airship/Types/AirshipLeaderboards";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { DataStoreServiceLeaderboards } from "@Easy/Core/Shared/TypePackages/data-store-types";
@@ -13,14 +14,8 @@ export const enum LeaderboardServiceBridgeTopics {
 	GetRankRange = "LeaderboardService:GetRankRange",
 }
 
-export type ServerBridgeApiLeaderboardUpdate = (
-	leaderboardName: string,
-	update: DataStoreServiceLeaderboards.PushStatsType,
-) => void;
-export type ServerBridgeApiLeaderboardGetRank = (
-	leaderboardName: string,
-	id: string,
-) => DataStoreServiceLeaderboards.Ranking | undefined;
+export type ServerBridgeApiLeaderboardUpdate = (leaderboardName: string, update: UpdateStatsData) => void;
+export type ServerBridgeApiLeaderboardGetRank = (leaderboardName: string, id: string) => Ranking | undefined;
 export type ServerBridgeApiLeaderboardDeleteEntry = (leaderboardName: string, id: string) => void;
 export type ServerBridgeApiLeaderboardDeleteEntries = (leaderboardName: string, ids: string[]) => void;
 export type ServerBridgeApiLeaderboardResetLeaderboard = (leaderboardName: string) => void;
@@ -28,7 +23,7 @@ export type ServerBridgeApiLeaderboardGetRankRange = (
 	leaderboardName: string,
 	startIndex?: number,
 	count?: number,
-) => DataStoreServiceLeaderboards.Ranking[];
+) => Ranking[];
 
 const client = new DataStoreServiceLeaderboards.Client(UnityMakeRequest(AirshipUrl.DataStoreService));
 
@@ -80,10 +75,7 @@ export class ProtectedLeaderboardService {
 		);
 	}
 
-	public async Update(
-		name: string,
-		update: DataStoreServiceLeaderboards.PushStatsType,
-	): Promise<ReturnType<ServerBridgeApiLeaderboardUpdate>> {
+	public async Update(name: string, update: UpdateStatsData): Promise<ReturnType<ServerBridgeApiLeaderboardUpdate>> {
 		await client.postLeaderboardStats({
 			params: {
 				leaderboardId: name,

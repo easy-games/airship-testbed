@@ -1,11 +1,18 @@
-import { GameCoordinatorServers } from "../../TypePackages/game-coordinator-types";
+import { GameCoordinatorServers, GameCoordinatorTransfers } from "../../TypePackages/game-coordinator-types";
+import { AirshipUser } from "./AirshipUser";
+
+export const AccessMode = GameCoordinatorServers.AccessMode;
+export type AccessMode = GameCoordinatorServers.AccessMode;
+
+export const Fleet = GameCoordinatorServers.AgonesFleet;
+export type Fleet = GameCoordinatorServers.AgonesFleet;
 
 /** Configuration for an Airship server. */
 export interface AirshipServerConfig {
 	/** The scene the server will start on. Defaults to the scene provided during deployment. */
 	sceneId?: string;
 	/** The access mode of the server. Defaults to OPEN on the default scene, and DIRECT_JOIN on any other scene. */
-	accessMode?: GameCoordinatorServers.AccessMode;
+	accessMode?: AccessMode;
 	/** The region the game server should be started in. Defaults to the same region as the server that makes the create request. */
 	region?: string;
 	/** The max players setting for the server. If not set, the default for the game is used. You can change the default for your game on https://create.airship.gg */
@@ -17,5 +24,11 @@ export interface AirshipServerConfig {
 	/** An object representing game configuration to be passed to the created server. */
 	gameConfig?: object;
 	/** The fleet the game server will use. This determines the performance characteristics of the underlying server host. */
-	fleet?: GameCoordinatorServers.AgonesFleet;
+	fleet?: Fleet;
 }
+
+export type ConnectableGameServer = GameCoordinatorTransfers.GameServer;
+export type AirshipServer = GameCoordinatorServers.PublicServerData;
+export type AirshipServerWithFriends = AirshipServer & { friends: AirshipUser[] };
+
+export type TransferResult = GameCoordinatorTransfers.TransferResult;

@@ -1,3 +1,4 @@
+import { AirshipDataLockInfo, BlobLockMode } from "@Easy/Core/Shared/Airship/Types/AirshipDataStore";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { DataStoreServiceData, DataStoreServicePrisma } from "@Easy/Core/Shared/TypePackages/data-store-types";
@@ -22,12 +23,8 @@ export type ServerBridgeApiDataDeleteKey<T> = (
 	key: string,
 	etag?: string,
 ) => DataStoreServiceData.BlobDataRecord<T> | undefined;
-export type ServerBridgeApiDataSetLock = (
-	key: string,
-	mode?: DataStoreServicePrisma.BlobLockMode,
-	stealFromOwnerId?: string,
-) => boolean;
-export type ServerBridgeApiDataGetLockData = (key: string) => DataStoreServiceData.IsDataLocked;
+export type ServerBridgeApiDataSetLock = (key: string, mode?: BlobLockMode, stealFromOwnerId?: string) => boolean;
+export type ServerBridgeApiDataGetLockData = (key: string) => AirshipDataLockInfo;
 
 const client = new DataStoreServiceData.Client(UnityMakeRequest(AirshipUrl.DataStoreService));
 
@@ -83,7 +80,7 @@ export class ProtectedDataStoreService {
 
 	public async SetLockForKey(
 		key: string,
-		lockMode?: DataStoreServicePrisma.BlobLockMode,
+		lockMode?: BlobLockMode,
 		stealFromOwnerId?: string,
 	): Promise<ReturnType<ServerBridgeApiDataSetLock>> {
 		const result = await client.setLock({

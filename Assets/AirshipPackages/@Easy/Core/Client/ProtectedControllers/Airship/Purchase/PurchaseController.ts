@@ -5,7 +5,7 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { ProtectedUserController } from "../User/UserController";
 import { ContentServiceClient, ContentServicePurchase } from "@Easy/Core/Shared/TypePackages/content-service-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import { GameCoordinatorUsers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { AirshipUser } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 
 export const enum PurchaseControllerBridgeTopics {
 	RequestPurchase = "PurchaseController:RequestPurchase",
@@ -23,7 +23,7 @@ export class ProtectedPurchaseController {
 		contextbridge.callback<ClientBridgeApiRequestPurchase>(
 			PurchaseControllerBridgeTopics.RequestPurchase,
 			(_, productId, quantity, userId) => {
-				let targetUser: GameCoordinatorUsers.PublicUser | undefined = Protected.User.WaitForLocalUser(); // This shouldn't be undefined but it is
+				let targetUser: AirshipUser | undefined = Protected.User.WaitForLocalUser(); // This shouldn't be undefined but it is
 				if (userId !== targetUser?.uid) {
 					targetUser = Dependency<ProtectedUserController>().GetUserById(userId).expect();
 				}

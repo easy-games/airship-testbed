@@ -21,8 +21,7 @@ import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import AvatarRenderComponent from "./AvatarRenderComponent";
 import OutfitButton from "./Outfit/OutfitButtonComponent";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
-import { ContentServiceGear, ContentServiceOutfits } from "@Easy/Core/Shared/TypePackages/content-service-types";
-import { GearCategory } from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
+import { AirshipGearItem, AirshipOutfit, GearCategory } from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -74,7 +73,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private activeSubIndex = -1;
 	private activeAccessories = new Map<AccessorySlot, string>();
 	//private currentSlot: AccessorySlot = AccessorySlot.Root;
-	private viewedOutfit?: ContentServiceOutfits.SelectedOutfit;
+	private viewedOutfit?: AirshipOutfit;
 	private currentUserOutfitIndex = -1;
 	private currentContentBtns: { id: string; button: AvatarAccessoryBtn }[] = [];
 	private clientId = -1;
@@ -441,7 +440,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.mainMenu?.avatarView?.CameraFocusSlot(slot);
 	}
 
-	private async DisplayClothingItems(clothing: ContentServiceGear.SelectedGearItem[]) {
+	private async DisplayClothingItems(clothing: AirshipGearItem[]) {
 		// const ownedItems = await Platform.Client.Inventory.GetItems({ queryType: "tag", tags: ["Clothing"] });
 		// for (let item of ownedItems) {
 		// 	const clothing = Clothing.DownloadYielding(item.classId, "airId", "versionHash");
@@ -516,7 +515,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private AddItemButton(clothingDto: ContentServiceGear.SelectedGearItem, onClickCallback: () => void) {
+	private AddItemButton(clothingDto: AirshipGearItem, onClickCallback: () => void) {
 		//let newButton = PoolManager.SpawnObject(this.itemButtonTemplate, this.mainContentHolder);
 		const newButton = Object.Instantiate(this.itemButtonTemplate!, this.mainContentHolder!);
 		this.itemButtonBin.AddEngineEventConnection(
@@ -582,7 +581,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private async SelectItem(clothingDto: ContentServiceGear.SelectedGearItem): Promise<void> {
+	private async SelectItem(clothingDto: AirshipGearItem): Promise<void> {
 		if (clothingDto.class.gear.airAssets.size() === 0 || !clothingDto.class.gear.subcategory) return;
 		const slot = Protected.Avatar.GearClothingSubcategoryToSlot(clothingDto.class.gear.subcategory);
 
@@ -621,7 +620,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		);
 	}
 
-	private async SelectFaceItem(face: ContentServiceGear.SelectedGearItem): Promise<void> {
+	private async SelectFaceItem(face: AirshipGearItem): Promise<void> {
 		if (!face) {
 			print("Missing face item: " + face);
 			return;

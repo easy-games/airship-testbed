@@ -2,7 +2,6 @@ import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import PartyCard from "@Easy/Core/Shared/MainMenu/Components/Party/PartyCard";
 import PartyMember from "@Easy/Core/Shared/MainMenu/Components/PartyMember";
@@ -18,25 +17,17 @@ import { SocketController } from "../Socket/SocketController";
 import { ProtectedFriendsController } from "./FriendsController";
 import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
 import { SocialNotificationType } from "./SocialNotificationType";
-import {
-	GameCoordinatorClient,
-	GameCoordinatorParty,
-	GameCoordinatorUserStatus,
-} from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+import { Party } from "@Easy/Core/Shared/Airship/Types/AirshipParty";
+import { UserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Controller({})
 export class MainMenuPartyController {
-	private readonly httpRetry = HttpRetryInstance();
-	public party: GameCoordinatorParty.PartySnapshot | undefined;
-	public onPartyUpdated = new Signal<
-		[
-			newParty: GameCoordinatorParty.PartySnapshot | undefined,
-			oldParty: GameCoordinatorParty.PartySnapshot | undefined,
-		]
-	>();
+	public party: Party | undefined;
+	public onPartyUpdated = new Signal<[newParty: Party | undefined, oldParty: Party | undefined]>();
 
 	private partyCard!: PartyCard;
 	private partyCardContents!: GameObject;
@@ -65,7 +56,7 @@ export class MainMenuPartyController {
 	}
 
 	protected OnStart(): void {
-		this.socketController.On<GameCoordinatorParty.PartySnapshot>("game-coordinator/party-update", (data) => {
+		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
 			this.partyUpdateReceived = true;
 			let oldParty = this.party;
 			this.party = data;
@@ -77,21 +68,18 @@ export class MainMenuPartyController {
 			}
 		});
 
-		this.socketController.On<GameCoordinatorUserStatus.UserStatusData[]>(
-			"game-coordinator/party-member-status-update-multi",
-			(data) => {
-				if (!this.party) return;
+		this.socketController.On<UserStatusData[]>("game-coordinator/party-member-status-update-multi", (data) => {
+			if (!this.party) return;
 
-				this.partyLeaderStatusReceived = true;
-				const partyLeader = data.find((d) => d.userId === this.party!.leader);
-				this.partyCard.UpdateInfo(partyLeader);
-			},
-		);
+			this.partyLeaderStatusReceived = true;
+			const partyLeader = data.find((d) => d.userId === this.party!.leader);
+			this.partyCard.UpdateInfo(partyLeader);
+		});
 
 		Dependency<ProtectedFriendsController>().socialNotificationHandlers.set(
 			SocialNotificationType.PartyInvite,
 			(username, userId, result, extraData) => {
-				const data = extraData as GameCoordinatorParty.PartySnapshot;
+				const data = extraData as Party;
 				if (result) {
 					try {
 						client.party.joinParty({ partyId: data.partyId }).expect();
@@ -106,7 +94,7 @@ export class MainMenuPartyController {
 			},
 		);
 
-		this.socketController.On<GameCoordinatorParty.PartySnapshot>("game-coordinator/party-invite", (data) => {
+		this.socketController.On<Party>("game-coordinator/party-invite", (data) => {
 			Dependency<ProtectedFriendsController>().AddSocialNotification(
 				SocialNotificationType.PartyInvite,
 				"party-invite:" + data.leader,

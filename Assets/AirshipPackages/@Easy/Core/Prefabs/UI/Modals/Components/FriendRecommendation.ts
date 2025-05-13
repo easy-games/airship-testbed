@@ -2,8 +2,8 @@ import { ProtectedUserController } from "@Easy/Core/Client/ProtectedControllers/
 import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
 import { RecommendationContext } from "@Easy/Core/Client/ProtectedControllers/Social/RecommendedFriendsController";
 import { Airship } from "@Easy/Core/Shared/Airship";
+import { AirshipUser } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
-import { GameCoordinatorUsers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { RandomUtil } from "@Easy/Core/Shared/Util/RandomUtil";
@@ -31,7 +31,7 @@ export default class FriendRecommendation extends AirshipBehaviour {
 	public sentIcon!: GameObject;
 	public outline!: UIOutline;
 
-	private user?: GameCoordinatorUsers.PublicUser;
+	private user?: AirshipUser;
 	private recommendationContext?: RecommendationContext;
 
 	private state = RecommendationState.NONE;
@@ -51,7 +51,7 @@ export default class FriendRecommendation extends AirshipBehaviour {
 	 *
 	 * @internal
 	 */
-	public async Setup(user: GameCoordinatorUsers.PublicUser, context: RecommendationContext): Promise<boolean> {
+	public async Setup(user: AirshipUser, context: RecommendationContext): Promise<boolean> {
 		this.recommendationContext = context;
 		this.context.text = this.GetRecommendationString(context);
 		this.user = user;
