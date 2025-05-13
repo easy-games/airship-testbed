@@ -7,17 +7,17 @@ import { MainMenuPartyController } from "../Social/MainMenuPartyController";
 import { SocketController } from "../Socket/SocketController";
 import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import { ConnectableGameServer } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
+import { AirshipGameServerConnectionInfo } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Controller({})
 export class TransferController {
-	constructor(private readonly socketController: SocketController) {}
+	constructor(private readonly socketController: SocketController) { }
 
 	protected OnStart(): void {
 		this.socketController.On<{
-			gameServer: ConnectableGameServer;
+			gameServer: AirshipGameServerConnectionInfo;
 			gameId: string;
 			gameVersion: number;
 			requestTime: number;
@@ -37,7 +37,7 @@ export class TransferController {
 				CrossSceneState.ServerTransferData.loadingImageUrl = data.loadingScreenImageId
 					? `${AirshipUrl.CDN}/images/${data.loadingScreenImageId}`
 					: "";
-			} catch (err) {}
+			} catch (err) { }
 		});
 	}
 

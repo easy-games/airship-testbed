@@ -8,7 +8,7 @@ import {
 	ServerBridgeApiLeaderboardUpdate,
 } from "@Easy/Core/Server/ProtectedServices/Airship/Leaderboard/LeaderboardService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { Ranking, LeaderboardUpdate } from "@Easy/Core/Shared/Airship/Types/AirshipLeaderboards";
+import { AirshipLeaderboardRanking, AirshipLeaderboardUpdate } from "@Easy/Core/Shared/Airship/Types/AirshipLeaderboards";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -33,7 +33,7 @@ export class AirshipLeaderboardService {
 	 * @param leaderboardName The name of the leaderboard that should be updated with the given scores
 	 * @param update An object containing a map of ids and scores.
 	 */
-	public async Update(leaderboardName: string, update: LeaderboardUpdate): Promise<void> {
+	public async Update(leaderboardName: string, update: AirshipLeaderboardUpdate): Promise<void> {
 		return contextbridge.invoke<ServerBridgeApiLeaderboardUpdate>(
 			LeaderboardServiceBridgeTopics.Update,
 			LuauContext.Protected,
@@ -47,7 +47,7 @@ export class AirshipLeaderboardService {
 	 * @param leaderboardName The name of the leaderboard
 	 * @param id The id
 	 */
-	public async GetRank(leaderboardName: string, id: string): Promise<Ranking | undefined> {
+	public async GetRank(leaderboardName: string, id: string): Promise<AirshipLeaderboardRanking | undefined> {
 		return contextbridge.invoke<ServerBridgeApiLeaderboardGetRank>(
 			LeaderboardServiceBridgeTopics.GetRank,
 			LuauContext.Protected,
@@ -106,7 +106,7 @@ export class AirshipLeaderboardService {
 	 * @param startIndex The start index of the selection. Defaults to 0, which is the top of the leaderboard.
 	 * @param count The number of entries to retrieve. Defaults to 100.
 	 */
-	public async GetRankRange(leaderboardName: string, startIndex = 0, count = 100): Promise<Ranking[]> {
+	public async GetRankRange(leaderboardName: string, startIndex = 0, count = 100): Promise<AirshipLeaderboardRanking[]> {
 		return contextbridge.invoke<ServerBridgeApiLeaderboardGetRankRange>(
 			LeaderboardServiceBridgeTopics.GetRankRange,
 			LuauContext.Protected,

@@ -19,15 +19,15 @@ import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
 import { SocialNotificationType } from "./SocialNotificationType";
 import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import { Party } from "@Easy/Core/Shared/Airship/Types/AirshipParty";
-import { UserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
+import { AirshipPartyInternalSnapshot } from "@Easy/Core/Shared/Airship/Types/AirshipParty";
+import { AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Controller({})
 export class MainMenuPartyController {
-	public party: Party | undefined;
-	public onPartyUpdated = new Signal<[newParty: Party | undefined, oldParty: Party | undefined]>();
+	public party: AirshipPartyInternalSnapshot | undefined;
+	public onPartyUpdated = new Signal<[newParty: AirshipPartyInternalSnapshot | undefined, oldParty: AirshipPartyInternalSnapshot | undefined]>();
 
 	private partyCard!: PartyCard;
 	private partyCardContents!: GameObject;
@@ -43,7 +43,7 @@ export class MainMenuPartyController {
 	constructor(
 		private readonly mainMenuController: MainMenuController,
 		private readonly socketController: SocketController,
-	) {}
+	) { }
 
 	/**
 	 * @returns True if both a party leader and party has more than 1 player.
@@ -56,7 +56,7 @@ export class MainMenuPartyController {
 	}
 
 	protected OnStart(): void {
-		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
+		this.socketController.On<AirshipPartyInternalSnapshot>("game-coordinator/party-update", (data) => {
 			this.partyUpdateReceived = true;
 			let oldParty = this.party;
 			this.party = data;
@@ -68,7 +68,7 @@ export class MainMenuPartyController {
 			}
 		});
 
-		this.socketController.On<UserStatusData[]>("game-coordinator/party-member-status-update-multi", (data) => {
+		this.socketController.On<AirshipUserStatusData[]>("game-coordinator/party-member-status-update-multi", (data) => {
 			if (!this.party) return;
 
 			this.partyLeaderStatusReceived = true;
@@ -79,7 +79,7 @@ export class MainMenuPartyController {
 		Dependency<ProtectedFriendsController>().socialNotificationHandlers.set(
 			SocialNotificationType.PartyInvite,
 			(username, userId, result, extraData) => {
-				const data = extraData as Party;
+				const data = extraData as AirshipPartyInternalSnapshot;
 				if (result) {
 					try {
 						client.party.joinParty({ partyId: data.partyId }).expect();
@@ -94,7 +94,7 @@ export class MainMenuPartyController {
 			},
 		);
 
-		this.socketController.On<Party>("game-coordinator/party-invite", (data) => {
+		this.socketController.On<AirshipPartyInternalSnapshot>("game-coordinator/party-invite", (data) => {
 			Dependency<ProtectedFriendsController>().AddSocialNotification(
 				SocialNotificationType.PartyInvite,
 				"party-invite:" + data.leader,

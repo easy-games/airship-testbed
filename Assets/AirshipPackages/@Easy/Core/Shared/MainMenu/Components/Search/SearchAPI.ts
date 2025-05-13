@@ -1,6 +1,6 @@
-import { GameDto } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
+import { AirshipGame } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
 
 export interface SearchResultDto {
-	game?: GameDto;
+	game?: AirshipGame;
 	friend?: never;
 }

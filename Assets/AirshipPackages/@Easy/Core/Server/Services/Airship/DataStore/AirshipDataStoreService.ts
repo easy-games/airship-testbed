@@ -7,7 +7,7 @@ import {
 	ServerBridgeApiDataSetLock,
 } from "@Easy/Core/Server/ProtectedServices/Airship/DataStore/DataStoreService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { AirshipDataLockInfo, BlobLockMode } from "@Easy/Core/Shared/Airship/Types/AirshipDataStore";
+import { AirshipDataStoreLockInfo, AirshipDataStoreLockMode } from "@Easy/Core/Shared/Airship/Types/AirshipDataStore";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -31,7 +31,7 @@ export class AirshipDataStoreService {
 		Platform.Server.DataStore = this;
 	}
 
-	protected OnStart(): void {}
+	protected OnStart(): void { }
 
 	/**
 	 * Gets the data associated with the given key.
@@ -220,7 +220,7 @@ export class AirshipDataStoreService {
 	 *
 	 * @returns True if the key was successfully locked to this server. False otherwise.
 	 */
-	public async LockKeyOrStealSafely(key: string, mode: BlobLockMode = "READ_WRITE"): Promise<boolean> {
+	public async LockKeyOrStealSafely(key: string, mode: AirshipDataStoreLockMode = "READ_WRITE"): Promise<boolean> {
 		this.CheckKey(key);
 
 		if (Game.IsEditor()) {
@@ -277,7 +277,7 @@ export class AirshipDataStoreService {
 	 * @param stealFromOwnerId Steals the lock from this ownerId if the key is already locked.
 	 * @returns True if the key was successfully locked to this server. False otherwise.
 	 */
-	public async LockKey(key: string, mode: BlobLockMode = "READ_WRITE", stealFromOwnerId?: string): Promise<boolean> {
+	public async LockKey(key: string, mode: AirshipDataStoreLockMode = "READ_WRITE", stealFromOwnerId?: string): Promise<boolean> {
 		this.CheckKey(key);
 
 		if (Game.IsEditor()) {
@@ -325,7 +325,7 @@ export class AirshipDataStoreService {
 	 * @param key The key to get lock information for.
 	 * @returns The lock information.
 	 */
-	public async GetLockDataForKey(key: string): Promise<AirshipDataLockInfo> {
+	public async GetLockDataForKey(key: string): Promise<AirshipDataStoreLockInfo> {
 		this.CheckKey(key);
 
 		if (Game.IsEditor()) {

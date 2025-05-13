@@ -10,7 +10,7 @@ import { RandomUtil } from "../../Util/RandomUtil";
 import { Signal } from "../../Util/Signal";
 import { ContentServiceClient, ContentServiceOutfits } from "../../TypePackages/content-service-types";
 import { isUnityMakeRequestError, UnityMakeRequest } from "../../TypePackages/UnityMakeRequest";
-import { AirshipGearItem, AirshipOutfit, GearClothingSubcategory } from "../../Airship/Types/AirshipPlatformInventory";
+import { AirshipGearItem, AirshipOutfit, AirshipGearClothingSubcategory } from "../../Airship/Types/AirshipPlatformInventory";
 
 const contentServiceClient = new ContentServiceClient(UnityMakeRequest(AirshipUrl.ContentService));
 
@@ -359,33 +359,33 @@ export class ProtectedAvatarSingleton {
 	// We don't want to make subcategories use AccessorySlot directly because it might limit either subcategories or accessory slots.
 	public GearClothingSubcategoryToSlot(slot: string): AccessorySlot {
 		switch (slot) {
-			case GearClothingSubcategory.Head:
+			case AirshipGearClothingSubcategory.Head:
 				return AccessorySlot.Head;
-			case GearClothingSubcategory.Hair:
+			case AirshipGearClothingSubcategory.Hair:
 				return AccessorySlot.Hair;
-			case GearClothingSubcategory.Face:
+			case AirshipGearClothingSubcategory.Face:
 				return AccessorySlot.Face;
-			case GearClothingSubcategory.Neck:
+			case AirshipGearClothingSubcategory.Neck:
 				return AccessorySlot.Neck;
-			case GearClothingSubcategory.Torso:
+			case AirshipGearClothingSubcategory.Torso:
 				return AccessorySlot.Torso;
-			case GearClothingSubcategory.Legs:
+			case AirshipGearClothingSubcategory.Legs:
 				return AccessorySlot.Legs;
-			case GearClothingSubcategory.Feet:
+			case AirshipGearClothingSubcategory.Feet:
 				return AccessorySlot.Feet;
-			case GearClothingSubcategory.Backpack:
+			case AirshipGearClothingSubcategory.Backpack:
 				return AccessorySlot.Backpack;
-			case GearClothingSubcategory.Waist:
+			case AirshipGearClothingSubcategory.Waist:
 				return AccessorySlot.Waist;
-			case GearClothingSubcategory.Hands:
+			case AirshipGearClothingSubcategory.Hands:
 				return AccessorySlot.Hands;
-			case GearClothingSubcategory.LeftHand:
+			case AirshipGearClothingSubcategory.LeftHand:
 				return AccessorySlot.LeftHand;
-			case GearClothingSubcategory.RightHand:
+			case AirshipGearClothingSubcategory.RightHand:
 				return AccessorySlot.RightHand;
-			case GearClothingSubcategory.Ears:
+			case AirshipGearClothingSubcategory.Ears:
 				return AccessorySlot.Ears;
-			case GearClothingSubcategory.Nose:
+			case AirshipGearClothingSubcategory.Nose:
 				return AccessorySlot.Nose;
 			default:
 				warn("unknown GearClothingSubcategory mapping: " + slot);
@@ -394,41 +394,41 @@ export class ProtectedAvatarSingleton {
 	}
 
 	// This is gross.. for more info read above comment on GearClothingSubcategoryToSlot
-	public AccessorySlotToClothingSubcategory(slot: AccessorySlot): GearClothingSubcategory {
+	public AccessorySlotToClothingSubcategory(slot: AccessorySlot): AirshipGearClothingSubcategory {
 		switch (slot) {
 			case AccessorySlot.Root:
-				return GearClothingSubcategory.Head;
+				return AirshipGearClothingSubcategory.Head;
 			case AccessorySlot.Hair:
-				return GearClothingSubcategory.Hair;
+				return AirshipGearClothingSubcategory.Hair;
 			case AccessorySlot.Head:
-				return GearClothingSubcategory.Head;
+				return AirshipGearClothingSubcategory.Head;
 			case AccessorySlot.Face:
-				return GearClothingSubcategory.Face;
+				return AirshipGearClothingSubcategory.Face;
 			case AccessorySlot.Neck:
-				return GearClothingSubcategory.Neck;
+				return AirshipGearClothingSubcategory.Neck;
 			case AccessorySlot.Torso:
-				return GearClothingSubcategory.Torso;
+				return AirshipGearClothingSubcategory.Torso;
 			case AccessorySlot.Legs:
-				return GearClothingSubcategory.Legs;
+				return AirshipGearClothingSubcategory.Legs;
 			case AccessorySlot.Feet:
-				return GearClothingSubcategory.Feet;
+				return AirshipGearClothingSubcategory.Feet;
 			case AccessorySlot.Backpack:
-				return GearClothingSubcategory.Backpack;
+				return AirshipGearClothingSubcategory.Backpack;
 			case AccessorySlot.Waist:
-				return GearClothingSubcategory.Waist;
+				return AirshipGearClothingSubcategory.Waist;
 			case AccessorySlot.Hands:
-				return GearClothingSubcategory.Hands;
+				return AirshipGearClothingSubcategory.Hands;
 			case AccessorySlot.LeftHand:
-				return GearClothingSubcategory.LeftHand;
+				return AirshipGearClothingSubcategory.LeftHand;
 			case AccessorySlot.RightHand:
-				return GearClothingSubcategory.RightHand;
+				return AirshipGearClothingSubcategory.RightHand;
 			case AccessorySlot.Ears:
-				return GearClothingSubcategory.Ears;
+				return AirshipGearClothingSubcategory.Ears;
 			case AccessorySlot.Nose:
-				return GearClothingSubcategory.Nose;
+				return AirshipGearClothingSubcategory.Nose;
 			default:
 				warn("unknown AccessorySlot mapping: " + slot);
-				return GearClothingSubcategory.Root;
+				return AirshipGearClothingSubcategory.Root;
 		}
 	}
 }

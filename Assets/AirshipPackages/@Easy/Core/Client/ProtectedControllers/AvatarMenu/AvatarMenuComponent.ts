@@ -21,7 +21,7 @@ import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import AvatarRenderComponent from "./AvatarRenderComponent";
 import OutfitButton from "./Outfit/OutfitButtonComponent";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
-import { AirshipGearItem, AirshipOutfit, GearCategory } from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
+import { AirshipGearItem, AirshipOutfit, AirshipGearCategory } from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -431,7 +431,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		//Accessories
 		let validClothingItems = Protected.Avatar.ownedClothing.filter(
 			(c) =>
-				c.class.gear.category === GearCategory.Clothing &&
+				c.class.gear.category === AirshipGearCategory.Clothing &&
 				c.class.gear.subcategory !== undefined &&
 				Protected.Avatar.GearClothingSubcategoryToSlot(c.class.gear.subcategory) === slot,
 		);
@@ -458,7 +458,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private DisplayFaceItems() {
 		let faceItems = Protected.Avatar.ownedClothing.filter((clothing) => {
-			return clothing.class.gear.category === GearCategory.FaceDecal;
+			return clothing.class.gear.category === AirshipGearCategory.FaceDecal;
 		});
 		if (faceItems) {
 			faceItems.forEach((clothingDto) => {
@@ -758,7 +758,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				new Promise(async (resolve) => {
 					if (gearDto.class.gear.airAssets.size() === 0) return resolve();
 
-					if (gearDto.class.gear.category === GearCategory.FaceDecal) {
+					if (gearDto.class.gear.category === AirshipGearCategory.FaceDecal) {
 						await this.SelectFaceItem(gearDto);
 						return resolve();
 					}

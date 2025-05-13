@@ -27,8 +27,8 @@ export interface AirshipServerConfig {
 	fleet?: AirshipServerFleet;
 }
 
-export type ConnectableGameServer = GameCoordinatorTransfers.GameServer;
+export type AirshipGameServerConnectionInfo = GameCoordinatorTransfers.GameServer;
 export type AirshipServer = GameCoordinatorServers.PublicServerData;
 export type AirshipServerWithFriends = AirshipServer & { friends: AirshipUser[] };
 
-export type TransferResult = GameCoordinatorTransfers.TransferResult;
+export type AirshipTransferResult = GameCoordinatorTransfers.TransferResult;

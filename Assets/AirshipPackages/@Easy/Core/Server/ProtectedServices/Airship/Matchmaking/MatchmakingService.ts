@@ -1,4 +1,4 @@
-import { Group, MatchConfig } from "@Easy/Core/Shared/Airship/Types/Matchmaking";
+import { AirshipMatchmakingGroup, AirshipMatchConfig } from "@Easy/Core/Shared/Airship/Types/Matchmaking";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import {
@@ -17,12 +17,12 @@ export const enum MatchmakingServiceBridgeTopics {
 	GetMatchConfig = "MatchmakingService:GetMatchConfig",
 }
 
-export type ServerBridgeApiCreateGroup = (userIds: string[]) => Group;
-export type ServerBridgeApiGetGroupById = (groupId: string) => Group | undefined;
-export type ServerBridgeApiGetGroupByUserId = (uid: string) => Group | undefined;
+export type ServerBridgeApiCreateGroup = (userIds: string[]) => AirshipMatchmakingGroup;
+export type ServerBridgeApiGetGroupById = (groupId: string) => AirshipMatchmakingGroup | undefined;
+export type ServerBridgeApiGetGroupByUserId = (uid: string) => AirshipMatchmakingGroup | undefined;
 export type ServerBridgeApiJoinQueue = (body: GameCoordinatorMatchmaking.JoinQueueDto) => undefined;
 export type ServerBridgeApiLeaveQueue = (groupId: string) => undefined;
-export type ServerBridgeApiGetMatchConfig = () => MatchConfig | undefined;
+export type ServerBridgeApiGetMatchConfig = () => AirshipMatchConfig | undefined;
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
@@ -57,17 +57,17 @@ export class ProtectedMatchmakingService {
 		});
 	}
 
-	public async CreateGroup(userIds: string[]): Promise<Group> {
+	public async CreateGroup(userIds: string[]): Promise<AirshipMatchmakingGroup> {
 		const result = await client.groups.createGroup({ userIds });
 		return result.group;
 	}
 
-	public async GetGroupById(groupId: string): Promise<Group | undefined> {
+	public async GetGroupById(groupId: string): Promise<AirshipMatchmakingGroup | undefined> {
 		const result = await client.groups.getGroupById({ groupId });
 		return result.group;
 	}
 
-	public async GetGroupByUserId(uid: string): Promise<Group | undefined> {
+	public async GetGroupByUserId(uid: string): Promise<AirshipMatchmakingGroup | undefined> {
 		const result = await client.groups.getGroupForUserId({ uid });
 		return result.group;
 	}
@@ -80,7 +80,7 @@ export class ProtectedMatchmakingService {
 		await client.matchmaking.leaveQueue({ groupId });
 	}
 
-	public async GetMatchConfig(): Promise<MatchConfig | undefined> {
+	public async GetMatchConfig(): Promise<AirshipMatchConfig | undefined> {
 		const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>()!;
 		const gs = serverBootstrap.GetGameServer();
 		try {
@@ -88,7 +88,7 @@ export class ProtectedMatchmakingService {
 			if (!matchConfigString) return undefined;
 
 			const matchConfig = json.decode(matchConfigString);
-			return matchConfig as MatchConfig;
+			return matchConfig as AirshipMatchConfig;
 		} catch (err) {
 			return undefined;
 		}

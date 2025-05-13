@@ -1,4 +1,4 @@
-import { AirshipItem, ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
+import { AirshipItem, AirshipItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ContentServiceClient } from "@Easy/Core/Shared/TypePackages/content-service-types";
@@ -9,7 +9,7 @@ export const enum PlatformInventoryControllerBridgeTopics {
 	GetItems = "PartyControllerGetInventory",
 }
 
-export type ClientBridgeApiGetItems = (query?: ItemQueryParameters) => AirshipItem[];
+export type ClientBridgeApiGetItems = (query?: AirshipItemQueryParameters) => AirshipItem[];
 
 const client = new ContentServiceClient(UnityMakeRequest(AirshipUrl.ContentService));
 
@@ -26,7 +26,7 @@ export class ProtectedPlatformInventoryController {
 		);
 	}
 
-	public async GetItems(query?: ItemQueryParameters): Promise<ReturnType<ClientBridgeApiGetItems>> {
+	public async GetItems(query?: AirshipItemQueryParameters): Promise<ReturnType<ClientBridgeApiGetItems>> {
 		return await client.items.getUserInventory({
 			queryType: query?.queryType,
 			query: query?.queryType === "tag" ? query?.tags : query?.classIds,
@@ -36,5 +36,5 @@ export class ProtectedPlatformInventoryController {
 		});
 	}
 
-	protected OnStart(): void {}
+	protected OnStart(): void { }
 }

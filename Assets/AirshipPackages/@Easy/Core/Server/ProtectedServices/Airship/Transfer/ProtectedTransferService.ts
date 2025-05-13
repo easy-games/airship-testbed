@@ -1,4 +1,4 @@
-import { TransferResult } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
+import { AirshipTransferResult } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { GameCoordinatorClient, GameCoordinatorTransfers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
@@ -16,21 +16,21 @@ export type ServerBridgeApiTransferGroupToGame = (
 	userIds: string[],
 	gameId: string,
 	config?: Omit<GameCoordinatorTransfers.TransferToGameDto, "uids" | "gameId">,
-) => TransferResult;
+) => AirshipTransferResult;
 export type ServerBridgeApiTransferGroupToServer = (
 	userIds: string[],
 	serverId: string,
 	config?: Omit<GameCoordinatorTransfers.TransferToServerIdDto, "uids" | "serverId">,
-) => TransferResult;
+) => AirshipTransferResult;
 export type ServerBridgeApiTransferGroupToMatchingServer = (
 	userIds: string[],
 	config: Omit<GameCoordinatorTransfers.TransferToMatchingServerDto, "uids">,
-) => TransferResult;
+) => AirshipTransferResult;
 export type ServerBridgeApiTransferGroupToPlayer = (
 	userIds: string[],
 	targetUserId: string,
 	config?: Omit<GameCoordinatorTransfers.TransferToPlayerDto, "uids" | "targetUserId">,
-) => TransferResult;
+) => AirshipTransferResult;
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 

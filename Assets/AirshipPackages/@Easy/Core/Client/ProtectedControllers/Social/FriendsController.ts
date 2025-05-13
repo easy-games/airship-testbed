@@ -35,7 +35,7 @@ import {
 	GameCoordinatorUserStatus,
 } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import { AirshipUser, UserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
+import { AirshipUser, AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 
 interface PendingSocialNotification {
 	type: SocialNotificationType;
@@ -53,11 +53,11 @@ export class ProtectedFriendsController {
 	public friends: AirshipUser[] = [];
 	public incomingFriendRequests: AirshipUser[] = [];
 	public outgoingFriendRequests: AirshipUser[] = [];
-	public friendStatuses: UserStatusData[] = [];
+	public friendStatuses: AirshipUserStatusData[] = [];
 	private renderedFriendUids = new Set<string>();
 	private statusText = "";
 	private friendBinMap = new Map<string, Bin>();
-	public friendStatusChanged = new Signal<UserStatusData>();
+	public friendStatusChanged = new Signal<AirshipUserStatusData>();
 	private customGameTitle: string | undefined;
 
 	private socialNotification!: SocialNotificationComponent;
@@ -267,7 +267,7 @@ export class ProtectedFriendsController {
 			this.FetchFriends();
 		});
 
-		this.socketController.On<UserStatusData[]>("game-coordinator/friend-status-update-multi", (data) => {
+		this.socketController.On<AirshipUserStatusData[]>("game-coordinator/friend-status-update-multi", (data) => {
 			// print("status updates: " + json.encode(data));
 			let lukeOnSteam = data.find((d) => d.usernameLower === "luke_on_steam");
 			if (lukeOnSteam) {
@@ -533,11 +533,11 @@ export class ProtectedFriendsController {
 
 					print(
 						"Transfering to friend " +
-							friend.username +
-							". gameId=" +
-							friend.gameId +
-							", serverId=" +
-							friend.serverId,
+						friend.username +
+						". gameId=" +
+						friend.gameId +
+						", serverId=" +
+						friend.serverId,
 					);
 					Dependency<TransferController>().TransferToGameAsync(friend.gameId, friend.serverId);
 				};
@@ -653,12 +653,12 @@ export class ProtectedFriendsController {
 		}
 	}
 
-	public GetFriendStatus(uid: string): UserStatusData | undefined {
+	public GetFriendStatus(uid: string): AirshipUserStatusData | undefined {
 		return this.friendStatuses.find((f) => f.userId === uid);
 	}
 
 	public UpdateFriendStatusUI(
-		friend: UserStatusData,
+		friend: AirshipUserStatusData,
 		refs: GameObjectReferences,
 		config: {
 			loadImage: boolean;

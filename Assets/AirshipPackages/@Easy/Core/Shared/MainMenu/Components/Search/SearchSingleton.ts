@@ -1,4 +1,4 @@
-import { GameDto } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
+import { AirshipGame } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
 import DateParser from "@Easy/Core/Shared/DateParser";
 import { Controller, Service } from "@Easy/Core/Shared/Flamework/flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -14,8 +14,8 @@ const contentServiceClient = new ContentServiceClient(UnityMakeRequest(AirshipUr
 @Controller({ loadOrder: -1000 })
 // @Singleton()
 export default class SearchSingleton {
-	public games: GameDto[] = [];
-	public myGames: GameDto[] = [];
+	public games: AirshipGame[] = [];
+	public myGames: AirshipGame[] = [];
 	public myGamesIds = new Set<string>();
 
 	protected OnStart(): void {
@@ -29,7 +29,7 @@ export default class SearchSingleton {
 		}
 	}
 
-	public AddGames(dtos: GameDto[]): void {
+	public AddGames(dtos: AirshipGame[]): void {
 		for (let dto of dtos) {
 			// update existing
 			let existing = this.games.find((g) => g.id === dto.id);

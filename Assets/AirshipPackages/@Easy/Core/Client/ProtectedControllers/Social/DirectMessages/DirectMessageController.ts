@@ -23,7 +23,7 @@ import { MainMenuPartyController } from "../MainMenuPartyController";
 import { DirectMessage } from "./DirectMessage";
 import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import { UserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
+import { AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
@@ -53,7 +53,7 @@ export class DirectMessageController {
 	private doScrollToBottom = 0;
 	private inputFieldSelected = false;
 
-	public lastMessagedFriend: UserStatusData | undefined;
+	public lastMessagedFriend: AirshipUserStatusData | undefined;
 
 	public onDirectMessageReceived = new Signal<DirectMessage>();
 
@@ -71,7 +71,7 @@ export class DirectMessageController {
 		private readonly friendsController: ProtectedFriendsController,
 		private readonly socketController: SocketController,
 		private readonly partyController: MainMenuPartyController,
-	) {}
+	) { }
 
 	protected OnStart(): void {
 		this.Setup();
@@ -247,7 +247,7 @@ export class DirectMessageController {
 		});
 	}
 
-	public GetFriendLastMessaged(): UserStatusData | undefined {
+	public GetFriendLastMessaged(): AirshipUserStatusData | undefined {
 		return this.lastMessagedFriend;
 	}
 
@@ -394,7 +394,7 @@ export class DirectMessageController {
 		};
 	}
 
-	public UpdateOfflineNotice(friendStatus: UserStatusData): void {
+	public UpdateOfflineNotice(friendStatus: AirshipUserStatusData): void {
 		if (friendStatus.status !== "offline") {
 			this.offlineNoticeWrapper?.SetActive(false);
 		} else {

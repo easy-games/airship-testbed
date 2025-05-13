@@ -19,9 +19,9 @@ interface ClassQueryParameters extends ItemBaseQueryParameters<"class"> {
 	classIds: string[];
 }
 
-export type ItemQueryParameters = ClassQueryParameters | TagQueryParameters;
+export type AirshipItemQueryParameters = ClassQueryParameters | TagQueryParameters;
 
-export enum GearClothingSubcategory {
+export enum AirshipGearClothingSubcategory {
 	Root = "Root",
 	Head = "Head",
 	Hair = "Hair",
@@ -57,7 +57,7 @@ export enum GearClothingSubcategory {
 	RightArmLower = "RightArmLower",
 }
 
-export enum GearCategory {
+export enum AirshipGearCategory {
 	Clothing = "Clothing",
 	FaceDecal = "FaceDecal",
 }
@@ -66,4 +66,4 @@ export type AirshipItem = ContentServiceItems.SelectedItem;
 export type AirshipGearItem = ContentServiceGear.SelectedGearItem;
 export type AirshipOutfit = ContentServiceOutfits.SelectedOutfit;
 
-export type Transaction = ContentServicePrisma.Transaction;
+export type AirshipInventoryTransaction = ContentServicePrisma.Transaction;

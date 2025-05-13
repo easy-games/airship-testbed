@@ -1,11 +1,11 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { Group } from "../Airship/Types/Matchmaking";
+import { AirshipMatchmakingGroup } from "../Airship/Types/Matchmaking";
 
 @Singleton({})
 export class AirshipSettingsSingleton {
-	public readonly onGroupChange: Signal<Group> = new Signal();
+	public readonly onGroupChange: Signal<AirshipMatchmakingGroup> = new Signal();
 
 	private leaveMatchBtnCallback: (() => void) | undefined;
 
@@ -19,7 +19,7 @@ export class AirshipSettingsSingleton {
 		});
 	}
 
-	protected OnStart(): void {}
+	protected OnStart(): void { }
 
 	public AddSlider(name: string, startingValue: number, min: number, max: number): void {
 		contextbridge.invoke("Settings:AddSlider", LuauContext.Protected, name, startingValue, min, max);

@@ -5,7 +5,7 @@ import {
 	PartyControllerBridgeTopics,
 } from "@Easy/Core/Client/ProtectedControllers/Airship/Party/PartyController";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { Party } from "@Easy/Core/Shared/Airship/Types/AirshipParty";
+import { AirshipPartyInternalSnapshot } from "@Easy/Core/Shared/Airship/Types/AirshipParty";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
@@ -16,7 +16,7 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
  */
 @Controller({})
 export class AirshipPartyController {
-	public readonly onPartyChange: Signal<Party> = new Signal();
+	public readonly onPartyChange: Signal<AirshipPartyInternalSnapshot> = new Signal();
 
 	constructor() {
 		if (!Game.IsClient()) return;
@@ -28,12 +28,12 @@ export class AirshipPartyController {
 		});
 	}
 
-	protected OnStart(): void {}
+	protected OnStart(): void { }
 
 	/**
 	 * Gets the users current party data.
 	 */
-	public async GetParty(): Promise<Party> {
+	public async GetParty(): Promise<AirshipPartyInternalSnapshot> {
 		return contextbridge.invoke<ClientBridgeApiGetParty>(
 			PartyControllerBridgeTopics.GetParty,
 			LuauContext.Protected,

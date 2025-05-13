@@ -1,7 +1,7 @@
 import {
 	AirshipItem,
-	ItemQueryParameters,
-	Transaction,
+	AirshipItemQueryParameters,
+	AirshipInventoryTransaction,
 } from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -18,11 +18,11 @@ export const enum PlatformInventoryServiceBridgeTopics {
 
 export type ServerBridgeApiGrantItem = (userId: string, classId: string) => AirshipItem;
 export type ServerBridgeApiDeleteItem = (instanceId: string) => AirshipItem;
-export type ServerBridgeApiGetItems = (userId: string, query?: ItemQueryParameters) => AirshipItem[];
+export type ServerBridgeApiGetItems = (userId: string, query?: AirshipItemQueryParameters) => AirshipItem[];
 export type ServerBridgeApiPerformTrade = (
 	user1: { uid: string; itemInstanceIds: string[] },
 	user2: { uid: string; itemInstanceIds: string[] },
-) => Transaction;
+) => AirshipInventoryTransaction;
 
 const client = new ContentServiceClient(UnityMakeRequest(AirshipUrl.ContentService));
 
@@ -68,7 +68,7 @@ export class ProtectedPlatformInventoryService {
 		return await client.items.deleteItemForResource({ itemId: instanceId });
 	}
 
-	public async GetItems(userId: string, query?: ItemQueryParameters): Promise<ReturnType<ServerBridgeApiGetItems>> {
+	public async GetItems(userId: string, query?: AirshipItemQueryParameters): Promise<ReturnType<ServerBridgeApiGetItems>> {
 		return await client.items.getUserInventoryForResource({
 			params: {
 				uid: userId,
@@ -91,5 +91,5 @@ export class ProtectedPlatformInventoryService {
 		});
 	}
 
-	protected OnStart(): void {}
+	protected OnStart(): void { }
 }

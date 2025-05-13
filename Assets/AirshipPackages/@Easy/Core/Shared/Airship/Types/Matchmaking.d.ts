@@ -1,6 +1,6 @@
 import { GameCoordinatorGroups, GameCoordinatorMatchmaking, GameCoordinatorUsers } from "../../TypePackages/game-coordinator-types";
 
-export type Group = GameCoordinatorGroups.Group;
+export type AirshipMatchmakingGroup = GameCoordinatorGroups.Group;
 interface MatchTeamGroupPlayer extends GameCoordinatorUsers.PublicUser {
     id: string;
     attributes: Record<string, unknown>;
@@ -15,6 +15,6 @@ interface MatchTeam {
     groups: MatchTeamGroup[];
 }
 
-export type MatchConfig = {
+export type AirshipMatchConfig = {
     teams: MatchTeam[]
 };

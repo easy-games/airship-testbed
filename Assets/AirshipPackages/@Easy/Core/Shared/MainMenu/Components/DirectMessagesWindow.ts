@@ -5,7 +5,7 @@ import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";
-import { AirshipUser, UserStatusData } from "../../Airship/Types/AirshipUser";
+import { AirshipUser, AirshipUserStatusData } from "../../Airship/Types/AirshipUser";
 
 export default class DirectMessagesWindow extends AirshipBehaviour {
 	public offlineNotice!: TMP_Text;
@@ -23,7 +23,7 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 
 	private bin = new Bin();
 
-	override Start(): void {}
+	override Start(): void { }
 
 	private Init(): void {
 		this.bin.Clean();
@@ -38,7 +38,7 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 		this.inputField!.ActivateInputField();
 	}
 
-	public InitAsFriendChat(user: UserStatusData): void {
+	public InitAsFriendChat(user: AirshipUserStatusData): void {
 		print("friend chat: " + inspect(user));
 		this.Init();
 		this.headerParty.SetActive(false);
@@ -55,7 +55,7 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 			}),
 		);
 
-		const UpdateTeleportButton = (friend: UserStatusData) => {
+		const UpdateTeleportButton = (friend: AirshipUserStatusData) => {
 			let inServer = friend.status === "in_game" && friend.serverId !== undefined && friend.gameId !== undefined;
 			this.friendTeleportButton.SetActive(inServer);
 		};
@@ -107,5 +107,5 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 		}
 	}
 
-	override OnDestroy(): void {}
+	override OnDestroy(): void { }
 }

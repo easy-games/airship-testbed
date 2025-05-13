@@ -14,7 +14,7 @@ import SearchResult from "./SearchResult";
 import SearchSingleton from "./SearchSingleton";
 import { ContentServiceGames } from "@Easy/Core/Shared/TypePackages/content-service-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import { GameDto } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
+import { AirshipGame } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
 
 const gamesClient = new ContentServiceGames.Client(UnityMakeRequest(AirshipUrl.ContentService));
 
@@ -160,7 +160,7 @@ export default class SearchFocused extends AirshipBehaviour {
 		this.queryId++;
 		let thisQuery = this.queryId;
 
-		let games: GameDto[];
+		let games: AirshipGame[];
 		try {
 			const res = gamesClient
 				.autocompleteGame({

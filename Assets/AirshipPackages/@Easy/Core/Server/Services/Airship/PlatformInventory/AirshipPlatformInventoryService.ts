@@ -8,8 +8,8 @@ import {
 import { Platform } from "@Easy/Core/Shared/Airship";
 import {
 	AirshipItem,
-	ItemQueryParameters,
-	Transaction,
+	AirshipItemQueryParameters,
+	AirshipInventoryTransaction,
 } from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -39,7 +39,7 @@ export class AirshipPlatformInventoryService {
 		Platform.Server.Inventory = this;
 	}
 
-	protected OnStart(): void {}
+	protected OnStart(): void { }
 
 	/**
 	 * Grants a user the provided item.
@@ -67,7 +67,7 @@ export class AirshipPlatformInventoryService {
 	/**
 	 * Gets all items in a users inventory.
 	 */
-	public async GetItems(userId: string, query?: ItemQueryParameters): Promise<AirshipItem[]> {
+	public async GetItems(userId: string, query?: AirshipItemQueryParameters): Promise<AirshipItem[]> {
 		return contextbridge.invoke<ServerBridgeApiGetItems>(
 			PlatformInventoryServiceBridgeTopics.GetItems,
 			LuauContext.Protected,
@@ -86,7 +86,7 @@ export class AirshipPlatformInventoryService {
 	public async PerformTrade(
 		user1: { uid: string; itemInstanceIds: string[] },
 		user2: { uid: string; itemInstanceIds: string[] },
-	): Promise<Transaction> {
+	): Promise<AirshipInventoryTransaction> {
 		return contextbridge.invoke<ServerBridgeApiPerformTrade>(
 			PlatformInventoryServiceBridgeTopics.PerformTrade,
 			LuauContext.Protected,
