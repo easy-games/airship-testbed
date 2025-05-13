@@ -62,24 +62,6 @@ export enum GearCategory {
 	FaceDecal = "FaceDecal",
 }
 
-export type AirshipGear = ContentServiceGear.SelectedGear &
-	(
-		| {
-				gear: {
-					airAssets: string[];
-					category: GearCategory.Clothing;
-					subcategory: GearClothingSubcategory;
-				};
-		  }
-		| {
-				gear: {
-					airAssets: string[];
-					category: GearCategory.FaceDecal;
-					subcategory: undefined;
-				};
-		  }
-	);
-
 export type AirshipItem = ContentServiceItems.SelectedItem;
 export type AirshipGearItem = ContentServiceGear.SelectedGearItem;
 export type AirshipOutfit = ContentServiceOutfits.SelectedOutfit;
