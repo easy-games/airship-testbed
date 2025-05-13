@@ -65,7 +65,6 @@ export class SocketController {
 						}
 						task.unscaledWait(0.25);
 					}
-					print(`Region Latency Report:`, json.encode(regionLatencies));
 					await client.userSession.updateSession({ regionLatencies });
 				},
 				true,
