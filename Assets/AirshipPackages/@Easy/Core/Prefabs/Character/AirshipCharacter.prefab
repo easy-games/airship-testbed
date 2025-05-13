@@ -1178,6 +1178,8 @@ MonoBehaviour:
   drawDebugGizmos_STEPUP: 0
   drawDebugGizmos_STATES: 0
   useExtraLogging: 0
+  correctionInterpTime: 0.1
+  correctionMaxMagnitude: 10
   autoCalibrateSkiddingSpeed: 1
   ownerRotationLerpMod: 10
   playAnimationOnServer: 1
