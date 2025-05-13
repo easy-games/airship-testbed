@@ -33,11 +33,15 @@ export class TestPredictedCommand extends PredictedCustomCommand<{ charging: boo
 		return false;
 	}
 
-	override OnTick(input: Readonly<{ charging: boolean }> | undefined, replay: boolean) {
+	override OnTick(
+		input: Readonly<{ charging: boolean }> | undefined,
+		replay: boolean,
+		fullCommand: CharacterInputData,
+	) {
 		if (!input) return false;
 
 		if (this.progress === 49 && Game.IsServer()) {
-			this.character.movement.AddImpulse(new Vector3(0, 10, 0));
+			this.character.movement.AddImpulse(fullCommand.lookVector.mul(20).add(new Vector3(0, 20, 0)));
 		}
 
 		if (this.progress >= 50 && Game.IsServer()) {
