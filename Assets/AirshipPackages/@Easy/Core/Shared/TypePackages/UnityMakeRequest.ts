@@ -48,6 +48,7 @@ function encodeQueryString(query: object) {
 			queryString += `${tostring(key)}=${encodeURIComponent(tostring(value))}`;
 		}
 	}
+	return queryString;
 }
 
 const UNITY_MAKE_REQUEST_RETRY = HttpRetryInstance();
