@@ -8,7 +8,7 @@ import {
 	ServerBridgeApiLeaderboardUpdate,
 } from "@Easy/Core/Server/ProtectedServices/Airship/Leaderboard/LeaderboardService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { Ranking, UpdateStatsData } from "@Easy/Core/Shared/Airship/Types/AirshipLeaderboards";
+import { Ranking, LeaderboardUpdate } from "@Easy/Core/Shared/Airship/Types/AirshipLeaderboards";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -25,7 +25,7 @@ export class AirshipLeaderboardService {
 		Platform.Server.Leaderboard = this;
 	}
 
-	protected OnStart(): void {}
+	protected OnStart(): void { }
 
 	/**
 	 * Sends an update to the provided leaderboard. The scores provided are added to, subtracted from, or replace the existing
@@ -33,7 +33,7 @@ export class AirshipLeaderboardService {
 	 * @param leaderboardName The name of the leaderboard that should be updated with the given scores
 	 * @param update An object containing a map of ids and scores.
 	 */
-	public async Update(leaderboardName: string, update: UpdateStatsData): Promise<void> {
+	public async Update(leaderboardName: string, update: LeaderboardUpdate): Promise<void> {
 		return contextbridge.invoke<ServerBridgeApiLeaderboardUpdate>(
 			LeaderboardServiceBridgeTopics.Update,
 			LuauContext.Protected,

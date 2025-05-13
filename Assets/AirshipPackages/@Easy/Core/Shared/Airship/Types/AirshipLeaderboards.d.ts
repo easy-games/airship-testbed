@@ -2,4 +2,4 @@ import { DataStoreServiceLeaderboards } from "../../TypePackages/data-store-type
 
 export type Ranking = DataStoreServiceLeaderboards.Ranking;
 
-export type UpdateStatsData = DataStoreServiceLeaderboards.PushStatsType;
+export type LeaderboardUpdate = DataStoreServiceLeaderboards.PushStatsType;

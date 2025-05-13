@@ -1,4 +1,4 @@
-import { Ranking, UpdateStatsData } from "@Easy/Core/Shared/Airship/Types/AirshipLeaderboards";
+import { LeaderboardUpdate, Ranking } from "@Easy/Core/Shared/Airship/Types/AirshipLeaderboards";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { DataStoreServiceLeaderboards } from "@Easy/Core/Shared/TypePackages/data-store-types";
@@ -14,7 +14,7 @@ export const enum LeaderboardServiceBridgeTopics {
 	GetRankRange = "LeaderboardService:GetRankRange",
 }
 
-export type ServerBridgeApiLeaderboardUpdate = (leaderboardName: string, update: UpdateStatsData) => void;
+export type ServerBridgeApiLeaderboardUpdate = (leaderboardName: string, update: LeaderboardUpdate) => void;
 export type ServerBridgeApiLeaderboardGetRank = (leaderboardName: string, id: string) => Ranking | undefined;
 export type ServerBridgeApiLeaderboardDeleteEntry = (leaderboardName: string, id: string) => void;
 export type ServerBridgeApiLeaderboardDeleteEntries = (leaderboardName: string, ids: string[]) => void;
@@ -75,7 +75,7 @@ export class ProtectedLeaderboardService {
 		);
 	}
 
-	public async Update(name: string, update: UpdateStatsData): Promise<ReturnType<ServerBridgeApiLeaderboardUpdate>> {
+	public async Update(name: string, update: LeaderboardUpdate): Promise<ReturnType<ServerBridgeApiLeaderboardUpdate>> {
 		await client.postLeaderboardStats({
 			params: {
 				leaderboardId: name,
@@ -124,5 +124,5 @@ export class ProtectedLeaderboardService {
 		return result;
 	}
 
-	protected OnStart(): void {}
+	protected OnStart(): void { }
 }

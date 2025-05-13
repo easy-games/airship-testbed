@@ -94,5 +94,5 @@ export class ProtectedMatchmakingService {
 		}
 	}
 
-	protected OnStart(): void {}
+	protected OnStart(): void { }
 }

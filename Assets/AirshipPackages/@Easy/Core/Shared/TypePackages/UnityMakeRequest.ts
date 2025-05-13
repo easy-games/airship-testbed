@@ -22,8 +22,8 @@ export function encodeURIComponent(component: string): string {
 		const bytes = string.byte(value, 1, value.size());
 		let encoded = "";
 
-		for (const byte of bytes) {
-			encoded += string.format("%%%02X", byte);
+		for (const [_, byte] of ipairs(bytes)) {
+			encoded = encoded + string.format("%%%02X", byte);
 		}
 
 		return encoded;

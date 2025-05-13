@@ -18,7 +18,7 @@ import {
 	ServerManagerServiceBridgeTopics,
 } from "@Easy/Core/Server/ProtectedServices/Airship/ServerManager/ProtectedServerManagerService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { AccessMode, AirshipServer, AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
+import { AirshipServerAccessMode, AirshipServer, AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -33,7 +33,7 @@ export class AirshipServerManagerService {
 		Platform.Server.ServerManager = this;
 	}
 
-	protected OnStart(): void {}
+	protected OnStart(): void { }
 
 	/**
 	 * Creates a new server and returns a server id which can be used to transfer players to the new server.
@@ -117,7 +117,7 @@ export class AirshipServerManagerService {
 	/**
 	 * Updates the access mode of the server.
 	 */
-	public async SetAccessMode(mode: AccessMode): Promise<boolean> {
+	public async SetAccessMode(mode: AirshipServerAccessMode): Promise<boolean> {
 		return contextbridge.invoke<ServerBridgeApiSetAccessMode>(
 			ServerManagerServiceBridgeTopics.SetAccessMode,
 			LuauContext.Protected,
