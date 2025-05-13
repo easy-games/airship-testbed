@@ -1,6 +1,5 @@
 import { TransferResult } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 import { Service } from "@Easy/Core/Shared/Flamework";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { GameCoordinatorClient, GameCoordinatorTransfers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
@@ -37,8 +36,6 @@ const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordin
 
 @Service({})
 export class ProtectedTransferService {
-	private readonly httpRetry = HttpRetryInstance();
-
 	constructor() {
 		contextbridge.callback<ServerBridgeApiTransferGroupToGame>(
 			TransferServiceBridgeTopics.TransferGroupToGame,

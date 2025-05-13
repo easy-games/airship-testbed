@@ -1,7 +1,6 @@
 import { Group, MatchConfig } from "@Easy/Core/Shared/Airship/Types/Matchmaking";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 import {
 	GameCoordinatorClient,
 	GameCoordinatorMatchmaking,
@@ -29,8 +28,6 @@ const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordin
 
 @Service({})
 export class ProtectedMatchmakingService {
-	private readonly httpRetry = HttpRetryInstance();
-
 	constructor() {
 		if (!Game.IsServer()) return;
 
