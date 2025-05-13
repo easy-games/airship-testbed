@@ -110,6 +110,8 @@ export function UnityMakeRequest(baseUrl: string): MakeRequest {
 			throw { message: response.error, status: response.statusCode };
 		}
 
+		if (!response.data || response.data.trim() === "") return undefined as T;
+
 		return json.decode<T>(response.data);
 	};
 }
