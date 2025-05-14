@@ -32,3 +32,8 @@ export type AirshipServer = GameCoordinatorServers.PublicServerData;
 export type AirshipServerWithFriends = AirshipServer & { friends: AirshipUser[] };
 
 export type AirshipTransferResult = GameCoordinatorTransfers.TransferResult;
+
+export type AirshipGameTransferConfig = Omit<GameCoordinatorTransfers.TransferToGameDto, "uids" | "gameId">;
+export type AirshipServerTransferConfig = Omit<GameCoordinatorTransfers.TransferToServerIdDto, "uids" | "serverId">;
+export type AirshipMatchingServerTransferConfig = Omit<GameCoordinatorTransfers.TransferToMatchingServerDto, "uids">;
+export type AirshipPlayerTransferConfig = Omit<GameCoordinatorTransfers.TransferToPlayerDto, "uids" | "targetUserId">;

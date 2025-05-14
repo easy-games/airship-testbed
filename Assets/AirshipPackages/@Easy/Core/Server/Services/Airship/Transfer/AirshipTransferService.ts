@@ -6,7 +6,13 @@ import {
 	TransferServiceBridgeTopics,
 } from "@Easy/Core/Server/ProtectedServices/Airship/Transfer/ProtectedTransferService";
 import { Airship, Platform } from "@Easy/Core/Shared/Airship";
-import { AirshipTransferResult } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
+import {
+	AirshipGameTransferConfig,
+	AirshipMatchingServerTransferConfig,
+	AirshipPlayerTransferConfig,
+	AirshipServerTransferConfig,
+	AirshipTransferResult,
+} from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
@@ -79,7 +85,7 @@ export class AirshipTransferService {
 	public async TransferToGame(
 		player: Player | string,
 		gameId: string,
-		config?: Omit<GameCoordinatorTransfers.TransferToGameDto, "uids" | "gameId">,
+		config?: AirshipGameTransferConfig,
 	): Promise<AirshipTransferResult> {
 		return await this.TransferGroupToGame([player], gameId, config);
 	}
@@ -93,7 +99,7 @@ export class AirshipTransferService {
 	public async TransferGroupToGame(
 		players: readonly (Player | string)[],
 		gameId: string,
-		config?: Omit<GameCoordinatorTransfers.TransferToGameDto, "uids" | "gameId">,
+		config?: AirshipGameTransferConfig,
 	): Promise<AirshipTransferResult> {
 		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
 		return contextbridge.invoke<ServerBridgeApiTransferGroupToGame>(
@@ -114,7 +120,7 @@ export class AirshipTransferService {
 	public async TransferToServer(
 		player: Player | string,
 		serverId: string,
-		config?: Omit<GameCoordinatorTransfers.TransferToServerIdDto, "uids" | "serverId">,
+		config?: AirshipServerTransferConfig,
 	): Promise<AirshipTransferResult> {
 		return await this.TransferGroupToServer([player], serverId, config);
 	}
@@ -128,7 +134,7 @@ export class AirshipTransferService {
 	public async TransferGroupToServer(
 		players: readonly (Player | string)[],
 		serverId: string,
-		config?: Omit<GameCoordinatorTransfers.TransferToServerIdDto, "uids" | "serverId">,
+		config?: AirshipServerTransferConfig,
 	): Promise<AirshipTransferResult> {
 		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
 		return contextbridge.invoke<ServerBridgeApiTransferGroupToServer>(
@@ -148,7 +154,7 @@ export class AirshipTransferService {
 	 */
 	public async TransferToMatchingServer(
 		player: Player | string,
-		selectors: Omit<GameCoordinatorTransfers.TransferToMatchingServerDto, "uids">,
+		selectors: AirshipMatchingServerTransferConfig,
 	): Promise<AirshipTransferResult> {
 		return await this.TransferGroupToMatchingServer([player], selectors);
 	}
@@ -161,7 +167,7 @@ export class AirshipTransferService {
 	 */
 	public async TransferGroupToMatchingServer(
 		players: readonly (Player | string)[],
-		selectors: Omit<GameCoordinatorTransfers.TransferToMatchingServerDto, "uids">,
+		selectors: AirshipMatchingServerTransferConfig,
 	): Promise<AirshipTransferResult> {
 		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
 		return contextbridge.invoke<ServerBridgeApiTransferGroupToMatchingServer>(
@@ -181,7 +187,7 @@ export class AirshipTransferService {
 	public async TransferToPlayer(
 		player: Player | string,
 		targetUserId: string,
-		config?: Omit<GameCoordinatorTransfers.TransferToPlayerDto, "uids" | "targetUserId">,
+		config?: AirshipPlayerTransferConfig,
 	): Promise<AirshipTransferResult> {
 		return await this.TransferGroupToPlayer([player], targetUserId, config);
 	}
@@ -195,7 +201,7 @@ export class AirshipTransferService {
 	public async TransferGroupToPlayer(
 		players: (Player | string)[],
 		targetUserId: string,
-		config?: Omit<GameCoordinatorTransfers.TransferToPlayerDto, "uids" | "targetUserId">,
+		config?: AirshipPlayerTransferConfig,
 	): Promise<AirshipTransferResult> {
 		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
 		return contextbridge.invoke<ServerBridgeApiTransferGroupToPlayer>(
