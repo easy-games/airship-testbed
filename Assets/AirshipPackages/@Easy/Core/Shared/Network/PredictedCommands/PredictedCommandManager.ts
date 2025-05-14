@@ -492,6 +492,14 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		NetworkCommandEnd.client.OnServerEvent((commandIdentifierStr, commandNumber, stateData) => {
 			// Get the predicted final state on the client
 			const lastState = this.unconfirmedFinalState.get(commandIdentifierStr);
+			// print(
+			// 	"got " +
+			// 		inspect(lastState) +
+			// 		" from " +
+			// 		inspect(this.unconfirmedFinalState) +
+			// 		" for " +
+			// 		commandIdentifierStr,
+			// );
 			this.unconfirmedFinalState.delete(commandIdentifierStr);
 
 			const commandIdenfitier = CommandInstanceIdentifier.fromString(commandIdentifierStr);
@@ -553,6 +561,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 		// Handles commands that did not validate on the server.  These will be cancelled locally and resimulated every time.
 		NetworkCommandInvaild.client.OnServerEvent((commandIdentifierStr, commandNumber) => {
+			// print("Deleting unconfirmed state for " + commandIdentifierStr + " since it was invalid.");
 			this.unconfirmedFinalState.delete(commandIdentifierStr);
 			const commandIdenfitier = CommandInstanceIdentifier.fromString(commandIdentifierStr);
 			this.onCommandEnded.Fire(commandIdenfitier, undefined);
@@ -874,7 +883,12 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						snapshot: lastCapturedState,
 						time: lastProcessedInputTime,
 					});
-					print("setting unconfirmed state for " + commandIdentifierStr);
+					// print(
+					// 	"setting unconfirmed state for " +
+					// 		commandIdentifierStr +
+					// 		" last processed cmd#" +
+					// 		lastProcessedInputCommandNumber,
+					// );
 				}
 			}
 			const queueCancelIndex = this.queuedCancellations.findIndex((i) => i.stringify() === commandIdentifierStr);
