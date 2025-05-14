@@ -75,6 +75,8 @@ export class Player {
 	 */
 	public platform = AirshipPlatformUtil.GetLocalPlatform();
 
+	private lagCompRequests = new Map<string, { check: () => any; complete: (param: any) => void; result?: any }>();
+
 	/** @internal */
 	constructor(
 		/**
@@ -118,6 +120,27 @@ export class Player {
 		if (playerInfo !== undefined) {
 			this.SetVoiceChatAudioSource(playerInfo.voiceChatAudioSource);
 		}
+
+		const simulationManager = AirshipSimulationManager.Instance as AirshipSimulationManager &
+			AirshipSimulationManagerWithLagCompensation;
+		const checkConnection = simulationManager.OnLagCompensationRequestCheck((id) => {
+			const req = this.lagCompRequests.get(id);
+			if (!req) return;
+			req.result = TaskUtil.RunWithoutYield(() => {
+				return req.check();
+			});
+		});
+		this.bin.AddEngineEventConnection(checkConnection);
+
+		const completeConnection = simulationManager.OnLagCompensationRequestComplete((id) => {
+			const req = this.lagCompRequests.get(id);
+			if (!req) return;
+			TaskUtil.RunWithoutYield(() => {
+				req.complete(req.result);
+			});
+			this.lagCompRequests.delete(id);
+		});
+		this.bin.AddEngineEventConnection(completeConnection);
 	}
 
 	/**
@@ -411,24 +434,6 @@ export class Player {
 					"). Is the connection ID correct?",
 			);
 		}
-
-		let checkResult: CheckResult;
-		const checkConnection = simulationManager.OnLagCompensationRequestCheck((id) => {
-			if (checkId !== id) return;
-			checkResult = TaskUtil.RunWithoutYield(() => {
-				return checkFunc();
-			});
-			Bridge.DisconnectEvent(checkConnection);
-		});
-		this.bin.AddEngineEventConnection(checkConnection);
-
-		const completeConnection = simulationManager.OnLagCompensationRequestComplete((id) => {
-			if (checkId !== id) return;
-			TaskUtil.RunWithoutYield(() => {
-				completeFunc(checkResult);
-			});
-			Bridge.DisconnectEvent(completeConnection);
-		});
-		this.bin.AddEngineEventConnection(completeConnection);
+		this.lagCompRequests.set(checkId, { check: checkFunc, complete: completeFunc });
 	}
 }
