@@ -658,42 +658,21 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	/** Allows you to retrieve and operate on the specific handler instance for a running command. When a new handler instance matching the
 	 * command instance identifier is created, the callback will be called with the handler instance of the command that will be performing tick
 	 * operations.
-	 *
-	 * If the command is invalidated or authoritatively ends, the returned bin will be cleaned and the callback will no longer be
-	 * invoked.
 	 */
 	public ObserveHandler<T>(
 		commandInstance: CommandInstanceIdentifier,
 		callback: (instance: T) => CleanupFunc,
 		priority: SignalPriority = SignalPriority.NORMAL,
 	): Bin {
-		const bin = new Bin();
-		let callbackBin: CleanupFunc;
-
-		bin.Add(
-			this.onCommandEnded.ConnectWithPriority(priority, (commandId) => {
-				if (commandId.stringify() !== commandInstance.stringify()) return;
-				bin.Clean();
-			}),
+		return this.ObserveCommand(
+			commandInstance.characterId,
+			commandInstance.commandId,
+			(identifier, handler) => {
+				if (identifier?.instanceId !== commandInstance.instanceId) return;
+				return callback(handler as T);
+			},
+			priority,
 		);
-		bin.Add(
-			this.onInstanceCreated.ConnectWithPriority(priority, (commandId, instance) => {
-				if (commandId.stringify() !== commandInstance.stringify()) return;
-				callbackBin?.();
-				callbackBin = callback(instance as T);
-			}),
-		);
-		bin.Add(() => callbackBin?.());
-
-		const active = this.GetActiveCommandByIdentifier(commandInstance);
-		if (active) callbackBin = callback(active.instance as T);
-
-		this.observerBins.add(bin);
-		bin.Add(() => {
-			this.observerBins.delete(bin);
-		});
-
-		return bin;
 	}
 
 	/**
@@ -703,35 +682,36 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	 * @param commandId The command id used to run the command.
 	 * @param callback
 	 */
-	public ObserveCommand(
-		character: Character,
+	public ObserveCommand<T>(
+		character: Character | number,
 		commandId: string,
-		callback: (commandIdentifier: CommandInstanceIdentifier | undefined) => CleanupFunc,
+		callback: (commandIdentifier: CommandInstanceIdentifier | undefined, handler: T | undefined) => CleanupFunc,
 		priority: SignalPriority = SignalPriority.NORMAL,
 	) {
+		const characterId = typeIs(character, "number") ? character : character.id;
 		const bin = new Bin();
 		let callbackBin: CleanupFunc;
 
 		bin.Add(
-			this.onInstanceCreated.ConnectWithPriority(priority, (identifier) => {
-				if (identifier.characterId !== character.id) return;
+			this.onInstanceCreated.ConnectWithPriority(priority, (identifier, instance) => {
+				if (identifier.characterId !== characterId) return;
 				if (identifier.commandId !== commandId) return;
 				callbackBin?.();
-				callbackBin = callback(identifier);
+				callbackBin = callback(identifier, instance as T);
 			}),
 		);
 		bin.Add(
 			this.onInstanceDestroyed.ConnectWithPriority(priority, (identifier) => {
-				if (identifier.characterId !== character.id) return;
+				if (identifier.characterId !== characterId) return;
 				if (identifier.commandId !== commandId) return;
 				callbackBin?.();
-				callbackBin = callback(undefined);
+				callbackBin = callback(undefined, undefined);
 			}),
 		);
 		bin.Add(() => callbackBin?.());
 
-		const identifier = this.GetActiveCommandByCommandId(character, commandId);
-		if (identifier) callbackBin = callback(identifier);
+		const result = this.GetActiveCommandByCommandId(characterId, commandId);
+		if (result) callbackBin = callback(result.identifier, result.command.instance as T);
 
 		this.observerBins.add(bin);
 		bin.Add(() => {
@@ -1107,13 +1087,16 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	/**
 	 * Returns the currently running command instance if there is one.
 	 */
-	private GetActiveCommandByCommandId(character: Character, commandId: string) {
-		const commands = this.activeCommands.get(character.id);
+	private GetActiveCommandByCommandId(characterId: number, commandId: string) {
+		const commands = this.activeCommands.get(characterId);
 		if (!commands) return;
 
 		for (const [customDataKey, command] of commands) {
 			if (command.commandId === commandId) {
-				return new CommandInstanceIdentifier(character.id, command.commandId, command.instanceId);
+				return {
+					identifier: new CommandInstanceIdentifier(characterId, command.commandId, command.instanceId),
+					command,
+				};
 			}
 		}
 	}
