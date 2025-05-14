@@ -1,13 +1,8 @@
-import {
-	AirshipGameTransferConfig,
-	AirshipMatchingServerTransferConfig,
-	AirshipPlayerTransferConfig,
-	AirshipServerTransferConfig,
-} from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
-import { TransferResult } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
+import { AirshipTransferResult } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 import { Service } from "@Easy/Core/Shared/Flamework";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
 import { Player } from "@Easy/Core/Shared/Player/Player";
+import { GameCoordinatorClient, GameCoordinatorTransfers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum TransferServiceBridgeTopics {
@@ -20,27 +15,27 @@ export const enum TransferServiceBridgeTopics {
 export type ServerBridgeApiTransferGroupToGame = (
 	userIds: string[],
 	gameId: string,
-	config?: AirshipGameTransferConfig,
-) => TransferResult;
+	config?: Omit<GameCoordinatorTransfers.TransferToGameDto, "uids" | "gameId">,
+) => AirshipTransferResult;
 export type ServerBridgeApiTransferGroupToServer = (
 	userIds: string[],
 	serverId: string,
-	config?: AirshipServerTransferConfig,
-) => TransferResult;
+	config?: Omit<GameCoordinatorTransfers.TransferToServerIdDto, "uids" | "serverId">,
+) => AirshipTransferResult;
 export type ServerBridgeApiTransferGroupToMatchingServer = (
 	userIds: string[],
-	config: AirshipMatchingServerTransferConfig,
-) => TransferResult;
+	config: Omit<GameCoordinatorTransfers.TransferToMatchingServerDto, "uids">,
+) => AirshipTransferResult;
 export type ServerBridgeApiTransferGroupToPlayer = (
 	userIds: string[],
 	targetUserId: string,
-	config?: AirshipPlayerTransferConfig,
-) => TransferResult;
+	config?: Omit<GameCoordinatorTransfers.TransferToPlayerDto, "uids" | "targetUserId">,
+) => AirshipTransferResult;
+
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Service({})
 export class ProtectedTransferService {
-	private readonly httpRetry = HttpRetryInstance();
-
 	constructor() {
 		contextbridge.callback<ServerBridgeApiTransferGroupToGame>(
 			TransferServiceBridgeTopics.TransferGroupToGame,
@@ -74,108 +69,56 @@ export class ProtectedTransferService {
 	public async TransferGroupToGame(
 		players: readonly (string | Player)[],
 		gameId: string,
-		config?: AirshipGameTransferConfig,
+		config?: Omit<GameCoordinatorTransfers.TransferToGameDto, "uids" | "gameId">,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToGame>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.PostAsync(
-				`${AirshipUrl.GameCoordinator}/transfers/transfer/target/game`,
-				json.encode({
-					uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
-					gameId,
-					preferredServerId: config?.preferredServerId,
-					serverTransferData: config?.serverTransferData,
-					clientTransferData: config?.clientTransferData,
-				}),
-			),
-			"TransferGroupToGame",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		return json.decode(res.data) as TransferResult;
+		return await client.transfers.sendToGame({
+			uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
+			gameId,
+			preferredServerId: config?.preferredServerId,
+			serverTransferData: config?.serverTransferData,
+			clientTransferData: config?.clientTransferData,
+		});
 	}
 
 	public async TransferGroupToServer(
 		players: readonly (string | Player)[],
 		serverId: string,
-		config?: AirshipServerTransferConfig,
+		config?: Omit<GameCoordinatorTransfers.TransferToServerIdDto, "uids" | "serverId">,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToServer>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.PostAsync(
-				`${AirshipUrl.GameCoordinator}/transfers/transfer/target/server`,
-				json.encode({
-					uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
-					serverId,
-					serverTransferData: config?.serverTransferData,
-					clientTransferData: config?.clientTransferData,
-				}),
-			),
-			"TransferGroupToServer",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		return json.decode(res.data) as TransferResult;
+		return await client.transfers.sendToServer({
+			uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
+			serverId,
+			serverTransferData: config?.serverTransferData,
+			clientTransferData: config?.clientTransferData,
+		});
 	}
 
 	public async TransferGroupToMatchingServer(
 		players: readonly (string | Player)[],
-		config: AirshipMatchingServerTransferConfig,
+		config: Omit<GameCoordinatorTransfers.TransferToMatchingServerDto, "uids">,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToMatchingServer>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.PostAsync(
-				`${AirshipUrl.GameCoordinator}/transfers/transfer/target/matching`,
-				json.encode({
-					uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
-					sceneId: config.sceneId,
-					maxPlayers: config.maxPlayers,
-					regions: config.regions,
-					tag: config.tag,
-					accessMode: config.accessMode,
-					serverTransferData: config.serverTransferData,
-					clientTransferData: config.clientTransferData,
-				}),
-			),
-			"TransferGroupToMatchingServer",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		return json.decode(res.data) as TransferResult;
+		return await client.transfers.sendToMatchingServer({
+			uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
+			sceneId: config.sceneId,
+			maxPlayers: config.maxPlayers,
+			regions: config.regions,
+			tag: config.tag,
+			accessMode: config.accessMode,
+			serverTransferData: config.serverTransferData,
+			clientTransferData: config.clientTransferData,
+		});
 	}
 
 	public async TransferGroupToPlayer(
 		players: readonly (string | Player)[],
 		targetUserId: string,
-		config?: AirshipPlayerTransferConfig,
+		config?: Omit<GameCoordinatorTransfers.TransferToPlayerDto, "uids" | "targetUserId">,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToPlayer>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.PostAsync(
-				`${AirshipUrl.GameCoordinator}/transfers/transfer/target/player`,
-				json.encode({
-					uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
-					targetUserId,
-					serverTransferData: config?.serverTransferData,
-					clientTransferData: config?.clientTransferData,
-				}),
-			),
-			"TransferGroupToPlayer",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		return json.decode(res.data) as TransferResult;
+		return await client.transfers.sendToPlayer({
+			uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
+			targetUserId,
+			serverTransferData: config?.serverTransferData,
+			clientTransferData: config?.clientTransferData,
+		});
 	}
 }

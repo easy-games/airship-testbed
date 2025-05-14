@@ -1,4 +1,4 @@
-import { GameDto } from "../Client/Components/HomePage/API/GamesAPI";
+import type { AirshipGameWithOrg } from "./Airship/Types/AirshipGame";
 import { CoreContext } from "./CoreClientContext";
 import { CoreNetwork } from "./CoreNetwork";
 import { Player } from "./Player/Player";
@@ -70,13 +70,13 @@ export class Game {
 
 	public static startingScene = Bridge.GetActiveScene();
 
-	public static gameData: GameDto | undefined;
-	public static onGameDataLoaded = new Signal<GameDto>();
+	public static gameData: AirshipGameWithOrg | undefined;
+	public static onGameDataLoaded = new Signal<AirshipGameWithOrg>();
 
 	/**
 	 * Yields until {@link Game.gameData} has been loaded.
 	 */
-	public static WaitForGameData(): GameDto {
+	public static WaitForGameData(): AirshipGameWithOrg {
 		if (this.gameData) return this.gameData;
 		return this.onGameDataLoaded.Wait();
 	}

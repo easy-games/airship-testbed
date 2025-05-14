@@ -1,8 +1,11 @@
-import { JoinQueueDto } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipMatchmaking";
-import { Group, MatchConfig } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipMatchmaking";
+import { AirshipMatchmakingGroup, AirshipMatchConfig } from "@Easy/Core/Shared/Airship/Types/Matchmaking";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import {
+	GameCoordinatorClient,
+	GameCoordinatorMatchmaking,
+} from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum MatchmakingServiceBridgeTopics {
@@ -14,17 +17,17 @@ export const enum MatchmakingServiceBridgeTopics {
 	GetMatchConfig = "MatchmakingService:GetMatchConfig",
 }
 
-export type ServerBridgeApiCreateGroup = (userIds: string[]) => Group;
-export type ServerBridgeApiGetGroupById = (groupId: string) => Group | undefined;
-export type ServerBridgeApiGetGroupByUserId = (uid: string) => Group | undefined;
-export type ServerBridgeApiJoinQueue = (body: JoinQueueDto) => undefined;
+export type ServerBridgeApiCreateGroup = (userIds: string[]) => AirshipMatchmakingGroup;
+export type ServerBridgeApiGetGroupById = (groupId: string) => AirshipMatchmakingGroup | undefined;
+export type ServerBridgeApiGetGroupByUserId = (uid: string) => AirshipMatchmakingGroup | undefined;
+export type ServerBridgeApiJoinQueue = (body: GameCoordinatorMatchmaking.JoinQueueDto) => undefined;
 export type ServerBridgeApiLeaveQueue = (groupId: string) => undefined;
-export type ServerBridgeApiGetMatchConfig = () => MatchConfig | undefined;
+export type ServerBridgeApiGetMatchConfig = () => AirshipMatchConfig | undefined;
+
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Service({})
 export class ProtectedMatchmakingService {
-	private readonly httpRetry = HttpRetryInstance();
-
 	constructor() {
 		if (!Game.IsServer()) return;
 
@@ -54,91 +57,30 @@ export class ProtectedMatchmakingService {
 		});
 	}
 
-	public async CreateGroup(userIds: string[]): Promise<Group> {
-		const result = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			`${AirshipUrl.GameCoordinator}/groups`,
-			json.encode({
-				userIds,
-			}),
-		), "CreateGroup");
-
-		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to create group. Status Code: ${result.statusCode}.\n`, result.error);
-			throw result.error;
-		}
-
-		return json.decode<{ group: Group }>(result.data).group;
+	public async CreateGroup(userIds: string[]): Promise<AirshipMatchmakingGroup> {
+		const result = await client.groups.createGroup({ userIds });
+		return result.group;
 	}
 
-	public async GetGroupById(groupId: string): Promise<Group | undefined> {
-		const result = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/groups/group-id/${groupId}`),
-			"GetGroupById",
-		)
-
-		if (!result.success || result.statusCode > 299) {
-			warn(
-				`An error occurred while trying to find group with id ${groupId}. Status Code: ${result.statusCode}.\n`,
-				result.error,
-			);
-			throw result.error;
-		}
-
-		return json.decode<{ group: Group | undefined }>(result.data).group;
+	public async GetGroupById(groupId: string): Promise<AirshipMatchmakingGroup | undefined> {
+		const result = await client.groups.getGroupById({ groupId });
+		return result.group;
 	}
 
-	public async GetGroupByUserId(uid: string): Promise<Group | undefined> {
-		const result = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/groups/uid/${uid}`),
-			"GetGroupByUserId",
-		)
-
-		if (!result.success || result.statusCode > 299) {
-			warn(
-				`An error occurred while trying to find group for user with id ${uid}. Status Code: ${result.statusCode}.\n`,
-				result.error,
-			);
-			throw result.error;
-		}
-
-		return json.decode<{ group: Group | undefined }>(result.data).group;
+	public async GetGroupByUserId(uid: string): Promise<AirshipMatchmakingGroup | undefined> {
+		const result = await client.groups.getGroupForUserId({ uid });
+		return result.group;
 	}
 
-	public async JoinQueue(body: JoinQueueDto): Promise<undefined> {
-		const result = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			`${AirshipUrl.GameCoordinator}/matchmaking/queue/join`,
-			json.encode(body),
-		), "JoinQueue");
-
-		if (!result.success || result.statusCode > 299) {
-			warn(
-				`An error occurred while attempting to join queue: ${body.queueId} group: ${body.groupId}. Status Code: ${result.statusCode}.\n`,
-				result.error,
-			);
-			throw result.error;
-		}
-
-		return undefined;
+	public async JoinQueue(body: GameCoordinatorMatchmaking.JoinQueueDto): Promise<undefined> {
+		await client.matchmaking.joinQueue(body);
 	}
 
 	public async LeaveQueue(groupId: string): Promise<undefined> {
-		const result = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			`${AirshipUrl.GameCoordinator}/matchmaking/queue/leave`,
-			json.encode({ groupId }),
-		), "LeaveQueue");
-
-		if (!result.success || result.statusCode > 299) {
-			warn(
-				`An error occurred while attempting to leave queue for group: ${groupId}. Status Code: ${result.statusCode}.\n`,
-				result.error,
-			);
-			throw result.error;
-		}
-
-		return undefined;
+		await client.matchmaking.leaveQueue({ groupId });
 	}
 
-	public async GetMatchConfig(): Promise<MatchConfig | undefined> {
+	public async GetMatchConfig(): Promise<AirshipMatchConfig | undefined> {
 		const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>()!;
 		const gs = serverBootstrap.GetGameServer();
 		try {
@@ -146,11 +88,11 @@ export class ProtectedMatchmakingService {
 			if (!matchConfigString) return undefined;
 
 			const matchConfig = json.decode(matchConfigString);
-			return matchConfig as MatchConfig;
+			return matchConfig as AirshipMatchConfig;
 		} catch (err) {
 			return undefined;
 		}
 	}
 
-	protected OnStart(): void {}
+	protected OnStart(): void { }
 }

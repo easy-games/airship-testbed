@@ -1,7 +1,6 @@
-import { GameDto } from "@Easy/Core/Client/Components/HomePage/API/GamesAPI";
-import { UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
+import { AirshipGame } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
 
 export interface SearchResultDto {
-	game?: GameDto;
-	friend?: UserStatusData;
+	game?: AirshipGame;
+	friend?: never;
 }

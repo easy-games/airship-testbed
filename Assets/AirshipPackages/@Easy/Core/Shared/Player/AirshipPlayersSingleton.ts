@@ -9,7 +9,6 @@ import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
-import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Asset } from "../Asset";
 import { CoreLogger } from "../Logger/CoreLogger";
 import { AirshipUrl } from "../Util/AirshipUrl";
@@ -18,7 +17,7 @@ import { Levenshtein } from "../Util/Strings/Levenshtein";
 import { OnUpdate } from "../Util/Timer";
 import { BridgedPlayer } from "./BridgedPlayer";
 import { Player, PlayerDto } from "./Player";
-import { NametagController } from "@Easy/Core/Client/Controllers/Entity/Nametag/NametagController";
+import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
 
 /*
  * This class is instantiated in BOTH Game and Protected context.
@@ -374,7 +373,7 @@ export class AirshipPlayersSingleton {
 		// disable to test networking:
 		// ignoreCache = true;
 
-		const SetOutfit = (outfitDto: OutfitDto | undefined) => {
+		const SetOutfit = (outfitDto: AirshipOutfit | undefined) => {
 			player.selectedOutfit = outfitDto;
 			player.outfitLoaded = true;
 			// print("SetOutfit. userId: " + player.userId + ", outfit: " + inspect(outfitDto));
@@ -389,7 +388,7 @@ export class AirshipPlayersSingleton {
 			//print("Using editor cache: " + player.userId);
 			const data = EditorSessionState.GetString("player_" + player.userId + "_outfit5");
 			if (data && data !== "") {
-				const outfitDto = json.decode<OutfitDto>(data);
+				const outfitDto = json.decode<AirshipOutfit>(data);
 				if (outfitDto) {
 					SetOutfit(outfitDto);
 					return true;

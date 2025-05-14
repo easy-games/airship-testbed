@@ -1,4 +1,4 @@
-import { OutfitDto } from "./Airship/Types/Outputs/AirshipPlatformInventory";
+import { AirshipOutfit } from "./Airship/Types/AirshipPlatformInventory";
 import { CharacterDto } from "./Character/CharacterDto";
 import { InventoryDto } from "./Inventory/Inventory";
 import { ItemStackDto } from "./Inventory/ItemStack";
@@ -76,7 +76,7 @@ export const CoreNetwork = {
 			SetHealth: new NetworkSignal<[characterId: number, health: number]>("AirshipSetHealth"),
 			SetNametag: new NetworkSignal<[characterId: number, displayName: string]>("AirshipSetNametag"),
 			SetMaxHealth: new NetworkSignal<[characterId: number, health: number]>("AirshipSetMaxHealth"),
-			ChangeOutfit: new NetworkSignal<[characterId: number, outfitDto: OutfitDto | undefined]>(
+			ChangeOutfit: new NetworkSignal<[characterId: number, outfitDto: AirshipOutfit | undefined]>(
 				"AirshipChangeOutfit",
 			),
 			SetCharacter: new NetworkSignal<[connectionId: number, characterId: number | undefined]>(

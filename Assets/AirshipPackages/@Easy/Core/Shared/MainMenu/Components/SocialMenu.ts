@@ -7,7 +7,10 @@ import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";
 import { ChatColor } from "../../Util/ChatColor";
 import { SetInterval } from "../../Util/Timer";
-import { HttpRetry } from "../../Http/HttpRetry";
+import { GameCoordinatorClient } from "../../TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "../../TypePackages/UnityMakeRequest";
+
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 export default class SocialMenu extends AirshipBehaviour {
 	public liveStats!: GameObject;
@@ -101,23 +104,13 @@ export default class SocialMenu extends AirshipBehaviour {
 	}
 
 	private FetchLiveStats(): void {
-		const res = HttpRetry(
-			() => InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/stats"),
-			"get/game-coordinator/stats",
-		).expect();
-		if (!res.success) return;
-
-		const data = json.decode<{
-			players: {
-				online: number;
-				inGame: number;
-			};
-			games: {
-				active: number;
-			};
-		}>(res.data);
-		this.playerCountText.text = `${data.players.online} Players Connected`;
-		this.serverCountText.text = `${data.games.active} Servers Online`;
+		try {
+			const result = client.stats.getStats().expect();
+			this.playerCountText.text = `${result.players.online} Players Connected`;
+			this.serverCountText.text = `${result.games.active} Servers Online`;
+		} catch {
+			return;
+		}
 	}
 
 	override OnDestroy(): void {}

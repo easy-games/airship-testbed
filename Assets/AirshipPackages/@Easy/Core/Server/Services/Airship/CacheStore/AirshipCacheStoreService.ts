@@ -35,7 +35,7 @@ export class AirshipCacheStoreService {
 	 * be unchanged. The maximum expire time is 24 hours.
 	 * @returns The data associated with the provided key. If no data is associated with the provided key, then nothing will be returned.
 	 */
-	public async GetKey<T extends object>(key: string, expireTimeSec?: number): Promise<T | undefined> {
+	public async GetKey<T>(key: string, expireTimeSec?: number): Promise<T | undefined> {
 		this.CheckKey(key);
 
 		const result = contextbridge.invoke<ServerBridgeApiCacheGetKey<T>>(
@@ -54,7 +54,7 @@ export class AirshipCacheStoreService {
 	 * @param expireTimeSec The duration this key should live after being set in seconds. The maximum duration is 24 hours.
 	 * @returns The data that was associated with the provided key.
 	 */
-	public async SetKey<T extends object | string | number>(
+	public async SetKey<T>(
 		key: string,
 		data: T,
 		expireTimeSec: number,

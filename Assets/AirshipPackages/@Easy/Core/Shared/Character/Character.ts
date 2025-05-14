@@ -4,7 +4,6 @@ import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
-import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import AirshipEmoteSingleton from "../Emote/AirshipEmoteSingleton";
@@ -16,6 +15,7 @@ import { Keyboard, Mouse } from "../UserInput";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
 import { EmoteStartSignal } from "./Signal/EmoteStartSignal";
+import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
 
 /**
  * A character is a (typically human) object in the scene. It controls movement and default animation.
@@ -57,7 +57,7 @@ export default class Character extends AirshipBehaviour {
 	/** A bin that is cleaned when the entity despawns. */
 	@NonSerialized() public readonly bin = new Bin();
 
-	@NonSerialized() public outfitDto: OutfitDto | undefined;
+	@NonSerialized() public outfitDto: AirshipOutfit | undefined;
 	@NonSerialized() public isEmoting = false;
 
 	// Signals
@@ -253,7 +253,7 @@ export default class Character extends AirshipBehaviour {
 	public Init(
 		player: Player | undefined,
 		id: number,
-		outfitDto: OutfitDto | undefined,
+		outfitDto: AirshipOutfit | undefined,
 		health: number,
 		maxHealth: number,
 		displayName?: string,
@@ -462,7 +462,7 @@ export default class Character extends AirshipBehaviour {
 		// this.accessoryBuilder.meshCombiner.cacheId = cacheId ?? "";
 	}
 
-	public LoadOutfit(outfitDto: OutfitDto | undefined) {
+	public LoadOutfit(outfitDto: AirshipOutfit | undefined) {
 		if (!this.accessoryBuilder) {
 			warn("Cannot load outfit without Accessory Builder set on Character.");
 			return;

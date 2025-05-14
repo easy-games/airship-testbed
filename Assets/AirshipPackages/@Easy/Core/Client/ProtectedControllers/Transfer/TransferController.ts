@@ -1,4 +1,3 @@
-import { AirshipGameServer } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Result } from "@Easy/Core/Shared/Types/Result";
@@ -6,17 +5,19 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { MainMenuPartyController } from "../Social/MainMenuPartyController";
 import { SocketController } from "../Socket/SocketController";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+import { AirshipGameServerConnectionInfo } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
+
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Controller({})
 export class TransferController {
-	private readonly httpRetry = HttpRetryInstance();
-
-	constructor(private readonly socketController: SocketController) {}
+	constructor(private readonly socketController: SocketController) { }
 
 	protected OnStart(): void {
 		this.socketController.On<{
-			gameServer: AirshipGameServer;
+			gameServer: AirshipGameServerConnectionInfo;
 			gameId: string;
 			gameVersion: number;
 			requestTime: number;
@@ -36,7 +37,7 @@ export class TransferController {
 				CrossSceneState.ServerTransferData.loadingImageUrl = data.loadingScreenImageId
 					? `${AirshipUrl.CDN}/images/${data.loadingScreenImageId}`
 					: "";
-			} catch (err) {}
+			} catch (err) { }
 		});
 	}
 
@@ -54,29 +55,22 @@ export class TransferController {
 	): Promise<Result<undefined, undefined>> {
 		let isPartyLeader = Dependency<MainMenuPartyController>().IsPartyLeader();
 
-		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/transfers/transfer/self",
-			json.encode({
+		try {
+			await client.transfers.requestSelfTransfer({
 				gameId: gameId,
 				preferredServerId,
 				withParty: isPartyLeader,
-			}),
-		), "TransferToGame");
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
+			});
+			return {
+				success: true,
+				data: undefined,
+			};
+		} catch {
 			return {
 				success: false,
 				error: undefined,
 			};
 		}
-
-		print(`Transfer response:`, inspect(res.data));
-
-		return {
-			success: true,
-			data: undefined,
-		};
 	}
 
 	/**
@@ -84,25 +78,18 @@ export class TransferController {
 	 * or the client is not in a party, this function will have no effect.
 	 */
 	public async TransferToPartyLeader(): Promise<Result<undefined, undefined>> {
-		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/transfers/transfer/self/party",
-			"",
-		), "TransferToPartyLeader");
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
+		try {
+			await client.transfers.requestSelfToPartyTransfer();
+			return {
+				success: true,
+				data: undefined,
+			};
+		} catch {
 			return {
 				success: false,
 				error: undefined,
 			};
 		}
-
-		print(`Transfer response:`, inspect(res.data));
-
-		return {
-			success: true,
-			data: undefined,
-		};
 	}
 
 	/**
@@ -110,18 +97,11 @@ export class TransferController {
 	 * Only the party leader can send this request.
 	 */
 	public async TransferPartyMembersToLeader(): Promise<boolean> {
-		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/transfers/transfer/party",
-			"",
-		), "TransferPartyMembersToLeader");
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete transfer request. Status Code:  ${res.statusCode}.\n`, res.error);
+		try {
+			await client.transfers.requestTransferPartyToSelf();
+			return true;
+		} catch {
 			return false;
 		}
-
-		print(`Transfer response:`, inspect(res.data));
-
-		return true;
 	}
 }

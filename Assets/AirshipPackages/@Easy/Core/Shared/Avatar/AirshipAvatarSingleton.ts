@@ -1,5 +1,5 @@
 import { Airship } from "../Airship";
-import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
+import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
 import { Singleton } from "../Flamework";
 import { ColorUtil } from "../Util/ColorUtil";
 /**
@@ -124,7 +124,7 @@ export class AirshipAvatarSingleton {
 	 */
 	public async LoadOutfit(
 		builder: AccessoryBuilder,
-		outfit: OutfitDto,
+		outfit: AirshipOutfit,
 		options: { removeOldClothingAccessories?: boolean } = {},
 	) {
 		// print("Loading outfit: " + inspect(outfit) + " " + debug.traceback());
@@ -171,7 +171,7 @@ export class AirshipAvatarSingleton {
 		builder.UpdateCombinedMesh();
 	}
 
-	public async GetUserEquippedOutfitDto(userId: string): Promise<OutfitDto | undefined> {
+	public async GetUserEquippedOutfitDto(userId: string): Promise<AirshipOutfit | undefined> {
 		return new Promise((resolve) => {
 			const outfit = contextbridge.invoke("Avatar:GetUserEquippedOutfitDto", LuauContext.Protected, userId);
 			resolve(outfit);

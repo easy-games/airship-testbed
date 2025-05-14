@@ -1,18 +1,21 @@
-import { GameDto, GamesDto, MyGamesDto } from "@Easy/Core/Client/Components/HomePage/API/GamesAPI";
+import { AirshipGame } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
 import DateParser from "@Easy/Core/Shared/DateParser";
 import { Controller, Service } from "@Easy/Core/Shared/Flamework/flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
+import { ContentServiceClient, ContentServiceGames } from "@Easy/Core/Shared/TypePackages/content-service-types";
+import { isUnityMakeRequestError, UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { ProtectedUtil } from "@Easy/Core/Shared/Util/ProtectedUtil";
+
+const contentServiceClient = new ContentServiceClient(UnityMakeRequest(AirshipUrl.ContentService));
 
 @Service({ loadOrder: -1000 })
 @Controller({ loadOrder: -1000 })
 // @Singleton()
 export default class SearchSingleton {
-	public games: GameDto[] = [];
-	public myGames: GameDto[] = [];
+	public games: AirshipGame[] = [];
+	public myGames: AirshipGame[] = [];
 	public myGamesIds = new Set<string>();
 
 	protected OnStart(): void {
@@ -26,7 +29,7 @@ export default class SearchSingleton {
 		}
 	}
 
-	public AddGames(dtos: GameDto[]): void {
+	public AddGames(dtos: AirshipGame[]): void {
 		for (let dto of dtos) {
 			// update existing
 			let existing = this.games.find((g) => g.id === dto.id);
@@ -41,29 +44,8 @@ export default class SearchSingleton {
 	}
 
 	public FetchMyGames(retryDelay = 1): void {
-		const res = HttpRetry(
-			() => InternalHttpManager.GetAsync(
-					AirshipUrl.ContentService +
-					"/memberships/games/self?liveStats=true&platform=" +
-					ProtectedUtil.GetLocalPlatformString()
-				),
-			"get/content-service/memberships/games/self",
-		).expect();
-		if (!res.success) {
-			if (400 <= res.statusCode && res.statusCode < 500) {
-				warn("Failed to fetch my games: " + res.error);
-				return;
-			}
-
-			// warn("Failed to fetch my games. Retrying in 1s..");
-			task.delay(math.min(retryDelay * 2, 30), () => {
-				this.FetchMyGames();
-			});
-			return;
-		}
-
 		try {
-			let data = json.decode<MyGamesDto>(res.data);
+			let data = contentServiceClient.memberships.getUserGameOwnership({ liveStats: true }).expect();
 			data = data.filter((g) => g.lastVersionUpdate !== undefined);
 			this.myGames = data;
 			this.myGamesIds.clear();
@@ -77,35 +59,33 @@ export default class SearchSingleton {
 			for (let g of this.myGames) {
 				this.myGamesIds.add(g.id);
 			}
-		} catch (err) {
-			warn("Failed to decode my games: " + res.error);
+		} catch (err: unknown) {
+			if (isUnityMakeRequestError(err) && 400 <= err.status && err.status < 500) {
+				return;
+			}
+
+			// this should potentially be moved into http retry
 			task.delay(math.min(retryDelay * 2, 30), () => {
 				this.FetchMyGames();
 			});
-			return;
 		}
 	}
 
 	public FetchPopularGames(): void {
-		const res = HttpRetry(
-			() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games?platform=" + ProtectedUtil.GetLocalPlatformString()),
-			"get/content-service/games",
-		).expect();
-		if (!res.success) {
-			// warn("Failed to fetch games. Retrying in 1s..");
-			task.delay(1, () => {
-				this.FetchPopularGames();
-			});
-			return;
-		}
-
 		try {
-			const data = json.decode<GamesDto>(res.data);
+			const data = contentServiceClient.games
+				.getGameSorts({
+					platform: ProtectedUtil.GetLocalPlatformString() as ContentServiceGames.DeploymentPlatform,
+				})
+				.expect();
+
 			task.spawn(() => {
 				this.AddGames([...data.recentlyUpdated, ...data.popular]);
 			});
 		} catch (err) {
-			warn("Failed to decode popular games: " + res.error);
+			if (isUnityMakeRequestError(err)) {
+				warn("Failed to decode popular games: " + err.message);
+			}
 
 			task.delay(1, () => {
 				this.FetchPopularGames();
