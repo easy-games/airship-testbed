@@ -4,6 +4,7 @@ import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
 import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import AirshipEmoteSingleton from "../Emote/AirshipEmoteSingleton";
@@ -15,7 +16,6 @@ import { Keyboard, Mouse } from "../UserInput";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
 import { EmoteStartSignal } from "./Signal/EmoteStartSignal";
-import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
 
 /**
  * A character is a (typically human) object in the scene. It controls movement and default animation.
@@ -74,7 +74,7 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized()
 	public inventory: Inventory;
 	@NonSerialized() public heldItem?: ItemStack;
-	@NonSerialized() public heldSlot = -1;
+	@NonSerialized() public heldSlot = 0;
 	@NonSerialized() public readonly onHeldSlotChanged = new Signal<number>();
 	/** Used to cancel changing held item slots. */
 	@NonSerialized() public readonly onBeforeLocalHeldSlotChanged = new Signal<BeforeLocalInventoryHeldSlotChanged>();
