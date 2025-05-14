@@ -8,9 +8,15 @@ import { AirshipUrl } from "../../Util/AirshipUrl";
 import { ColorUtil } from "../../Util/ColorUtil";
 import { RandomUtil } from "../../Util/RandomUtil";
 import { Signal } from "../../Util/Signal";
-import { ContentServiceClient, ContentServiceOutfits } from "../../TypePackages/content-service-types";
+import { ContentServiceClient } from "../../TypePackages/content-service-types";
 import { isUnityMakeRequestError, UnityMakeRequest } from "../../TypePackages/UnityMakeRequest";
-import { AirshipGearItem, AirshipOutfit, AirshipGearClothingSubcategory } from "../../Airship/Types/AirshipPlatformInventory";
+import {
+	AirshipGearItem,
+	AirshipOutfit,
+	AirshipGearClothingSubcategory,
+	AirshipCreateOutfitDto,
+	AirshipUpdateOutfitDto,
+} from "../../Airship/Types/AirshipPlatformInventory";
 
 const contentServiceClient = new ContentServiceClient(UnityMakeRequest(AirshipUrl.ContentService));
 
@@ -219,7 +225,7 @@ export class ProtectedAvatarSingleton {
 		}
 	}
 
-	public async CreateAvatarOutfit(outfit: ContentServiceOutfits.CreateOutfitDto) {
+	public async CreateAvatarOutfit(outfit: AirshipCreateOutfitDto) {
 		try {
 			const result = await contentServiceClient.outfits.createOutfit(outfit);
 			return result.outfit;
@@ -263,7 +269,7 @@ export class ProtectedAvatarSingleton {
 			}
 		}
 
-		let outfit: ContentServiceOutfits.CreateOutfitDto = {
+		let outfit: AirshipCreateOutfitDto = {
 			name: name,
 			gear: accessoryInstanceIds,
 			skinColor: ColorUtil.ColorToHex(skinColor),
@@ -286,7 +292,7 @@ export class ProtectedAvatarSingleton {
 		});
 	}
 
-	private UpdateOutfit(outfitId: string, update: ContentServiceOutfits.UpdateOutfitDto) {
+	private UpdateOutfit(outfitId: string, update: AirshipUpdateOutfitDto) {
 		try {
 			return contentServiceClient.outfits.updateOutfit({ data: update, params: { outfitId } }).expect().outfit;
 		} catch (err) {

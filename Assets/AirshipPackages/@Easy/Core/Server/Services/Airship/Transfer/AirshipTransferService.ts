@@ -16,7 +16,6 @@ import {
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
-import { GameCoordinatorTransfers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 /**

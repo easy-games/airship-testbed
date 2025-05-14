@@ -16,7 +16,7 @@ import { AirshipUrl } from "./Util/AirshipUrl";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
 import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
-import { ContentServiceClient, ContentServiceGames } from "./TypePackages/content-service-types";
+import { ContentServiceClient } from "./TypePackages/content-service-types";
 import { UnityMakeRequest } from "./TypePackages/UnityMakeRequest";
 
 CoreRefs.Init();

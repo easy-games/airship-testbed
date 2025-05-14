@@ -1,4 +1,10 @@
-import { GameCoordinatorGroups, GameCoordinatorUsers } from "../../TypePackages/game-coordinator-types";
+import {
+	GameCoordinatorGroups,
+	GameCoordinatorMatchmaking,
+	GameCoordinatorUsers,
+} from "../../TypePackages/game-coordinator-types";
+
+export type AirshipJoinQueueDto = GameCoordinatorMatchmaking.JoinQueueDto;
 
 export type AirshipMatchmakingGroup = GameCoordinatorGroups.Group;
 

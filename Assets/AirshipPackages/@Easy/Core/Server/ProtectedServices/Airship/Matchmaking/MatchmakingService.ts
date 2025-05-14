@@ -1,10 +1,11 @@
-import { AirshipMatchmakingGroup, AirshipMatchConfig } from "@Easy/Core/Shared/Airship/Types/Matchmaking";
+import {
+	AirshipMatchmakingGroup,
+	AirshipMatchConfig,
+	AirshipJoinQueueDto,
+} from "@Easy/Core/Shared/Airship/Types/Matchmaking";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import {
-	GameCoordinatorClient,
-	GameCoordinatorMatchmaking,
-} from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
@@ -20,7 +21,7 @@ export const enum MatchmakingServiceBridgeTopics {
 export type ServerBridgeApiCreateGroup = (userIds: string[]) => AirshipMatchmakingGroup;
 export type ServerBridgeApiGetGroupById = (groupId: string) => AirshipMatchmakingGroup | undefined;
 export type ServerBridgeApiGetGroupByUserId = (uid: string) => AirshipMatchmakingGroup | undefined;
-export type ServerBridgeApiJoinQueue = (body: GameCoordinatorMatchmaking.JoinQueueDto) => undefined;
+export type ServerBridgeApiJoinQueue = (body: AirshipJoinQueueDto) => undefined;
 export type ServerBridgeApiLeaveQueue = (groupId: string) => undefined;
 export type ServerBridgeApiGetMatchConfig = () => AirshipMatchConfig | undefined;
 
@@ -72,7 +73,7 @@ export class ProtectedMatchmakingService {
 		return result.group;
 	}
 
-	public async JoinQueue(body: GameCoordinatorMatchmaking.JoinQueueDto): Promise<undefined> {
+	public async JoinQueue(body: AirshipJoinQueueDto): Promise<undefined> {
 		await client.matchmaking.joinQueue(body);
 	}
 
@@ -94,5 +95,5 @@ export class ProtectedMatchmakingService {
 		}
 	}
 
-	protected OnStart(): void { }
+	protected OnStart(): void {}
 }

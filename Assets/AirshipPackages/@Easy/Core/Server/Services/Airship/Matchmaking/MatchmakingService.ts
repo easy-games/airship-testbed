@@ -8,10 +8,13 @@ import {
 	ServerBridgeApiLeaveQueue,
 } from "@Easy/Core/Server/ProtectedServices/Airship/Matchmaking/MatchmakingService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { AirshipMatchConfig, AirshipMatchmakingGroup } from "@Easy/Core/Shared/Airship/Types/Matchmaking";
+import {
+	AirshipJoinQueueDto,
+	AirshipMatchConfig,
+	AirshipMatchmakingGroup,
+} from "@Easy/Core/Shared/Airship/Types/Matchmaking";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { GameCoordinatorMatchmaking } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 
 @Service({})
 export class AirshipMatchmakingService {
@@ -21,7 +24,7 @@ export class AirshipMatchmakingService {
 		Platform.Server.Matchmaking = this;
 	}
 
-	protected OnStart(): void { }
+	protected OnStart(): void {}
 
 	/**
 	 * Creates a matchmaking group. Matchmaking groups allow players to enter a matchmaking queue.
@@ -69,7 +72,7 @@ export class AirshipMatchmakingService {
 	 * @param body The body of the request, containing the queueId, groupId, and information about the players in the group.
 	 * @returns undefined if the request was successful. Returns an error if the user is already in a group.
 	 */
-	public async JoinQueue(body: GameCoordinatorMatchmaking.JoinQueueDto): Promise<void> {
+	public async JoinQueue(body: AirshipJoinQueueDto): Promise<void> {
 		return contextbridge.invoke<ServerBridgeApiJoinQueue>(
 			MatchmakingServiceBridgeTopics.JoinQueue,
 			LuauContext.Protected,

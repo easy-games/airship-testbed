@@ -56,6 +56,9 @@ export enum AirshipGearClothingSubcategory {
 	RightArmLower = "RightArmLower",
 }
 
+export type AirshipCreateOutfitDto = ContentServiceOutfits.CreateOutfitDto;
+export type AirshipUpdateOutfitDto = ContentServiceOutfits.UpdateOutfitDto;
+
 export enum AirshipGearCategory {
 	Clothing = "Clothing",
 	FaceDecal = "FaceDecal",

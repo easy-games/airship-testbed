@@ -30,12 +30,13 @@ import { TransferController } from "../Transfer/TransferController";
 import { RightClickMenuButton } from "../UI/RightClickMenu/RightClickMenuButton";
 import { DirectMessageController } from "./DirectMessages/DirectMessageController";
 import { SocialNotificationType } from "./SocialNotificationType";
-import {
-	GameCoordinatorClient,
-	GameCoordinatorUserStatus,
-} from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import { AirshipUser, AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
+import {
+	AirshipUpdateStatusDto,
+	AirshipUser,
+	AirshipUserStatusData,
+} from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 
 interface PendingSocialNotification {
 	type: SocialNotificationType;
@@ -358,7 +359,7 @@ export class ProtectedFriendsController {
 			return;
 		}
 
-		const status: GameCoordinatorUserStatus.UpdateUserStatusDto = {
+		const status: AirshipUpdateStatusDto = {
 			status: Game.coreContext === CoreContext.GAME ? "in_game" : "online",
 			serverId: Game.serverId,
 			gameId: Game.gameId,
@@ -533,11 +534,11 @@ export class ProtectedFriendsController {
 
 					print(
 						"Transfering to friend " +
-						friend.username +
-						". gameId=" +
-						friend.gameId +
-						", serverId=" +
-						friend.serverId,
+							friend.username +
+							". gameId=" +
+							friend.gameId +
+							", serverId=" +
+							friend.serverId,
 					);
 					Dependency<TransferController>().TransferToGameAsync(friend.gameId, friend.serverId);
 				};

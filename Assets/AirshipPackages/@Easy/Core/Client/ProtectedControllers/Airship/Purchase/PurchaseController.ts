@@ -3,9 +3,10 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { ProtectedUserController } from "../User/UserController";
-import { ContentServiceClient, ContentServicePurchase } from "@Easy/Core/Shared/TypePackages/content-service-types";
+import { ContentServiceClient } from "@Easy/Core/Shared/TypePackages/content-service-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUser } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
+import { AirshipPurchaseDto } from "@Easy/Core/Shared/Airship/Types/AirshipShop";
 
 export const enum PurchaseControllerBridgeTopics {
 	RequestPurchase = "PurchaseController:RequestPurchase",
@@ -55,7 +56,7 @@ export class ProtectedPurchaseController {
 
 	protected OnStart(): void {}
 
-	public PerformPurchase(config: ContentServicePurchase.PurchaseDto): void {
+	public PerformPurchase(config: AirshipPurchaseDto): void {
 		const receiptData = client.purchase.purchase(config).expect();
 		// Notify server of receipt so that it can process it
 	}

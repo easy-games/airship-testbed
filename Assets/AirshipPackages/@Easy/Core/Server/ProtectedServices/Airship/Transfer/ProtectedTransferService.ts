@@ -7,7 +7,7 @@ import {
 } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
-import { GameCoordinatorClient, GameCoordinatorTransfers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
@@ -75,7 +75,7 @@ export class ProtectedTransferService {
 	public async TransferGroupToGame(
 		players: readonly (string | Player)[],
 		gameId: string,
-		config?: Omit<GameCoordinatorTransfers.TransferToGameDto, "uids" | "gameId">,
+		config?: AirshipGameTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToGame>> {
 		return await client.transfers.sendToGame({
 			uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
@@ -89,7 +89,7 @@ export class ProtectedTransferService {
 	public async TransferGroupToServer(
 		players: readonly (string | Player)[],
 		serverId: string,
-		config?: Omit<GameCoordinatorTransfers.TransferToServerIdDto, "uids" | "serverId">,
+		config?: AirshipServerTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToServer>> {
 		return await client.transfers.sendToServer({
 			uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
@@ -101,7 +101,7 @@ export class ProtectedTransferService {
 
 	public async TransferGroupToMatchingServer(
 		players: readonly (string | Player)[],
-		config: Omit<GameCoordinatorTransfers.TransferToMatchingServerDto, "uids">,
+		config: AirshipMatchingServerTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToMatchingServer>> {
 		return await client.transfers.sendToMatchingServer({
 			uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
@@ -118,7 +118,7 @@ export class ProtectedTransferService {
 	public async TransferGroupToPlayer(
 		players: readonly (string | Player)[],
 		targetUserId: string,
-		config?: Omit<GameCoordinatorTransfers.TransferToPlayerDto, "uids" | "targetUserId">,
+		config?: AirshipPlayerTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToPlayer>> {
 		return await client.transfers.sendToPlayer({
 			uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
