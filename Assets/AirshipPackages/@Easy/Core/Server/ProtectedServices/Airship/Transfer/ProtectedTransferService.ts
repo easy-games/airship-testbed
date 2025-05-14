@@ -40,6 +40,14 @@ export type ServerBridgeApiTransferGroupToPlayer = (
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
+function LogTransferResult(transferResult: AirshipTransferResult) {
+	if (!transferResult.transfersRequested) {
+		warn("Transfer failed:", transferResult.reason);
+	} else if (transferResult.pendingTransfer) {
+		warn("Transfer pending, waiting for available servers.");
+	}
+}
+
 @Service({})
 export class ProtectedTransferService {
 	constructor() {
@@ -77,13 +85,15 @@ export class ProtectedTransferService {
 		gameId: string,
 		config?: AirshipGameTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToGame>> {
-		return await client.transfers.sendToGame({
+		const result = await client.transfers.sendToGame({
 			uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
 			gameId,
 			preferredServerId: config?.preferredServerId,
 			serverTransferData: config?.serverTransferData,
 			clientTransferData: config?.clientTransferData,
 		});
+		LogTransferResult(result);
+		return result;
 	}
 
 	public async TransferGroupToServer(
@@ -91,19 +101,21 @@ export class ProtectedTransferService {
 		serverId: string,
 		config?: AirshipServerTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToServer>> {
-		return await client.transfers.sendToServer({
+		const result = await client.transfers.sendToServer({
 			uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
 			serverId,
 			serverTransferData: config?.serverTransferData,
 			clientTransferData: config?.clientTransferData,
 		});
+		LogTransferResult(result);
+		return result;
 	}
 
 	public async TransferGroupToMatchingServer(
 		players: readonly (string | Player)[],
 		config: AirshipMatchingServerTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToMatchingServer>> {
-		return await client.transfers.sendToMatchingServer({
+		const result = await client.transfers.sendToMatchingServer({
 			uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
 			sceneId: config.sceneId,
 			maxPlayers: config.maxPlayers,
@@ -113,6 +125,8 @@ export class ProtectedTransferService {
 			serverTransferData: config.serverTransferData,
 			clientTransferData: config.clientTransferData,
 		});
+		LogTransferResult(result);
+		return result;
 	}
 
 	public async TransferGroupToPlayer(
@@ -120,11 +134,13 @@ export class ProtectedTransferService {
 		targetUserId: string,
 		config?: AirshipPlayerTransferConfig,
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToPlayer>> {
-		return await client.transfers.sendToPlayer({
+		const result = await client.transfers.sendToPlayer({
 			uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
 			targetUserId,
 			serverTransferData: config?.serverTransferData,
 			clientTransferData: config?.clientTransferData,
 		});
+		LogTransferResult(result);
+		return result;
 	}
 }
