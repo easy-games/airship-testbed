@@ -3,7 +3,6 @@ import { GameCoordinatorGroups, GameCoordinatorUsers } from "../../TypePackages/
 export type AirshipMatchmakingGroup = GameCoordinatorGroups.Group;
 
 export interface AirshipMatchTeamGroupPlayer extends GameCoordinatorUsers.PublicUser {
-	id: string;
 	attributes: Record<string, unknown>;
 }
 
