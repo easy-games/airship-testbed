@@ -1,6 +1,5 @@
 import {
 	ContentServiceGear,
-	ContentServiceItemClasses,
 	ContentServiceItems,
 	ContentServiceOutfits,
 	ContentServicePrisma,

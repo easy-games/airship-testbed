@@ -1,20 +1,22 @@
-import { GameCoordinatorGroups, GameCoordinatorMatchmaking, GameCoordinatorUsers } from "../../TypePackages/game-coordinator-types";
+import { GameCoordinatorGroups, GameCoordinatorUsers } from "../../TypePackages/game-coordinator-types";
 
 export type AirshipMatchmakingGroup = GameCoordinatorGroups.Group;
-interface MatchTeamGroupPlayer extends GameCoordinatorUsers.PublicUser {
-    id: string;
-    attributes: Record<string, unknown>;
-}
-interface MatchTeamGroup {
-    id: string;
-    players: MatchTeamGroupPlayer[];
-    attributes: Record<string, unknown>;
-}
-interface MatchTeam {
-    name: string;
-    groups: MatchTeamGroup[];
+
+export interface AirshipMatchTeamGroupPlayer extends GameCoordinatorUsers.PublicUser {
+	attributes: Record<string, unknown>;
 }
 
-export type AirshipMatchConfig = {
-    teams: MatchTeam[]
-};
+export interface AirshipMatchTeamGroup {
+	id: string;
+	players: AirshipMatchTeamGroupPlayer[];
+	attributes: Record<string, unknown>;
+}
+
+export interface AirshipMatchTeam {
+	name: string;
+	groups: AirshipMatchTeamGroup[];
+}
+
+export interface AirshipMatchConfig {
+	teams: AirshipMatchTeam[];
+}
