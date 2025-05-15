@@ -23,7 +23,7 @@ import { TpsCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpsCommand"
 import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Airship } from "../Airship";
 import { ChatCommand } from "../Commands/ChatCommand";
-import { CoreNetwork } from "../CoreNetwork";
+import { ChatMessageNetworkEvent, CoreNetwork } from "../CoreNetwork";
 import { Game } from "../Game";
 import { Player } from "../Player/Player";
 import StringUtils from "../Types/StringUtil";
@@ -51,6 +51,7 @@ class ChatMessageEvent extends Cancellable {
  */
 @Singleton({})
 export class AirshipChatSingleton {
+	private messageIdCounter: number = 1;
 	private commands = new Map<string, ChatCommand>();
 	private readonly moderationService: ProtectedModerationService;
 
@@ -63,6 +64,8 @@ export class AirshipChatSingleton {
 	 * - Yielding in a callback will delay the message from being processed.
 	 */
 	public readonly onChatMessage = new Signal<ChatMessageEvent>().WithAllowYield(true);
+
+
 
 	constructor() {
 		Airship.Chat = this;
@@ -77,12 +80,10 @@ export class AirshipChatSingleton {
 
 			// On client listen for game chat messages and direct them to protected
 			if (Game.IsClient()) {
-				CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((msg, nameWithPrefix, senderClientId) => {
-					contextbridge.broadcast<(msg: string, nameWithPrefix?: string, senderClientId?: number) => void>(
-						"Chat:AddLocalMessage",
-						msg,
-						nameWithPrefix,
-						senderClientId,
+				CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((details) => {
+					contextbridge.broadcast<(msg: ChatMessageNetworkEvent) => void>(
+						"Chat:ProcessLocalMessage",
+						details,
 					);
 				});
 			}
@@ -93,6 +94,7 @@ export class AirshipChatSingleton {
 		contextbridge.subscribe<(fromContext: LuauContext, msg: string, fromConnId: number) => void>(
 			"ProtectedChat:SendMessage",
 			(fromContext, text, fromConnId) => {
+				const messageId = this.messageIdCounter++;
 				const player = Airship.Players.FindByConnectionId(fromConnId);
 				if (!player) {
 					warn("Couldn't find player when trying to send chat message. connId=" + fromConnId);
@@ -116,39 +118,47 @@ export class AirshipChatSingleton {
 					return;
 				}
 
-				let moderationResult: ModerateChatMessageResponse;
+				let nameWithPrefix = player.username + ": ";
+				const result = this.onChatMessage.Fire(new ChatMessageEvent(player, nameWithPrefix, text));
+				if (result.IsCancelled()) return;
+
+				CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients({
+					type: "sent",
+					internalMessageId: messageId,
+					message: result.message,
+					senderPrefix: result.nametag,
+					senderClientId: player.connectionId,
+				});
 
 				if (!Game.IsEditor()) {
-					moderationResult = this.moderationService
-						.ModerateChatMessage("public_chat", player.userId, text)
-						.expect();
-				} else {
-					moderationResult = {
-						messageBlocked: false,
-					};
-				}
-				if (moderationResult.messageBlocked) {
-					if (moderationResult.messageBlockedReasons.size() > 0) {
-						player.SendMessage(
-							"Your message was blocked for violating our community guidelines for the following reason(s): " +
-								moderationResult.messageBlockedReasons.join(", "),
-						);
-					} else {
-						player.SendMessage("Your message was blocked for violating our community guidelines.");
-					}
-					return;
-				}
-				const textToSend = moderationResult.transformedMessage ?? text;
 
-				let nameWithPrefix = player.username + ": ";
-				const result = this.onChatMessage.Fire(new ChatMessageEvent(player, nameWithPrefix, textToSend));
 
-				if (result.IsCancelled()) return;
-				CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients(
-					result.message,
-					result.nametag,
-					player.connectionId,
-				);
+					this.moderationService
+						.ModerateChatMessage("public_chat", player.userId, result.message)
+						.then((moderationResult: ModerateChatMessageResponse) => {
+							if (moderationResult.messageBlocked) {
+								CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients({
+									type: "remove",
+									internalMessageId: messageId,
+								});
+								if (moderationResult.messageBlockedReasons.size() > 0) {
+									player.SendMessage(
+										"Your message was blocked for violating our community guidelines for the following reason(s): " +
+										moderationResult.messageBlockedReasons.join(", "),
+									);
+								} else {
+									player.SendMessage("Your message was blocked for violating our community guidelines.");
+								}
+								return;
+							} else if (moderationResult.transformedMessage) {
+								CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients({
+									type: "update",
+									internalMessageId: messageId,
+									message: moderationResult.transformedMessage,
+								});
+							}
+						});
+				}
 			},
 		);
 	}
@@ -213,8 +223,8 @@ export class AirshipChatSingleton {
 		if (!Game.IsServer()) {
 			error(
 				"Error trying to call RegisterCommand " +
-					command.commandLabel +
-					": Can only register command on server.",
+				command.commandLabel +
+				": Can only register command on server.",
 			);
 		}
 
