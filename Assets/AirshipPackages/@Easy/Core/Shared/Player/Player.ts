@@ -1,6 +1,6 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { ChatMessageNetworkEvent, CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
@@ -210,7 +210,7 @@ export class Player {
 			// try catch to not require c# update
 			try {
 				characterComponent.movement.startingLookVector = config.lookDirection;
-			} catch (err) {}
+			} catch (err) { }
 		}
 
 		if (!this.outfitLoaded) {
@@ -290,7 +290,7 @@ export class Player {
 	 */
 	public SendMessage(message: string): void {
 		if (Game.IsServer() && !Game.IsHosting()) {
-			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this, message, undefined, undefined);
+			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this, { type: "sent", message });
 		} else {
 			if (this.userId !== Game.localPlayer.userId) error("Cannot SendMessage to non-local client.");
 
@@ -298,7 +298,7 @@ export class Player {
 			// The problem is numerous places (ex: messaging when invalid command, broadcasting player joined server msg) trigger
 			// this to run. Ideally we can eventually support multiple broadcasts simultaneously but until that this patch works.
 			task.defer(() => {
-				contextbridge.broadcast<(rawText: string) => void>("Chat:AddLocalMessage", message);
+				contextbridge.broadcast<(msg: ChatMessageNetworkEvent) => void>("Chat:ProcessLocalMessage", { type: "sent", message });
 			});
 		}
 	}
@@ -428,10 +428,10 @@ export class Player {
 		if (!checkId) {
 			warn(
 				"Unable to schedule lag compensation for " +
-					this.username +
-					" (" +
-					this.connectionId +
-					"). Is the connection ID correct?",
+				this.username +
+				" (" +
+				this.connectionId +
+				"). Is the connection ID correct?",
 			);
 		}
 		this.lagCompRequests.set(checkId, { check: checkFunc, complete: completeFunc });

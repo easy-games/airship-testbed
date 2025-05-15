@@ -69,6 +69,7 @@ export namespace GameCoordinatorChat {
 	};
 	export interface SendMessageSuccess {
 		messageSent: true;
+		transformedMessage?: string;
 	}
 	export interface SendMessageFailure {
 		messageSent: false;
@@ -119,15 +120,18 @@ export namespace GameCoordinatorMatchmaking {
 	export interface MatchTeamGroupPlayer {
 		id: string;
 		attributes: Record<string, unknown>;
+		output?: Record<string, unknown>;
 	}
 	export interface MatchTeamGroup {
 		id: string;
 		players: MatchTeamGroupPlayer[];
 		attributes: Record<string, unknown>;
+		output?: Record<string, unknown>;
 	}
 	export interface MatchTeam {
 		name: string;
 		groups: MatchTeamGroup[];
+		output?: Record<string, unknown>;
 	}
 	export interface MatchConfig {
 		teams: MatchTeam[];
@@ -1755,9 +1759,7 @@ export namespace GameCoordinatorMMQueue {
 			return await this.makeRequest({
 				method: "GET",
 				routeId: "GameCoordinator:MMQueue:getQueueConfiguration",
-				path: `/matchmaking/queues/game-id/${encodeURIComponent(
-					args.params.gameId,
-				)}/queue-id/${encodeURIComponent(args.params.queueId)}/configuration`,
+				path: `/matchmaking/queues/game-id/${encodeURIComponent(args.params.gameId)}/queue-id/${encodeURIComponent(args.params.queueId)}/configuration`,
 				retryKey: options?.retryKey ?? "GameCoordinator:MMQueue:getQueueConfiguration",
 				query: args.query,
 			});
@@ -1780,9 +1782,7 @@ export namespace GameCoordinatorMMQueue {
 			return await this.makeRequest({
 				method: "PUT",
 				routeId: "GameCoordinator:MMQueue:putQueueConfiguration",
-				path: `/matchmaking/queues/game-id/${encodeURIComponent(
-					args.params.gameId,
-				)}/queue-id/${encodeURIComponent(args.params.queueId)}/configuration`,
+				path: `/matchmaking/queues/game-id/${encodeURIComponent(args.params.gameId)}/queue-id/${encodeURIComponent(args.params.queueId)}/configuration`,
 				retryKey: options?.retryKey ?? "GameCoordinator:MMQueue:putQueueConfiguration",
 				body: args.data,
 			});
@@ -1794,9 +1794,7 @@ export namespace GameCoordinatorMMQueue {
 			return await this.makeRequest({
 				method: "DELETE",
 				routeId: "GameCoordinator:MMQueue:deleteQueueConfiguration",
-				path: `/matchmaking/queues/game-id/${encodeURIComponent(args.gameId)}/queue-id/${encodeURIComponent(
-					args.queueId,
-				)}`,
+				path: `/matchmaking/queues/game-id/${encodeURIComponent(args.gameId)}/queue-id/${encodeURIComponent(args.queueId)}`,
 				retryKey: options?.retryKey ?? "GameCoordinator:MMQueue:deleteQueueConfiguration",
 			});
 		}
