@@ -77,19 +77,6 @@ declare function tick(): number;
 /** Time since the game started running. Will be 0 in Studio when not running the game. */
 declare function time(): number;
 
-declare namespace System {
-	namespace IO {
-		enum SearchOption {
-			TopDirectoryOnly,
-			AllDirectories,
-		}
-	}
-	export class Guid {
-		public static NewGuid(): Guid;
-		public ToString(): string;
-	}
-}
-
 // interface CSDictionary<Key, Value> {
 // 	Keys: Key[];
 // 	Values: Value[];
