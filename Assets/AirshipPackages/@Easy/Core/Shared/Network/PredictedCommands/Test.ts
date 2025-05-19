@@ -72,6 +72,6 @@ export class TestPredictedCommand extends PredictedCustomCommand<{ charging: boo
 		nextState: Readonly<{ progress: number }>,
 		delta: number,
 	): void {
-		// this.vfx.UpdateProgress(math.lerp(lastState.progress, nextState.progress, delta));
+		// this.vfx.UpdateProgress(math.lerpClamped(lastState.progress, nextState.progress, delta));
 	}
 }

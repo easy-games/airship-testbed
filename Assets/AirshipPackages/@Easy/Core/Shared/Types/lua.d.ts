@@ -597,11 +597,11 @@ declare namespace math {
 	/** Clamps the value of `n` within the range of `[0, 1]`. */
 	function clamp01(n: number): number;
 
-	/** Linearly interpolates between `a` and `b` by amount `t`. The value `t` is clamped to the range of `[0, 1]`. */
+	/** Linearly interpolates between `a` and `b` by amount `t`. Note: This is unclamped. */
 	function lerp(a: number, b: number, t: number): number;
 
-	/** Linearly interpolates between `a` and `b` by amount `t`. */
-	function lerpUnclamped(a: number, b: number, t: number): number;
+	/** Linearly interpolates between `a` and `b` by amount `t`. The value `t` is clamped to the range of `[0, 1]`. */
+	function lerpClamped(a: number, b: number, t: number): number;
 
 	/** Returns where a value lies between `a` and `b`. */
 	function inverseLerp(a: number, b: number, value: number): number;

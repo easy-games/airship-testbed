@@ -46,7 +46,7 @@ export class ProtectedVoiceChatSingleton implements OnStart {
 	}
 
 	private NormalizeSpeakingLevel(speakingLevel: number): number {
-		return math.lerp(0, 1, speakingLevel / 0.62);
+		return math.lerpClamped(0, 1, speakingLevel / 0.62);
 	}
 
 	OnStart(): void {

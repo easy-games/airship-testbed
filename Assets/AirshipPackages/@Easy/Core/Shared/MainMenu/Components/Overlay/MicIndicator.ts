@@ -92,7 +92,7 @@ export default class MicIndicator extends AirshipBehaviour {
 					connectionId,
 				);
 				const smoothingSpeed = 10; // Higher = snappier, lower = smoother
-				this.currentSpeakingLevel = math.lerp(
+				this.currentSpeakingLevel = math.lerpClamped(
 					this.currentSpeakingLevel,
 					speakingLevel,
 					Time.deltaTime * smoothingSpeed,
