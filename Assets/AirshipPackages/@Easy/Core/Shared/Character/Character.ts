@@ -504,9 +504,9 @@ export default class Character extends AirshipBehaviour {
 			return;
 		}
 		//Convert queued data into binary blob
-		let customInputDataQueue: { key: string; value: unknown }[] = [];
+		let customInputDataQueue: { k: string; v: unknown }[] = [];
 		this.queuedCustomInputData.forEach((value, key) => {
-			customInputDataQueue.push({ key: key, value: value });
+			customInputDataQueue.push({ k: key, v: value });
 		});
 		this.queuedCustomInputData.clear();
 		//Pass to C#
@@ -520,9 +520,9 @@ export default class Character extends AirshipBehaviour {
 			return;
 		}
 		//Convert queued data into binary blob
-		let customSnapshotDataQueue: { key: string; value: unknown }[] = [];
+		let customSnapshotDataQueue: { k: string; v: unknown }[] = [];
 		this.queuedCustomSnapshotData.forEach((value, key) => {
-			customSnapshotDataQueue.push({ key: key, value: value });
+			customSnapshotDataQueue.push({ k: key, v: value });
 		});
 		this.queuedCustomSnapshotData.clear();
 		//Pass to C#
@@ -531,13 +531,11 @@ export default class Character extends AirshipBehaviour {
 
 	private ParseCustomSnapshotData(snapshot: CharacterSnapshotData): Map<string, unknown> {
 		//Decode binary block into usable key value array
-		const allData = snapshot.customData
-			? (snapshot.customData.Decode() as { key: string; value: unknown }[])
-			: undefined;
+		const allData = snapshot.customData ? (snapshot.customData.Decode() as { k: string; v: unknown }[]) : undefined;
 		const allCustomData: Map<string, unknown> = new Map();
 		if (allData) {
 			for (const data of allData) {
-				allCustomData.set(data.key, data.value);
+				allCustomData.set(data.k, data.v);
 			}
 		}
 		return allCustomData;
@@ -545,11 +543,11 @@ export default class Character extends AirshipBehaviour {
 
 	private ParseCustomInputData(input: CharacterInputData): Map<string, unknown> {
 		//Decode binary block into usable key value array
-		const allData = input.customData ? (input.customData.Decode() as { key: string; value: unknown }[]) : undefined;
+		const allData = input.customData ? (input.customData.Decode() as { k: string; v: unknown }[]) : undefined;
 		const allCustomData: Map<string, unknown> = new Map();
 		if (allData) {
 			for (const data of allData) {
-				allCustomData.set(data.key, data.value);
+				allCustomData.set(data.k, data.v);
 			}
 		}
 		return allCustomData;
