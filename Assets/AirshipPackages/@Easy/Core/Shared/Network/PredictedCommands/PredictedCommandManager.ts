@@ -28,15 +28,9 @@ interface ActiveCommand {
 	ResetInstance: () => void;
 }
 
-interface CustomSnapshotData {
-	finished: boolean;
-	data: Readonly<unknown>;
-}
+type CustomSnapshotData = [finished: boolean, data: Readonly<unknown>];
 
-interface CustomInputData {
-	finished: boolean;
-	data: Readonly<unknown>;
-}
+type CustomInputData = [finished: boolean, data: Readonly<unknown>];
 
 /** Data contained in the custom data key */
 export class CommandInstanceIdentifier {
@@ -340,7 +334,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 						// Call the compare function and set the result for C# to use later
 						const result = TaskUtil.RunWithoutYield(() =>
-							instance.CompareSnapshots(aCommandData.data, bCommandData.data),
+							instance.CompareSnapshots(aCommandData[1], bCommandData[1]),
 						);
 						if (!result) {
 							warn(
@@ -349,9 +343,9 @@ export default class PredictedCommandManager extends AirshipSingleton {
 									" on cmd #" +
 									a.lastProcessedCommand +
 									". Predicted Result: " +
-									inspect(aCommandData.data) +
+									inspect(aCommandData[1]) +
 									" Actual Result: " +
-									inspect(bCommandData.data),
+									inspect(bCommandData[1]),
 							);
 						}
 						character.SetComparisonResult(result);
@@ -413,7 +407,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 							}
 
 							// Reset the command to the provided state snapshot.
-							let data = value.data;
+							let data = value[1];
 							const confirmedState = this.confirmedFinalState.get(commandIdentifier.stringify());
 							// Overwrite with last confirmed data if required
 							if (confirmedState) {
@@ -427,7 +421,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 									activeCommand.bin.Clean(); // Remove the command since the snapshot shouldn't have had this command in it.
 									return;
 								}
-								data = confirmedState.snapshot.data;
+								data = confirmedState.snapshot[1];
 							}
 
 							// If the command was predicted to end before this snapshot and we are seeing the command
@@ -463,7 +457,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 							// Finished means that the command ended on the tick we are resetting to, so remove it from
 							// the active command list so it doesn't continue to tick in our predictions.
-							if (value.finished) {
+							if (value[0]) {
 								// print(
 								// 	"cmd " +
 								// 		activeCommand.customDataKey +
@@ -516,7 +510,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					this.GetHighestCompletedInstance(commandIdenfitier.characterId, commandIdenfitier.commandId) >=
 					commandIdenfitier.instanceId
 				) {
-					this.onCommandEnded.Fire(commandIdenfitier, stateData.data);
+					this.onCommandEnded.Fire(commandIdenfitier, stateData[1]);
 					return;
 				}
 
@@ -535,7 +529,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				snapshot: stateData,
 				time: character.movement.GetLocalSimulationTimeFromCommandNumber(commandNumber),
 			});
-			this.onCommandEnded.Fire(commandIdenfitier, stateData.data);
+			this.onCommandEnded.Fire(commandIdenfitier, stateData[1]);
 
 			// temporary instance just for comparing snapshot data
 			const config = this.commandHandlerMap[commandIdenfitier.commandId];
@@ -549,7 +543,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			if (
 				lastState &&
 				lastState.commandNumber === commandNumber &&
-				tempInstance.CompareSnapshots(lastState?.snapshot.data, stateData.data)
+				tempInstance.CompareSnapshots(lastState?.snapshot[1], stateData[1])
 			) {
 				print("Final states match, no resim required.");
 				return;
@@ -572,7 +566,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				commandNumber: 0,
 				// This time is used for when we should remove the confirmedState, so it needs to be accurate
 				time: character.movement.GetLocalSimulationTimeFromCommandNumber(commandNumber),
-				snapshot: { data: undefined as unknown as Readonly<unknown>, finished: true },
+				snapshot: [true, undefined as unknown as Readonly<unknown>],
 			});
 
 			warn(
@@ -804,10 +798,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		let shouldTickAgain = true;
 		let lastProcessedInputCommandNumber: number = 0;
 		let lastProcessedInputTime = 0;
-		let lastCapturedState: CustomSnapshotData = {
-			data: undefined as unknown as Readonly<unknown>,
-			finished: false,
-		};
+		let lastCapturedState: CustomSnapshotData = [false, undefined as unknown as Readonly<unknown>];
 		// Note: active command data structure may be destroyed and recreated during replays.
 		// only store metadata about the current instance here and know that when retrieving
 		// activeCommand later using GetActiveCommandOnCharacter, it may not be the same data
@@ -828,10 +819,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			ResetInstance: () => {
 				lastProcessedInputCommandNumber = 0;
 				lastProcessedInputTime = 0;
-				lastCapturedState = {
-					data: undefined as unknown as Readonly<unknown>,
-					finished: false,
-				};
+				lastCapturedState = [false, undefined as unknown as Readonly<unknown>];
 			},
 		};
 
@@ -844,7 +832,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			// print("last processed cmd# for " + commandIdentifierStr + ": " + lastProcessedInputCommandNumber);
 			if (Game.IsServer()) {
 				this.SetHighestCompletedInstance(commandIdentifier);
-				this.onCommandEnded.Fire(commandIdentifier, lastCapturedState.data);
+				this.onCommandEnded.Fire(commandIdentifier, lastCapturedState[1]);
 				if (character.player) {
 					NetworkCommandEnd.server.FireAllClients(
 						commandIdentifierStr,
@@ -899,10 +887,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				}
 
 				const input = TaskUtil.RunWithoutYield(() => activeCommand.instance.GetCommand());
-				const inputWrapper: CustomInputData = {
-					finished: input === false,
-					data: input as Readonly<unknown>,
-				};
+				const inputWrapper: CustomInputData = [input === false, input as Readonly<unknown>];
 
 				character.AddCustomInputData(activeCommand.customDataKey, inputWrapper);
 			}),
@@ -939,21 +924,21 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				// authoritative state for the command instead of processing a tick. We also mark it to stop processing on the next
 				// tick since this is the last tick that should be processed.
 				if (finalCommandData !== undefined && input.commandNumber === finalCommandData.commandNumber) {
-					activeCommand.instance.ResetToSnapshot(finalCommandData.snapshot.data);
+					activeCommand.instance.ResetToSnapshot(finalCommandData.snapshot[1]);
 					shouldTickAgain = false;
 					return;
 				}
 
 				// The command was finished. Call complete and don't tick.
 				const customInput = (customData as Map<string, CustomInputData>).get(activeCommand.customDataKey);
-				if (customInput && customInput.finished) {
+				if (customInput && customInput[0]) {
 					CommitEndedCommand();
 					return;
 				}
 
 				// Process a normal forward tick
 				const tickResult = TaskUtil.RunWithoutYield(() =>
-					activeCommand.instance.OnTick(customInput?.data, replay, input),
+					activeCommand.instance.OnTick(customInput?.[1], replay, input),
 				);
 				shouldTickAgain = tickResult !== false;
 				lastProcessedInputCommandNumber = input.commandNumber;
@@ -989,10 +974,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		activeCommand.bin.Add(
 			character.OnAddCustomSnapshotData.ConnectWithPriority(config.priority ?? SignalPriority.NORMAL, () => {
 				const state = TaskUtil.RunWithoutYield(() => activeCommand.instance.OnCaptureSnapshot());
-				const stateWrapper: CustomSnapshotData = {
-					data: state as Readonly<unknown>,
-					finished: !shouldTickAgain,
-				};
+				const stateWrapper: CustomSnapshotData = [!shouldTickAgain, state as Readonly<unknown>];
 				lastCapturedState = stateWrapper;
 				character.AddCustomSnapshotData(activeCommand.customDataKey, stateWrapper);
 
@@ -1018,7 +1000,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						return;
 					}
 					TaskUtil.RunWithoutYield(() =>
-						activeCommand.instance.OnObserverUpdate?.(aData.data, bData.data, delta),
+						activeCommand.instance.OnObserverUpdate?.(aData[1], bData[1], delta),
 					);
 				},
 			),
@@ -1052,7 +1034,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						activeCommand.created = true;
 						activeCommand.instance.Create?.();
 					}
-					TaskUtil.RunWithoutYield(() => activeCommand.instance.OnObserverReachedState?.(commandData!.data));
+					TaskUtil.RunWithoutYield(() => activeCommand.instance.OnObserverReachedState?.(commandData![1]));
 				},
 			),
 		);
