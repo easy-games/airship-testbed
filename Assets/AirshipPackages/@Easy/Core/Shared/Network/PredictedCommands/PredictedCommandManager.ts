@@ -1106,12 +1106,13 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	}
 
 	private BuildCustomDataKey(keyData: { commandId: string; instanceId: number }) {
-		return "cc:" + keyData.commandId + ":" + keyData.instanceId;
+		return "_" + keyData.commandId + ":" + keyData.instanceId;
 	}
 
 	private ParseCustomDataKey(characterId: number, dataKey: string): CommandInstanceIdentifier | undefined {
-		if (dataKey.sub(0, 3) !== "cc:") return;
-		const [commandId, instanceId] = dataKey.sub(4).split(":");
+		if (dataKey.sub(0, 1) !== "_") return;
+		const [commandId, instanceId] = dataKey.sub(2).split(":");
+		// print(`commandId: ${commandId}, instanceId: ${instanceId}`);
 
 		return new CommandInstanceIdentifier(characterId, commandId, tonumber(instanceId) ?? 0);
 	}
