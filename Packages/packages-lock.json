@@ -1,5 +1,14 @@
 {
   "dependencies": {
+    "com.james-frowen.mirage-profiler": {
+      "version": "https://github.com/James-Frowen/Mirage.Profiler.git?path=/Assets/Mirage.Profiler#v1.1.0-mirror.12",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.profiling.core": "1.0.2"
+      },
+      "hash": "b51b8b69c6d216bdeda7378575802a0420de7b8c"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
@@ -163,6 +172,13 @@
     },
     "com.unity.performance.profile-analyzer": {
       "version": "1.2.3",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.profiling.core": {
+      "version": "1.0.2",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
