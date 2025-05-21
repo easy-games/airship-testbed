@@ -334,7 +334,7 @@ export class ProtectedSettingsSingleton {
 		if (level === 1) {
 			pipelineAsset.msaaSampleCount = 2;
 		} else {
-			pipelineAsset.msaaSampleCount = 0;
+			pipelineAsset.msaaSampleCount = 1;
 		}
 	}
 
