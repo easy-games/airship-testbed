@@ -182,6 +182,22 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						// Check if the command should run if we are the server. The client already validates command creation in PreCreateCommand, so
 						// we don't need to do it again here.
 						if (Game.IsServer()) {
+							// If the server already has this command ID active, but it isn't the command described by this commandIdentifier, the client is trying to start a new instance before
+							// the server has completed the existing one.
+							if (this.IsCommandIdActive(commandIdentifier.commandId, character)) {
+								warn(
+									`Tried to run command ${commandIdentifier.commandId} on character ID ${commandIdentifier.characterId}, but it was already active. You can only run one command instance at a time.`,
+								);
+								// We notify the client that the command has been invalidated
+								if (character.player) {
+									NetworkCommandInvaild.server.FireClient(
+										character.player,
+										commandIdentifier.stringify(),
+										input.commandNumber,
+									);
+								}
+								return;
+							}
 							const result = this.onValidateCommand.Fire(
 								new ValidateCommand(character, commandIdentifier.commandId),
 							);
