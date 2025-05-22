@@ -7,6 +7,7 @@ import { AirshipCacheStoreService } from "../Server/Services/Airship/CacheStore/
 import { AirshipDataStoreService } from "../Server/Services/Airship/DataStore/AirshipDataStoreService";
 import { AirshipLeaderboardService } from "../Server/Services/Airship/Leaderboard/AirshipLeaderboardService";
 import { AirshipMatchmakingService } from "../Server/Services/Airship/Matchmaking/MatchmakingService";
+import { AirshipMessagingService } from "../Server/Services/Airship/Messaging/AirshipMessagingService";
 import { AirshipPartyService } from "../Server/Services/Airship/Party/AirshipPartyService";
 import { AirshipPlatformInventoryService } from "../Server/Services/Airship/PlatformInventory/AirshipPlatformInventoryService";
 import { AirshipServerManagerService } from "../Server/Services/Airship/ServerManager/AirshipServerManagerService";
@@ -106,6 +107,10 @@ export namespace Platform {
 		 * Provides access to user information.
 		 */
 		export let User = undefined! as AirshipUserService;
+		/**
+		 * Provides access to user information.
+		 */
+		export let Messaging = undefined! as AirshipMessagingService;
 	}
 
 	/**

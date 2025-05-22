@@ -16,6 +16,7 @@ MonoBehaviour:
   startingScene: {fileID: 102900000, guid: d3e23cdc27fa047bdb3d8bdb895816e7, type: 3}
   gameScenes:
   - {fileID: 102900000, guid: d3e23cdc27fa047bdb3d8bdb895816e7, type: 3}
+  - {fileID: 102900000, guid: e67e73236ee66427cbf0a3d007768da5, type: 3}
   packages:
   - id: '@Easy/Core'
     assetVersion: 669

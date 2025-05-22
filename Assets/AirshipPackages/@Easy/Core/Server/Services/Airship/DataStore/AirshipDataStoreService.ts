@@ -18,7 +18,7 @@ import { Game } from "@Easy/Core/Shared/Game";
  * the Cache Store, but the data will never expire.
  *
  * The Data Store is good for things like user profiles or unlocks. If you want to keep track of user statistics or
- * build tradable inventory, check out the Leaderboard and PlatformInventory systems.s
+ * build tradable inventory, check out the Leaderboard and PlatformInventory systems.
  */
 @Service({})
 export class AirshipDataStoreService {
