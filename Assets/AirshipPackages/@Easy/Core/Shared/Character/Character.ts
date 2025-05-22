@@ -100,7 +100,7 @@ export default class Character extends AirshipBehaviour {
 	 * to connect to OnAddCustomInputData for the tick about to be processed. Only fires for the local
 	 * character.
 	 */
-	public PreCreateCommand = new Signal<[]>();
+	public PreCreateCommand = new Signal<[commandNumber: number]>();
 	/**
 	 * Fires before command processing.
 	 *
@@ -411,7 +411,7 @@ export default class Character extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			movementWithSignals.OnCreateCommand((commandNumber) => {
-				this.PreCreateCommand.Fire();
+				this.PreCreateCommand.Fire(commandNumber);
 				this.CollectCustomInputData(commandNumber);
 			}),
 		);
