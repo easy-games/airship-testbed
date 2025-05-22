@@ -764,6 +764,18 @@ declare namespace buffer {
 
 	/** Sets a region of the buffer memory to some 8-bit unsigned integer value. */
 	function fill(b: buffer, offset: number, value: number, count?: number): void;
+
+	/**
+	 * Returns a compressed version of the given buffer using ZSTD compression.
+	 * An optional ZSTD compression level can be provided (defaults to `3`).
+	 */
+	function compress(b: buffer, compressionLevel?: number): buffer;
+
+	/**
+	 * Returns a decompressed version of the given buffer using ZSTD decompression.
+	 * This assumes the given buffer was previously compressed using `buffer.compress()`.
+	 */
+	function decompress(b: buffer): buffer;
 }
 
 /**
