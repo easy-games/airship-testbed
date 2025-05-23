@@ -1,3 +1,8 @@
+import {
+	AirshipGearCategory,
+	AirshipGearItem,
+	AirshipOutfit,
+} from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
 import AvatarViewComponent from "@Easy/Core/Shared/Avatar/AvatarViewComponent";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
@@ -8,7 +13,6 @@ import AirshipButton from "@Easy/Core/Shared/MainMenu/Components/AirshipButton";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
-import { Mouse } from "@Easy/Core/Shared/UserInput/Mouse";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
@@ -21,7 +25,6 @@ import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import AvatarRenderComponent from "./AvatarRenderComponent";
 import OutfitButton from "./Outfit/OutfitButtonComponent";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
-import { AirshipGearItem, AirshipOutfit, AirshipGearCategory } from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -60,9 +63,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public revertBtn!: AirshipButton;
 	public saveBtn: AirshipButton;
 	public avatarInteractionBtn!: Button;
-
-	@Header("Variables")
-	public avatarCameraOffset = new Vector3(0, 0, 0);
 
 	@NonSerialized() private outfitBtns: AvatarMenuBtn[] = [];
 	private mainNavBtns: AvatarMenuBtn[] = [];
@@ -197,9 +197,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private RefreshAvatar() {
 		let avatarView = this.mainMenu?.avatarView;
 		if (avatarView) {
-			if (this.avatarCenterRect) {
-				avatarView.AlignCamera(this.avatarCenterRect.position, this.avatarCameraOffset);
-			}
+			// if (this.avatarCenterRect) {
+			// 	avatarView.AlignCamera(this.avatarCenterRect.position, this.avatarCameraOffset);
+			// }
 		} else {
 			// error("no 3D avatar to render in avatar editor");
 		}
@@ -306,14 +306,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		this.SelectMainNav(0);
 		this.SelectSubNav(0);
-
-		this.bin.Connect(Mouse.onScrolled, (event) => {
-			if (event.delta < -1) {
-				this.mainMenu?.avatarView?.CameraFocusSlot(AccessorySlot.Root);
-			} else if (event.delta > 1) {
-				this.mainMenu?.avatarView?.CameraFocusSlot(this.currentFocusedSlot);
-			}
-		});
 	}
 
 	override ClosePage(): void {
