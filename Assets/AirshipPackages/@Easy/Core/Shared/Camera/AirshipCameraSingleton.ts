@@ -522,7 +522,7 @@ export class AirshipCameraSingleton {
 				//If something else sets the characters look vector we need to update the camera
 				const lookVectorSyncInverse = character.movement.OnNewLookVector((lookVector) => {
 					if (!character.movement) return;
-					if (character.movement.disableInput) return;
+					// if (character.movement.disableInput) return;
 					mode.SetYAxisDirection(lookVector);
 				});
 				cleanup.Add(() => Bridge.DisconnectEvent(lookVectorSyncInverse));
@@ -569,7 +569,7 @@ export class AirshipCameraSingleton {
 				//If something else sets the characters look vector we need to update the camera
 				const lookVectorSyncInverse = character.movement.OnNewLookVector((lookVector) => {
 					if (!character.movement) return;
-					if (character.movement.disableInput) return;
+					// if (character.movement.disableInput) return;
 					mode.SetYAxisDirection(lookVector);
 				});
 				cleanup.Add(() => Bridge.DisconnectEvent(lookVectorSyncInverse));
