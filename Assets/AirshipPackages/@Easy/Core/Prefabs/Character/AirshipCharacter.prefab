@@ -1165,7 +1165,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  rigidbody: {fileID: 5519949438957097557}
+  rb: {fileID: 5519949438957097557}
   rootTransform: {fileID: 8997996947095583982}
   airshipTransform: {fileID: 7911948219130051474}
   graphicTransform: {fileID: 8307927661282889293}
@@ -1174,6 +1174,7 @@ MonoBehaviour:
   animationHelper: {fileID: 3239827073778428190}
   slopeVisualizer: {fileID: 473010626989301856}
   drawDebugGizmos_FORWARD: 0
+  drawDebugGizmos_WALLCLIPPING: 0
   drawDebugGizmos_GROUND: 0
   drawDebugGizmos_STEPUP: 0
   drawDebugGizmos_STATES: 0

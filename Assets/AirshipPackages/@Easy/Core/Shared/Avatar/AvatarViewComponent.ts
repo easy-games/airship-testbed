@@ -138,7 +138,22 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			}),
 		);
 
+		const interactBtn = GameObject.Find("AvatarInteractionBtn");
+		interactBtn.gameObject.name = "AvatarInteractBtn -- found";
 		this.bin.Connect(Mouse.onScrolled, (event) => {
+			try {
+				const t = new PointerEventData(EventSystem.current);
+				t.position = Mouse.position;
+				const results = EventSystem.current.RaycastAll(t);
+				for (let result of results) {
+					if (result.gameObject.GetComponent<ScrollRect>() !== undefined) {
+						return;
+					}
+				}
+			} catch (err) {
+				// support old airship version
+			}
+
 			this.goalOffset -= event.delta * this.zoomSensitivity;
 			this.goalOffset = math.clamp(this.goalOffset, this.minOffset, this.maxOffset);
 		});
