@@ -2,8 +2,8 @@ import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { GameDto } from "../API/GamesAPI";
 import HomePageGameComponent from "./HomePageGameComponent";
+import { AirshipGame } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
 
 export default class SortComponent extends AirshipBehaviour {
 	public titleText!: GameObject;
@@ -13,7 +13,7 @@ export default class SortComponent extends AirshipBehaviour {
 	public gridLayoutGroup!: GridLayoutGroup;
 	public layoutElement!: LayoutElement;
 	public gameMap = new Map<string, HomePageGameComponent>();
-	@NonSerialized() public games: GameDto[] = [];
+	@NonSerialized() public games: AirshipGame[] = [];
 
 	private bin = new Bin();
 
@@ -49,9 +49,9 @@ export default class SortComponent extends AirshipBehaviour {
 		this.bin.Clean();
 	}
 
-	override Start(): void {}
+	override Start(): void { }
 
-	override OnDestroy(): void {}
+	override OnDestroy(): void { }
 
 	public Init(title: string): void {
 		this.SetTitle(title);
@@ -82,7 +82,7 @@ export default class SortComponent extends AirshipBehaviour {
 		}
 	}
 
-	public SetGames(games: GameDto[], indexOffset: number): HomePageGameComponent[] {
+	public SetGames(games: AirshipGame[], indexOffset: number): HomePageGameComponent[] {
 		this.games = games;
 		this.titleText.gameObject.SetActive(games.size() > 0);
 

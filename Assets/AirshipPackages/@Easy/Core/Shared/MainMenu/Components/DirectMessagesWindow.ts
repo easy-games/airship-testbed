@@ -2,10 +2,10 @@ import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControlle
 import { TransferController } from "@Easy/Core/Client/ProtectedControllers/Transfer/TransferController";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { Airship } from "../../Airship";
-import { PublicUser, UserStatus, UserStatusData } from "../../Airship/Types/Outputs/AirshipUser";
 import { Dependency } from "../../Flamework";
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";
+import { AirshipUser, AirshipUserStatusData } from "../../Airship/Types/AirshipUser";
 
 export default class DirectMessagesWindow extends AirshipBehaviour {
 	public offlineNotice!: TMP_Text;
@@ -23,7 +23,7 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 
 	private bin = new Bin();
 
-	override Start(): void {}
+	override Start(): void { }
 
 	private Init(): void {
 		this.bin.Clean();
@@ -38,7 +38,7 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 		this.inputField!.ActivateInputField();
 	}
 
-	public InitAsFriendChat(user: UserStatusData): void {
+	public InitAsFriendChat(user: AirshipUserStatusData): void {
 		print("friend chat: " + inspect(user));
 		this.Init();
 		this.headerParty.SetActive(false);
@@ -48,16 +48,15 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.friendTeleportButton, () => {
 				const friend = Dependency<ProtectedFriendsController>().GetFriendStatus(user.userId);
-				if (friend?.status === UserStatus.IN_GAME && friend?.serverId && friend.gameId) {
+				if (friend?.status === "in_game" && friend?.serverId && friend.gameId) {
 					print("Transferring to " + user.username + " on server " + friend.serverId);
 					Dependency<TransferController>().TransferToGameAsync(friend.gameId, friend.serverId);
 				}
 			}),
 		);
 
-		const UpdateTeleportButton = (friend: UserStatusData) => {
-			let inServer =
-				friend.status === UserStatus.IN_GAME && friend.serverId !== undefined && friend.gameId !== undefined;
+		const UpdateTeleportButton = (friend: AirshipUserStatusData) => {
+			let inServer = friend.status === "in_game" && friend.serverId !== undefined && friend.gameId !== undefined;
 			this.friendTeleportButton.SetActive(inServer);
 		};
 		UpdateTeleportButton(user);
@@ -72,7 +71,7 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 		this.offlineNotice.gameObject.SetActive(user.status === "offline");
 	}
 
-	public InitAsPartyChat(members: PublicUser[]): void {
+	public InitAsPartyChat(members: AirshipUser[]): void {
 		this.Init();
 		this.headerUser.gameObject.SetActive(false);
 		this.offlineNotice.gameObject.SetActive(false);
@@ -90,7 +89,7 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 		);
 	}
 
-	public UpdatePartyMembers(members: PublicUser[]): void {
+	public UpdatePartyMembers(members: AirshipUser[]): void {
 		const parentTransform = this.headerPartyProfilePictures.transform;
 		this.headerPartyProfilePictures.ClearChildren();
 		for (let i = members.size() - 1; i >= 0; i--) {
@@ -108,5 +107,5 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 		}
 	}
 
-	override OnDestroy(): void {}
+	override OnDestroy(): void { }
 }

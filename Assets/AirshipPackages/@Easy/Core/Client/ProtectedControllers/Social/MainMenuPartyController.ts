@@ -1,5 +1,3 @@
-import { Party } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipParty";
-import { UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
@@ -18,13 +16,18 @@ import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
 import { ProtectedFriendsController } from "./FriendsController";
 import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { SocialNotificationType } from "./SocialNotificationType";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+import { AirshipPartyInternalSnapshot } from "@Easy/Core/Shared/Airship/Types/AirshipParty";
+import { AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
+
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Controller({})
 export class MainMenuPartyController {
-	private readonly httpRetry = HttpRetryInstance();
-	public party: Party | undefined;
-	public onPartyUpdated = new Signal<[newParty: Party | undefined, oldParty: Party | undefined]>();
+	public party: AirshipPartyInternalSnapshot | undefined;
+	public onPartyUpdated = new Signal<[newParty: AirshipPartyInternalSnapshot | undefined, oldParty: AirshipPartyInternalSnapshot | undefined]>();
 
 	private partyCard!: PartyCard;
 	private partyCardContents!: GameObject;
@@ -40,7 +43,7 @@ export class MainMenuPartyController {
 	constructor(
 		private readonly mainMenuController: MainMenuController,
 		private readonly socketController: SocketController,
-	) {}
+	) { }
 
 	/**
 	 * @returns True if both a party leader and party has more than 1 player.
@@ -53,7 +56,7 @@ export class MainMenuPartyController {
 	}
 
 	protected OnStart(): void {
-		this.socketController.On<Party>("game-coordinator/party-update", (data) => {
+		this.socketController.On<AirshipPartyInternalSnapshot>("game-coordinator/party-update", (data) => {
 			this.partyUpdateReceived = true;
 			let oldParty = this.party;
 			this.party = data;
@@ -65,7 +68,7 @@ export class MainMenuPartyController {
 			}
 		});
 
-		this.socketController.On<UserStatusData[]>("game-coordinator/party-member-status-update-multi", (data) => {
+		this.socketController.On<AirshipUserStatusData[]>("game-coordinator/party-member-status-update-multi", (data) => {
 			if (!this.party) return;
 
 			this.partyLeaderStatusReceived = true;
@@ -73,30 +76,32 @@ export class MainMenuPartyController {
 			this.partyCard.UpdateInfo(partyLeader);
 		});
 
-		this.socketController.On<Party>("game-coordinator/party-invite", (data) => {
+		Dependency<ProtectedFriendsController>().socialNotificationHandlers.set(
+			SocialNotificationType.PartyInvite,
+			(username, userId, result, extraData) => {
+				const data = extraData as AirshipPartyInternalSnapshot;
+				if (result) {
+					try {
+						client.party.joinParty({ partyId: data.partyId }).expect();
+						Dependency<ProtectedFriendsController>().FireNotificationKey("party-invite:" + data.leader);
+					} catch {
+						// empty
+					}
+				} else {
+					// We don't have an endpoint for declining party invite. just close the UI.
+					Dependency<ProtectedFriendsController>().FireNotificationKey("party-invite:" + data.leader);
+				}
+			},
+		);
+
+		this.socketController.On<AirshipPartyInternalSnapshot>("game-coordinator/party-invite", (data) => {
 			Dependency<ProtectedFriendsController>().AddSocialNotification(
+				SocialNotificationType.PartyInvite,
 				"party-invite:" + data.leader,
 				"Party Invite",
 				data.members[0].username,
 				data.members[0].uid,
-				(result) => {
-					if (result) {
-						const res = this.httpRetry(() => InternalHttpManager.PostAsync(
-							AirshipUrl.GameCoordinator + "/parties/party/join",
-							json.encode({
-								partyId: data.partyId,
-							}),
-						), "JoinParty").expect();
-						if (res.success) {
-							Dependency<ProtectedFriendsController>().FireNotificationKey("party-invite:" + data.leader);
-						} else {
-							Debug.LogError(res.error);
-						}
-					} else {
-						// We don't have an endpoint for declining party invite. just close the UI.
-						Dependency<ProtectedFriendsController>().FireNotificationKey("party-invite:" + data.leader);
-					}
-				},
+				data,
 			);
 			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/FriendRequest.wav", {
 				volumeScale: 0.3,
@@ -215,12 +220,7 @@ export class MainMenuPartyController {
 		}
 
 		CanvasAPI.OnClickEvent(leaveButton, () => {
-			this.httpRetry(() => InternalHttpManager.PostAsync(
-				AirshipUrl.GameCoordinator + "/parties/party/remove",
-				json.encode({
-					userToRemove: Game.localPlayer.userId,
-				}),
-			), "LeaveParty").expect();
+			client.party.removeFromParty({ userToRemove: Game.localPlayer.userId }).expect();
 		});
 	}
 
@@ -229,20 +229,15 @@ export class MainMenuPartyController {
 	 * @param userIdToAdd The userId of the user to invite
 	 */
 	public async InviteUser(userIdToAdd: string): Promise<Result<undefined, undefined>> {
-		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/parties/party/invite",
-			json.encode({ userToAdd: userIdToAdd }),
-		), "InviteUserToParty");
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to invite user to party. Status Code: ${res.statusCode}\n`, res.error);
+		try {
+			await client.party.inviteUser({ userToAdd: userIdToAdd });
+			return { success: true, data: undefined };
+		} catch {
 			return {
 				success: false,
 				error: undefined,
 			};
 		}
-
-		return { success: true, data: undefined };
 	}
 
 	/**
@@ -251,22 +246,15 @@ export class MainMenuPartyController {
 	 * @param userIdToRemove
 	 */
 	public async RemoveUser(userIdToRemove: string): Promise<Result<undefined, undefined>> {
-		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/parties/party/remove",
-			json.encode({
-				userToRemove: userIdToRemove,
-			}),
-		), "RemoveUserFromParty");
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to remove user from party. Status Code: ${res.statusCode}\n`, res.error);
+		try {
+			await client.party.removeFromParty({ userToRemove: userIdToRemove });
+			return { success: true, data: undefined };
+		} catch {
 			return {
 				success: false,
 				error: undefined,
 			};
 		}
-
-		return { success: true, data: undefined };
 	}
 
 	/**
@@ -274,19 +262,11 @@ export class MainMenuPartyController {
 	 * @param partyId The id of the party
 	 */
 	public async JoinParty(partyId: string): Promise<Result<undefined, undefined>> {
-		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/parties/party/join",
-			json.encode({ partyId }),
-		), "JoinParty");
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to join party. Status Code: ${res.statusCode}\n`, res.error);
-			return {
-				success: false,
-				error: undefined,
-			};
+		try {
+			await client.party.joinParty({ partyId });
+			return { success: true, data: undefined };
+		} catch {
+			return { success: false, error: undefined };
 		}
-
-		return { success: true, data: undefined };
 	}
 }

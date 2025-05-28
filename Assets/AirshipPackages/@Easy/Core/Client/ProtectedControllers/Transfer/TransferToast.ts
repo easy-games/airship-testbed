@@ -1,9 +1,11 @@
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
+
 export default class TransferToast extends AirshipBehaviour {
-	private readonly httpRetry = HttpRetryInstance();
 	public gameName: TMP_Text;
 	public cancelButton: Button;
 	public canvasGroup: CanvasGroup;
@@ -21,10 +23,7 @@ export default class TransferToast extends AirshipBehaviour {
 		this.bin.Add(
 			this.cancelButton.onClick.Connect(() => {
 				task.spawn(async () => {
-					await this.httpRetry(
-						() => InternalHttpManager.PostAsync(AirshipUrl.GameCoordinator + "/transfers/transfer/cancel"),
-						"CancelTransfer"
-					);
+					await client.transfers.cancelTransfer();
 					if (this.gameObject.activeInHierarchy) {
 						Object.Destroy(this.gameObject);
 					}

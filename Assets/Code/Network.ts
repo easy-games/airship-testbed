@@ -9,6 +9,6 @@ export const Network = {
 	ServerToClient: {
 		//DEMO SCENE
 		KillData: new NetworkSignal<[rank: string, total: number]>("KillData"),
-		TopScores: new NetworkSignal<[topKills: { id: string; rank: number; value: string }[]]>("TopScores"),
+		TopScores: new NetworkSignal<[topKills: { id: string; rank: number; value: number }[]]>("TopScores"),
 	},
 };

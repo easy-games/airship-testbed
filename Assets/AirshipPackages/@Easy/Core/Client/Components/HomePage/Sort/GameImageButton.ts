@@ -9,7 +9,10 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
 import HomePageGameComponent from "./HomePageGameComponent";
-import { HttpRetry } from "@Easy/Core/Shared/Http/HttpRetry";
+import { DeploymentServiceClient } from "@Easy/Core/Shared/TypePackages/deployment-service-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+
+const client = new DeploymentServiceClient(UnityMakeRequest(AirshipUrl.DeploymentService));
 
 export default class GameImageButton extends AirshipBehaviour {
 	public gameComponentGO?: GameObject;
@@ -81,17 +84,8 @@ export default class GameImageButton extends AirshipBehaviour {
 							text: "Restart Servers",
 							onClick: () => {
 								task.spawn(async () => {
-									const res = await HttpRetry(() => InternalHttpManager.PostAsync(
-										AirshipUrl.DeploymentService + "/game-servers/shutdown",
-										json.encode({
-											gameId: gameComponent.gameDto.id,
-										}),
-									), "post/deployment-service/game-servers/shutdown");
-									if (res.success) {
-										print("Successfully restarted servers for game " + gameComponent.gameDto.name);
-									} else {
-										error("Failed to restart servers: " + res.error);
-									}
+									await client.gameServers.shutdownGame({ gameId: gameComponent.gameDto.id });
+									print("Successfully restarted servers for game " + gameComponent.gameDto.name);
 								});
 							},
 						});

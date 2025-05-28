@@ -8,8 +8,11 @@ import {
 	ServerBridgeApiLeaveQueue,
 } from "@Easy/Core/Server/ProtectedServices/Airship/Matchmaking/MatchmakingService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { JoinQueueDto } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipMatchmaking";
-import { Group, MatchConfig } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipMatchmaking";
+import {
+	AirshipJoinQueueDto,
+	AirshipMatchConfig,
+	AirshipMatchmakingGroup,
+} from "@Easy/Core/Shared/Airship/Types/Matchmaking";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -30,7 +33,7 @@ export class AirshipMatchmakingService {
 	 * @param userIds The userIds of the players to add to the group
 	 * @returns The group that was created
 	 */
-	public async CreateGroup(userIds: string[]): Promise<Group> {
+	public async CreateGroup(userIds: string[]): Promise<AirshipMatchmakingGroup> {
 		return contextbridge.invoke<ServerBridgeApiCreateGroup>(
 			MatchmakingServiceBridgeTopics.CreateGroup,
 			LuauContext.Protected,
@@ -43,7 +46,7 @@ export class AirshipMatchmakingService {
 	 * @param groupId The id of the group
 	 * @returns The group if it exists, undefined otherwise
 	 */
-	public async GetGroupById(groupId: string): Promise<Group | undefined> {
+	public async GetGroupById(groupId: string): Promise<AirshipMatchmakingGroup | undefined> {
 		return contextbridge.invoke<ServerBridgeApiGetGroupById>(
 			MatchmakingServiceBridgeTopics.GetGroupById,
 			LuauContext.Protected,
@@ -56,7 +59,7 @@ export class AirshipMatchmakingService {
 	 * @param uid The userId of the player
 	 * @returns The group if it exists, undefined otherwise
 	 */
-	public async GetGroupByUserId(uid: string): Promise<Group | undefined> {
+	public async GetGroupByUserId(uid: string): Promise<AirshipMatchmakingGroup | undefined> {
 		return contextbridge.invoke<ServerBridgeApiGetGroupByUserId>(
 			MatchmakingServiceBridgeTopics.GetGroupByUserId,
 			LuauContext.Protected,
@@ -69,7 +72,7 @@ export class AirshipMatchmakingService {
 	 * @param body The body of the request, containing the queueId, groupId, and information about the players in the group.
 	 * @returns undefined if the request was successful. Returns an error if the user is already in a group.
 	 */
-	public async JoinQueue(body: JoinQueueDto): Promise<void> {
+	public async JoinQueue(body: AirshipJoinQueueDto): Promise<void> {
 		return contextbridge.invoke<ServerBridgeApiJoinQueue>(
 			MatchmakingServiceBridgeTopics.JoinQueue,
 			LuauContext.Protected,
@@ -96,7 +99,7 @@ export class AirshipMatchmakingService {
 	 * was not started by the matchmaking service.
 	 * @returns The match configuration if it exists.
 	 */
-	public async GetMatchConfig(): Promise<MatchConfig | undefined> {
+	public async GetMatchConfig(): Promise<AirshipMatchConfig | undefined> {
 		return contextbridge.invoke<ServerBridgeApiGetMatchConfig>(
 			MatchmakingServiceBridgeTopics.GetMatchConfig,
 			LuauContext.Protected,

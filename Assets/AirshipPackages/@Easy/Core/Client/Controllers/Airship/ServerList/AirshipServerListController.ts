@@ -4,10 +4,7 @@ import {
 	ServerListControllerBridgeTopics,
 } from "@Easy/Core/Client/ProtectedControllers/Airship/ServerList/ProtectedServerListController";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import {
-	AirshipServerData,
-	ServerListEntryWithFriends,
-} from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
+import { AirshipServer, AirshipServerWithFriends } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -28,7 +25,7 @@ export class AirshipServerListController {
 	 * Gets a page of the server list.
 	 * @param page The page to retrieve. Starts at 0.
 	 */
-	public async GetServerList(page: number = 0): Promise<{ entries: AirshipServerData[] }> {
+	public async GetServerList(page: number = 0): Promise<{ entries: AirshipServer[] }> {
 		return contextbridge.invoke<ClientBridgeApiGetServerList>(
 			ServerListControllerBridgeTopics.GetServerList,
 			LuauContext.Protected,
@@ -38,7 +35,7 @@ export class AirshipServerListController {
 	/**
 	 * Gets servers friends of this user are on. Only listed servers are returned.
 	 */
-	public async GetFriendServers(): Promise<{ entries: ServerListEntryWithFriends[] }> {
+	public async GetFriendServers(): Promise<{ entries: AirshipServerWithFriends[] }> {
 		return contextbridge.invoke<ClientBridgeApiGetFriendServers>(
 			ServerListControllerBridgeTopics.GetFriendServers,
 			LuauContext.Protected,

@@ -41,7 +41,7 @@ export class ProtectedPlayersSingleton {
 		});
 	}
 
-	public FindByClientId(clientId: number): ProtectedPlayer | undefined {
+	public FindByConnectionId(clientId: number): ProtectedPlayer | undefined {
 		return this.players.find((p) => p.connectionId === clientId);
 	}
 

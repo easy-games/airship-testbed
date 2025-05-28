@@ -1,4 +1,3 @@
-import { PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -8,8 +7,9 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { AuthController } from "../../Auth/AuthController";
 import { ProtectedFriendsController } from "../../Social/FriendsController";
-import { User } from "../../User/User";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { isUnityMakeRequestError, UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+import { AirshipUser } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 
 export const enum UserControllerBridgeTopics {
 	GetUserByUsername = "UserController:GetUserByUsername",
@@ -19,21 +19,22 @@ export const enum UserControllerBridgeTopics {
 	IsFriendsWith = "UserController:IsFriendsWith",
 }
 
-export type BridgeApiGetUserByUsername = (username: string) => PublicUser | undefined;
-export type BridgeApiGetUserById = (userId: string) => PublicUser | undefined;
+export type BridgeApiGetUserByUsername = (username: string) => AirshipUser | undefined;
+export type BridgeApiGetUserById = (userId: string) => AirshipUser | undefined;
 export type BridgeApiGetUsersById = (
 	userIds: string[],
 	strict?: boolean,
-) => { map: Record<string, PublicUser>; array: PublicUser[] };
-export type BridgeApiGetFriends = () => PublicUser[];
+) => { map: Record<string, AirshipUser>; array: AirshipUser[] };
+export type BridgeApiGetFriends = () => AirshipUser[];
 export type BrigdeApiIsFriendsWith = (userId: string) => boolean;
+
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Controller({})
 export class ProtectedUserController {
-	private readonly httpRetry = HttpRetryInstance();
-	public localUser: User | undefined;
+	public localUser: AirshipUser | undefined;
 
-	public onLocalUserUpdated = new Signal<User>();
+	public onLocalUserUpdated = new Signal<AirshipUser>();
 	private localUserLoaded = false;
 
 	constructor(private readonly authController: AuthController) {
@@ -74,19 +75,8 @@ export class ProtectedUserController {
 	 * @internal
 	 */
 	public async IsFriendsWith(userId: string): Promise<ReturnType<BrigdeApiIsFriendsWith>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/friends/uid/${userId}/status`),
-			"IsFriendsWith"
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get friends. Status Code ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		const data = json.decode(res.data) as { areFriends: boolean };
-
-		return data.areFriends;
+		const result = await client.friends.statusWithOtherUser({ uid: userId });
+		return result.areFriends;
 	}
 
 	/**
@@ -95,35 +85,20 @@ export class ProtectedUserController {
 	 * @internal
 	 */
 	public async GetUserById(userId: string): Promise<ReturnType<BridgeApiGetUserById>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/uid/${userId}`),
-			"GetUserById"
-		);
-
-		if (res.statusCode === 404) {
-			return undefined;
+		try {
+			const result = await client.users.getByUid({ uid: userId });
+			return result.user;
+		} catch (err) {
+			if (isUnityMakeRequestError(err) && err.status === 404) {
+				return undefined;
+			}
+			throw err;
 		}
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		return json.decode<{ user: PublicUser | undefined }>(res.data).user;
 	}
 
 	public async GetUserByUsername(username: string): Promise<ReturnType<BridgeApiGetUserByUsername>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/user?username=${username}`),
-			"GetUserByUsername"
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		return json.decode<{ user: PublicUser | undefined }>(res.data).user;
+		const result = await client.users.findByUsername({ username });
+		return result.user;
 	}
 
 	public async GetUsersById(userIds: string[], strict = true): Promise<ReturnType<BridgeApiGetUsersById>> {
@@ -134,29 +109,8 @@ export class ProtectedUserController {
 			};
 		}
 
-		const res = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(
-				`${AirshipUrl.GameCoordinator}/users?users[]=${userIds.join("&users[]=")}&strict=${
-					strict ? "true" : "false"
-				}`,
-			),
-			"GetUsersById"
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get user. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		if (!res.data) {
-			return {
-				map: {},
-				array: [],
-			};
-		}
-
-		const array = json.decode(res.data) as PublicUser[];
-		const map: Record<string, PublicUser> = {};
+		const array = await client.users.find({ users: userIds, strict });
+		const map: Record<string, AirshipUser> = {};
 		array.forEach((u) => (map[u.uid] = u));
 
 		return {
@@ -166,17 +120,7 @@ export class ProtectedUserController {
 	}
 
 	public async GetFriends(): Promise<ReturnType<BridgeApiGetFriends>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/friends/self`),
-			"GetFriends"
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get friends. Status Code ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		return json.decode(res.data) as PublicUser[];
+		return await client.friends.getFriends();
 	}
 
 	protected OnStart(): void {
@@ -192,53 +136,40 @@ export class ProtectedUserController {
 	}
 
 	public async FetchLocalUser(): Promise<void> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/users/self`),
-			"FetchLocalUser"
-		);
-		let success = false;
-		if (res.success) {
-			const { user } = json.decode<{ user: User | undefined }>(res.data);
-
+		try {
+			const { user } = await client.users.login();
 			if (!user) {
 				let ignore = false;
 				if (Game.coreContext === CoreContext.GAME && Game.IsEditor()) {
 					ignore = true;
 				}
 				if (!ignore) {
-					print("users/self did not contain user. routing to login screen. full response: " + res.data);
+					print("users/self did not contain user. routing to login screen.");
 					Bridge.LoadScene("Login", true, LoadSceneMode.Single);
 				}
 				return;
 			}
-			try {
-				this.localUser = user;
-				this.localUserLoaded = true;
 
-				if (Game.coreContext === CoreContext.MAIN_MENU || true) {
-					const writeUser = Game.localPlayer as Player;
-					writeUser.userId = user.uid;
-					writeUser.username = user.username;
-					Game.localPlayerLoaded = true;
-					Game.onLocalPlayerLoaded.Fire();
-				}
+			this.localUser = user;
+			this.localUserLoaded = true;
 
-				success = true;
-				this.onLocalUserUpdated.Fire(this.localUser);
-			} catch (err) {
-				Debug.LogError("Failed to decode /users/self: " + res.data + " error: " + err);
+			if (Game.coreContext === CoreContext.MAIN_MENU || true) {
+				const writeUser = Game.localPlayer as Player;
+				writeUser.userId = user.uid;
+				writeUser.username = user.username;
+				Game.localPlayerLoaded = true;
+				Game.onLocalPlayerLoaded.Fire();
 			}
-		}
 
-		// retry
-		if (!success) {
+			this.onLocalUserUpdated.Fire(this.localUser);
+		} catch {
 			task.unscaledDelay(1, () => {
 				this.FetchLocalUser();
 			});
 		}
 	}
 
-	public WaitForLocalUser(): User {
+	public WaitForLocalUser(): AirshipUser {
 		while (!this.localUser) {
 			task.wait();
 		}

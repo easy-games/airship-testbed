@@ -269,8 +269,8 @@ export class OrbitCameraMode extends CameraMode {
 			if (this.mouseSmoothingEnabled) {
 				const smoothFactor = math.pow(1 / (1 + Airship.Input.GetMouseSmoothing()), Time.deltaTime * 120);
 				this.smoothVector = new Vector2(
-					math.lerp(this.smoothVector.x, mouseDelta.x, smoothFactor),
-					math.lerp(this.smoothVector.y, mouseDelta.y, smoothFactor),
+					math.lerpClamped(this.smoothVector.x, mouseDelta.x, smoothFactor),
+					math.lerpClamped(this.smoothVector.y, mouseDelta.y, smoothFactor),
 				);
 				moveDelta = this.smoothVector;
 			}
@@ -325,7 +325,7 @@ export class OrbitCameraMode extends CameraMode {
 		if (this.shouldBumpForOcclusion) {
 			this.occlusionCam.BumpForOcclusion(
 				this.lastAttachToPos,
-				this.character?.rig.head.position ?? this.lastAttachToPos,
+				this.character?.transform.position.add(new Vector3(0, 1.65, 0)) ?? this.lastAttachToPos,
 				OcclusionCameraManager.GetMask(),
 			);
 			const dist = cameraHolder.position.sub(this.lastAttachToPos).magnitude;

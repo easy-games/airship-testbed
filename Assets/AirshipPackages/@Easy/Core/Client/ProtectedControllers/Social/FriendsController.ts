@@ -1,6 +1,5 @@
 import { RightClickMenuController } from "@Easy/Core/Client/ProtectedControllers//UI/RightClickMenu/RightClickMenuController";
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { UserStatus, UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { Asset } from "@Easy/Core/Shared/Asset";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
@@ -29,21 +28,37 @@ import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
 import { TransferController } from "../Transfer/TransferController";
 import { RightClickMenuButton } from "../UI/RightClickMenu/RightClickMenuButton";
-import { User } from "../User/User";
 import { DirectMessageController } from "./DirectMessages/DirectMessageController";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { SocialNotificationType } from "./SocialNotificationType";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+import {
+	AirshipUpdateStatusDto,
+	AirshipUser,
+	AirshipUserStatusData,
+} from "@Easy/Core/Shared/Airship/Types/AirshipUser";
+
+interface PendingSocialNotification {
+	type: SocialNotificationType;
+	key: string;
+	title: string;
+	username: string;
+	userId: string;
+	extraData: unknown;
+}
+
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Controller({})
 export class ProtectedFriendsController {
-	private readonly httpRetry = HttpRetryInstance();
-	public friends: User[] = [];
-	public incomingFriendRequests: User[] = [];
-	public outgoingFriendRequests: User[] = [];
-	public friendStatuses: UserStatusData[] = [];
+	public friends: AirshipUser[] = [];
+	public incomingFriendRequests: AirshipUser[] = [];
+	public outgoingFriendRequests: AirshipUser[] = [];
+	public friendStatuses: AirshipUserStatusData[] = [];
 	private renderedFriendUids = new Set<string>();
 	private statusText = "";
 	private friendBinMap = new Map<string, Bin>();
-	public friendStatusChanged = new Signal<UserStatusData>();
+	public friendStatusChanged = new Signal<AirshipUserStatusData>();
 	private customGameTitle: string | undefined;
 
 	private socialNotification!: SocialNotificationComponent;
@@ -57,6 +72,12 @@ export class ProtectedFriendsController {
 
 	private friendsScrollRect!: ScrollRect;
 
+	public pendingSocialNotifications: PendingSocialNotification[] = [];
+	public socialNotificationHandlers = new Map<
+		SocialNotificationType,
+		(username: string, userId: string, result: boolean, extraData: unknown) => void
+	>();
+
 	constructor(
 		private readonly authController: AuthController,
 		private readonly socketController: SocketController,
@@ -69,12 +90,28 @@ export class ProtectedFriendsController {
 	}
 
 	public AddSocialNotification(
+		socialNotificationType: SocialNotificationType,
 		key: string,
 		title: string,
 		username: string,
 		userId: string,
-		onResult: (result: boolean) => void,
+		extraData: unknown,
 	): void {
+		const pendingNotif: PendingSocialNotification = {
+			type: socialNotificationType,
+			key,
+			title,
+			username,
+			userId,
+			extraData,
+		};
+		this.pendingSocialNotifications.push(pendingNotif);
+
+		task.spawn(() => {
+			const saveRaw = json.encode(this.pendingSocialNotifications);
+			StateManager.SetString("main-menu:social-notifications", saveRaw);
+		});
+
 		this.socialNotificationBin.Clean();
 		this.socialNotificationKey = key;
 		this.socialNotification.gameObject.SetActive(false);
@@ -82,7 +119,19 @@ export class ProtectedFriendsController {
 
 		this.socialNotification.titleText.text = title.upper();
 		this.socialNotification.usernameText.text = username;
-		this.socialNotification.onResult.Connect(onResult);
+		this.socialNotification.onResult.Connect((result) => {
+			let index = this.pendingSocialNotifications.indexOf(pendingNotif);
+			if (index > -1) {
+				this.pendingSocialNotifications.remove(index);
+			}
+
+			const callback = this.socialNotificationHandlers.get(socialNotificationType);
+			if (callback === undefined) {
+				error("Unable to find callback handler for social notification type: " + socialNotificationType);
+			}
+
+			callback(username, userId, result, extraData);
+		});
 
 		task.spawn(async () => {
 			const texture = await Airship.Players.GetProfilePictureAsync(userId);
@@ -133,12 +182,41 @@ export class ProtectedFriendsController {
 			this.UpdateFriendsList();
 		}
 
+		const cachedNotifications = StateManager.GetString("main-menu:social-notifications");
+		if (cachedNotifications) {
+			let pending: PendingSocialNotification[] = json.decode(cachedNotifications);
+			for (let notif of pending) {
+				this.AddSocialNotification(
+					notif.type,
+					notif.key,
+					notif.title,
+					notif.username,
+					notif.userId,
+					notif.extraData,
+				);
+			}
+		}
+
 		this.authController.WaitForAuthed().then(() => {
 			// Game context will send status update when client receives server info.
 			if (Game.coreContext === CoreContext.MAIN_MENU) {
 				this.SendStatusUpdateYielding();
 			}
 			this.FetchFriends();
+		});
+
+		this.socialNotificationHandlers.set(SocialNotificationType.FriendRequest, (username, userId, result) => {
+			if (result) {
+				task.spawn(async () => {
+					this.socialNotification.gameObject.SetActive(false);
+					await this.AcceptFriendRequestAsync(username, userId);
+				});
+			} else {
+				task.spawn(async () => {
+					this.socialNotification.gameObject.SetActive(false);
+					await this.RejectFriendRequestAsync(userId);
+				});
+			}
 		});
 
 		this.socketController.On<{ initiatorId: string }>("user-service/friend-requested", (data) => {
@@ -152,23 +230,12 @@ export class ProtectedFriendsController {
 				this.socialNotification.usernameText.text = foundUser.username;
 
 				this.AddSocialNotification(
+					SocialNotificationType.FriendRequest,
 					"friend-request:" + data.initiatorId,
 					"Friend Request",
 					foundUser.username,
 					foundUser.uid,
-					(result) => {
-						if (result) {
-							task.spawn(async () => {
-								this.socialNotification.gameObject.SetActive(false);
-								await this.AcceptFriendRequestAsync(foundUser.username, foundUser.uid);
-							});
-						} else {
-							task.spawn(async () => {
-								this.socialNotification.gameObject.SetActive(false);
-								await this.RejectFriendRequestAsync(foundUser.uid);
-							});
-						}
-					},
+					{},
 				);
 
 				// this.socialNotification.bin.Add(
@@ -201,7 +268,7 @@ export class ProtectedFriendsController {
 			this.FetchFriends();
 		});
 
-		this.socketController.On<UserStatusData[]>("game-coordinator/friend-status-update-multi", (data) => {
+		this.socketController.On<AirshipUserStatusData[]>("game-coordinator/friend-status-update-multi", (data) => {
 			// print("status updates: " + json.encode(data));
 			let lukeOnSteam = data.find((d) => d.usernameLower === "luke_on_steam");
 			if (lukeOnSteam) {
@@ -231,7 +298,7 @@ export class ProtectedFriendsController {
 		this.Setup();
 	}
 
-	public SetIncomingFriendRequests(friendRequests: User[]): void {
+	public SetIncomingFriendRequests(friendRequests: AirshipUser[]): void {
 		this.incomingFriendRequests = friendRequests;
 
 		const count = friendRequests.size();
@@ -261,15 +328,15 @@ export class ProtectedFriendsController {
 		});
 	}
 
-	public FuzzySearchFriend(name: string): User | undefined {
+	public FuzzySearchFriend(name: string): AirshipUser | undefined {
 		return undefined;
 	}
 
-	public GetFriendByUsername(username: string): User | undefined {
+	public GetFriendByUsername(username: string): AirshipUser | undefined {
 		return this.friends.find((f) => f.username.lower() === username.lower());
 	}
 
-	public GetFriendById(uid: string): User | undefined {
+	public GetFriendById(uid: string): AirshipUser | undefined {
 		return this.friends.find((u) => u.uid === uid);
 	}
 
@@ -292,9 +359,8 @@ export class ProtectedFriendsController {
 			return;
 		}
 
-		const status: Partial<UserStatusData> = {
-			userId: Game.localPlayer.userId,
-			status: Game.coreContext === CoreContext.GAME ? UserStatus.IN_GAME : UserStatus.ONLINE,
+		const status: AirshipUpdateStatusDto = {
+			status: Game.coreContext === CoreContext.GAME ? "in_game" : "online",
 			serverId: Game.serverId,
 			gameId: Game.gameId,
 			metadata: {
@@ -303,28 +369,20 @@ export class ProtectedFriendsController {
 			},
 		};
 		// CoreLogger.Log("send status update: " + json.encode(status));
-		this.httpRetry(
-			() => InternalHttpManager.PutAsync(AirshipUrl.GameCoordinator + "/user-status/self", json.encode(status)),
-			"SendStatusUpdate"
-		).expect();
+		client.userStatus.updateUserStatus(status).expect();
 	}
 
 	public FetchFriends(): void {
-		const res = this.httpRetry(
-			() => InternalHttpManager.GetAsync(AirshipUrl.GameCoordinator + "/friends/requests/self"),
-			"FetchFriends"
-		).expect();
-		if (!res.success) {
+		let result;
+		try {
+			result = client.friends.getRequests().expect();
+		} catch {
 			return;
 		}
-		const data = json.decode(res.data) as {
-			friends: User[];
-			outgoingRequests: User[];
-			incomingRequests: User[];
-		};
-		this.friends = data.friends;
-		this.SetIncomingFriendRequests(data.incomingRequests);
-		this.outgoingFriendRequests = data.outgoingRequests;
+
+		this.friends = result.friends;
+		this.SetIncomingFriendRequests(result.incomingRequests);
+		this.outgoingFriendRequests = result.outgoingRequests;
 		this.onFetchFriends.Fire();
 
 		// print("friends: " + inspect(data));
@@ -354,36 +412,30 @@ export class ProtectedFriendsController {
 	}
 
 	public async AcceptFriendRequestAsync(username: string, userId: string): Promise<boolean> {
-		const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/friends/requests/self",
-			json.encode({
-				username: username,
-			}),
-		), "AcceptFriendRequest");
-
-		if (res.success) {
+		try {
+			await client.friends.requestFriendship({ username });
 			this.SetIncomingFriendRequests(this.incomingFriendRequests.filter((u) => u.uid !== userId));
 
 			this.FireNotificationKey("friend-request:" + userId);
+			return true;
+		} catch {
+			return false;
 		}
-
-		return res.success;
 	}
 
 	public async RejectFriendRequestAsync(userId: string): Promise<boolean> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.DeleteAsync(AirshipUrl.GameCoordinator + "/friends/uid/" + userId),
-			"RejectFriendRequest",
-		);
-		if (res.success) {
+		try {
+			await client.friends.terminateFriendship({ uid: userId });
 			this.friendStatuses = this.friendStatuses.filter((f) => f.userId !== userId);
 			this.UpdateFriendsList();
 
 			this.SetIncomingFriendRequests(this.incomingFriendRequests.filter((u) => u.uid !== userId));
 
 			this.FireNotificationKey("friend-request:" + userId);
+			return true;
+		} catch {
+			return false;
 		}
-		return res.success;
 	}
 
 	public GetFriendGo(uid: string): GameObject | undefined {
@@ -400,17 +452,13 @@ export class ProtectedFriendsController {
 
 	public SendFriendRequest(username: string): boolean {
 		print('adding friend: "' + username + '"');
-		const res = this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/friends/requests/self",
-			json.encode({
-				username: username,
-			}),
-		), "SendFriendRequest").expect();
-		if (res.success) {
+		try {
+			client.friends.requestFriendship({ username }).expect();
 			print("Sent friend request to " + username);
 			return true;
+		} catch {
+			return false;
 		}
-		return false;
 	}
 
 	public UpdateFriendsList(): void {
@@ -481,7 +529,7 @@ export class ProtectedFriendsController {
 				init = true;
 
 				const Teleport = () => {
-					if (friend.status !== UserStatus.IN_GAME) return;
+					if (friend.status !== "in_game") return;
 					if (friend.game === undefined || friend.serverId === undefined) return;
 
 					print(
@@ -498,12 +546,7 @@ export class ProtectedFriendsController {
 				const OpenMenu = () => {
 					const options: RightClickMenuButton[] = [];
 					if (friend.status !== "offline") {
-						if (
-							Game.IsMobile() &&
-							friend.status === UserStatus.IN_GAME &&
-							friend.gameId &&
-							friend.serverId
-						) {
+						if (Game.IsMobile() && friend.status === "in_game" && friend.gameId && friend.serverId) {
 							options.push({
 								text: "Teleport",
 								onClick: () => {
@@ -517,16 +560,7 @@ export class ProtectedFriendsController {
 								text: "Join Party",
 								onClick: () => {
 									task.spawn(async () => {
-										const res = await this.httpRetry(() => InternalHttpManager.PostAsync(
-											AirshipUrl.GameCoordinator + "/parties/party/join",
-											json.encode({
-												uid: friend.userId,
-												// partyId: friend,
-											}),
-										), "JoinParty");
-										if (!res.success) {
-											Debug.LogError(res.error);
-										}
+										await client.party.joinParty({ uid: friend.userId });
 									});
 								},
 							},
@@ -620,12 +654,12 @@ export class ProtectedFriendsController {
 		}
 	}
 
-	public GetFriendStatus(uid: string): UserStatusData | undefined {
+	public GetFriendStatus(uid: string): AirshipUserStatusData | undefined {
 		return this.friendStatuses.find((f) => f.userId === uid);
 	}
 
 	public UpdateFriendStatusUI(
-		friend: UserStatusData,
+		friend: AirshipUserStatusData,
 		refs: GameObjectReferences,
 		config: {
 			loadImage: boolean;

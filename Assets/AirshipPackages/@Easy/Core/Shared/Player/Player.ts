@@ -1,11 +1,12 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { ChatMessageNetworkEvent, CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Game } from "@Easy/Core/Shared/Game";
-import { OutfitDto } from "../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
+import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
+import { TaskUtil } from "../Util/TaskUtil";
 
 /** @internal */
 export interface PlayerDto {
@@ -57,7 +58,7 @@ export class Player {
 	 *
 	 * OutfitDto's can be passed to Character.LoadUserOutfit()
 	 */
-	public selectedOutfit: OutfitDto | undefined;
+	public selectedOutfit: AirshipOutfit | undefined;
 	public outfitLoaded = false;
 
 	private hasDevPermissions = false;
@@ -73,6 +74,8 @@ export class Player {
 	 * WARNING: not implemented yet. only returns local platform for now.
 	 */
 	public platform = AirshipPlatformUtil.GetLocalPlatform();
+
+	private lagCompRequests = new Map<string, { check: () => any; complete: (param: any) => void; result?: any }>();
 
 	/** @internal */
 	constructor(
@@ -117,6 +120,27 @@ export class Player {
 		if (playerInfo !== undefined) {
 			this.SetVoiceChatAudioSource(playerInfo.voiceChatAudioSource);
 		}
+
+		const simulationManager = AirshipSimulationManager.Instance as AirshipSimulationManager &
+			AirshipSimulationManagerWithLagCompensation;
+		const checkConnection = simulationManager.OnLagCompensationRequestCheck((id) => {
+			const req = this.lagCompRequests.get(id);
+			if (!req) return;
+			req.result = TaskUtil.RunWithoutYield(() => {
+				return req.check();
+			});
+		});
+		this.bin.AddEngineEventConnection(checkConnection);
+
+		const completeConnection = simulationManager.OnLagCompensationRequestComplete((id) => {
+			const req = this.lagCompRequests.get(id);
+			if (!req) return;
+			TaskUtil.RunWithoutYield(() => {
+				req.complete(req.result);
+			});
+			this.lagCompRequests.delete(id);
+		});
+		this.bin.AddEngineEventConnection(completeConnection);
 	}
 
 	/**
@@ -183,7 +207,10 @@ export class Player {
 		go.name = `Character_${this.username}`;
 		const characterComponent = go.GetAirshipComponent<Character>()!;
 		if (config?.lookDirection && characterComponent.movement) {
-			characterComponent.movement.startingLookVector = config.lookDirection;
+			// try catch to not require c# update
+			try {
+				characterComponent.movement.startingLookVector = config.lookDirection;
+			} catch (err) { }
 		}
 
 		if (!this.outfitLoaded) {
@@ -215,6 +242,11 @@ export class Player {
 		characterComponent.Init(this, Airship.Characters.MakeNewId(), this.selectedOutfit, 100, 100);
 		this.SetCharacter(characterComponent);
 		if (this.IsBot()) {
+			const movementNetworking = go.GetComponent<CharacterNetworkedStateManager>();
+			if (movementNetworking) {
+				movementNetworking.serverAuth = true;
+				movementNetworking.serverGeneratesCommands = true;
+			}
 			NetworkServer.Spawn(go);
 		} else {
 			NetworkServer.Spawn(go, this.networkIdentity.connectionToClient!);
@@ -258,7 +290,7 @@ export class Player {
 	 */
 	public SendMessage(message: string): void {
 		if (Game.IsServer() && !Game.IsHosting()) {
-			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this, message, undefined, undefined);
+			CoreNetwork.ServerToClient.ChatMessage.server.FireClient(this, { type: "sent", message });
 		} else {
 			if (this.userId !== Game.localPlayer.userId) error("Cannot SendMessage to non-local client.");
 
@@ -266,7 +298,7 @@ export class Player {
 			// The problem is numerous places (ex: messaging when invalid command, broadcasting player joined server msg) trigger
 			// this to run. Ideally we can eventually support multiple broadcasts simultaneously but until that this patch works.
 			task.defer(() => {
-				contextbridge.broadcast<(rawText: string) => void>("Chat:AddLocalMessage", message);
+				contextbridge.broadcast<(msg: ChatMessageNetworkEvent) => void>("Chat:ProcessLocalMessage", { type: "sent", message });
 			});
 		}
 	}
@@ -318,6 +350,7 @@ export class Player {
 			}),
 		);
 
+		bin.Add(() => cleanup?.());
 		this.bin.Add(bin);
 		return bin;
 	}
@@ -369,5 +402,38 @@ export class Player {
 		} else {
 			error("Player.Kick() must be called from game context.");
 		}
+	}
+
+	/**
+	 * Allows the server to perform a lag compensated check against the clients view of the world at the
+	 * current server tick.
+	 * @param checkFunc This function should be used to perform read only checks against the clients view of the world. For example, perform a raycast
+	 * to check if the player actually hit another player.
+	 * @param completeFunc This function should be used to perform actions based on the result of your check and will run against the current real view
+	 * of the world as the server sees it. Use this function to apply damage or move the player.
+	 * @returns Returns immediately after scheduling the lag compensation check. The check and complete functions will be called later.
+	 */
+	public LagCompensationCheck<CheckResult>(
+		checkFunc: () => CheckResult,
+		completeFunc: (checkResult: CheckResult) => void,
+	) {
+		if (!Game.IsServer()) {
+			warn("Attempted to perform lag compensation check on the client. This is not allowed.");
+			return;
+		}
+
+		const simulationManager = AirshipSimulationManager.Instance as AirshipSimulationManager &
+			AirshipSimulationManagerWithLagCompensation;
+		const checkId = simulationManager.RequestLagCompensationCheck(this.connectionId);
+		if (!checkId) {
+			warn(
+				"Unable to schedule lag compensation for " +
+				this.username +
+				" (" +
+				this.connectionId +
+				"). Is the connection ID correct?",
+			);
+		}
+		this.lagCompRequests.set(checkId, { check: checkFunc, complete: completeFunc });
 	}
 }

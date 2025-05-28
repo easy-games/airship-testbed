@@ -1,6 +1,6 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { Singleton } from "@Easy/Core/Shared/Flamework";
+import { Dependency, Modding, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
@@ -12,6 +12,7 @@ import Character from "./Character";
 import { CharacterDto } from "./CharacterDto";
 import { AirshipCharacterFootstepsSingleton } from "./Footstep/AirshipCharacterFootstepsSingleton";
 import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleton";
+import { NametagController } from "@Easy/Core/Client/Controllers/Entity/Nametag/NametagController";
 
 /**
  * Access using {@link Airship.Characters}. Characters singleton provides utilities for working with the {@link Character}
@@ -195,7 +196,7 @@ export class AirshipCharactersSingleton {
 
 	private WatchForHeldItemAccessories() {
 		this.ObserveCharacters((character) => {
-			character.inventory?.ObserveHeldItem((itemStack) => {
+			character.ObserveHeldItem((itemStack) => {
 				const itemDef = itemStack?.itemDef;
 
 				let viewmodelAccessoryBuilder: AccessoryBuilder | undefined;
@@ -239,7 +240,7 @@ export class AirshipCharactersSingleton {
 
 				//We aren't combineing held items
 				// this.entity.accessoryBuilder.TryCombineMeshes();
-			}, SignalPriority.HIGH);
+			}, SignalPriority.HIGHEST);
 		});
 	}
 
@@ -318,7 +319,10 @@ export class AirshipCharactersSingleton {
 			error("Trying to spawn a character prefab without a character component on it!");
 		}
 		if (config?.lookDirection && characterComponent.movement) {
-			characterComponent.movement.startingLookVector = config.lookDirection;
+			// try catch to not require c# update
+			try {
+				characterComponent.movement.startingLookVector = config.lookDirection;
+			} catch (err) {}
 		}
 		characterComponent.Init(undefined, Airship.Characters.MakeNewId(), undefined, 100, 100, go.name);
 		const rb = go.GetComponent<Rigidbody>();

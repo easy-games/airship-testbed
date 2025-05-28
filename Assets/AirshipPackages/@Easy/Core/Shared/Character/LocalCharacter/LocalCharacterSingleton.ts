@@ -22,7 +22,7 @@ export class LocalCharacterSingleton {
 	private sprintOverlayEmission?: EmissionModule;
 
 	// private moveDirWorldSpace = false;
-	private moveDirMode = MoveDirectionMode.World;
+	private moveDirMode = MoveDirectionMode.Character;
 	private movementEnabled = true;
 
 	/**

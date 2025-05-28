@@ -1,15 +1,21 @@
 import { ProtectedPartyController } from "@Easy/Core/Client/ProtectedControllers/Airship/Party/PartyController";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
-import { Protected } from "@Easy/Core/Shared/Protected";
+import { ProtectedPlayer } from "@Easy/Core/Shared/Player/ProtectedPlayer";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { ProtectedPlayersSingleton } from "../../../Singletons/ProtectedPlayersSingleton";
 import PlayerEntry from "./PlayerEntry";
 
 export default class PlayerList extends AirshipBehaviour {
-	public content!: RectTransform;
-	public playerEntryPrefab!: GameObject;
+	public content: RectTransform;
+	public playerEntryPrefab: GameObject;
+
+	private playerEntryMap = new Map<string, PlayerEntry>();
 
 	private bin = new Bin();
+
+	protected Awake(): void {
+		this.content.gameObject.ClearChildren();
+	}
 
 	public OnEnable(): void {
 		task.spawn(() => {
@@ -18,43 +24,34 @@ export default class PlayerList extends AirshipBehaviour {
 			protectedParty.GetParty();
 
 			if (this.gameObject.activeInHierarchy) {
-				this.RenderAll();
 				this.bin.Add(
-					protectedPlayers.onPlayerJoined.Connect(() => {
-						this.RenderAll();
+					protectedPlayers.onPlayerJoined.Connect((player) => {
+						this.CreatePlayerEntry(player);
 					}),
 				);
 				this.bin.Add(
-					protectedPlayers.onPlayerDisconnected.Connect(() => {
-						this.RenderAll();
+					protectedPlayers.onPlayerDisconnected.Connect((player) => {
+						const entry = this.playerEntryMap.get(player.userId);
+						if (entry) {
+							Destroy(entry.gameObject);
+						}
 					}),
 				);
-
-				this.bin.Add(
-					protectedParty.onPartyChange.Connect((party) => {
-						this.RenderAll();
-					}),
-				);
+				for (let player of protectedPlayers.players) {
+					this.CreatePlayerEntry(player);
+				}
 			}
 		});
 	}
 
-	public RenderAll(): void {
-		this.content.gameObject.ClearChildren();
+	private CreatePlayerEntry(player: ProtectedPlayer): void {
+		if (this.playerEntryMap.has(player.userId)) return;
 
-		let i = 0;
-		for (let player of Protected.ProtectedPlayers.players) {
-			const go = Object.Instantiate(this.playerEntryPrefab, this.content);
-			const entry = go.GetAirshipComponent<PlayerEntry>()!;
+		const go = Object.Instantiate(this.playerEntryPrefab, this.content);
+		const entry = go.GetAirshipComponent<PlayerEntry>()!;
+		this.playerEntryMap.set(player.userId, entry);
 
-			entry.Init(player);
-
-			if (i % 2 === 0) {
-				entry.SetEven();
-			}
-
-			i++;
-		}
+		entry.Init(player);
 	}
 
 	public OnDisable(): void {

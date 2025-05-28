@@ -11,8 +11,8 @@ import {
 	AirshipMatchingServerTransferConfig,
 	AirshipPlayerTransferConfig,
 	AirshipServerTransferConfig,
-} from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipTransfers";
-import { TransferResult } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipTransfers";
+	AirshipTransferResult,
+} from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
@@ -62,7 +62,7 @@ export class AirshipTransferService {
 					}
 					let maxWaitTime = 10;
 					let numWaits = 0;
-					while(numWaits < maxWaitTime) {
+					while (numWaits < maxWaitTime) {
 						task.unscaledWait(1);
 						numWaits++;
 						const players = Airship.Players.GetPlayers();
@@ -85,7 +85,7 @@ export class AirshipTransferService {
 		player: Player | string,
 		gameId: string,
 		config?: AirshipGameTransferConfig,
-	): Promise<TransferResult> {
+	): Promise<AirshipTransferResult> {
 		return await this.TransferGroupToGame([player], gameId, config);
 	}
 
@@ -99,7 +99,7 @@ export class AirshipTransferService {
 		players: readonly (Player | string)[],
 		gameId: string,
 		config?: AirshipGameTransferConfig,
-	): Promise<TransferResult> {
+	): Promise<AirshipTransferResult> {
 		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
 		return contextbridge.invoke<ServerBridgeApiTransferGroupToGame>(
 			TransferServiceBridgeTopics.TransferGroupToGame,
@@ -120,7 +120,7 @@ export class AirshipTransferService {
 		player: Player | string,
 		serverId: string,
 		config?: AirshipServerTransferConfig,
-	): Promise<TransferResult> {
+	): Promise<AirshipTransferResult> {
 		return await this.TransferGroupToServer([player], serverId, config);
 	}
 
@@ -134,7 +134,7 @@ export class AirshipTransferService {
 		players: readonly (Player | string)[],
 		serverId: string,
 		config?: AirshipServerTransferConfig,
-	): Promise<TransferResult> {
+	): Promise<AirshipTransferResult> {
 		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
 		return contextbridge.invoke<ServerBridgeApiTransferGroupToServer>(
 			TransferServiceBridgeTopics.TransferGroupToServer,
@@ -154,7 +154,7 @@ export class AirshipTransferService {
 	public async TransferToMatchingServer(
 		player: Player | string,
 		selectors: AirshipMatchingServerTransferConfig,
-	): Promise<TransferResult> {
+	): Promise<AirshipTransferResult> {
 		return await this.TransferGroupToMatchingServer([player], selectors);
 	}
 
@@ -167,7 +167,7 @@ export class AirshipTransferService {
 	public async TransferGroupToMatchingServer(
 		players: readonly (Player | string)[],
 		selectors: AirshipMatchingServerTransferConfig,
-	): Promise<TransferResult> {
+	): Promise<AirshipTransferResult> {
 		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
 		return contextbridge.invoke<ServerBridgeApiTransferGroupToMatchingServer>(
 			TransferServiceBridgeTopics.TransferGroupToMatchingServer,
@@ -187,7 +187,7 @@ export class AirshipTransferService {
 		player: Player | string,
 		targetUserId: string,
 		config?: AirshipPlayerTransferConfig,
-	): Promise<TransferResult> {
+	): Promise<AirshipTransferResult> {
 		return await this.TransferGroupToPlayer([player], targetUserId, config);
 	}
 
@@ -201,7 +201,7 @@ export class AirshipTransferService {
 		players: (Player | string)[],
 		targetUserId: string,
 		config?: AirshipPlayerTransferConfig,
-	): Promise<TransferResult> {
+	): Promise<AirshipTransferResult> {
 		let userIds: string[] = players.map((player) => (typeIs(player, "table") ? player.userId : player));
 		return contextbridge.invoke<ServerBridgeApiTransferGroupToPlayer>(
 			TransferServiceBridgeTopics.TransferGroupToPlayer,

@@ -2,16 +2,17 @@ import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import inspect from "@Easy/Core/Shared/Util/Inspect";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { AuthController } from "../Auth/AuthController";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Controller({})
 export class SocketController {
-	private readonly httpRetry = HttpRetryInstance();
 	private onEvent = new Signal<[eventName: string, data: string]>();
 	public onSocketConnectionChanged = new Signal<[connected: boolean]>();
 	public doReconnect = true;
@@ -40,13 +41,12 @@ export class SocketController {
 			this.cancelSessionReportTask = SetInterval(
 				60 * 5,
 				async () => {
-					const regions = await this.httpRetry(() => InternalHttpManager.GetAsync(
-						AirshipUrl.GameCoordinator + "/servers/regions/ping-servers",
-					), "GetPingServers");
-					if (!regions.success) {
+					let serverMap;
+					try {
+						serverMap = await client.servers.getPingServers();
+					} catch {
 						return warn("Unable to retrieve ping servers from GC. Region selection may not be possible.");
 					}
-					const serverMap = json.decode(regions.data) as { [regionId: string]: string };
 					const regionLatencies: { [regionId: string]: number } = {};
 					// Use the best of three tests.
 					for (let i = 0; i < 3; i++) {
@@ -65,13 +65,7 @@ export class SocketController {
 						}
 						task.unscaledWait(0.25);
 					}
-					print(`Region Latency Report:`, inspect(regionLatencies));
-					await this.httpRetry(() => InternalHttpManager.PutAsync(
-						AirshipUrl.GameCoordinator + "/user-session/data",
-						json.encode({
-							regionLatencies,
-						}),
-					), "UpdateUserSessionData");
+					await client.userSession.updateSession({ regionLatencies });
 				},
 				true,
 			);

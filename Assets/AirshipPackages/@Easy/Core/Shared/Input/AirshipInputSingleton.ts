@@ -5,24 +5,23 @@ import { Asset } from "../Asset";
 import { CoreContext } from "../CoreClientContext";
 import { CoreRefs } from "../CoreRefs";
 import { Game } from "../Game";
-import AirshipButton from "../MainMenu/Components/AirshipButton";
+import MobileCameraMovement from "../MainMenu/Components/Overlay/MobileCameraMovement";
 import { Protected } from "../Protected";
 import { ControlScheme, Keyboard, Mouse, Preferred as PreferredControls } from "../UserInput";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI, PointerDirection } from "../Util/CanvasAPI";
+import { MapUtil } from "../Util/MapUtil";
 import { Signal } from "../Util/Signal";
 import { CoreAction } from "./AirshipCoreAction";
 import { Binding, KeyBindingConfig, MouseBindingConfig } from "./Binding";
 import { InputAction, InputActionConfig, InputActionSchema, SerializableAction } from "./InputAction";
 import { InputActionEvent } from "./InputActionEvent";
 import { ActionInputType, InputUtil, KeyType, ModifierKey } from "./InputUtil";
-import { CoreMobileButton, MobileButtonConfig } from "./Mobile/MobileButton";
+import AirshipMobileButton from "./Mobile/AirshipMobileButton";
+import { MobileButtonConfig } from "./Mobile/MobileButton";
 import MobileControlsCanvas from "./Mobile/MobileControlsCanvas";
 import TouchJoystick from "./Mobile/TouchJoystick";
 import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
-import AirshipMobileButton from "./Mobile/AirshipMobileButton";
-import { MapUtil } from "../Util/MapUtil";
-import MobileCameraMovement from "../MainMenu/Components/Overlay/MobileCameraMovement";
 
 export enum InputActionDirection {
 	/**
@@ -128,7 +127,10 @@ export class AirshipInputSingleton {
 		// });
 
 		if (Game.coreContext === CoreContext.GAME && Game.IsGameLuauContext()) {
-			this.CreateMobileControlCanvas();
+			if (Game.IsMobile()) {
+				this.CreateMobileControlCanvas();
+			}
+
 			// A Game keybind was updated from the keybind menu.
 			contextbridge.subscribe(
 				"ProtectedKeybind:Updated",
@@ -417,7 +419,7 @@ export class AirshipInputSingleton {
 		const mobileCameraControlCanvas = Object.Instantiate(
 			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/MobileControls/MobileCameraCanvas.prefab"),
 			CoreRefs.rootTransform,
-		)
+		);
 
 		this.mobileControlsContainer = mobileControlsCanvas;
 		this.mobileCameraControlContainer = mobileCameraControlCanvas;
@@ -537,7 +539,7 @@ export class AirshipInputSingleton {
 
 	/**
 	 * Gets the mobile camera movement component
-	 * @returns 
+	 * @returns
 	 */
 	public GetMobileCameraMovement(): MobileCameraMovement | undefined {
 		return this.mobileCameraControlContainer.GetAirshipComponentInChildren<MobileCameraMovement>(true);

@@ -1,7 +1,6 @@
 import { ProtectedPartyController } from "@Easy/Core/Client/ProtectedControllers/Airship/Party/PartyController";
 import { MainMenuPartyController } from "@Easy/Core/Client/ProtectedControllers/Social/MainMenuPartyController";
 import { TransferController } from "@Easy/Core/Client/ProtectedControllers/Transfer/TransferController";
-import { UserStatus, UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
@@ -11,6 +10,7 @@ import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import FriendCard from "../Friends/FriendCard";
+import { AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 
 export default class PartyCard extends AirshipBehaviour {
 	public layoutElement!: LayoutElement;
@@ -91,7 +91,7 @@ export default class PartyCard extends AirshipBehaviour {
 		// this.defaultContents.SetActive(hovering === false);
 	}
 
-	public UpdateInfo(userStatus: UserStatusData | undefined) {
+	public UpdateInfo(userStatus: AirshipUserStatusData | undefined) {
 		const party = Dependency<MainMenuPartyController>().party;
 		const isLeader = party?.leader === Protected.User.localUser?.uid;
 
@@ -117,7 +117,7 @@ export default class PartyCard extends AirshipBehaviour {
 			this.partyChatButton.gameObject.SetActive(true);
 		}
 
-		if (!userStatus || userStatus.status !== UserStatus.IN_GAME) {
+		if (!userStatus || userStatus.status !== "in_game") {
 			this.layoutElement.preferredHeight = 84;
 			this.layoutElement.gameObject.GetComponent<ImageWithRoundedCorners>()?.Refresh();
 			return;
@@ -138,5 +138,5 @@ export default class PartyCard extends AirshipBehaviour {
 		this.gameText.text = `Playing ${userStatus.game.name}`;
 	}
 
-	override OnDestroy(): void {}
+	override OnDestroy(): void { }
 }

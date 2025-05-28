@@ -2,9 +2,10 @@ import { CoreUIController } from "@Easy/Core/Client/ProtectedControllers/CoreUIC
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
-import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
+import { ChatMessageNetworkEvent, CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { PartyCommand } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientCommands/PartyCommand";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { ProtectedPlayer } from "@Easy/Core/Shared/Player/ProtectedPlayer";
 import { Protected } from "@Easy/Core/Shared/Protected";
@@ -30,7 +31,7 @@ class ChatMessageElement {
 	public shown = true;
 	private hideBin = new Bin();
 
-	constructor(public readonly gameObject: GameObject, public time: number) {
+	constructor(public readonly gameObject: GameObject, public time: number, public readonly messageId?: number, public readonly nameWithPrefix?: string) {
 		this.canvasGroup = gameObject.GetComponent<CanvasGroup>()!;
 	}
 
@@ -96,37 +97,40 @@ export class ClientChatSingleton {
 		this.inputWrapperImage = this.inputTransform.GetComponent<Image>()!;
 		this.content.gameObject.ClearChildren();
 
-		Dependency<MainMenuSingleton>().ObserveScreenSize((st, size) => {
-			if (Game.IsMobile()) {
-				const scaler = this.canvas.GetComponent<CanvasScaler>()!;
-				scaler.uiScaleMode = ScaleMode.ConstantPixelSize;
-				scaler.scaleFactor = Game.GetScaleFactor();
-				const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
+		task.spawn(() => {
+			Dependency<MainMenuSingleton>().ObserveScreenSize((st, size) => {
+				if (Game.IsMobile()) {
+					const scaler = this.canvas.GetComponent<CanvasScaler>()!;
+					scaler.uiScaleMode = ScaleMode.ConstantPixelSize;
+					scaler.scaleFactor = Game.GetScaleFactor();
+					const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
 
-				if (Game.deviceType === AirshipDeviceType.Phone) {
-					wrapperRect.anchorMin = new Vector2(0, 0);
-					wrapperRect.anchorMax = new Vector2(0, 1);
-					wrapperRect.pivot = new Vector2(0, 1);
-					wrapperRect.offsetMin = new Vector2(wrapperRect.offsetMin.x, 216);
+					if (Game.deviceType === AirshipDeviceType.Phone) {
+						wrapperRect.anchorMin = new Vector2(0, 0);
+						wrapperRect.anchorMax = new Vector2(0, 1);
+						wrapperRect.pivot = new Vector2(0, 1);
+						wrapperRect.offsetMin = new Vector2(wrapperRect.offsetMin.x, 216);
+					} else {
+						wrapperRect.anchorMax = new Vector2(0, 1);
+						wrapperRect.anchorMin = new Vector2(0, 0.55);
+						wrapperRect.pivot = new Vector2(0, 1);
+						wrapperRect.offsetMin = new Vector2(wrapperRect.offsetMin.x, 0);
+						// wrapperRect.offsetMax = new Vector2(0, 0);
+						// wrapperRect.offsetMin = new Vector2(0, 0);
+					}
+					wrapperRect.anchoredPosition = new Vector2(ProtectedUtil.GetNotchHeight() + 190, -14);
 				} else {
-					wrapperRect.anchorMax = new Vector2(0, 1);
-					wrapperRect.anchorMin = new Vector2(0, 0.55);
-					wrapperRect.pivot = new Vector2(0, 1);
-					wrapperRect.offsetMin = new Vector2(wrapperRect.offsetMin.x, 0);
-					// wrapperRect.offsetMax = new Vector2(0, 0);
-					// wrapperRect.offsetMin = new Vector2(0, 0);
+					const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
+					const wrapperImg = wrapperRect.GetComponent<Image>()!;
+					wrapperImg.color = new Color(0, 0, 0, 0);
 				}
-				wrapperRect.anchoredPosition = new Vector2(ProtectedUtil.GetNotchHeight() + 190, -14);
-			} else {
-				const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
-				const wrapperImg = wrapperRect.GetComponent<Image>()!;
-				wrapperImg.color = new Color(0, 0, 0, 0);
-			}
+			});
 		});
 
 		if (Game.IsProtectedLuauContext()) {
 			this.RegisterCommand(new MessageCommand());
 			this.RegisterCommand(new ReplyCommand());
+			this.RegisterCommand(new PartyCommand());
 
 			contextbridge.callback<() => boolean>("ClientChatSingleton:IsOpen", () => {
 				return this.IsOpen();
@@ -167,21 +171,17 @@ export class ClientChatSingleton {
 		return this.selected;
 	}
 
-	public AddMessage(rawText: string, nameWithPrefix: string | undefined, senderClientId: number | undefined): void {
+	public AddMessage(rawText: string, messageId: number | undefined, nameWithPrefix: string | undefined, senderClientId: number | undefined): void {
 		let sender: ProtectedPlayer | undefined;
 		if (senderClientId !== undefined) {
-			sender = Protected.ProtectedPlayers.FindByClientId(senderClientId);
+			sender = Protected.ProtectedPlayers.FindByConnectionId(senderClientId);
 			if (sender) {
 				if (Dependency<MainMenuBlockSingleton>().IsUserIdBlocked(sender.userId)) {
 					return;
 				}
 			}
 		}
-		let text = rawText;
-		if (nameWithPrefix) {
-			text = ChatColor.White(nameWithPrefix) + ChatColor.White(rawText);
-		}
-		this.RenderChatMessage(text, sender);
+		this.RenderChatMessage(rawText, messageId, sender, nameWithPrefix);
 	}
 
 	protected OnStart(): void {
@@ -189,14 +189,28 @@ export class ClientChatSingleton {
 		if (isMainMenu) return;
 
 		contextbridge.subscribe(
-			"Chat:AddLocalMessage",
-			(context: LuauContext, rawText: string, nameWithPrefix?: string, senderClientId?: number) => {
-				this.AddMessage(rawText, nameWithPrefix, senderClientId);
+			"Chat:ProcessLocalMessage",
+			(context: LuauContext, msg: ChatMessageNetworkEvent) => {
+				if (msg.type === "sent") {
+					this.AddMessage(msg.message, msg.internalMessageId, msg.senderPrefix, msg.senderClientId);
+				} else if (msg.type === "update") {
+					this.UpdateChatMessage(msg.internalMessageId, msg.message);
+				} else if (msg.type === "remove") {
+					this.ClearChatMessage(msg.internalMessageId);
+				}
 			},
 		);
 
-		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((rawText, nameWithPrefix, senderClientId) => {
-			this.AddMessage(rawText, nameWithPrefix, senderClientId);
+		// TODO: Does this ever run? It seems to be on the client that the subscription in AirshipChatSingleton is what sends events here
+		// TODO: It does so through the contextbridge Chat:ProcessLocalMessage event
+		CoreNetwork.ServerToClient.ChatMessage.client.OnServerEvent((msg) => {
+			if (msg.type === "sent") {
+				this.AddMessage(msg.message, msg.internalMessageId, msg.senderPrefix, msg.senderClientId);
+			} else if (msg.type === "update") {
+				this.UpdateChatMessage(msg.internalMessageId, msg.message);
+			} else if (msg.type === "remove") {
+				this.ClearChatMessage(msg.internalMessageId);
+			}
 		});
 
 		if (Game.IsMobile()) {
@@ -419,7 +433,10 @@ export class ClientChatSingleton {
 		}
 	}
 
-	public RenderChatMessage(message: string, sender?: ProtectedPlayer): void {
+	public RenderChatMessage(message: string, messageId?: number, sender?: ProtectedPlayer, nameWithPrefix?: string): void {
+		if (nameWithPrefix) {
+			message = ChatColor.White(nameWithPrefix) + ChatColor.White(message);
+		}
 		try {
 			const chatMessageGO = Instantiate<GameObject>(this.chatMessagePrefab, this.content.transform);
 			const chatMessage = chatMessageGO.GetAirshipComponent<ChatMessage>()!;
@@ -444,18 +461,12 @@ export class ClientChatSingleton {
 				profileImage.gameObject.SetActive(false);
 			}
 
-			const domainPattern = "%f[%w][%w-]+%.[a-z]+[%w%p]*%f[%A]";
-			const match = string.match(Bridge.RemoveRichText(message), domainPattern);
-			if (match !== undefined && match.size() > 0) {
-				let url = match[0] as string;
-				if (!StringUtils.startsWith(url.lower(), "https://")) {
-					url = "https://" + url;
-				}
-				print("found chat url: " + url);
+			const url = this.detectUrlInChatMessage(message);
+			if (url) {
 				chatMessage.SetUrl(url);
 			}
 
-			const element = new ChatMessageElement(chatMessageGO, os.clock());
+			const element = new ChatMessageElement(chatMessageGO, os.clock(), messageId, nameWithPrefix);
 			this.chatMessageElements.push(element);
 
 			// if (Time.time > this.lastChatMessageRenderedTime && this.canvas.gameObject.activeInHierarchy) {
@@ -469,6 +480,52 @@ export class ClientChatSingleton {
 			Debug.LogError(err);
 		}
 	}
+
+	private detectUrlInChatMessage(message: string) {
+		const domainPattern = "%f[%w][%w-]+%.[a-z]+[%w%p]*%f[%A]";
+		const match = string.match(Bridge.RemoveRichText(message), domainPattern);
+		let url: string | undefined;
+		if (match !== undefined && match.size() > 0) {
+			url = match[0] as string;
+			if (!StringUtils.startsWith(url.lower(), "https://")) {
+				url = "https://" + url;
+			}
+			print("found chat url: " + url);
+		}
+
+		return url;
+	}
+
+	public ClearChatMessage(messageId: number): void {
+		const index = this.chatMessageElements.findIndex((element) => element.messageId === messageId);
+		if (index !== -1) {
+			const element = this.chatMessageElements[index];
+			element.Destroy();
+			this.chatMessageElements.remove(index);
+		}
+	}
+
+	public UpdateChatMessage(messageId: number, text: string): void {
+		const index = this.chatMessageElements.findIndex((element) => element.messageId === messageId);
+
+		if (index === -1) return;
+
+		const element = this.chatMessageElements[index];
+		if (element.nameWithPrefix) {
+			text = ChatColor.White(element.nameWithPrefix) + ChatColor.White(text);
+		}
+		const refs = element.gameObject.GetComponent<GameObjectReferences>()!;
+		const textGui = refs.GetValue<TMP_Text>("UI", "Text");
+		textGui.text = text;
+		const chatMessage = element.gameObject.GetAirshipComponent<ChatMessage>()!;
+		const url = this.detectUrlInChatMessage(text);
+		if (url) {
+			chatMessage.SetUrl(url);
+		} else {
+			chatMessage.RemoveUrl();
+		}
+	}
+
 
 	public ClearChatMessages(): void {
 		try {

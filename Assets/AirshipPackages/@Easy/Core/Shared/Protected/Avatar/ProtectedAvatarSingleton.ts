@@ -1,11 +1,4 @@
 import { AuthController } from "@Easy/Core/Client/ProtectedControllers/Auth/AuthController";
-import {
-	GearClothingSubcategory,
-	GearInstanceDto,
-	OutfitCreateDto,
-	OutfitDto,
-	OutfitPatch,
-} from "../../Airship/Types/Outputs/AirshipPlatformInventory";
 import { Dependency, Singleton } from "../../Flamework";
 import { Game } from "../../Game";
 import { HttpRetryInstance } from "../../Http/HttpRetry";
@@ -15,6 +8,17 @@ import { AirshipUrl } from "../../Util/AirshipUrl";
 import { ColorUtil } from "../../Util/ColorUtil";
 import { RandomUtil } from "../../Util/RandomUtil";
 import { Signal } from "../../Util/Signal";
+import { ContentServiceClient } from "../../TypePackages/content-service-types";
+import { isUnityMakeRequestError, UnityMakeRequest } from "../../TypePackages/UnityMakeRequest";
+import {
+	AirshipGearItem,
+	AirshipOutfit,
+	AirshipGearClothingSubcategory,
+	AirshipCreateOutfitDto,
+	AirshipUpdateOutfitDto,
+} from "../../Airship/Types/AirshipPlatformInventory";
+
+const contentServiceClient = new ContentServiceClient(UnityMakeRequest(AirshipUrl.ContentService));
 
 @Singleton()
 export class ProtectedAvatarSingleton {
@@ -22,9 +26,9 @@ export class ProtectedAvatarSingleton {
 	public isInventoryLoaded = false;
 	public onInventoryLoaded = new Signal();
 
-	public outfits: OutfitDto[] = [];
-	public ownedClothing: GearInstanceDto[] = [];
-	public equippedOutfit: OutfitDto | undefined;
+	public outfits: AirshipOutfit[] = [];
+	public ownedClothing: AirshipGearItem[] = [];
+	public equippedOutfit: AirshipOutfit | undefined;
 
 	private readonly httpRetry = HttpRetryInstance();
 
@@ -60,7 +64,9 @@ export class ProtectedAvatarSingleton {
 			}
 		});
 
-		this.LoadInventory();
+		task.spawn(() => {
+			this.LoadInventory();
+		});
 	}
 
 	private async LoadInventory(): Promise<void> {
@@ -71,10 +77,11 @@ export class ProtectedAvatarSingleton {
 		}
 
 		await Dependency<AuthController>().WaitForAuthed();
+		Protected.User.WaitForLocalUser();
 
 		const promises: Promise<void>[] = [];
 
-		let loadedOutfitFromBackend: OutfitDto | undefined;
+		let loadedOutfitFromBackend: AirshipOutfit | undefined;
 
 		// Get all owned clothing and map them to usable values
 		promises.push(
@@ -121,9 +128,6 @@ export class ProtectedAvatarSingleton {
 					}
 
 					let outfit = await Protected.Avatar.CreateDefaultAvatarOutfit(
-						firstOutfit,
-						name,
-						Protected.User.localUser!.uid,
 						name,
 						ColorUtil.HexToColor(RandomUtil.FromArray(this.skinColors)),
 					);
@@ -177,101 +181,78 @@ export class ProtectedAvatarSingleton {
 		// print("Protected.Avatar: " + message);
 	}
 
-	public GetHttpUrl(path: string) {
-		let url = `${AirshipUrl.ContentService}/${path}`;
-		return url;
-	}
-
 	public GetImageUrl(imageId: string) {
 		return `${AirshipUrl.CDN}/images/${imageId}.png`;
 	}
 
-	public async GetAllOutfits(): Promise<OutfitDto[] | undefined> {
-		let res = await this.httpRetry(() => InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits`)), "getAllOutfits");
-		if (res.success) {
-			return json.decode(res.data) as OutfitDto[];
+	public async GetAllOutfits(): Promise<AirshipOutfit[] | undefined> {
+		return await contentServiceClient.outfits.getOutfits();
+	}
+
+	public async GetEquippedOutfit(): Promise<AirshipOutfit | undefined> {
+		try {
+			const result = await contentServiceClient.outfits.getActiveOutfit();
+			return result.outfit;
+		} catch (err) {
+			if (isUnityMakeRequestError(err)) {
+				CoreLogger.Error("failed to load user equipped outfit: " + (err.message ?? "Empty Data"));
+			}
+			throw err;
 		}
 	}
 
-	public async GetEquippedOutfit(): Promise<OutfitDto | undefined> {
-		let res = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/equipped/self`)),
-			"getEquippedOutfit",
-		);
-		if (res.success) {
-			return json.decode<{ outfit: OutfitDto | undefined }>(res.data).outfit;
-		} else {
-			CoreLogger.Error("failed to load user equipped outfit: " + (res.error ?? "Empty Data"));
+	public async GetUserEquippedOutfit(userId: string): Promise<AirshipOutfit | undefined> {
+		try {
+			const result = await contentServiceClient.outfits.getUserActiveOutfit({ uid: userId });
+			return result.outfit;
+		} catch (err) {
+			if (isUnityMakeRequestError(err)) {
+				CoreLogger.Error("failed to load users equipped outfit: " + (err.message ?? "Empty Data"));
+			}
+			throw err;
 		}
 	}
 
-	public async GetUserEquippedOutfit(userId: string): Promise<OutfitDto | undefined> {
-		const res = await this.httpRetry(
-			() => HttpManager.GetAsync(this.GetHttpUrl(`outfits/uid/${userId}/equipped`)),
-			"getUserEquippedOutfit",
-		);
-		if (res.success) {
-			return json.decode<{ outfit: OutfitDto | undefined }>(res.data).outfit;
-		} else {
-			CoreLogger.Error("failed to load users equipped outfit: " + (res.error ?? "Empty Data"));
+	public async GetAvatarOutfit(outfitId: string): Promise<AirshipOutfit | undefined> {
+		try {
+			const result = await contentServiceClient.outfits.getOutfit({ outfitId });
+			return result.outfit;
+		} catch (err) {
+			if (isUnityMakeRequestError(err)) {
+				CoreLogger.Error("failed to load user outfit: " + (err.message ?? "Empty Data"));
+			}
+			throw err;
 		}
 	}
 
-	public async GetAvatarOutfit(outfitId: string): Promise<OutfitDto | undefined> {
-		let res = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`)),
-			"getAvatarOutfit",
-		);
-		if (res.success) {
-			return json.decode<{ outfit: OutfitDto | undefined }>(res.data).outfit;
-		} else {
-			CoreLogger.Error("failed to load user outfit: " + (res.error ?? "Empty Data"));
-		}
-	}
-
-	public async CreateAvatarOutfit(outfit: OutfitCreateDto) {
-		this.Log("CreateAvatarOutfit: " + this.GetHttpUrl(`outfits`) + " data: " + json.encode(outfit));
-		let res = await this.httpRetry(
-			() => InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits`), json.encode(outfit)),
-			"createAvatarOutfit",
-		);
-		if (res.success) {
-			this.Log("CREATED OUTFIT: " + res.data);
-			return json.decode<{ outfit: OutfitDto }>(res.data).outfit;
-		} else {
-			CoreLogger.Error("Error creating outfit: " + res.error);
+	public async CreateAvatarOutfit(outfit: AirshipCreateOutfitDto) {
+		try {
+			const result = await contentServiceClient.outfits.createOutfit(outfit);
+			return result.outfit;
+		} catch (err) {
+			if (isUnityMakeRequestError(err)) {
+				CoreLogger.Error("Error creating outfit: " + err.message);
+			}
+			throw err;
 		}
 	}
 
 	public async EquipAvatarOutfit(outfitId: string) {
-		let res = await this.httpRetry(
-			() => InternalHttpManager.PostAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}/equip`)),
-			"equipAvatarOutfit",
-		);
-		if (res.success) {
-			this.Log("EQUIPPED OUTFIT: " + res.data);
-		} else {
-			CoreLogger.Error("Failed to equip outfit: " + res.error);
+		try {
+			await contentServiceClient.outfits.loadOutfit({ outfitId });
+		} catch (err) {
+			if (isUnityMakeRequestError(err)) {
+				CoreLogger.Error("Failed to equip outfit: " + err.message);
+			}
+			throw err;
 		}
 	}
 
 	public async GetGear() {
-		let res = await this.httpRetry(() => InternalHttpManager.GetAsync(this.GetHttpUrl(`gear/self`)), "getGear");
-		if (res.success) {
-			//this.Log("Got acc: " + res.data);
-			return json.decode<GearInstanceDto[]>(res.data);
-		} else {
-			CoreLogger.Error("Unable to load avatar items for user");
-		}
+		return await contentServiceClient.gear.getUserGear();
 	}
 
-	public async CreateDefaultAvatarOutfit(
-		equipped: boolean,
-		outfitId: string,
-		ownerId: string,
-		name: string,
-		skinColor: Color,
-	) {
+	public async CreateDefaultAvatarOutfit(name: string, skinColor: Color) {
 		let accessoryInstanceIds: string[] = [];
 
 		let defaultAccessoryClassIds = [
@@ -288,12 +269,9 @@ export class ProtectedAvatarSingleton {
 			}
 		}
 
-		let outfit: OutfitCreateDto = {
+		let outfit: AirshipCreateOutfitDto = {
 			name: name,
-			outfitId: outfitId,
 			gear: accessoryInstanceIds,
-			equipped: equipped,
-			owner: ownerId,
 			skinColor: ColorUtil.ColorToHex(skinColor),
 		};
 		return this.CreateAvatarOutfit(outfit);
@@ -314,70 +292,55 @@ export class ProtectedAvatarSingleton {
 		});
 	}
 
-	private UpdateOutfit(outfitId: string, update: Partial<OutfitPatch>) {
-		let res = this.httpRetry(
-			() => InternalHttpManager.PatchAsync(this.GetHttpUrl(`outfits/outfit-id/${outfitId}`), json.encode(update)),
-			"updateOutfit",
-		).expect();
-		if (res.success) {
-			return json.decode<{ outfit: OutfitDto }>(res.data).outfit;
-		} else {
-			CoreLogger.Error("Error Updating Outfit: " + res.data);
+	private UpdateOutfit(outfitId: string, update: AirshipUpdateOutfitDto) {
+		try {
+			return contentServiceClient.outfits.updateOutfit({ data: update, params: { outfitId } }).expect().outfit;
+		} catch (err) {
+			if (isUnityMakeRequestError(err)) {
+				CoreLogger.Error("Error Updating Outfit: " + err.message);
+			}
+			throw err;
 		}
 	}
 
-	public async LoadImage(fileId: string) {
-		let res = await this.httpRetry(() => InternalHttpManager.GetAsync(this.GetImageUrl(fileId)), "loadImage");
-		if (res.success) {
-			return json.decode<GearInstanceDto[]>(res.data);
-		} else {
-			CoreLogger.Error("Error loading image: " + res.error);
-		}
-	}
+	// todo: what?
+	// public async LoadImage(fileId: string) {
+	// 	let res = await this.httpRetry(() => InternalHttpManager.GetAsync(this.GetImageUrl(fileId)), "loadImage");
+	// 	if (res.success) {
+	// 		return json.decode<GearInstanceDto[]>(res.data);
+	// 	} else {
+	// 		CoreLogger.Error("Error loading image: " + res.error);
+	// 	}
+	// }
 
 	public async UploadItemImage(classId: string, resourceId: string, filePath: string, fileSize: number) {
 		const imageId = await this.UploadImage(resourceId, filePath, fileSize);
 		if (imageId === "" || imageId === undefined) {
 			return;
 		}
-		let res = await this.httpRetry(
-			() =>
-				InternalHttpManager.PatchAsync(
-					this.GetHttpUrl(`accessories/class-id/${classId}`),
-					json.encode({
-						image: undefined,
-						imageId,
-					}),
-				),
-			"uploadItemImage",
-		);
-		if (res.success) {
-			this.Log("Finished updating item");
-		} else {
+		try {
+			await contentServiceClient.itemClasses.updateClassForResource({
+				params: {
+					classId,
+				},
+				data: {
+					imageId,
+				},
+			});
+		} catch (err) {
 			CoreLogger.Error("Unable to update item " + classId + " with new image: " + imageId);
+			throw err;
 		}
 	}
 
 	public async UploadImage(resourceId: string, filePath: string, fileSize: number): Promise<string> {
-		let postPath = `${AirshipUrl.ContentService}/images`;
-		const res = await this.httpRetry(
-			() =>
-				InternalHttpManager.PostAsync(
-					postPath,
-					json.encode({
-						contentType: "image/png",
-						contentLength: fileSize,
-						resourceId,
-						namespace: "items",
-					}),
-				),
-			"uploadImage",
-		);
-
-		if (res.success) {
-			const data = json.decode<{ url: string; imageId: string }>(res.data);
-			const url = data.url;
-			const imageId = data.imageId;
+		try {
+			const { url, imageId } = await contentServiceClient.images.createImage({
+				contentType: "image/png",
+				contentLength: fileSize,
+				resourceId,
+				namespace: "items",
+			});
 			this.Log("Got image url: " + url);
 			const uploadRes = await this.httpRetry(
 				() => InternalHttpManager.PutImageAsync(url, filePath),
@@ -390,51 +353,45 @@ export class ProtectedAvatarSingleton {
 			}
 
 			return imageId;
-
-			// const url = res.data.url;
-			// const imageId = res.data.imageId;
-			// await axios.put(url, file, {
-			// 	headers: {
-			// 		"Content-Type": file.type,
-			// 	},
-			// });
-		} else {
-			CoreLogger.Error("Error Gettin item image resource: " + res.error);
+		} catch (err) {
+			if (isUnityMakeRequestError(err)) {
+				CoreLogger.Error("Error getting item image resource: " + err.message);
+			}
 			return "";
 		}
 	}
 
 	// This is super gross... But I think it's needed. AccessorySlot is a const enum which makes reverse mapping impossible.
 	// We don't want to make subcategories use AccessorySlot directly because it might limit either subcategories or accessory slots.
-	public GearClothingSubcategoryToSlot(slot: GearClothingSubcategory): AccessorySlot {
+	public GearClothingSubcategoryToSlot(slot: string): AccessorySlot {
 		switch (slot) {
-			case GearClothingSubcategory.Head:
+			case AirshipGearClothingSubcategory.Head:
 				return AccessorySlot.Head;
-			case GearClothingSubcategory.Hair:
+			case AirshipGearClothingSubcategory.Hair:
 				return AccessorySlot.Hair;
-			case GearClothingSubcategory.Face:
+			case AirshipGearClothingSubcategory.Face:
 				return AccessorySlot.Face;
-			case GearClothingSubcategory.Neck:
+			case AirshipGearClothingSubcategory.Neck:
 				return AccessorySlot.Neck;
-			case GearClothingSubcategory.Torso:
+			case AirshipGearClothingSubcategory.Torso:
 				return AccessorySlot.Torso;
-			case GearClothingSubcategory.Legs:
+			case AirshipGearClothingSubcategory.Legs:
 				return AccessorySlot.Legs;
-			case GearClothingSubcategory.Feet:
+			case AirshipGearClothingSubcategory.Feet:
 				return AccessorySlot.Feet;
-			case GearClothingSubcategory.Backpack:
+			case AirshipGearClothingSubcategory.Backpack:
 				return AccessorySlot.Backpack;
-			case GearClothingSubcategory.Waist:
+			case AirshipGearClothingSubcategory.Waist:
 				return AccessorySlot.Waist;
-			case GearClothingSubcategory.Hands:
+			case AirshipGearClothingSubcategory.Hands:
 				return AccessorySlot.Hands;
-			case GearClothingSubcategory.LeftHand:
+			case AirshipGearClothingSubcategory.LeftHand:
 				return AccessorySlot.LeftHand;
-			case GearClothingSubcategory.RightHand:
+			case AirshipGearClothingSubcategory.RightHand:
 				return AccessorySlot.RightHand;
-			case GearClothingSubcategory.Ears:
+			case AirshipGearClothingSubcategory.Ears:
 				return AccessorySlot.Ears;
-			case GearClothingSubcategory.Nose:
+			case AirshipGearClothingSubcategory.Nose:
 				return AccessorySlot.Nose;
 			default:
 				warn("unknown GearClothingSubcategory mapping: " + slot);
@@ -443,41 +400,41 @@ export class ProtectedAvatarSingleton {
 	}
 
 	// This is gross.. for more info read above comment on GearClothingSubcategoryToSlot
-	public AccessorySlotToClothingSubcategory(slot: AccessorySlot): GearClothingSubcategory {
+	public AccessorySlotToClothingSubcategory(slot: AccessorySlot): AirshipGearClothingSubcategory {
 		switch (slot) {
 			case AccessorySlot.Root:
-				return GearClothingSubcategory.Head;
+				return AirshipGearClothingSubcategory.Head;
 			case AccessorySlot.Hair:
-				return GearClothingSubcategory.Hair;
+				return AirshipGearClothingSubcategory.Hair;
 			case AccessorySlot.Head:
-				return GearClothingSubcategory.Head;
+				return AirshipGearClothingSubcategory.Head;
 			case AccessorySlot.Face:
-				return GearClothingSubcategory.Face;
+				return AirshipGearClothingSubcategory.Face;
 			case AccessorySlot.Neck:
-				return GearClothingSubcategory.Neck;
+				return AirshipGearClothingSubcategory.Neck;
 			case AccessorySlot.Torso:
-				return GearClothingSubcategory.Torso;
+				return AirshipGearClothingSubcategory.Torso;
 			case AccessorySlot.Legs:
-				return GearClothingSubcategory.Legs;
+				return AirshipGearClothingSubcategory.Legs;
 			case AccessorySlot.Feet:
-				return GearClothingSubcategory.Feet;
+				return AirshipGearClothingSubcategory.Feet;
 			case AccessorySlot.Backpack:
-				return GearClothingSubcategory.Backpack;
+				return AirshipGearClothingSubcategory.Backpack;
 			case AccessorySlot.Waist:
-				return GearClothingSubcategory.Waist;
+				return AirshipGearClothingSubcategory.Waist;
 			case AccessorySlot.Hands:
-				return GearClothingSubcategory.Hands;
+				return AirshipGearClothingSubcategory.Hands;
 			case AccessorySlot.LeftHand:
-				return GearClothingSubcategory.LeftHand;
+				return AirshipGearClothingSubcategory.LeftHand;
 			case AccessorySlot.RightHand:
-				return GearClothingSubcategory.RightHand;
+				return AirshipGearClothingSubcategory.RightHand;
 			case AccessorySlot.Ears:
-				return GearClothingSubcategory.Ears;
+				return AirshipGearClothingSubcategory.Ears;
 			case AccessorySlot.Nose:
-				return GearClothingSubcategory.Nose;
+				return AirshipGearClothingSubcategory.Nose;
 			default:
 				warn("unknown AccessorySlot mapping: " + slot);
-				return GearClothingSubcategory.Root;
+				return AirshipGearClothingSubcategory.Root;
 		}
 	}
 }

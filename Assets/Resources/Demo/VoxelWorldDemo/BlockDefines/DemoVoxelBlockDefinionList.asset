@@ -13,19 +13,4 @@ MonoBehaviour:
   m_Name: DemoVoxelBlockDefinionList
   m_EditorClassIdentifier: 
   scope: '@Easy/DemoBlocks'
-  blockDefinitions:
-  - {fileID: 11400000, guid: d70cbd71b18a38741a60d88adbe9723f, type: 2}
-  - {fileID: 11400000, guid: deb308fb8ba8d4d45bdf06ee89fa92ba, type: 2}
-  - {fileID: 11400000, guid: 4bdbaed430df6614481b6a8ef9aa738d, type: 2}
-  - {fileID: 11400000, guid: 793333a93a53e4e4ca81a1708f2ea69d, type: 2}
-  - {fileID: 11400000, guid: 28a4dabbec2a51b4e800dfbc463b87ef, type: 2}
-  - {fileID: 11400000, guid: d433b518a8089c943a45d68da185894a, type: 2}
-  - {fileID: 11400000, guid: 47a3edefdbd70e748913e415a220c872, type: 2}
-  - {fileID: 11400000, guid: 44015ab40f38e194f97b247c1cf1cb65, type: 2}
-  - {fileID: 11400000, guid: c36c5ba71a6b3754896179a0625d8fbc, type: 2}
-  - {fileID: 11400000, guid: feb9c3b849a991a46826afae7974e982, type: 2}
-  - {fileID: 11400000, guid: 21c0dc7ef2df698418413a90f95c58da, type: 2}
-  - {fileID: 11400000, guid: 8c960cc1de92bc741af50afdd46b7f1d, type: 2}
-  - {fileID: 11400000, guid: 587cfba118499644e853e53176621916, type: 2}
-  - {fileID: 11400000, guid: 764602697ff1a7741950f7b1a87b04ec, type: 2}
-  - {fileID: 11400000, guid: e53a05eee8ba34046a888e75b05fb91d, type: 2}
+  blockDefinitions: []

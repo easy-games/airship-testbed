@@ -1,13 +1,13 @@
 import { TabListController } from "@Easy/Core/Client/Controllers/TabList/TabListController";
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { Group } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipMatchmaking";
 import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Game } from "../Game";
+import { AirshipMatchmakingGroup } from "../Airship/Types/Matchmaking";
 
 @Singleton({})
 export class AirshipMenuSingleton implements OnStart {
-	public readonly onGroupChange: Signal<Group> = new Signal();
+	public readonly onGroupChange: Signal<AirshipMatchmakingGroup> = new Signal();
 
 	private leaveMatchBtnCallback: (() => void) | undefined;
 
@@ -21,7 +21,7 @@ export class AirshipMenuSingleton implements OnStart {
 		});
 	}
 
-	public OnStart(): void {}
+	public OnStart(): void { }
 
 	/**
 	 * Adds a special "Leave Match" button.

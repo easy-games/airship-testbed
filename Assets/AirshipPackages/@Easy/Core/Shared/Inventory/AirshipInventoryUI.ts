@@ -3,7 +3,7 @@ import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { CanvasAPI, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { CanvasAPI, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Asset } from "../Asset";
 import { Game } from "../Game";
@@ -15,8 +15,9 @@ import Inventory from "./Inventory";
 import { InventoryUIVisibility } from "./InventoryUIVisibility";
 import {
 	CancellableInventorySlotInteractionEvent,
-	SlotDragEndedEvent,
 	InventorySlotMouseClickEvent,
+	SlotDragEndedEvent,
+	InventoryEvent,
 } from "./Signal/SlotInteractionEvent";
 
 export default class AirshipInventoryUI extends AirshipBehaviour {
@@ -26,6 +27,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	@Header("Hotbar")
 	public hotbarCanvas!: Canvas;
 	public hotbarContent!: RectTransform;
+	public hotbarSlots = 9;
 
 	@Header("Backpack")
 	public backpackLabel?: TMP_Text;
@@ -83,12 +85,16 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		this.externalInventoryContent?.gameObject.SetActive(false);
 		this.externalInventoryLabel?.gameObject.SetActive(false);
 
-		Airship.Inventory.ObserveLocalInventory((inv) => {
+		Airship.Inventory.ObserveLocalInventory(() => {
 			if (this.isSetup) return;
 
 			this.isSetup = true;
-			this.SetupHotbar();
-			this.SetupBackpack();
+			const hb = this.SetupHotbar();
+			const bp = this.SetupBackpack();
+			return () => {
+				hb.Clean();
+				bp.Clean();
+			};
 		});
 		Airship.Input.OnDown("Inventory").Connect((event) => {
 			if (event.uiProcessed || !this.inventoryEnabled || !this.isSetup) return;
@@ -149,6 +155,13 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			},
 			noDarkBackground: this.darkBackground === false,
 		});
+
+		if (Airship.Inventory.localInventory) {
+			Airship.Inventory.onInventoryOpened.Fire(new InventoryEvent(Airship.Inventory.localInventory));
+			this.backpackOpenBin.Add(() =>
+				Airship.Inventory.onInventoryClosed.Fire(new InventoryEvent(Airship.Inventory.localInventory!)),
+			);
+		}
 	}
 
 	public OpenBackpackWithExternalInventory(inventory: Inventory) {
@@ -156,41 +169,51 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		if (!closed) return;
 
 		this.backpackOpenBin.Add(closed);
+		this.backpackOpenBin.Add(() => Airship.Inventory.onInventoryClosed.Fire(new InventoryEvent(inventory)));
 
 		// Open the regular backpack plspls
 		this.OpenBackpack();
+
+		Airship.Inventory.onInventoryOpened.Fire(new InventoryEvent(inventory));
+		return this.backpackOpenBin;
 	}
 
-	private SetupHotbar(): void {
+	public GetHotbarSlotCount(): number {
+		return this.hotbarSlots;
+	}
+
+	private SetupHotbar(): Bin {
 		this.hotbarCanvas.enabled = true;
 
-		const inv = Airship.Inventory.localInventory!;
-		for (let i = 0; i < inv.hotbarSlots; i++) {
-			this.UpdateHotbarSlot(i, inv.GetHeldSlot() ?? 0, undefined, true);
-		}
+		let init = false; // TODO: @luke why is this false to start with? It looks like it's only ever false, but it works?
+		return Game.localPlayer.ObserveCharacter((character) => {
+			if (!character) {
+				return;
+			}
+			for (let i = 0; i < this.hotbarSlots; i++) {
+				this.UpdateHotbarSlot(i, character.GetHeldSlot() ?? 0, undefined, true);
+			}
 
-		let init = false;
-		Airship.Inventory.ObserveLocalInventory((inv) => {
 			const invBin = new Bin();
 			const slotBinMap = new Map<number, Bin>();
 			invBin.Add(
-				inv.onSlotChanged.Connect((slot, itemStack) => {
+				character.inventory.onSlotChanged.Connect((slot, itemStack) => {
 					slotBinMap.get(slot)?.Clean();
-					if (slot < inv.hotbarSlots) {
+					if (slot < this.hotbarSlots) {
 						const slotBin = new Bin();
 						slotBinMap.set(slot, slotBin);
 
-						this.UpdateHotbarSlot(slot, inv.GetHeldSlot(), itemStack);
+						this.UpdateHotbarSlot(slot, character.GetHeldSlot(), itemStack);
 
 						if (itemStack) {
 							slotBin.Add(
 								itemStack.amountChanged.Connect((e) => {
-									this.UpdateHotbarSlot(slot, inv.GetHeldSlot(), itemStack);
+									this.UpdateHotbarSlot(slot, character.GetHeldSlot(), itemStack);
 								}),
 							);
 							slotBin.Add(
 								itemStack.itemTypeChanged.Connect((e) => {
-									this.UpdateHotbarSlot(slot, inv.GetHeldSlot(), itemStack);
+									this.UpdateHotbarSlot(slot, character.GetHeldSlot(), itemStack);
 								}),
 							);
 						}
@@ -206,9 +229,9 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			});
 
 			invBin.Add(
-				inv.onHeldSlotChanged.Connect((slot) => {
-					for (let i = 0; i < inv.hotbarSlots; i++) {
-						const itemStack = inv.GetItem(i);
+				character.onHeldSlotChanged.Connect((slot) => {
+					for (let i = 0; i < this.hotbarSlots; i++) {
+						const itemStack = character.inventory.GetItem(i);
 
 						this.UpdateHotbarSlot(i, slot, itemStack);
 					}
@@ -216,11 +239,11 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				}),
 			);
 
-			for (let i = 0; i < inv.hotbarSlots; i++) {
-				const itemStack = inv.GetItem(i);
-				this.UpdateHotbarSlot(i, inv.GetHeldSlot(), itemStack, init, true);
+			for (let i = 0; i < this.hotbarSlots; i++) {
+				const itemStack = character.inventory.GetItem(i);
+				this.UpdateHotbarSlot(i, character.GetHeldSlot(), itemStack, init, true);
 			}
-			this.prevHeldSlot = inv.GetHeldSlot();
+			this.prevHeldSlot = character.GetHeldSlot();
 			init = false;
 
 			return () => {
@@ -238,7 +261,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		}
 
 		if (tileComponent.slotNumberText !== undefined) {
-			if (slot !== undefined && slot < inv!.hotbarSlots) {
+			if (slot !== undefined && slot < this.hotbarSlots) {
 				tileComponent.slotNumberText.text = `${slot + 1}`;
 			} else {
 				tileComponent.slotNumberText.text = "";
@@ -400,7 +423,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		if (init) {
 			const tileComponent = go.GetAirshipComponent<AirshipInventoryTile>()!;
 			CanvasAPI.OnClickEvent(tileComponent.button.gameObject, () => {
-				Airship.Inventory.localInventory?.SetHeldSlot(slot);
+				Game.localPlayer.character?.SetHeldSlot(slot);
 			});
 		}
 	}
@@ -418,7 +441,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 			Airship.Inventory.MoveToSlot(inventory, slot, this.externalInventory, freeSlot, stack.amount);
 		} else {
-			Airship.Inventory.QuickMoveSlot(inventory, slot);
+			Airship.Inventory.QuickMoveSlot(inventory, slot, this.hotbarSlots);
 		}
 	}
 
@@ -474,7 +497,9 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 					const stack = inventory.GetItem(i);
 					if (!stack) return;
 
-					Airship.Inventory.onInventorySlotClicked.Fire(new InventorySlotMouseClickEvent(inventory, i, button));
+					Airship.Inventory.onInventorySlotClicked.Fire(
+						new InventorySlotMouseClickEvent(inventory, i, button),
+					);
 				}),
 			);
 
@@ -539,12 +564,12 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		};
 	}
 
-	private SetupBackpack(): void {
+	private SetupBackpack(): Bin {
 		const inv = Airship.Inventory.localInventory!;
 
 		// backpack hotbar slots
 		const backpackHotbarContentChildCount = this.backpackHotbarContent.childCount;
-		for (let i = 0; i < inv.hotbarSlots; i++) {
+		for (let i = 0; i < this.hotbarSlots; i++) {
 			let tileGO: GameObject;
 			if (i >= backpackHotbarContentChildCount) {
 				tileGO = Object.Instantiate(this.backpackHotbarTileTemplate, this.backpackHotbarContent);
@@ -556,19 +581,19 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 		// backpack slots
 		const backpackContentChildCount = this.backpackContent.childCount;
-		for (let i = 0; i < inv.maxSlots - inv.hotbarSlots; i++) {
+		for (let i = 0; i < inv.maxSlots - this.hotbarSlots; i++) {
 			let tileGO: GameObject;
 			if (i >= backpackContentChildCount) {
 				tileGO = Object.Instantiate(this.backpackTileTemplate, this.backpackContent);
 			} else {
 				tileGO = this.backpackContent.GetChild(i).gameObject;
 			}
-			this.slotToBackpackTileMap.set(i + inv.hotbarSlots, tileGO);
+			this.slotToBackpackTileMap.set(i + this.hotbarSlots, tileGO);
 		}
 
 		const invBin = new Bin();
 		let init = true;
-		Airship.Inventory.ObserveLocalInventory((inv) => {
+		return Airship.Inventory.ObserveLocalInventory((inv) => {
 			invBin.Clean();
 			const slotBinMap = new Map<number, Bin>();
 
@@ -611,17 +636,19 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 					CanvasAPI.OnPointerEvent(tileComponent.button.gameObject, (direction, button) => {
 						if (direction !== PointerDirection.UP || this.draggingState) return;
 
-						if (i < inv.hotbarSlots) {
+						if (i < this.hotbarSlots) {
 							// hotbar
 							if (this.IsBackpackShown()) {
 								Airship.Inventory.onInventorySlotClicked.Fire(
 									new InventorySlotMouseClickEvent(inv, i, button),
 								);
 							} else {
-								inv.SetHeldSlot(i);
+								Game.localPlayer.character?.SetHeldSlot(i);
 							}
 						} else {
-							Airship.Inventory.onInventorySlotClicked.Fire(new InventorySlotMouseClickEvent(inv, i, button));
+							Airship.Inventory.onInventorySlotClicked.Fire(
+								new InventorySlotMouseClickEvent(inv, i, button),
+							);
 						}
 					}),
 				);

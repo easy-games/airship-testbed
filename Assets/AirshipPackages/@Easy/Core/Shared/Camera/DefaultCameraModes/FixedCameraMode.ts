@@ -189,8 +189,8 @@ export class FixedCameraMode extends CameraMode {
 				if (this.mouseSmoothingEnabled) {
 					const smoothFactor = math.pow(1 / (1 + Airship.Input.GetMouseSmoothing()), Time.deltaTime * 120);
 					this.smoothVector = new Vector2(
-						math.lerp(this.smoothVector.x, mouseDelta.x, smoothFactor),
-						math.lerp(this.smoothVector.y, mouseDelta.y, smoothFactor),
+						math.lerpClamped(this.smoothVector.x, mouseDelta.x, smoothFactor),
+						math.lerpClamped(this.smoothVector.y, mouseDelta.y, smoothFactor),
 					);
 					moveDelta = this.smoothVector;
 				}
@@ -272,7 +272,7 @@ export class FixedCameraMode extends CameraMode {
 			//Collide camera with enviornment and send signal with new camera distance
 			this.occlusionCam.BumpForOcclusion(
 				targetPosition,
-				this.character?.rig.head?.position ?? targetPosition,
+				this.character?.transform.position.add(new Vector3(0, 1.65, 0)) ?? targetPosition,
 				OcclusionCameraManager.GetMask(),
 			);
 			const dist = cameraHolder.position.sub(targetPosition).magnitude;

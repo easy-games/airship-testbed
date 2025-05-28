@@ -16,17 +16,23 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public avatarHolder?: Transform;
 	public anim!: Animator;
 	public accessoryBuilder: AccessoryBuilder;
-	public cameraRigTransform?: Transform;
-	public avatarCamera?: Camera;
+	public avatarCamera: Camera;
 	public backdropHolder?: GameObject;
+	public cameraRig: Transform;
+	public cameraPivot: Transform;
 
+	@Header("Zoom")
+	public startingOffset = 4.4;
+	public minOffset = 2;
+	public maxOffset = 7;
+	public zoomSensitivity = 0.2;
+	public zoomLerpSpeed = 1;
+	private goalOffset = this.startingOffset;
+	private currentZoomOffset = this.startingOffset;
+
+	@Header("Camera Waypoints")
 	public cameraWaypointDefault?: Transform;
 	public cameraWaypointHead?: Transform;
-	public cameraWaypointFeet?: Transform;
-	public cameraWaypointHands?: Transform;
-	public cameraWaypointBack?: Transform;
-	public cameraWaypointCenterHero?: Transform;
-	public cameraWaypointBirdsEye?: Transform;
 
 	@Header("Variables")
 	public dragSpeedMod = 10;
@@ -44,13 +50,11 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public dragging = false;
 
 	private targetTransform?: Transform;
-	private mouse?: Mouse;
-	private lastMousePos: Vector2 = Vector2.zero;
-	private initialized = false;
 	private spinVel = 0;
 
 	private renderTexture?: RenderTexture;
 
+	private currentCamAngle = 0;
 	private lastScreenRefreshTime = 0;
 	private screenRefreshCooldown = 0.5;
 	private screenSizeIsDirty = false;
@@ -72,17 +76,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		// let backdrop = this.backdropHolder?.GetAirshipComponent<AvatarBackdropComponent>();
 		// backdrop?.SetSolidColorBackdrop(ColorUtil.HexToColor("#202122"));
 
-		Mouse.onMoved.Connect((pos: Vector2) => {
-			if (this.dragging) {
-				let diff = pos.sub(this.lastMousePos);
-				let vel = diff.x * -this.dragSpeedMod;
-				this.avatarHolder?.Rotate(0, vel, 0);
-				this.spinVel = vel;
-				this.UpdateSpinAnimation();
-			}
-			this.lastMousePos = pos;
-		});
-		this.initialized = true;
 		this.CreateRenderTexture(Screen.width, Screen.height);
 		CanvasAPI.OnScreenSizeEvent((width, height) => {
 			this.lastScreenRefreshTime = Time.time;
@@ -90,21 +83,80 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		});
 	}
 
+	protected Update(dt: number): void {
+		this.currentZoomOffset = math.smoothStep(this.currentZoomOffset, this.goalOffset, dt * this.zoomLerpSpeed);
+		this.currentZoomOffset = math.clamp(this.currentZoomOffset, this.minOffset, this.maxOffset);
+
+		// this.currentZoomOffset = this.goalOffset;
+		// print("offset: " + this.currentZoomOffset + ", goal: " + this.goalOffset);
+
+		let dir = this.avatarCamera.transform.position.sub(this.cameraPivot.position).normalized;
+		this.avatarCamera.transform.position = this.cameraPivot.position.add(dir.mul(this.currentZoomOffset));
+		// this.avatarCamera.transform.LookAt(this.cameraPivot.position);
+	}
+
 	public OnEnable(): void {
 		this.bin.Add(
 			OnUpdate.Connect((dt) => {
-				//FREE SPINNING
+				// Spin velocity
 				if (!this.dragging && math.abs(this.spinVel) > 0.01) {
 					this.freeSpinning = true;
 					this.spinVel = this.spinVel * (1 - dt * this.freeSpinDrag);
-					// this.spinVel -= (this.spinVel / this.freeSpinDrag) * dt;
-					this.avatarHolder?.Rotate(0, this.spinVel, 0);
-					this.UpdateSpinAnimation();
+					this.currentCamAngle += this.spinVel;
 				} else if (this.freeSpinning) {
 					this.freeSpinning = false;
 				}
+
+				const rotation = Quaternion.Euler(0, this.currentCamAngle, 0);
+				this.cameraRig.rotation = rotation;
 			}),
 		);
+
+		this.bin.Add(
+			Mouse.onMoved.Connect((pos: Vector2) => {
+				if (this.dragging) {
+					// let diff = pos.sub(this.lastMousePos);
+
+					const mouseX = Input.GetAxis("Mouse X");
+
+					let vel = mouseX * this.dragSpeedMod * Time.deltaTime;
+					this.currentCamAngle += vel;
+
+					if (math.abs(vel) > 0.15) {
+						this.spinVel = vel;
+					} else {
+						this.spinVel = 0;
+					}
+
+					// print("mouse x: " + mouseX + ", vel: " + this.spinVel);
+
+					// let vel = diff.x * -this.dragSpeedMod;
+					// this.avatarHolder?.Rotate(0, vel, 0);
+					// this.spinVel = vel;
+					// this.UpdateSpinAnimation();
+				}
+			}),
+		);
+
+		const interactBtn = GameObject.Find("AvatarInteractionBtn");
+		interactBtn.gameObject.name = "AvatarInteractBtn -- found";
+		this.bin.Connect(Mouse.onScrolled, (event) => {
+			try {
+				const t = new PointerEventData(EventSystem.current);
+				t.position = Mouse.position;
+				const results = EventSystem.current.RaycastAll(t);
+				for (let result of results) {
+					if (result.gameObject.GetComponent<ScrollRect>() !== undefined) {
+						return;
+					}
+				}
+			} catch (err) {
+				// support old airship version
+			}
+
+			this.goalOffset -= event.delta * this.zoomSensitivity;
+			this.goalOffset = math.clamp(this.goalOffset, this.minOffset, this.maxOffset);
+		});
 
 		//Make sure no lights effect this scene
 		let lights = GameObject.FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None);
@@ -161,6 +213,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			return;
 		}
 		this.renderTexture = Bridge.MakeDefaultRenderTexture(width, height);
+		this.renderTexture.antiAliasing = 2;
 		this.avatarCamera.targetTexture = this.renderTexture;
 		this.avatarCamera.enabled = true;
 		this.mainMenuSingleton.avatarEditorRenderTexture = this.renderTexture;
@@ -179,28 +232,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		if (this.avatarHolder) {
 			this.avatarHolder.localEulerAngles = Vector3.zero;
 		}
-	}
-
-	public AlignCamera(screenPos: Vector3, alignmentOffsetWorldSpace: Vector3) {
-		if (!this.cameraRigTransform || !this.avatarCamera || !this.avatarHolder) {
-			return;
-		}
-
-		//print("Aligning to: " + screenPos + " offset: " + this.alignmentOffsetWorldpsace);
-		this.cameraRigTransform.localPosition = Vector3.zero;
-		if (this.cameraWaypointDefault) {
-			this.avatarCamera.transform.position = this.cameraWaypointDefault.position;
-			this.avatarCamera.transform.rotation = this.cameraWaypointDefault.rotation;
-		}
-		let worldspace = this.avatarCamera.ScreenToWorldPoint(
-			new Vector3(screenPos.x, screenPos.y, this.screenspaceDistance),
-		);
-		//print("worldspace align: " + worldspace);
-		let diff = this.cameraRigTransform.position.sub(worldspace);
-		this.cameraRigTransform.position = this.cameraRigTransform.position
-			.add(new Vector3(diff.x, diff.y, 0))
-			.add(alignmentOffsetWorldSpace);
-		this.CameraFocusTransform(this.targetTransform, true);
 	}
 
 	public CameraFocusSlot(slotType: AccessorySlot) {
@@ -237,35 +268,35 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		// ) {
 		// 	//return this.cameraWaypointHands;
 		// }
-		if (slotType === AccessorySlot.Backpack) {
-			return this.cameraWaypointBack;
-		}
+		// if (slotType === AccessorySlot.Backpack) {
+		// 	return this.cameraWaypointBack;
+		// }
 		return this.cameraWaypointDefault;
 	}
 
 	public CameraFocusTransform(transform?: Transform, instant = false) {
-		this.targetTransform = transform;
-		if (this.avatarCamera?.transform && this.targetTransform) {
-			if (instant) {
-				this.avatarCamera.transform.localPosition = this.targetTransform.localPosition;
-				this.avatarCamera.transform.localRotation = this.targetTransform.localRotation;
-			} else {
-				NativeTween.LocalPosition(
-					this.avatarCamera.transform,
-					this.targetTransform.localPosition,
-					this.cameraTransitionDuration,
-				)
-					.SetEaseQuadInOut()
-					.SetUseUnscaledTime(true);
-				NativeTween.LocalRotation(
-					this.avatarCamera.transform,
-					this.targetTransform.localRotation.eulerAngles,
-					this.cameraTransitionDuration,
-				)
-					.SetEaseQuadInOut()
-					.SetUseUnscaledTime(true);
-			}
-		}
+		// this.targetTransform = transform;
+		// if (this.avatarCamera?.transform && this.targetTransform) {
+		// 	if (instant) {
+		// 		this.avatarCamera.transform.localPosition = this.targetTransform.localPosition;
+		// 		this.avatarCamera.transform.localRotation = this.targetTransform.localRotation;
+		// 	} else {
+		// 		NativeTween.LocalPosition(
+		// 			this.avatarCamera.transform,
+		// 			this.targetTransform.localPosition,
+		// 			this.cameraTransitionDuration,
+		// 		)
+		// 			.SetEaseQuadInOut()
+		// 			.SetUseUnscaledTime(true);
+		// 		NativeTween.LocalRotation(
+		// 			this.avatarCamera.transform,
+		// 			this.targetTransform.localRotation.eulerAngles,
+		// 			this.cameraTransitionDuration,
+		// 		)
+		// 			.SetEaseQuadInOut()
+		// 			.SetUseUnscaledTime(true);
+		// 	}
+		// }
 	}
 
 	public CreateRenderScene() {

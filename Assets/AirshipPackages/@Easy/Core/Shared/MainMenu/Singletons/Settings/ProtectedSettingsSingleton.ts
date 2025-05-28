@@ -26,6 +26,9 @@ const defaultData: ClientSettingsFile = {
 	microphoneEnabled: false,
 	coreKeybindOverrides: undefined,
 	gameKeybindOverrides: {},
+	vsync: false,
+	shadowLevel: 0,
+	antiAliasing: 0,
 };
 
 interface SavedGameSettings {
@@ -246,9 +249,25 @@ export class ProtectedSettingsSingleton {
 			this.data = { ...defaultData, ...this.data };
 		} else {
 			this.data = defaultData;
+
+			const platform = Game.platform;
+			let lowEndDevice = platform === AirshipPlatform.iOS || platform === AirshipPlatform.Android;
+			try {
+				// try catch because of non required c# update
+				if (Bridge.IsLowEndDevice()) {
+					lowEndDevice = true;
+				}
+			} catch (err) {}
+			if (!lowEndDevice) {
+				this.data.antiAliasing = 1;
+				this.data.shadowLevel = 1;
+			}
 		}
 
 		this.SetGlobalVolume(this.GetGlobalVolume());
+		this.SetAntiAliasing(this.data.antiAliasing);
+		this.SetShadowLevel(this.data.shadowLevel);
+		this.SetVsync(this.data.vsync);
 
 		task.spawn(() => {
 			this.settingsLoaded = true;
@@ -307,6 +326,41 @@ export class ProtectedSettingsSingleton {
 
 	public StartMicRecording(): void {
 		Bridge.StartMicRecording(this.micFrequency, this.micSampleLength);
+	}
+
+	public SetAntiAliasing(level: number): void {
+		this.data.antiAliasing = level;
+		const pipelineAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
+		if (level === 1) {
+			pipelineAsset.msaaSampleCount = 2;
+		} else {
+			pipelineAsset.msaaSampleCount = 0;
+		}
+	}
+
+	public SetShadowLevel(level: number): void {
+		this.data.shadowLevel = level;
+		const pipelineAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
+
+		if (level === 1) {
+			// High Quality Settings
+			QualitySettings.shadows = ShadowQuality.All;
+			QualitySettings.shadowResolution = ShadowResolution.VeryHigh;
+			QualitySettings.shadowDistance = 120;
+
+			pipelineAsset.shadowCascadeCount = 4;
+			pipelineAsset.cascade4Split = new Vector3(0.067, 0.2, 0.467);
+		} else {
+			QualitySettings.shadowResolution = ShadowResolution.Medium;
+			QualitySettings.shadowDistance = 100;
+
+			pipelineAsset.shadowCascadeCount = 2;
+		}
+	}
+
+	public SetVsync(vsync: boolean): void {
+		this.data.vsync = vsync;
+		QualitySettings.vSyncCount = vsync ? 1 : 0;
 	}
 
 	public MarkAsDirty(): void {

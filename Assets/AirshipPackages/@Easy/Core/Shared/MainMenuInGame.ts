@@ -8,7 +8,6 @@ import { Game } from "./Game";
 Game.coreContext = CoreContext.GAME;
 
 import { Flamework } from "@Easy/Core/Shared/Flamework";
-import { GameDto } from "../Client/Components/HomePage/API/GamesAPI";
 import { AudioManager } from "./Audio/AudioManager";
 import { CoreRefs } from "./CoreRefs";
 import { InitNet } from "./Network/NetworkAPI";
@@ -17,7 +16,8 @@ import { AirshipUrl } from "./Util/AirshipUrl";
 import { AppManager } from "./Util/AppManager";
 import { CanvasAPI } from "./Util/CanvasAPI";
 import { OnFixedUpdate, OnLateUpdate, OnUpdate } from "./Util/Timer";
-import { HttpRetry } from "./Http/HttpRetry";
+import { ContentServiceClient } from "./TypePackages/content-service-types";
+import { UnityMakeRequest } from "./TypePackages/UnityMakeRequest";
 
 CoreRefs.Init();
 
@@ -107,22 +107,20 @@ if (Game.IsClient()) {
 	});
 }
 
+const client = new ContentServiceClient(UnityMakeRequest(AirshipUrl.ContentService));
+
 task.spawn(async () => {
 	while (Game.gameId === undefined) {
 		task.wait();
 		continue;
 	}
-	const res = await HttpRetry(
-		() => InternalHttpManager.GetAsync(AirshipUrl.ContentService + "/games/game-id/" + Game.gameId),
-		"get/content-service/games/game-id/:gameId"
-	);
-	if (res.success) {
-		// note: this can be undefined but right now we do not handle that case so the type system does not allow it
-		const gameData = json.decode<{ game: GameDto /* | undefined */ }>(res.data).game;
-		// todo: we should do something here if the game data does not exist
-		Game.gameData = gameData;
-		Game.onGameDataLoaded.Fire(Game.gameData);
-	} else {
+	try {
+		const res = await client.games.getGameById({ params: { id: Game.gameId } });
+		Game.gameData = res.game;
+		if (Game.gameData) {
+			Game.onGameDataLoaded.Fire(Game.gameData);
+		}
+	} catch {
 		return undefined;
 	}
 });

@@ -1,6 +1,5 @@
 import { SocketController } from "@Easy/Core/Client/ProtectedControllers//Socket/SocketController";
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { UserStatusData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
@@ -22,11 +21,14 @@ import { MainMenuController } from "../../MainMenuController";
 import { ProtectedFriendsController } from "../FriendsController";
 import { MainMenuPartyController } from "../MainMenuPartyController";
 import { DirectMessage } from "./DirectMessage";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+import { AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
+
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Controller({})
 export class DirectMessageController {
-	private readonly httpRetry = HttpRetryInstance();
 	private incomingMessagePrefab = AssetBridge.Instance.LoadAsset(
 		"AirshipPackages/@Easy/Core/Prefabs/UI/Messages/IncomingMessage.prefab",
 	) as GameObject;
@@ -51,7 +53,7 @@ export class DirectMessageController {
 	private doScrollToBottom = 0;
 	private inputFieldSelected = false;
 
-	public lastMessagedFriend: UserStatusData | undefined;
+	public lastMessagedFriend: AirshipUserStatusData | undefined;
 
 	public onDirectMessageReceived = new Signal<DirectMessage>();
 
@@ -69,7 +71,7 @@ export class DirectMessageController {
 		private readonly friendsController: ProtectedFriendsController,
 		private readonly socketController: SocketController,
 		private readonly partyController: MainMenuPartyController,
-	) {}
+	) { }
 
 	protected OnStart(): void {
 		this.Setup();
@@ -245,7 +247,7 @@ export class DirectMessageController {
 		});
 	}
 
-	public GetFriendLastMessaged(): UserStatusData | undefined {
+	public GetFriendLastMessaged(): AirshipUserStatusData | undefined {
 		return this.lastMessagedFriend;
 	}
 
@@ -258,55 +260,80 @@ export class DirectMessageController {
 		}
 
 		if (message === "") return;
-		this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/chat/message/direct",
-			json.encode({
-				target: uid,
-				text: message,
-			}),
-		), "SendDirectMessage").expect();
+
 		this.inputField!.text = "";
-		const sentMessage: DirectMessage = {
+		let sentMessage: DirectMessage = {
 			sender: Game.localPlayer.userId,
 			sentAt: os.time(),
 			text: message,
 		};
 		this.GetMessages(uid).push(sentMessage);
-		this.RenderChatMessage(sentMessage, true);
 		AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/SendMessage.ogg", {
 			volumeScale: 0.8,
 			pitch: 1.5,
 		});
+		const messageObj = this.RenderChatMessage(sentMessage, true);
 
-		if (Game.coreContext === CoreContext.GAME) {
-			let text =
-				ColorUtil.ColoredText(Theme.pink, "To ") +
-				ColorUtil.ColoredText(Theme.white, status.username) +
-				ColorUtil.ColoredText(Theme.gray, ": " + message);
-			Dependency<ClientChatSingleton>().RenderChatMessage(text);
+		const data = client.chat.sendDirectMessage({ target: uid, text: message }).expect();
+		if (data.messageSent) {
+			if (Game.coreContext === CoreContext.GAME) {
+				let text =
+					ColorUtil.ColoredText(Theme.pink, "To ") +
+					ColorUtil.ColoredText(Theme.white, status.username) +
+					ColorUtil.ColoredText(Theme.gray, ": " + (data.transformedMessage ? data.transformedMessage : message));
+				Dependency<ClientChatSingleton>().RenderChatMessage(text);
+			}
+			if (data.transformedMessage) {
+				messageObj.setMessageText(data.transformedMessage);
+			}
+		} else {
+			messageObj.delete();
+			this.GetMessages(uid).filter((m) => m !== sentMessage);
+			this.inputField!.text = message + this.inputField!.text;
+			let sentMessage: DirectMessage = {
+				sender: Game.localPlayer.userId,
+				sentAt: os.time(),
+				text: data.reason,
+			};
+			this.GetMessages(uid).push(sentMessage);
+			this.RenderChatMessage(sentMessage, true);
+			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Error.ogg");
 		}
 	}
 
 	public SendPartyMessage(message: string): void {
 		if (message === "") return;
-		this.httpRetry(() => InternalHttpManager.PostAsync(
-			AirshipUrl.GameCoordinator + "/chat/message/party",
-			json.encode({
-				text: message,
-			}),
-		), "SendPartyMessage").expect();
 		this.inputField!.text = "";
+
 		const sentMessage: DirectMessage = {
 			sender: Game.localPlayer.userId,
 			sentAt: os.time(),
 			text: message,
 		};
 		this.GetMessages("party").push(sentMessage);
-		this.RenderChatMessage(sentMessage, true, true);
 		AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/SendMessage.ogg", {
 			volumeScale: 0.8,
 			pitch: 1.5,
 		});
+		const messageObj = this.RenderChatMessage(sentMessage, true, true);
+
+		const sendResponse = client.chat.sendPartyMessage({ text: message }).expect();
+
+		if (!sendResponse.messageSent) {
+			messageObj.delete();
+			this.GetMessages("party").filter((m) => m !== sentMessage);
+			this.inputField!.text = message + this.inputField!.text;
+			let errorMessage: DirectMessage = {
+				sender: Game.localPlayer.userId,
+				sentAt: os.time(),
+				text: sendResponse.reason,
+			};
+			this.GetMessages("party").push(errorMessage);
+			this.RenderChatMessage(errorMessage, true, true);
+			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Error.ogg");
+		} else if (sendResponse.transformedMessage) {
+			messageObj.setMessageText(sendResponse.transformedMessage);
+		}
 
 		// predict send for sender
 		// if (Game.coreContext === CoreContext.GAME) {
@@ -318,7 +345,11 @@ export class DirectMessageController {
 		// }
 	}
 
-	private RenderChatMessage(dm: DirectMessage, receivedWhileOpen: boolean, isParty?: boolean): void {
+	private RenderChatMessage(
+		dm: DirectMessage,
+		receivedWhileOpen: boolean,
+		isParty?: boolean,
+	): { delete: () => void; setMessageText: (str: string) => void } {
 		let outgoing = dm.sender === Game.localPlayer.userId;
 
 		let messageGo: GameObject;
@@ -329,6 +360,16 @@ export class DirectMessageController {
 		}
 		const messageRefs = messageGo.GetComponent<GameObjectReferences>()!;
 		const text = messageRefs.GetValue("UI", "Text") as TMP_Text;
+
+		const setMessageText = (str: string) => {
+			if (isParty && !outgoing) {
+				const member = this.partyController.party?.members.find((u) => u.uid === dm.sender);
+				let username = member?.username ?? "Unknown";
+				text.text = username + ": " + str;
+			} else {
+				text.text = str;
+			}
+		};
 
 		if (isParty && !outgoing) {
 			const content = messageGo.transform.GetChild(0);
@@ -341,13 +382,9 @@ export class DirectMessageController {
 				profilePictureGo.SetActive(true);
 			});
 			content.GetChild(1).gameObject.SetActive(true);
-
-			const member = this.partyController.party?.members.find((u) => u.uid === dm.sender);
-			let username = member?.username ?? "Unknown";
-			text.text = username + ": " + dm.text;
-		} else {
-			text.text = dm.text;
 		}
+
+		setMessageText(dm.text);
 
 		let doScroll = this.scrollRect!.verticalNormalizedPosition <= 0.06;
 
@@ -358,9 +395,18 @@ export class DirectMessageController {
 			this.scrollRect!.velocity = new Vector2(0, 0);
 			this.scrollRect!.verticalNormalizedPosition = 0;
 		}
+
+		return {
+			delete: () => {
+				if (messageGo) {
+					Object.Destroy(messageGo);
+				}
+			},
+			setMessageText,
+		};
 	}
 
-	public UpdateOfflineNotice(friendStatus: UserStatusData): void {
+	public UpdateOfflineNotice(friendStatus: AirshipUserStatusData): void {
 		if (friendStatus.status !== "offline") {
 			this.offlineNoticeWrapper?.SetActive(false);
 		} else {

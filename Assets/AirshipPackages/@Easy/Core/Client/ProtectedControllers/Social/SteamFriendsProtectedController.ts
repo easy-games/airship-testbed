@@ -1,12 +1,12 @@
-import { PublicUser } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipUser";
 import { Controller, Dependency, OnStart } from "@Easy/Core/Shared/Flamework";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { ProtectedUserController } from "../Airship/User/UserController";
+import { AirshipUser } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 
 @Controller({})
 export class SteamFriendsProtectedController implements OnStart {
-	private steamFriendsWithAirship?: PublicUser[];
-	private loadedFriendsWithAirship = new Signal<[PublicUser[]]>();
+	private steamFriendsWithAirship?: AirshipUser[];
+	private loadedFriendsWithAirship = new Signal<[AirshipUser[]]>();
 	/** Map from theoretical airship uid to steam friend info. They might not have an airship account. */
 	private steamFriends = new Map<string, AirshipSteamFriendInfo>();
 
@@ -36,10 +36,10 @@ export class SteamFriendsProtectedController implements OnStart {
 	}
 
 	/** undefined if not yet loaded (you can use {@link WaitForSteamFriendsWithAirship}) */
-	public GetSteamFriendsWithAirship(): Map<string, PublicUser & AirshipSteamFriendInfo> | undefined {
+	public GetSteamFriendsWithAirship(): Map<string, AirshipUser & AirshipSteamFriendInfo> | undefined {
 		if (!this.steamFriendsWithAirship) return;
 
-		const result = new Map<string, PublicUser & AirshipSteamFriendInfo>();
+		const result = new Map<string, AirshipUser & AirshipSteamFriendInfo>();
 		for (const friend of this.steamFriendsWithAirship) {
 			const steamFriendInfo = this.steamFriends.get(friend.uid);
 			if (!steamFriendInfo) continue;
@@ -55,7 +55,7 @@ export class SteamFriendsProtectedController implements OnStart {
 		return result;
 	}
 
-	public WaitForSteamFriendsWithAirship(): PublicUser[] {
+	public WaitForSteamFriendsWithAirship(): AirshipUser[] {
 		if (this.steamFriendsWithAirship) return this.steamFriendsWithAirship;
 		return this.loadedFriendsWithAirship.Wait()[0];
 	}

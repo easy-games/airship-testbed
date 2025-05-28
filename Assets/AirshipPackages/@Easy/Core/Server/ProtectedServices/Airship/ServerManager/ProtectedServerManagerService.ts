@@ -1,13 +1,10 @@
-import {
-	AirshipServerAccessMode,
-	AirshipServerConfig,
-} from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipServerManager";
-import { AirshipServerData } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipServerManager";
 import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { ShutdownService } from "../../Shutdown/ShutdownService";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+import { AirshipServerAccessMode, AirshipServer, AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 
 export const enum ServerManagerServiceBridgeTopics {
 	CreateServer = "ServerManagerService:CreateServer",
@@ -29,12 +26,14 @@ export const enum ServerManagerServiceBridgeTopics {
 	GetRegions = "ServerManagerService:GetRegions",
 }
 
-export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => AirshipServerData;
-export type ServerBridgeApiGetServers = (serverIds: string[]) => { [serverId: string]: AirshipServerData | undefined };
+export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => AirshipServer;
+export type ServerBridgeApiGetServers = (serverIds: string[]) => {
+	[serverId: string]: AirshipServer | undefined;
+};
 export type ServerBridgeApiShutdownServer = () => void;
 export type ServerBridgeApiListServer = (config?: { name?: string; description?: string }) => boolean;
 export type ServerBridgeApiDelistServer = () => boolean;
-export type ServerBridgeApiGetServerList = (page?: number) => { entries: AirshipServerData[] };
+export type ServerBridgeApiGetServerList = (page?: number) => { entries: AirshipServer[] };
 export type ServerBridgeApiSetAccessMode = (mode: AirshipServerAccessMode) => boolean;
 export type ServerBridgeApiGetGameConfig<T> = () => T | undefined;
 export type ServerBridgeApiGetAllowedPlayers = () => Readonly<string[]>;
@@ -50,10 +49,10 @@ export type ServerBridgeApiGetRegions = () => { regionIds: string[] };
 const ALLOWED_PLAYERS_LIST_KEY = "allowedPlayers";
 const TAGS_LIST_KEY = "tags";
 
+const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
+
 @Service({})
 export class ProtectedServerManagerService {
-	private readonly httpRetry = HttpRetryInstance();
-
 	constructor() {
 		if (!Game.IsServer()) return;
 
@@ -148,29 +147,17 @@ export class ProtectedServerManagerService {
 	}
 
 	public async CreateServer(config?: AirshipServerConfig): Promise<ReturnType<ServerBridgeApiCreateServer>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.PostAsync(
-				`${AirshipUrl.GameCoordinator}/servers/create`,
-				json.encode({
-					sceneId: config?.sceneId,
-					region: config?.region,
-					accessMode: config?.accessMode,
-					allowedUids: config?.allowedUserIds,
-					maxPlayers: config?.maxPlayers,
-					tags: config?.tags,
-					gameConfig: config?.gameConfig,
-					fleet: config?.fleet,
-				}),
-			),
-			"CreateServer",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to create server. Status Code:  ${res.statusCode}.\n`, res.data);
-			throw res.error;
-		}
-
-		return json.decode<AirshipServerData>(res.data) as AirshipServerData;
+		const result = await client.servers.createServer({
+			sceneId: config?.sceneId,
+			region: config?.region,
+			accessMode: config?.accessMode,
+			allowedUids: config?.allowedUserIds,
+			maxPlayers: config?.maxPlayers,
+			tags: config?.tags,
+			gameConfig: config?.gameConfig,
+			fleet: config?.fleet,
+		});
+		return result;
 	}
 
 	public async GetServers(serverIds: string[]): Promise<ReturnType<ServerBridgeApiGetServers>> {
@@ -178,23 +165,7 @@ export class ProtectedServerManagerService {
 			return {};
 		}
 
-		const res = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(
-				`${AirshipUrl.GameCoordinator}/servers?serverIds[]=${serverIds.join("&serverIds[]=")}`,
-			),
-			"GetServers",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get servers. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		if (!res.data) {
-			return {};
-		}
-
-		return json.decode(res.data) as ReturnType<ServerBridgeApiGetServers>;
+		return await client.servers.getServers({ serverIds });
 	}
 
 	public async ListServer(config?: {
@@ -214,19 +185,7 @@ export class ProtectedServerManagerService {
 	}
 
 	public async GetServerList(page: number = 0): Promise<ReturnType<ServerBridgeApiGetServerList>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(
-				`${AirshipUrl.GameCoordinator}/servers/game-id/${Game.gameId}/list?page=${page}`,
-			),
-			"GetServerList",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get server list. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		return json.decode(res.data) as { entries: AirshipServerData[] };
+		return await client.servers.getServerList({ params: { gameId: Game.gameId }, query: { page } });
 	}
 
 	public async SetAccessMode(mode: AirshipServerAccessMode): Promise<ReturnType<ServerBridgeApiSetAccessMode>> {
@@ -281,13 +240,6 @@ export class ProtectedServerManagerService {
 	}
 
 	public async GetRegions() {
-		const res = await this.httpRetry(() => InternalHttpManager.GetAsync(`${AirshipUrl.GameCoordinator}/servers/regions`), "GetRegions");
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to get regions. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		return json.decode(res.data) as ReturnType<ServerBridgeApiGetRegions>;
+		return await client.servers.getRegionIds();
 	}
 }

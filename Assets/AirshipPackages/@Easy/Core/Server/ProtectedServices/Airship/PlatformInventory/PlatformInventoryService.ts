@@ -1,9 +1,12 @@
-import { ItemQueryParameters } from "@Easy/Core/Shared/Airship/Types/Inputs/AirshipPlatformInventory";
-import { ItemInstanceDto, Transaction } from "@Easy/Core/Shared/Airship/Types/Outputs/AirshipPlatformInventory";
-import { PlatformInventoryUtil } from "@Easy/Core/Shared/Airship/Util/PlatformInventoryUtil";
+import {
+	AirshipItem,
+	AirshipItemQueryParameters,
+	AirshipInventoryTransaction,
+} from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { ContentServiceClient } from "@Easy/Core/Shared/TypePackages/content-service-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 
 export const enum PlatformInventoryServiceBridgeTopics {
@@ -13,18 +16,18 @@ export const enum PlatformInventoryServiceBridgeTopics {
 	PerformTrade = "PlatformInventoryService:PerformTrade",
 }
 
-export type ServerBridgeApiGrantItem = (userId: string, classId: string) => ItemInstanceDto;
-export type ServerBridgeApiDeleteItem = (instanceId: string) => ItemInstanceDto;
-export type ServerBridgeApiGetItems = (userId: string, query?: ItemQueryParameters) => ItemInstanceDto[];
+export type ServerBridgeApiGrantItem = (userId: string, classId: string) => AirshipItem;
+export type ServerBridgeApiDeleteItem = (instanceId: string) => AirshipItem;
+export type ServerBridgeApiGetItems = (userId: string, query?: AirshipItemQueryParameters) => AirshipItem[];
 export type ServerBridgeApiPerformTrade = (
 	user1: { uid: string; itemInstanceIds: string[] },
 	user2: { uid: string; itemInstanceIds: string[] },
-) => Transaction;
+) => AirshipInventoryTransaction;
+
+const client = new ContentServiceClient(UnityMakeRequest(AirshipUrl.ContentService));
 
 @Service({})
 export class ProtectedPlatformInventoryService {
-	private readonly httpRetry = HttpRetryInstance();
-
 	constructor() {
 		if (!Game.IsServer()) return;
 
@@ -58,78 +61,35 @@ export class ProtectedPlatformInventoryService {
 	}
 
 	public async GrantItem(userId: string, classId: string): Promise<ReturnType<ServerBridgeApiGrantItem>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.PostAsync(
-				`${AirshipUrl.ContentService}/items/uid/${userId}/class-id/${classId}`,
-				"",
-			),
-			"GrantItem",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		return json.decode(res.data) as ItemInstanceDto;
+		return await client.items.grantItemForResource({ uid: userId, classId });
 	}
 
 	public async DeleteItem(instanceId: string): Promise<ReturnType<ServerBridgeApiDeleteItem>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.DeleteAsync(`${AirshipUrl.ContentService}/items/item-id/${instanceId}`),
-			"DeleteItem",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		return json.decode(res.data) as ItemInstanceDto;
+		return await client.items.deleteItemForResource({ itemId: instanceId });
 	}
 
-	public async GetItems(userId: string, query?: ItemQueryParameters): Promise<ReturnType<ServerBridgeApiGetItems>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.GetAsync(
-				`${AirshipUrl.ContentService}/items/uid/${userId}?=${PlatformInventoryUtil.BuildItemQueryString(query)}`,
-			),
-			"GetItems",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		if (!res.data) {
-			return [];
-		}
-
-		return json.decode(res.data) as ItemInstanceDto[];
+	public async GetItems(userId: string, query?: AirshipItemQueryParameters): Promise<ReturnType<ServerBridgeApiGetItems>> {
+		return await client.items.getUserInventoryForResource({
+			params: {
+				uid: userId,
+			},
+			query: {
+				queryType: query?.queryType,
+				query: query?.queryType === "tag" ? query?.tags : query?.classIds,
+				resourceIds: query?.resourceIds,
+			},
+		});
 	}
 
 	public async PerformTrade(
 		user1: { uid: string; itemInstanceIds: string[] },
 		user2: { uid: string; itemInstanceIds: string[] },
 	): Promise<ReturnType<ServerBridgeApiPerformTrade>> {
-		const res = await this.httpRetry(
-			() => InternalHttpManager.PostAsync(
-				`${AirshipUrl.ContentService}/transactions/trade`,
-				json.encode({
-					leftTradeHalf: user1,
-					rightTradeHalf: user2,
-				}),
-			),
-			"PerformTrade",
-		);
-
-		if (!res.success || res.statusCode > 299) {
-			warn(`Unable to complete request. Status Code:  ${res.statusCode}.\n`, res.error);
-			throw res.error;
-		}
-
-		return json.decode(res.data) as Transaction;
+		return await client.itemTransactions.trade({
+			leftTradeHalf: user1,
+			rightTradeHalf: user2,
+		});
 	}
 
-	protected OnStart(): void {}
+	protected OnStart(): void { }
 }
