@@ -566,7 +566,7 @@ MonoBehaviour:
         tags: []
       decorators: []
       nullable: 0
-      serializedValue: 6000
+      serializedValue: 600
       serializedObject: {fileID: 0}
       modified: 1
     - name: cameraTransitionDuration

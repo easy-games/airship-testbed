@@ -42,6 +42,11 @@ export class Modifier<T extends defined> {
 		return valueList;
 	}
 
+	public ClearTickets(): void {
+		this.tickets.clear();
+		this.TriggerObservers();
+	}
+
 	/** Trigger all observers when we make a change to the tickets */
 	private TriggerObservers() {
 		const valueList = this.GetTickets();
