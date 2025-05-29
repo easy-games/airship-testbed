@@ -323,14 +323,14 @@ export default class Character extends AirshipBehaviour {
 				// If we are authority, send held slot in the snapshot
 				this.bin.Add(
 					this.OnAddCustomSnapshotData.ConnectWithPriority(SignalPriority.MONITOR, () => {
-						this.AddCustomSnapshotData("heldSlot", this.heldSlot);
+						this.AddCustomSnapshotData("s", this.heldSlot);
 					}),
 				);
 			} else {
 				// If we are not authority, send it in the input
 				this.bin.Add(
 					this.OnAddCustomInputData.ConnectWithPriority(SignalPriority.MONITOR, () => {
-						this.AddCustomInputData("heldSlot", this.heldSlot);
+						this.AddCustomInputData("s", this.heldSlot);
 					}),
 				);
 			}
@@ -343,7 +343,7 @@ export default class Character extends AirshipBehaviour {
 				// Read from client input and set if we are authority. Client has authority over held slot
 				this.bin.Add(
 					this.OnUseCustomInputData.ConnectWithPriority(SignalPriority.HIGH, (data) => {
-						const held = data.get("heldSlot") as number;
+						const held = data.get("s") as number;
 						if (held === undefined) return;
 						if (held === this.heldSlot) return;
 						this.SetHeldSlotInternal(held);
@@ -355,14 +355,14 @@ export default class Character extends AirshipBehaviour {
 					this.OnAddCustomSnapshotData.ConnectWithPriority(SignalPriority.MONITOR, () => {
 						// We send what the client initially sent in the input since we want to client to
 						// be authoritative
-						this.AddCustomSnapshotData("heldSlot", slot);
+						this.AddCustomSnapshotData("s", slot);
 					}),
 				);
 			} else {
 				// Read from interpolated state and set held item.
 				this.bin.Add(
 					this.OnInterpolateReachedSnapshot.ConnectWithPriority(SignalPriority.HIGH, (data) => {
-						const held = data.get("heldSlot") as number;
+						const held = data.get("s") as number;
 						if (held === undefined) return;
 						if (held === this.heldSlot) return;
 						this.SetHeldSlotInternal(held);
