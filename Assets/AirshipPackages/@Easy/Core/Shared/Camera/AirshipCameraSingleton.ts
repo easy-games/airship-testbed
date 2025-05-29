@@ -383,27 +383,28 @@ export class AirshipCameraSingleton {
 		);
 
 		// Toggle look backwards:
-		bin.Add(
-			Keyboard.OnKeyDown(Key.H, (event) => {
-				if (!this.IsEnabled()) return;
-				if (event.uiProcessed) return;
-				if (this.firstPerson) return;
-				const mode = this.GetMode();
-				if (!mode) return;
-				const newBackwardsState = !mode.GetLookBackwards();
-				mode.SetLookBackwards(newBackwardsState);
-				// this.SetLookBackwards(!this.lookBackwards);
-			}),
-		);
+		// bin.Add(
+		// 	Keyboard.OnKeyDown(Key.H, (event) => {
+		// 		if (!this.IsEnabled()) return;
+		// 		if (event.uiProcessed) return;
+		// 		if (this.firstPerson) return;
+		// 		const mode = this.GetMode();
+		// 		if (!mode) return;
+		// 		const newBackwardsState = !mode.GetLookBackwards();
+		// 		mode.SetLookBackwards(newBackwardsState);
+		// 		// this.SetLookBackwards(!this.lookBackwards);
+		// 	}),
+		// );
 	}
 
 	/**
-	 * Returns the `CameraMode` of type `T`. If a generic type is _not_ provided,
-	 * this defaults to the standard camera mode `FixedCameraMode`.
+	 * Returns the `CameraMode` of type `T`.
+	 *
+	 * You likely want to pass the generic `GetMode<FixedCameraMode>()`, or whatever mode your game uses.
 	 *
 	 * @returns The `CameraMode`, if it exists. Otherwise, `undefined`.
 	 */
-	public GetMode<T extends CameraMode = FixedCameraMode>(): T | undefined {
+	public GetMode<T extends CameraMode = CameraMode>(): T | undefined {
 		return this.activeCameraMode as T;
 	}
 
@@ -485,31 +486,32 @@ export class AirshipCameraSingleton {
 
 			// If the target `Character` crouches, and is in first person, animate the camera's
 			// `y` offset.
-			let targetOffsetY = CameraConstants.DefaultFixedCameraConfig.yOffset;
+			// let targetOffsetY = CameraConstants.DefaultFixedCameraConfig.yOffset;
 			const stateChanged = character.onStateChanged.Connect(() => {
-				if (!this.IsFirstPerson()) return;
+				// if (!this.IsFirstPerson()) return;
 				const isCrouching = character.state === CharacterState.Crouching;
-				targetOffsetY = isCrouching
-					? CameraConstants.FirstPersonCrouchConfig.yOffset
-					: CameraConstants.DefaultFixedCameraConfig.yOffset;
+				mode.SetCrouching(isCrouching);
+				// targetOffsetY = isCrouching
+				// 	? CameraConstants.FirstPersonCrouchConfig.yOffset
+				// 	: CameraConstants.DefaultFixedCameraConfig.yOffset;
 			});
-			const crouchAnimator = OnUpdate.Connect((dt) => {
-				const currentOffsetY = mode.GetYOffset();
-				if (currentOffsetY === targetOffsetY) return;
-				const newOffsetY =
-					currentOffsetY < targetOffsetY
-						? math.clamp(
-								currentOffsetY + dt * CameraConstants.FirstPersonCrouchConfig.speed,
-								0,
-								targetOffsetY,
-						  )
-						: math.clamp(
-								currentOffsetY - dt * CameraConstants.FirstPersonCrouchConfig.speed,
-								targetOffsetY,
-								targetOffsetY * 2,
-						  );
-				mode.SetYOffset(newOffsetY);
-			});
+			// const crouchAnimator = OnUpdate.Connect((dt) => {
+			// 	const currentOffsetY = mode.GetYOffset();
+			// 	if (currentOffsetY === targetOffsetY) return;
+			// 	const newOffsetY =
+			// 		currentOffsetY < targetOffsetY
+			// 			? math.clamp(
+			// 					currentOffsetY + dt * CameraConstants.FirstPersonCrouchConfig.speed,
+			// 					0,
+			// 					targetOffsetY,
+			// 			  )
+			// 			: math.clamp(
+			// 					currentOffsetY - dt * CameraConstants.FirstPersonCrouchConfig.speed,
+			// 					targetOffsetY,
+			// 					targetOffsetY * 2,
+			// 			  );
+			// 	mode.SetYOffset(newOffsetY);
+			// });
 
 			//Every frame set the characters look vector to match the cameras
 			const lookVectorSync = OnLateUpdate.ConnectWithPriority(SignalPriority.HIGHEST, () => {
@@ -528,7 +530,7 @@ export class AirshipCameraSingleton {
 				cleanup.Add(() => Bridge.DisconnectEvent(lookVectorSyncInverse));
 			}
 
-			cleanup.Add(crouchAnimator);
+			// cleanup.Add(crouchAnimator);
 			cleanup.Add(stateChanged);
 			cleanup.Add(firstPersonChanged);
 			cleanup.Add(lookVectorSync);
