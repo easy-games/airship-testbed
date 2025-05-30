@@ -32,6 +32,12 @@ type CustomSnapshotData = [finished: boolean, data: Readonly<unknown>];
 
 type CustomInputData = [finished: boolean, data: Readonly<unknown>];
 
+/**
+ * Number of commands that should be processed before we decide that a command failed to reach the server. Command
+ * start/end signals are on a reliable channel that may take longer to receive than unreliable snapshot results.
+ */
+const CLIENT_COMMAND_FAILED_DELAY = (NetworkClient.sendInterval / Time.fixedDeltaTime) * 2;
+
 /** Data contained in the custom data key */
 export class CommandInstanceIdentifier {
 	constructor(public characterId: number, public commandId: string, public instanceId: number) {}
@@ -383,7 +389,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					});
 
 					this.unconfirmedCommands.forEach(({ commandNumber }, commandInstanceIdentifier) => {
-						if (b.lastProcessedCommand < commandNumber) return; // Command hasn't started yet
+						if (b.lastProcessedCommand < commandNumber + CLIENT_COMMAND_FAILED_DELAY) return; // Command hasn't started yet
 
 						// The command should have started, but we got a snapshot after the command should have started and
 						// since the command is still unconfirmed, we have to consider the command invalid as it did not
@@ -541,6 +547,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 		// Handles ending commands on the client when the server authoritatively completes the command.
 		NetworkCommandEnd.client.OnServerEvent((commandIdentifierStr, commandNumber, stateData) => {
+			this.unconfirmedCommands.delete(commandIdentifierStr);
 			// Get the predicted final state on the client
 			const lastState = this.unconfirmedFinalState.get(commandIdentifierStr);
 			// print(
@@ -614,6 +621,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		NetworkCommandInvaild.client.OnServerEvent((commandIdentifierStr, commandNumber) => {
 			// print("Deleting unconfirmed state for " + commandIdentifierStr + " since it was invalid.");
 			this.unconfirmedFinalState.delete(commandIdentifierStr);
+			this.unconfirmedCommands.delete(commandIdentifierStr);
 			const commandIdenfitier = CommandInstanceIdentifier.fromString(commandIdentifierStr);
 			this.onCommandEnded.Fire(commandIdenfitier, undefined);
 
