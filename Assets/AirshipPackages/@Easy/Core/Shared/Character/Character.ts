@@ -13,6 +13,7 @@ import { ItemStack } from "../Inventory/ItemStack";
 import { BeforeLocalInventoryHeldSlotChanged } from "../Inventory/Signal/BeforeLocalInventoryHeldSlotChanged";
 import NametagComponent from "../Nametag/NametagComponent";
 import { Keyboard, Mouse } from "../UserInput";
+import ObjectUtils from "../Util/ObjectUtils";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
 import { EmoteStartSignal } from "./Signal/EmoteStartSignal";
@@ -504,9 +505,9 @@ export default class Character extends AirshipBehaviour {
 			return;
 		}
 		//Convert queued data into binary blob
-		let customInputDataQueue: { k: string; v: unknown }[] = [];
+		let customInputDataQueue: Record<string, unknown> = {};
 		this.queuedCustomInputData.forEach((value, key) => {
-			customInputDataQueue.push({ k: key, v: value });
+			customInputDataQueue[key] = value;
 		});
 		this.queuedCustomInputData.clear();
 		//Pass to C#
@@ -520,9 +521,9 @@ export default class Character extends AirshipBehaviour {
 			return;
 		}
 		//Convert queued data into binary blob
-		let customSnapshotDataQueue: [key: string, value: unknown][] = [];
+		let customSnapshotDataQueue: Record<string, unknown> = {};
 		this.queuedCustomSnapshotData.forEach((value, key) => {
-			customSnapshotDataQueue.push([key, value]);
+			customSnapshotDataQueue[key] = value;
 		});
 		this.queuedCustomSnapshotData.clear();
 		//Pass to C#
@@ -531,13 +532,11 @@ export default class Character extends AirshipBehaviour {
 
 	private ParseCustomSnapshotData(snapshot: CharacterSnapshotData): Map<string, unknown> {
 		//Decode binary block into usable key value array
-		const allData = snapshot.customData
-			? (snapshot.customData.Decode() as [key: string, value: unknown][])
-			: undefined;
+		const allData = snapshot.customData ? (snapshot.customData.Decode() as Record<string, unknown>) : undefined;
 		const allCustomData: Map<string, unknown> = new Map();
 		if (allData) {
-			for (const data of allData) {
-				allCustomData.set(data[0], data[1]);
+			for (const [key, value] of ObjectUtils.entries(allData)) {
+				allCustomData.set(key as string, value);
 			}
 		}
 		return allCustomData;
@@ -545,11 +544,11 @@ export default class Character extends AirshipBehaviour {
 
 	private ParseCustomInputData(input: CharacterInputData): Map<string, unknown> {
 		//Decode binary block into usable key value array
-		const allData = input.customData ? (input.customData.Decode() as { k: string; v: unknown }[]) : undefined;
+		const allData = input.customData ? (input.customData.Decode() as Record<string, unknown>) : undefined;
 		const allCustomData: Map<string, unknown> = new Map();
 		if (allData) {
-			for (const data of allData) {
-				allCustomData.set(data.k, data.v);
+			for (const [key, value] of ObjectUtils.entries(allData)) {
+				allCustomData.set(key as string, value);
 			}
 		}
 		return allCustomData;
