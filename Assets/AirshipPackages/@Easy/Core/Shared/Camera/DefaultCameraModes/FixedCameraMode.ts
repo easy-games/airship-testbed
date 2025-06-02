@@ -3,6 +3,8 @@ import { ControlScheme, Mouse, Preferred, Touchscreen } from "@Easy/Core/Shared/
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
 import { CameraMode, CameraTransform } from "..";
+import { TweenEasingFunction } from "../../Tween/EasingFunctions";
+import { Tween } from "../../Tween/Tween";
 import ObjectUtils from "../../Util/ObjectUtils";
 import { CameraConstants, FixedCameraConfig } from "../CameraConstants";
 import { OcclusionCameraManager } from "../OcclusionCameraManager";
@@ -53,6 +55,13 @@ export class FixedCameraMode extends CameraMode {
 	/** Keep track of mouse lock state (to prevent huge delta when locking mouse) */
 	private mouseLocked = Mouse.IsLocked();
 	private mouseLockSwapped = false;
+
+	private crouching = false;
+	private crouchTweenBin = new Bin();
+	private currentCrouchYOffset = 0;
+
+	/** How much the camera is vertically offset while crouching. */
+	public crouchYOffset = -0.57;
 
 	constructor(target: GameObject, config?: FixedCameraConfig) {
 		super(target);
@@ -171,6 +180,32 @@ export class FixedCameraMode extends CameraMode {
 		// );
 	}
 
+	public SetCrouching(crouching: boolean): void {
+		if (this.crouching === crouching) return;
+		this.crouching = crouching;
+		this.crouchTweenBin.Clean();
+
+		if (Airship.Camera.IsFirstPerson()) {
+			if (crouching) {
+				this.crouchTweenBin.Add(
+					Tween.Number(TweenEasingFunction.Linear, 0.1, (val) => {
+						this.currentCrouchYOffset = val * this.crouchYOffset;
+					}),
+				);
+			} else {
+				this.crouchTweenBin.Add(
+					Tween.Number(TweenEasingFunction.Linear, 0.1, (val) => {
+						this.currentCrouchYOffset = (1 - val) * this.crouchYOffset;
+					}),
+				);
+			}
+		}
+	}
+
+	public IsCrouching(): boolean {
+		return this.crouching;
+	}
+
 	OnStop() {
 		this.OnStopBin.Clean();
 	}
@@ -241,7 +276,8 @@ export class FixedCameraMode extends CameraMode {
 		const targetPos = this.target?.transform.position ?? Vector3.zero;
 		this.lastTargetPos = targetPos;
 
-		const cameraPos = targetPos.add(new Vector3(0, this.yOffset, 0)).add(this.cameraRightVector.mul(xOffset));
+		let yOffset = this.yOffset + this.currentCrouchYOffset;
+		const cameraPos = targetPos.add(new Vector3(0, yOffset, 0)).add(this.cameraRightVector.mul(xOffset));
 		this.lastCameraPos = cameraPos;
 
 		const newCameraPos = cameraPos.add(this.staticOffset ?? posOffset);
@@ -255,7 +291,8 @@ export class FixedCameraMode extends CameraMode {
 	OnPostUpdate(cameraHolder: Transform) {
 		cameraHolder.LookAt(this.lastCameraPos);
 		if (this.shouldBumpForOcclusion && this.lastTargetPos) {
-			let targetPosition = this.lastTargetPos.add(Vector3.up.mul(this.yOffset));
+			const yOffset = this.yOffset + this.currentCrouchYOffset;
+			let targetPosition = this.lastTargetPos.add(Vector3.up.mul(yOffset));
 
 			{
 				let delta = Time.deltaTime * 10;

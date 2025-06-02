@@ -120,15 +120,6 @@ export class CameraConstants {
 	};
 
 	/**
-	 * Default first person crouch configuration. This configuration is optimized for use with the default
-	 * Airship character.
-	 */
-	public static FirstPersonCrouchConfig: FirstPersonCrouchConfig = {
-		speed: 5,
-		yOffset: 1.13,
-	};
-
-	/**
 	 * @internal
 	 */
 	public static UpdateDefaultFixedCameraConfig(config: Required<FixedCameraConfig>): void {

@@ -12149,13 +12149,12 @@ interface Net extends MonoBehaviour {
 }
     
 interface BinaryBlob {
-    m_dataSize: number;
-    m_data: Readonly<number[]>;
+    dataSize: number;
+    data: Readonly<number[]>;
 
 
 
     Equals(other: BinaryBlob): boolean;
-    GetDictionary(): CSDictionary<unknown, unknown>;
 
 
 }
@@ -37292,6 +37291,7 @@ interface BridgeConstructor {
     SetFullScreen(value: boolean): void;
     SetMicDeviceIndex(i: number): void;
     SetParentToSceneRoot(transform: Transform): void;
+    SetSkyboxMaterial(material: Material): void;
     SetVolume(volume: number): void;
     StartMicRecording(frequency: number, sampleLength: number): void;
     StopMicRecording(): void;
@@ -37403,7 +37403,7 @@ interface VoxelBlocks extends MonoBehaviour {
     loadedBlocks: CSDictionary<number, BlockDefinition>;
     rootAssetPath: string;
     m_bundlePaths: Readonly<string[]>;
-    blockDefinionLists: Readonly<VoxelBlockDefinionList[]>;
+    blockDefinitionLists: Readonly<VoxelBlockDefinitionList[]>;
 
 
 
@@ -37767,7 +37767,7 @@ interface BlockDefinitionConstructor {
 }
 declare const BlockDefinition: BlockDefinitionConstructor;
     
-interface VoxelBlockDefinionList extends ScriptableObject {
+interface VoxelBlockDefinitionList extends ScriptableObject {
     scope: string;
     blockDefinitions: Readonly<VoxelBlockDefinition[]>;
 
@@ -37777,15 +37777,15 @@ interface VoxelBlockDefinionList extends ScriptableObject {
 
 }
     
-interface VoxelBlockDefinionListConstructor {
+interface VoxelBlockDefinitionListConstructor {
 
 
-    new(): VoxelBlockDefinionList;
+    new(): VoxelBlockDefinitionList;
 
 
 
 }
-declare const VoxelBlockDefinionList: VoxelBlockDefinionListConstructor;
+declare const VoxelBlockDefinitionList: VoxelBlockDefinitionListConstructor;
     
     
     
@@ -53291,7 +53291,6 @@ interface VoxelWorld extends MonoBehaviour {
     WriteTemporaryVoxelCollisionAt(pos: Vector3, num: number): void;
     WriteVoxelAt(pos: Vector3, num: number, priority: boolean): void;
     WriteVoxelGroupAt(positions: Readonly<Vector3[]>, nums: Readonly<number[]>, priority: boolean): void;
-    WriteVoxelGroupAtTS(blob: unknown, priority: boolean): void;
 
 
 }
@@ -53300,6 +53299,7 @@ interface WorldSaveFile extends ScriptableObject {
     chunks: Readonly<SaveChunk[]>;
     blockIdToScopeName: Readonly<BlockIdToScopedName[]>;
     chunksCompressed: Readonly<number[]>;
+    chunksCompressedV2: boolean;
 
 
 

@@ -32,6 +32,12 @@ type CustomSnapshotData = [finished: boolean, data: Readonly<unknown>];
 
 type CustomInputData = [finished: boolean, data: Readonly<unknown>];
 
+/**
+ * Number of commands that should be processed before we decide that a command failed to reach the server. Command
+ * start/end signals are on a reliable channel that may take longer to receive than unreliable snapshot results.
+ */
+const CLIENT_COMMAND_FAILED_DELAY = (NetworkClient.sendInterval / Time.fixedDeltaTime) * 2;
+
 /** Data contained in the custom data key */
 export class CommandInstanceIdentifier {
 	constructor(public characterId: number, public commandId: string, public instanceId: number) {}
@@ -58,6 +64,11 @@ const NetworkCommandEnd = new NetworkSignal<
 
 const NetworkCommandInvaild = new NetworkSignal<[commandIdentifier: string, commandNumber: number]>(
 	"PredictedCommands/CommandInvalid",
+	NetworkChannel.Reliable,
+);
+
+const NetworkCommandStarted = new NetworkSignal<[commandIdentifier: string]>(
+	"PredictedCommands/CommandStarted",
 	NetworkChannel.Reliable,
 );
 
@@ -112,6 +123,12 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	/** Used by the client to queue commands to be set up on the next tick. */
 	private queuedCommands: CommandInstanceIdentifier[] = [];
 
+	/**
+	 * Used by the client to ensure that a started command actually started on the server. Once the server passes the command
+	 * number the command began, we should receive a confirmation from the server of the cmd start.
+	 */
+	private unconfirmedCommands: Map<string, { commandNumber: number }> = new Map();
+
 	/** Used by the client to queue confirm final state data for a command. */
 	private unconfirmedFinalState: Map<string, { commandNumber: number; snapshot: CustomSnapshotData; time: number }> =
 		new Map();
@@ -131,7 +148,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			// Handles creating queued commands just before input processing on the client. This ensures we don't connect command callbacks
 			// in the middle of processing a tick. Commands should always start at the beginning of a tick before gathering input.
 			character.bin.Add(
-				character.PreCreateCommand.Connect(() => {
+				character.PreCreateCommand.Connect((commandNumber) => {
 					this.queuedCommands.forEach((key) => {
 						if (this.IsCommandIdActive(key.commandId)) {
 							warn(
@@ -142,6 +159,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						const event = this.onValidateCommand.Fire(new ValidateCommand(character, key.commandId));
 						if (event.IsCancelled()) return; // Skip creating if something says we shouldn't create this
 						this.SetupCommand(character, key.commandId, key.instanceId);
+						this.unconfirmedCommands.set(key.stringify(), { commandNumber });
 					});
 					this.queuedCommands.clear();
 				}),
@@ -258,6 +276,9 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						// Run the command if it's not already running
 						// print("setting up command " + commandIdentifier.stringify() + " before processing");
 						this.SetupCommand(character, commandIdentifier.commandId, commandIdentifier.instanceId);
+						if (Game.IsServer() && character.player) {
+							NetworkCommandStarted.server.FireClient(character.player, commandIdentifier.stringify());
+						}
 					});
 				}),
 			);
@@ -365,6 +386,33 @@ export default class PredictedCommandManager extends AirshipSingleton {
 							);
 						}
 						character.SetComparisonResult(result);
+					});
+
+					this.unconfirmedCommands.forEach(({ commandNumber }, commandInstanceIdentifier) => {
+						if (b.lastProcessedCommand < commandNumber + CLIENT_COMMAND_FAILED_DELAY) return; // Command hasn't started yet
+
+						// The command should have started, but we got a snapshot after the command should have started and
+						// since the command is still unconfirmed, we have to consider the command invalid as it did not
+						// reach the server.
+						character.SetComparisonResult(false);
+						this.unconfirmedCommands.delete(commandInstanceIdentifier);
+						this.unconfirmedFinalState.delete(commandInstanceIdentifier);
+						const commandIdenfitier = CommandInstanceIdentifier.fromString(commandInstanceIdentifier);
+						this.onCommandEnded.Fire(commandIdenfitier, undefined);
+
+						this.confirmedFinalState.set(commandInstanceIdentifier, {
+							commandNumber: 0,
+							// This time is used for when we should remove the confirmedState, so it needs to be accurate
+							time: character.movement.GetLocalSimulationTimeFromCommandNumber(commandNumber),
+							snapshot: [true, undefined as unknown as Readonly<unknown>],
+						});
+
+						warn(
+							"Client attempted to run " +
+								commandInstanceIdentifier +
+								", but the command did not reach the server. Resimulation required.",
+						);
+						character.movement.RequestResimulation(commandNumber);
 					});
 				}),
 			);
@@ -498,8 +546,8 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		});
 
 		// Handles ending commands on the client when the server authoritatively completes the command.
-		// TODO: what happens when the client ends a command too early? Do we keep the server command running or not (that's config right now, but does it work?)
 		NetworkCommandEnd.client.OnServerEvent((commandIdentifierStr, commandNumber, stateData) => {
+			this.unconfirmedCommands.delete(commandIdentifierStr);
 			// Get the predicted final state on the client
 			const lastState = this.unconfirmedFinalState.get(commandIdentifierStr);
 			// print(
@@ -573,6 +621,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		NetworkCommandInvaild.client.OnServerEvent((commandIdentifierStr, commandNumber) => {
 			// print("Deleting unconfirmed state for " + commandIdentifierStr + " since it was invalid.");
 			this.unconfirmedFinalState.delete(commandIdentifierStr);
+			this.unconfirmedCommands.delete(commandIdentifierStr);
 			const commandIdenfitier = CommandInstanceIdentifier.fromString(commandIdentifierStr);
 			this.onCommandEnded.Fire(commandIdenfitier, undefined);
 
@@ -591,6 +640,20 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					", but the command failed validation on the server. Resimulating.",
 			);
 			character.movement.RequestResimulation(commandNumber);
+		});
+
+		// Handles the confirmation that the server received and started a new command
+		NetworkCommandStarted.client.OnServerEvent((commandIdentifier) => {
+			const uncomfirmedCmd = this.unconfirmedCommands.get(commandIdentifier);
+			if (!uncomfirmedCmd) {
+				warn(
+					"Server confirmed starting command " +
+						commandIdentifier +
+						" which either never started on the client or was already confirmed to be started by the server. Report this.",
+				);
+				return;
+			}
+			this.unconfirmedCommands.delete(commandIdentifier);
 		});
 
 		this.globalBin.Add(() => {

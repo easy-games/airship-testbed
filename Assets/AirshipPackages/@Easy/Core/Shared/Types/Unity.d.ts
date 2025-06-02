@@ -4223,7 +4223,7 @@ interface EventSystem extends UIBehaviour {
 
 	IsPointerOverGameObject(): boolean;
 	IsPointerOverGameObject(pointerId: number): boolean;
-	RaycastAll(eventData: PointerEventData, raycastResults: RaycastResult[]): void;
+	RaycastAll(eventData: PointerEventData): RaycastResult[];
 	SetSelectedGameObject(selected: GameObject, pointer: BaseEventData): void;
 	SetSelectedGameObject(selected: GameObject | undefined): void;
 	ToString(): string;
