@@ -138,8 +138,15 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			}),
 		);
 
-		const interactBtn = GameObject.Find("AvatarInteractionBtn");
-		interactBtn.gameObject.name = "AvatarInteractBtn -- found";
+		// Skybox
+		const skyboxMat = Resources.Load("AvatarEditorSkybox") as Material;
+		print("skybox mat: " + skyboxMat + ", RenderSettings: " + RenderSettings);
+		if (skyboxMat !== undefined) {
+			RenderSettings.skybox = skyboxMat;
+		}
+
+		this.currentZoomOffset = this.maxOffset;
+		this.goalOffset = this.startingOffset;
 		this.bin.Connect(Mouse.onScrolled, (event) => {
 			try {
 				const t = new PointerEventData(EventSystem.current);
