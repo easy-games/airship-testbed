@@ -808,9 +808,9 @@ MonoBehaviour:
         - type: string
           serializedValue: '"Zoom"'
       nullable: 0
-      serializedValue: 4.4
+      serializedValue: 5.2
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: minOffset
       type: number
       objectType: 

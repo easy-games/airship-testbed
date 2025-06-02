@@ -1,6 +1,7 @@
 import AvatarRenderComponent from "@Easy/Core/Client/ProtectedControllers//AvatarMenu/AvatarRenderComponent";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
+import { Game } from "../Game";
 import { MainMenuSingleton } from "../MainMenu/Singletons/MainMenuSingleton";
 import { Bin } from "../Util/Bin";
 import { CanvasAPI } from "../Util/CanvasAPI";
@@ -139,10 +140,13 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		);
 
 		// Skybox
-		const skyboxMat = Resources.Load("AvatarEditorSkybox") as Material;
-		print("skybox mat: " + skyboxMat + ", RenderSettings: " + RenderSettings);
-		if (skyboxMat !== undefined) {
-			RenderSettings.skybox = skyboxMat;
+		if (!Game.IsInGame()) {
+			const skyboxMat = Resources.Load("AvatarEditorSkybox") as Material;
+			if (skyboxMat !== undefined) {
+				task.spawn(() => {
+					Bridge.SetSkyboxMaterial(skyboxMat);
+				});
+			}
 		}
 
 		this.currentZoomOffset = this.maxOffset;
