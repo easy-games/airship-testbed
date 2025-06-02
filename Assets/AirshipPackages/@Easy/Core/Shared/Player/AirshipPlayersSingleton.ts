@@ -9,6 +9,7 @@ import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
 import { Asset } from "../Asset";
 import { CoreLogger } from "../Logger/CoreLogger";
 import { AirshipUrl } from "../Util/AirshipUrl";
@@ -17,7 +18,6 @@ import { Levenshtein } from "../Util/Strings/Levenshtein";
 import { OnUpdate } from "../Util/Timer";
 import { BridgedPlayer } from "./BridgedPlayer";
 import { Player, PlayerDto } from "./Player";
-import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
 
 /*
  * This class is instantiated in BOTH Game and Protected context.
@@ -68,6 +68,7 @@ export class AirshipPlayersSingleton {
 			mutable.networkIdentity = localPlayerInfo.gameObject.GetComponent<NetworkIdentity>()!;
 			mutable.username = localPlayerInfo.username;
 			mutable.userId = localPlayerInfo.userId;
+			mutable.orgRoleName = localPlayerInfo.orgRoleName;
 			mutable.SetVoiceChatAudioSource(localPlayerInfo.voiceChatAudioSource);
 			Game.localPlayerLoaded = true;
 			Game.onLocalPlayerLoaded.Fire();
@@ -82,6 +83,7 @@ export class AirshipPlayersSingleton {
 				0,
 				"loading",
 				"loading",
+				undefined,
 				"",
 				undefined as unknown as PlayerInfo,
 			);
@@ -245,6 +247,7 @@ export class AirshipPlayersSingleton {
 					dto.connectionId,
 					dto.userId,
 					dto.username,
+					dto.orgRoleName,
 					dto.profileImageId,
 					playerInfo,
 				);
@@ -498,7 +501,15 @@ export class AirshipPlayersSingleton {
 			const nob = NetworkUtil.WaitForNetworkIdentity(dto.netId);
 			nob.gameObject.name = `Player_${dto.username}`;
 			let playerInfo = nob.gameObject.GetComponent<PlayerInfo>()!;
-			player = new Player(nob, dto.connectionId, dto.userId, dto.username, dto.profileImageId, playerInfo);
+			player = new Player(
+				nob,
+				dto.connectionId,
+				dto.userId,
+				dto.username,
+				dto.orgRoleName,
+				dto.profileImageId,
+				playerInfo,
+			);
 		}
 
 		team?.AddPlayer(player);

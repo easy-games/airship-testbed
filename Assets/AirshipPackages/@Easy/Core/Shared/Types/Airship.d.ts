@@ -57,6 +57,7 @@ interface PlayerInfo extends Component {
 	userId: string;
 	username: string;
 	profileImageId: string;
+	orgRoleName: string;
 	voiceChatAudioSource: AudioSource;
 }
 
@@ -69,6 +70,7 @@ interface PlayerInfoDto {
 	userId: string;
 	username: string;
 	profileImageId: string;
+	orgRoleName: string;
 	gameObject: GameObject;
 }
 
