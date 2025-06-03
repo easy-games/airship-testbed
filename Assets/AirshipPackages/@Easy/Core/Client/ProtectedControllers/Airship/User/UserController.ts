@@ -1,15 +1,15 @@
+import { AirshipUser } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Protected } from "@Easy/Core/Shared/Protected";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { isUnityMakeRequestError, UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { AuthController } from "../../Auth/AuthController";
 import { ProtectedFriendsController } from "../../Social/FriendsController";
-import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
-import { isUnityMakeRequestError, UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import { AirshipUser } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 
 export const enum UserControllerBridgeTopics {
 	GetUserByUsername = "UserController:GetUserByUsername",
@@ -155,8 +155,8 @@ export class ProtectedUserController {
 
 			if (Game.coreContext === CoreContext.MAIN_MENU || true) {
 				const writeUser = Game.localPlayer as Player;
-				writeUser.userId = user.uid;
-				writeUser.username = user.username;
+				(writeUser.userId as string) = user.uid;
+				(writeUser.username as string) = user.username;
 				Game.localPlayerLoaded = true;
 				Game.onLocalPlayerLoaded.Fire();
 			}

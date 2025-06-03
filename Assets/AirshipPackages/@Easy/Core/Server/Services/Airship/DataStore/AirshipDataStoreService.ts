@@ -345,9 +345,7 @@ export class AirshipDataStoreService {
 	 */
 	private CheckKey(key: string): void {
 		if (!key || key.match("^[%w%.%:_%-]+$")[0] === undefined) {
-			throw error(
-				`Bad key provided (${key}). Ensure that your data store keys only include alphanumeric characters or _-.:`,
-			);
+			throw `Bad key provided (${key}). Ensure that your data store keys only include alphanumeric characters or _-.:`;
 		}
 	}
 }

@@ -2,10 +2,10 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { ChatMessageNetworkEvent, CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Game } from "@Easy/Core/Shared/Game";
+import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
-import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
 import { TaskUtil } from "../Util/TaskUtil";
 
 /** @internal */
@@ -15,6 +15,7 @@ export interface PlayerDto {
 	userId: string;
 	username: string;
 	profileImageId: string;
+	orgRoleName: string | undefined;
 	teamId: string | undefined;
 }
 
@@ -33,6 +34,12 @@ export class Player {
 	 * Connections will automatically be disconnected when the player leaves.
 	 */
 	public readonly onLeave = new Signal<void>();
+
+	/**
+	 * The name of the role in the game's organization.
+	 * This will be undefined if they are not a member of the organization.
+	 */
+	public readonly orgRoleName: string | undefined;
 
 	/**
 	 * The player's current team.
@@ -102,13 +109,15 @@ export class Player {
 		 * String length is <= 128 characters (but will likely be far shorter --
 		 * typically 28 characters).
 		 */
-		public userId: string,
+		public readonly userId: string,
 
 		/**
 		 * The player's username. This should be used for display. Username can
 		 * change, so to save a player's data use {@link userId}.
 		 */
-		public username: string,
+		public readonly username: string,
+
+		orgRoleName: string | undefined,
 
 		/**
 		 * Image id used to fetch player's profile picture.
@@ -119,6 +128,11 @@ export class Player {
 	) {
 		if (playerInfo !== undefined) {
 			this.SetVoiceChatAudioSource(playerInfo.voiceChatAudioSource);
+		}
+		if (this.orgRoleName === "") {
+			this.orgRoleName = undefined;
+		} else {
+			this.orgRoleName = orgRoleName;
 		}
 
 		const simulationManager = AirshipSimulationManager.Instance as AirshipSimulationManager &
@@ -141,15 +155,6 @@ export class Player {
 			this.lagCompRequests.delete(id);
 		});
 		this.bin.AddEngineEventConnection(completeConnection);
-	}
-
-	/**
-	 * Returns true if this player is part of the group which owns the game.
-	 *
-	 * This is used to grant permissions to things like `/kick`
-	 */
-	public IsGameDeveloper(): boolean {
-		return this.hasDevPermissions;
 	}
 
 	/**
@@ -210,7 +215,7 @@ export class Player {
 			// try catch to not require c# update
 			try {
 				characterComponent.movement.startingLookVector = config.lookDirection;
-			} catch (err) { }
+			} catch (err) {}
 		}
 
 		if (!this.outfitLoaded) {
@@ -298,7 +303,10 @@ export class Player {
 			// The problem is numerous places (ex: messaging when invalid command, broadcasting player joined server msg) trigger
 			// this to run. Ideally we can eventually support multiple broadcasts simultaneously but until that this patch works.
 			task.defer(() => {
-				contextbridge.broadcast<(msg: ChatMessageNetworkEvent) => void>("Chat:ProcessLocalMessage", { type: "sent", message });
+				contextbridge.broadcast<(msg: ChatMessageNetworkEvent) => void>("Chat:ProcessLocalMessage", {
+					type: "sent",
+					message,
+				});
 			});
 		}
 	}
@@ -314,6 +322,7 @@ export class Player {
 			userId: this.userId,
 			username: this.username,
 			profileImageId: this.profileImageId,
+			orgRoleName: this.orgRoleName,
 			teamId: this.team?.id,
 		};
 	}
@@ -385,14 +394,6 @@ export class Player {
 		}
 	}
 
-	/**
-	 * @internal
-	 */
-	private UpdateUsername(username: string): void {
-		this.username = username;
-		this.onUsernameChanged.Fire(username);
-	}
-
 	public Kick(message: string): void {
 		if (Game.IsHosting()) {
 			error("Unable to kick host.");
@@ -428,10 +429,10 @@ export class Player {
 		if (!checkId) {
 			warn(
 				"Unable to schedule lag compensation for " +
-				this.username +
-				" (" +
-				this.connectionId +
-				"). Is the connection ID correct?",
+					this.username +
+					" (" +
+					this.connectionId +
+					"). Is the connection ID correct?",
 			);
 		}
 		this.lagCompRequests.set(checkId, { check: checkFunc, complete: completeFunc });

@@ -33470,27 +33470,6 @@ interface CharacterJointConstructor {
 }
 declare const CharacterJoint: CharacterJointConstructor;
     
-interface ServerConsole extends MonoBehaviour {
-
-
-
-    OnClientConnectedToServer(): void;
-    OnStartServer(): void;
-    OnStopClient(): void;
-
-
-}
-    
-interface ServerConsoleConstructor {
-
-
-    new(): ServerConsole;
-
-
-
-}
-declare const ServerConsole: ServerConsoleConstructor;
-    
 interface Application {
 
 
