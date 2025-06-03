@@ -91,13 +91,11 @@ export function UnityMakeRequest(baseUrl: string): MakeRequest {
 				executor = () => InternalHttpManager.PatchAsync(fullyResolvedPath, data ?? "");
 				break;
 			case "TRACE":
-				throw error("TRACE is not implemented for airship clients.");
+				throw "TRACE is not implemented for airship clients.";
 			case "HEAD":
-				throw error("HEAD is not implemented for airship clients.");
+				throw "HEAD is not implemented for airship clients.";
 			default:
-				throw error(
-					"Could not determine method when executing http: " + request.method + " : " + request.routeId,
-				);
+				throw "Could not determine method when executing http: " + request.method + " : " + request.routeId;
 		}
 
 		const response = await UNITY_MAKE_REQUEST_RETRY(executor, { retryKey: request.retryKey });
@@ -107,7 +105,7 @@ export function UnityMakeRequest(baseUrl: string): MakeRequest {
 				`Unable to complete request ${request.routeId}.\n Status Code:  ${response.statusCode}.\n `,
 				response.error,
 			);
-			throw { message: response.error, status: response.statusCode };
+			throw json.encode({ message: response.error, status: response.statusCode });
 		}
 
 		if (!response.data || response.data.trim() === "") return undefined as T;
