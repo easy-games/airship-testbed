@@ -45,7 +45,7 @@ export class MessagingService {
 		});
 
 		MessagingManager.Instance.OnDisconnected((reason) => {
-			CoreLogger.Warn("Disconnected from Pubsub: " + reason);
+			CoreLogger.Warn("Disconnected from messaging: " + reason);
 			this.onSocketConnectionChanged.Fire(false);
 
 			if (this.doReconnect) {

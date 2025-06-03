@@ -33,9 +33,7 @@ export class AirshipMessagingService {
 	 */
 	private CheckTopicName(topicName: string): void {
 		if (!topicName || topicName.match("^[%w%_%-]+$")[0] === undefined) {
-			throw error(
-				`Bad topic name provided (${topicName}). Ensure that your topic name includes only alphanumeric characters or _-`,
-			);
+			throw `Bad topic name provided (${topicName}). Ensure that your topic name includes only alphanumeric characters or _-`;
 		}
 	}
 

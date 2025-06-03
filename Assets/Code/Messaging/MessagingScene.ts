@@ -8,9 +8,12 @@ export default class MessagingScene extends AirshipBehaviour {
 	override Start(): void {
 		print("Hello, World! from AirshipComponent!");
 		if (RunCore.IsServer()) {
-			Platform.Server.Messaging.Subscribe("test", (data) => {
+			const result = Platform.Server.Messaging.Subscribe("test", (data) => {
 				print("Received message: " + data);
 			});
+			if (!result.success) {
+				print("MessagingScene failed to subscribe");
+			}
 
 			SetInterval(2, () => {
 				Platform.Server.Messaging.Publish("test", "Hello from server!");
