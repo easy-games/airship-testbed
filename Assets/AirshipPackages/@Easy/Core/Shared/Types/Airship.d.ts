@@ -1331,9 +1331,8 @@ interface ChatroomAgent {
 interface MessagingManager {
 	ConnectAsyncInternal(): boolean;
 	IsConnected(): boolean;
-	SetScriptListening(val: boolean): void;
-	SubscribeAsync(topicNamespace: string, topicName: string): void;
-	PublishAsync(topicNamespace: string, topicName: string, data: string): void;
+	SubscribeAsync(topicNamespace: string, topicName: string): boolean;
+	PublishAsync(topicNamespace: string, topicName: string, data: string): boolean;
 	Instance: {
 		OnEvent(callback: (topicNamespace: string, topicName: string, data: string) => void): EngineEventConnection;
 		OnDisconnected(callback: (disconnectReason: string) => void): EngineEventConnection;

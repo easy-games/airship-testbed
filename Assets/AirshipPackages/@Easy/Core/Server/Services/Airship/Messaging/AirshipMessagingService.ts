@@ -31,16 +31,16 @@ export class AirshipMessagingService {
 	/**
 	 * Checks that the key is valid
 	 */
-	private CheckKey(key: string): void {
-		if (!key || key.match("^[%w%_%-]+$")[0] === undefined) {
+	private CheckTopicName(topicName: string): void {
+		if (!topicName || topicName.match("^[%w%_%-]+$")[0] === undefined) {
 			throw error(
-				`Bad key provided (${key}). Ensure that your data store keys only include alphanumeric characters or _-`,
+				`Bad topic name provided (${topicName}). Ensure that your topic name includes only alphanumeric characters or _-`,
 			);
 		}
 	}
 
-	public Subscribe<T = unknown>(topic: string, callback: (data: T) => void): () => void {
-		this.CheckKey(topic);
+	public Subscribe<T = unknown>(topic: string, callback: (data: T) => void): { success: boolean, unsubscribe: () => void } {
+		this.CheckTopicName(topic);
 
 		const retVal = this.onEvent.Connect((e, d) => {
 			if (e === topic) {
@@ -48,18 +48,29 @@ export class AirshipMessagingService {
 			}
 		});
 
-		contextbridge.invoke<ServerBridgeApiSubscribe>(
+		const success = contextbridge.invoke<ServerBridgeApiSubscribe>(
 			MessagingServiceBridgeTopics.Subscribe,
 			LuauContext.Protected,
 			topic,
 		);
 
-		return retVal;
+		if (!success) {
+			retVal(); // Go ahead and unsubscribe since the request wasn't successful. No-op returned method
+			return {
+				success: false,
+				unsubscribe: () => { },
+			};
+		}
+
+		return {
+			success,
+			unsubscribe: retVal,
+		};
 	}
 
-	public Publish(topic: string, data: string): undefined {
-		this.CheckKey(topic);
-		contextbridge.invoke<ServerBridgeApiPublish>(
+	public Publish(topic: string, data: string): boolean {
+		this.CheckTopicName(topic);
+		return contextbridge.invoke<ServerBridgeApiPublish>(
 			MessagingServiceBridgeTopics.Publish,
 			LuauContext.Protected,
 			topic,

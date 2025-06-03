@@ -486,12 +486,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guid: 
+  guid: 14c19f2f-1d26-48f8-bc11-b7aff9663d47
   script: {fileID: 3052541696765305645, guid: d20ced2995cfd4a088f3141d67abf34e, type: 3}
   scriptPath: Assets/Code/Messaging/MessagingScene.lua
   forceContext: 0
   metadata:
-    name: 
+    name: MessagingScene
     singleton: 0
     decorators: []
     properties: []
@@ -575,7 +575,7 @@ MonoBehaviour:
             is also assigned in the NetworkPrefabCollection in Shared/Resources"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 5042559581574877564, guid: c6dc87ea1a89c3e4aa4c27ad6203c150, type: 3}
+      serializedObject: {fileID: 8616685848737228372, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       modified: 1
     - name: movementSpace
       type: IntEnum

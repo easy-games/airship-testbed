@@ -9,8 +9,8 @@ export const enum MessagingServiceBridgeTopics {
 	IncomingMessage = "MessagingService:IncomingMessage",
 }
 
-export type ServerBridgeApiSubscribe = (topic: string) => void;
-export type ServerBridgeApiPublish = (topic: string, data: string) => void;
+export type ServerBridgeApiSubscribe = (topic: string) => boolean;
+export type ServerBridgeApiPublish = (topic: string, data: string) => boolean;
 
 @Service({})
 export class MessagingService {
@@ -23,18 +23,12 @@ export class MessagingService {
 		if (!Game.IsServer()) return;
 		contextbridge.callback<ServerBridgeApiSubscribe>(
 			MessagingServiceBridgeTopics.Subscribe,
-			(_, topic) => {
-				task.spawn(() => {
-					MessagingManager.SubscribeAsync("custom", topic);
-				});
-			},
+			(_, topic) => MessagingManager.SubscribeAsync("custom", topic),
 		);
 
 		contextbridge.callback<ServerBridgeApiPublish>(
 			MessagingServiceBridgeTopics.Publish,
-			(_, topic, data) => {
-				this.Publish("custom", topic, data);
-			},
+			(_, topic, data) => MessagingManager.PublishAsync("custom", topic, json.encode(data)),
 		);
 	}
 
@@ -45,7 +39,6 @@ export class MessagingService {
 				contextbridge.broadcast(MessagingServiceBridgeTopics.IncomingMessage, { topicNamespace, topicName, data });
 			}
 		});
-		MessagingManager.SetScriptListening(true);
 
 		task.spawn(() => {
 			this.Connect();
