@@ -53,7 +53,7 @@ function encodeQueryString(query: object) {
 
 const UNITY_MAKE_REQUEST_RETRY = HttpRetryInstance();
 
-export type UnityMakeRequestError = { message: string; status: number };
+export type UnityMakeRequestError = { routeId: string, message: string; status: number; responseMessage: () => string | undefined };
 
 export function isUnityMakeRequestError(err: unknown): err is UnityMakeRequestError {
 	if (!err) return false;
@@ -105,7 +105,30 @@ export function UnityMakeRequest(baseUrl: string): MakeRequest {
 				`Unable to complete request ${request.routeId}.\n Status Code:  ${response.statusCode}.\n `,
 				response.error,
 			);
-			throw json.encode({ message: response.error, status: response.statusCode });
+
+			throw {
+				routeId: request.routeId,
+				message: response.error,
+				status: response.statusCode,
+				responseMessage: () => {
+					let responseMessage: string | undefined;
+					try {
+						// Attempt to extract the message property from the response object.
+						// It is an array if the error is from our backend validation framework
+						const errObj = json.decode<{ message?: string | string[] }>(response.error);
+						if (errObj.message) {
+							if (typeIs(errObj.message, "string")) {
+								responseMessage = errObj.message;
+							} else if (typeIs(errObj.message[0], "string")) {
+								responseMessage = errObj.message[0];
+							}
+						}
+					} catch {
+						// If we can't extract the error message text, do nothing
+					}
+					return responseMessage;
+				}
+			};
 		}
 
 		if (!response.data || response.data.trim() === "") return undefined as T;

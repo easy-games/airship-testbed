@@ -84,7 +84,7 @@ export default class SearchSingleton {
 			});
 		} catch (err) {
 			if (isUnityMakeRequestError(err)) {
-				warn("Failed to decode popular games: " + err.message);
+				warn("Failed to decode popular games: " + (err.responseMessage() ?? "An unknown error occurred"));
 			}
 
 			task.delay(1, () => {
