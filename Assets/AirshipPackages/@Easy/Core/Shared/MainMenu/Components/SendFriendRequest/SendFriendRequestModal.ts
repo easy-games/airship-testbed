@@ -123,13 +123,6 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 			this.responseText.color = ColorUtil.HexToColor("#3BE267");
 			this.inputOutlineGO.SetActive(true);
 		} catch (err) {
-			print(err)
-			try {
-				print(json.encode(err))
-			} catch {
-
-			}
-
 			if (isUnityMakeRequestError(err) && err.status === 400) {
 				this.responseText.text = err.responseMessage() ?? "An unknown error occurred";
 			} else {
