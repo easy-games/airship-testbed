@@ -60,8 +60,7 @@ export default class SearchSingleton {
 				this.myGamesIds.add(g.id);
 			}
 		} catch (err: unknown) {
-			let umrError;
-			if ((umrError = isUnityMakeRequestError(err)) && 400 <= umrError.status && umrError.status < 500) {
+			if (isUnityMakeRequestError(err) && 400 <= err.status && err.status < 500) {
 				return;
 			}
 
@@ -84,9 +83,8 @@ export default class SearchSingleton {
 				this.AddGames([...data.recentlyUpdated, ...data.popular]);
 			});
 		} catch (err) {
-			let umrError;
-			if ((umrError = isUnityMakeRequestError(err))) {
-				warn("Failed to decode popular games: " + (umrError.responseMessage ?? "An unknown error occurred"));
+			if (isUnityMakeRequestError(err)) {
+				warn("Failed to decode popular games: " + (err.responseMessage() ?? "An unknown error occurred"));
 			}
 
 			task.delay(1, () => {

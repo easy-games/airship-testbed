@@ -194,9 +194,8 @@ export class ProtectedAvatarSingleton {
 			const result = await contentServiceClient.outfits.getActiveOutfit();
 			return result.outfit;
 		} catch (err) {
-			let umrError;
-			if ((umrError = isUnityMakeRequestError(err))) {
-				CoreLogger.Error("failed to load user equipped outfit: " + (umrError.responseMessage ?? "Empty Data"));
+			if (isUnityMakeRequestError(err)) {
+				CoreLogger.Error("failed to load user equipped outfit: " + (err.responseMessage() ?? "Empty Data"));
 			}
 			throw err;
 		}
@@ -207,9 +206,8 @@ export class ProtectedAvatarSingleton {
 			const result = await contentServiceClient.outfits.getUserActiveOutfit({ uid: userId });
 			return result.outfit;
 		} catch (err) {
-			let umrError;
-			if ((umrError = isUnityMakeRequestError(err))) {
-				CoreLogger.Error("failed to load users equipped outfit: " + (umrError.responseMessage ?? "Empty Data"));
+			if (isUnityMakeRequestError(err)) {
+				CoreLogger.Error("failed to load users equipped outfit: " + (err.responseMessage() ?? "Empty Data"));
 			}
 			throw err;
 		}
@@ -220,9 +218,8 @@ export class ProtectedAvatarSingleton {
 			const result = await contentServiceClient.outfits.getOutfit({ outfitId });
 			return result.outfit;
 		} catch (err) {
-			let umrError;
-			if ((umrError = isUnityMakeRequestError(err))) {
-				CoreLogger.Error("failed to load user outfit: " + (umrError.responseMessage ?? "Empty Data"));
+			if (isUnityMakeRequestError(err)) {
+				CoreLogger.Error("failed to load user outfit: " + (err.responseMessage() ?? "Empty Data"));
 			}
 			throw err;
 		}
@@ -233,9 +230,8 @@ export class ProtectedAvatarSingleton {
 			const result = await contentServiceClient.outfits.createOutfit(outfit);
 			return result.outfit;
 		} catch (err) {
-			let umrError;
-			if ((umrError = isUnityMakeRequestError(err))) {
-				CoreLogger.Error("Error creating outfit: " + (umrError.responseMessage ?? "An unknown error occurred"));
+			if (isUnityMakeRequestError(err)) {
+				CoreLogger.Error("Error creating outfit: " + (err.responseMessage() ?? "An unknown error occurred"));
 			}
 			throw err;
 		}
@@ -245,9 +241,8 @@ export class ProtectedAvatarSingleton {
 		try {
 			await contentServiceClient.outfits.loadOutfit({ outfitId });
 		} catch (err) {
-			let umrError;
-			if ((umrError = isUnityMakeRequestError(err))) {
-				CoreLogger.Error("Failed to equip outfit: " + (umrError.responseMessage ?? "An unknown error occurred"));
+			if (isUnityMakeRequestError(err)) {
+				CoreLogger.Error("Failed to equip outfit: " + (err.responseMessage() ?? "An unknown error occurred"));
 			}
 			throw err;
 		}
@@ -301,9 +296,8 @@ export class ProtectedAvatarSingleton {
 		try {
 			return contentServiceClient.outfits.updateOutfit({ data: update, params: { outfitId } }).expect().outfit;
 		} catch (err) {
-			let umrError;
-			if ((umrError = isUnityMakeRequestError(err))) {
-				CoreLogger.Error("Error Updating Outfit: " + (umrError.responseMessage ?? "An unknown error occurred"));
+			if (isUnityMakeRequestError(err)) {
+				CoreLogger.Error("Error Updating Outfit: " + (err.responseMessage() ?? "An unknown error occurred"));
 			}
 			throw err;
 		}
@@ -360,9 +354,8 @@ export class ProtectedAvatarSingleton {
 
 			return imageId;
 		} catch (err) {
-			let umrError;
-			if ((umrError = isUnityMakeRequestError(err))) {
-				CoreLogger.Error("Error getting item image resource: " + (umrError.responseMessage ?? "An unknown error occurred"));
+			if (isUnityMakeRequestError(err)) {
+				CoreLogger.Error("Error getting item image resource: " + (err.responseMessage() ?? "An unknown error occurred"));
 			}
 			return "";
 		}

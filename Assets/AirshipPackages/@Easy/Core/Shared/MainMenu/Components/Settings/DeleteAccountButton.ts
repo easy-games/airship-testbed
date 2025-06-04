@@ -26,9 +26,8 @@ export default class DeleteAccountButton extends AirshipBehaviour {
 						AuthManager.ClearSavedAccount();
 						Bridge.LoadScene("Login", true, LoadSceneMode.Single);
 					} catch (err) {
-						let umrError;
-						if ((umrError = isUnityMakeRequestError(err))) {
-							error((umrError.responseMessage ?? "An unknown error occurred"));
+						if (isUnityMakeRequestError(err)) {
+							error((err.responseMessage() ?? "An unknown error occurred"));
 						}
 					}
 				});
