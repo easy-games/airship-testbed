@@ -27,7 +27,7 @@ export default class AirshipButton extends AirshipBehaviour {
 	protected Awake(): void {
 		this.image = this.gameObject.GetComponent<Image>();
 		this.startingColor = this.image?.color;
-		this.button = this.gameObject.GetComponent<Button>()!;
+		this.button ??= this.gameObject.GetComponent<Button>()!;
 	}
 
 	override Start(): void {
@@ -35,7 +35,7 @@ export default class AirshipButton extends AirshipBehaviour {
 		this.startPos = rect.anchoredPosition;
 		this.startingScale = rect.localScale;
 		this.bin.AddEngineEventConnection(
-			CanvasAPI.OnPointerEvent(this.gameObject, (dir, button) => {
+			CanvasAPI.OnPointerEvent(this.button.gameObject, (dir, button) => {
 				if (button !== PointerButton.LEFT) return;
 				if (this.disabled) return;
 

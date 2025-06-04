@@ -28,15 +28,15 @@ interface ActiveCommand {
 	ResetInstance: () => void;
 }
 
-interface CustomSnapshotData {
-	finished: boolean;
-	data: Readonly<unknown>;
-}
+type CustomSnapshotData = [finished: boolean, data: Readonly<unknown>];
 
-interface CustomInputData {
-	finished: boolean;
-	data: Readonly<unknown>;
-}
+type CustomInputData = [finished: boolean, data: Readonly<unknown>];
+
+/**
+ * Number of commands that should be processed before we decide that a command failed to reach the server. Command
+ * start/end signals are on a reliable channel that may take longer to receive than unreliable snapshot results.
+ */
+const CLIENT_COMMAND_FAILED_DELAY = (NetworkClient.sendInterval / Time.fixedDeltaTime) * 2;
 
 /** Data contained in the custom data key */
 export class CommandInstanceIdentifier {
@@ -64,6 +64,11 @@ const NetworkCommandEnd = new NetworkSignal<
 
 const NetworkCommandInvaild = new NetworkSignal<[commandIdentifier: string, commandNumber: number]>(
 	"PredictedCommands/CommandInvalid",
+	NetworkChannel.Reliable,
+);
+
+const NetworkCommandStarted = new NetworkSignal<[commandIdentifier: string]>(
+	"PredictedCommands/CommandStarted",
 	NetworkChannel.Reliable,
 );
 
@@ -118,6 +123,12 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	/** Used by the client to queue commands to be set up on the next tick. */
 	private queuedCommands: CommandInstanceIdentifier[] = [];
 
+	/**
+	 * Used by the client to ensure that a started command actually started on the server. Once the server passes the command
+	 * number the command began, we should receive a confirmation from the server of the cmd start.
+	 */
+	private unconfirmedCommands: Map<string, { commandNumber: number }> = new Map();
+
 	/** Used by the client to queue confirm final state data for a command. */
 	private unconfirmedFinalState: Map<string, { commandNumber: number; snapshot: CustomSnapshotData; time: number }> =
 		new Map();
@@ -137,7 +148,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			// Handles creating queued commands just before input processing on the client. This ensures we don't connect command callbacks
 			// in the middle of processing a tick. Commands should always start at the beginning of a tick before gathering input.
 			character.bin.Add(
-				character.PreCreateCommand.Connect(() => {
+				character.PreCreateCommand.Connect((commandNumber) => {
 					this.queuedCommands.forEach((key) => {
 						if (this.IsCommandIdActive(key.commandId)) {
 							warn(
@@ -148,6 +159,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						const event = this.onValidateCommand.Fire(new ValidateCommand(character, key.commandId));
 						if (event.IsCancelled()) return; // Skip creating if something says we shouldn't create this
 						this.SetupCommand(character, key.commandId, key.instanceId);
+						this.unconfirmedCommands.set(key.stringify(), { commandNumber });
 					});
 					this.queuedCommands.clear();
 				}),
@@ -188,6 +200,22 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						// Check if the command should run if we are the server. The client already validates command creation in PreCreateCommand, so
 						// we don't need to do it again here.
 						if (Game.IsServer()) {
+							// If the server already has this command ID active, but it isn't the command described by this commandIdentifier, the client is trying to start a new instance before
+							// the server has completed the existing one.
+							if (this.IsCommandIdActive(commandIdentifier.commandId, character)) {
+								warn(
+									`Tried to run command ${commandIdentifier.commandId} on character ID ${commandIdentifier.characterId}, but it was already active. You can only run one command instance at a time.`,
+								);
+								// We notify the client that the command has been invalidated
+								if (character.player) {
+									NetworkCommandInvaild.server.FireClient(
+										character.player,
+										commandIdentifier.stringify(),
+										input.commandNumber,
+									);
+								}
+								return;
+							}
 							const result = this.onValidateCommand.Fire(
 								new ValidateCommand(character, commandIdentifier.commandId),
 							);
@@ -248,6 +276,9 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						// Run the command if it's not already running
 						// print("setting up command " + commandIdentifier.stringify() + " before processing");
 						this.SetupCommand(character, commandIdentifier.commandId, commandIdentifier.instanceId);
+						if (Game.IsServer() && character.player) {
+							NetworkCommandStarted.server.FireClient(character.player, commandIdentifier.stringify());
+						}
 					});
 				}),
 			);
@@ -340,7 +371,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 						// Call the compare function and set the result for C# to use later
 						const result = TaskUtil.RunWithoutYield(() =>
-							instance.CompareSnapshots(aCommandData.data, bCommandData.data),
+							instance.CompareSnapshots(aCommandData[1], bCommandData[1]),
 						);
 						if (!result) {
 							warn(
@@ -349,12 +380,39 @@ export default class PredictedCommandManager extends AirshipSingleton {
 									" on cmd #" +
 									a.lastProcessedCommand +
 									". Predicted Result: " +
-									inspect(aCommandData.data) +
+									inspect(aCommandData[1]) +
 									" Actual Result: " +
-									inspect(bCommandData.data),
+									inspect(bCommandData[1]),
 							);
 						}
 						character.SetComparisonResult(result);
+					});
+
+					this.unconfirmedCommands.forEach(({ commandNumber }, commandInstanceIdentifier) => {
+						if (b.lastProcessedCommand < commandNumber + CLIENT_COMMAND_FAILED_DELAY) return; // Command hasn't started yet
+
+						// The command should have started, but we got a snapshot after the command should have started and
+						// since the command is still unconfirmed, we have to consider the command invalid as it did not
+						// reach the server.
+						character.SetComparisonResult(false);
+						this.unconfirmedCommands.delete(commandInstanceIdentifier);
+						this.unconfirmedFinalState.delete(commandInstanceIdentifier);
+						const commandIdenfitier = CommandInstanceIdentifier.fromString(commandInstanceIdentifier);
+						this.onCommandEnded.Fire(commandIdenfitier, undefined);
+
+						this.confirmedFinalState.set(commandInstanceIdentifier, {
+							commandNumber: 0,
+							// This time is used for when we should remove the confirmedState, so it needs to be accurate
+							time: character.movement.GetLocalSimulationTimeFromCommandNumber(commandNumber),
+							snapshot: [true, undefined as unknown as Readonly<unknown>],
+						});
+
+						warn(
+							"Client attempted to run " +
+								commandInstanceIdentifier +
+								", but the command did not reach the server. Resimulation required.",
+						);
+						character.movement.RequestResimulation(commandNumber);
 					});
 				}),
 			);
@@ -413,7 +471,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 							}
 
 							// Reset the command to the provided state snapshot.
-							let data = value.data;
+							let data = value[1];
 							const confirmedState = this.confirmedFinalState.get(commandIdentifier.stringify());
 							// Overwrite with last confirmed data if required
 							if (confirmedState) {
@@ -427,7 +485,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 									activeCommand.bin.Clean(); // Remove the command since the snapshot shouldn't have had this command in it.
 									return;
 								}
-								data = confirmedState.snapshot.data;
+								data = confirmedState.snapshot[1];
 							}
 
 							// If the command was predicted to end before this snapshot and we are seeing the command
@@ -463,7 +521,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 							// Finished means that the command ended on the tick we are resetting to, so remove it from
 							// the active command list so it doesn't continue to tick in our predictions.
-							if (value.finished) {
+							if (value[0]) {
 								// print(
 								// 	"cmd " +
 								// 		activeCommand.customDataKey +
@@ -488,8 +546,8 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		});
 
 		// Handles ending commands on the client when the server authoritatively completes the command.
-		// TODO: what happens when the client ends a command too early? Do we keep the server command running or not (that's config right now, but does it work?)
 		NetworkCommandEnd.client.OnServerEvent((commandIdentifierStr, commandNumber, stateData) => {
+			this.unconfirmedCommands.delete(commandIdentifierStr);
 			// Get the predicted final state on the client
 			const lastState = this.unconfirmedFinalState.get(commandIdentifierStr);
 			// print(
@@ -516,7 +574,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					this.GetHighestCompletedInstance(commandIdenfitier.characterId, commandIdenfitier.commandId) >=
 					commandIdenfitier.instanceId
 				) {
-					this.onCommandEnded.Fire(commandIdenfitier, stateData.data);
+					this.onCommandEnded.Fire(commandIdenfitier, stateData[1]);
 					return;
 				}
 
@@ -535,7 +593,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				snapshot: stateData,
 				time: character.movement.GetLocalSimulationTimeFromCommandNumber(commandNumber),
 			});
-			this.onCommandEnded.Fire(commandIdenfitier, stateData.data);
+			this.onCommandEnded.Fire(commandIdenfitier, stateData[1]);
 
 			// temporary instance just for comparing snapshot data
 			const config = this.commandHandlerMap[commandIdenfitier.commandId];
@@ -549,7 +607,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			if (
 				lastState &&
 				lastState.commandNumber === commandNumber &&
-				tempInstance.CompareSnapshots(lastState?.snapshot.data, stateData.data)
+				tempInstance.CompareSnapshots(lastState?.snapshot[1], stateData[1])
 			) {
 				print("Final states match, no resim required.");
 				return;
@@ -563,6 +621,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		NetworkCommandInvaild.client.OnServerEvent((commandIdentifierStr, commandNumber) => {
 			// print("Deleting unconfirmed state for " + commandIdentifierStr + " since it was invalid.");
 			this.unconfirmedFinalState.delete(commandIdentifierStr);
+			this.unconfirmedCommands.delete(commandIdentifierStr);
 			const commandIdenfitier = CommandInstanceIdentifier.fromString(commandIdentifierStr);
 			this.onCommandEnded.Fire(commandIdenfitier, undefined);
 
@@ -572,7 +631,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				commandNumber: 0,
 				// This time is used for when we should remove the confirmedState, so it needs to be accurate
 				time: character.movement.GetLocalSimulationTimeFromCommandNumber(commandNumber),
-				snapshot: { data: undefined as unknown as Readonly<unknown>, finished: true },
+				snapshot: [true, undefined as unknown as Readonly<unknown>],
 			});
 
 			warn(
@@ -581,6 +640,20 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					", but the command failed validation on the server. Resimulating.",
 			);
 			character.movement.RequestResimulation(commandNumber);
+		});
+
+		// Handles the confirmation that the server received and started a new command
+		NetworkCommandStarted.client.OnServerEvent((commandIdentifier) => {
+			const uncomfirmedCmd = this.unconfirmedCommands.get(commandIdentifier);
+			if (!uncomfirmedCmd) {
+				warn(
+					"Server confirmed starting command " +
+						commandIdentifier +
+						" which either never started on the client or was already confirmed to be started by the server. Report this.",
+				);
+				return;
+			}
+			this.unconfirmedCommands.delete(commandIdentifier);
 		});
 
 		this.globalBin.Add(() => {
@@ -658,42 +731,21 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	/** Allows you to retrieve and operate on the specific handler instance for a running command. When a new handler instance matching the
 	 * command instance identifier is created, the callback will be called with the handler instance of the command that will be performing tick
 	 * operations.
-	 *
-	 * If the command is invalidated or authoritatively ends, the returned bin will be cleaned and the callback will no longer be
-	 * invoked.
 	 */
 	public ObserveHandler<T>(
 		commandInstance: CommandInstanceIdentifier,
 		callback: (instance: T) => CleanupFunc,
 		priority: SignalPriority = SignalPriority.NORMAL,
 	): Bin {
-		const bin = new Bin();
-		let callbackBin: CleanupFunc;
-
-		bin.Add(
-			this.onCommandEnded.ConnectWithPriority(priority, (commandId) => {
-				if (commandId.stringify() !== commandInstance.stringify()) return;
-				bin.Clean();
-			}),
+		return this.ObserveCommand(
+			commandInstance.characterId,
+			commandInstance.commandId,
+			(identifier, handler) => {
+				if (identifier?.instanceId !== commandInstance.instanceId) return;
+				return callback(handler as T);
+			},
+			priority,
 		);
-		bin.Add(
-			this.onInstanceCreated.ConnectWithPriority(priority, (commandId, instance) => {
-				if (commandId.stringify() !== commandInstance.stringify()) return;
-				callbackBin?.();
-				callbackBin = callback(instance as T);
-			}),
-		);
-		bin.Add(() => callbackBin?.());
-
-		const active = this.GetActiveCommandByIdentifier(commandInstance);
-		if (active) callbackBin = callback(active.instance as T);
-
-		this.observerBins.add(bin);
-		bin.Add(() => {
-			this.observerBins.delete(bin);
-		});
-
-		return bin;
 	}
 
 	/**
@@ -703,35 +755,36 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	 * @param commandId The command id used to run the command.
 	 * @param callback
 	 */
-	public ObserveCommand(
-		character: Character,
+	public ObserveCommand<T>(
+		character: Character | number,
 		commandId: string,
-		callback: (commandIdentifier: CommandInstanceIdentifier | undefined) => CleanupFunc,
+		callback: (commandIdentifier: CommandInstanceIdentifier | undefined, handler: T | undefined) => CleanupFunc,
 		priority: SignalPriority = SignalPriority.NORMAL,
 	) {
+		const characterId = typeIs(character, "number") ? character : character.id;
 		const bin = new Bin();
 		let callbackBin: CleanupFunc;
 
 		bin.Add(
-			this.onInstanceCreated.ConnectWithPriority(priority, (identifier) => {
-				if (identifier.characterId !== character.id) return;
+			this.onInstanceCreated.ConnectWithPriority(priority, (identifier, instance) => {
+				if (identifier.characterId !== characterId) return;
 				if (identifier.commandId !== commandId) return;
 				callbackBin?.();
-				callbackBin = callback(identifier);
+				callbackBin = callback(identifier, instance as T);
 			}),
 		);
 		bin.Add(
 			this.onInstanceDestroyed.ConnectWithPriority(priority, (identifier) => {
-				if (identifier.characterId !== character.id) return;
+				if (identifier.characterId !== characterId) return;
 				if (identifier.commandId !== commandId) return;
 				callbackBin?.();
-				callbackBin = callback(undefined);
+				callbackBin = callback(undefined, undefined);
 			}),
 		);
 		bin.Add(() => callbackBin?.());
 
-		const identifier = this.GetActiveCommandByCommandId(character, commandId);
-		if (identifier) callbackBin = callback(identifier);
+		const result = this.GetActiveCommandByCommandId(characterId, commandId);
+		if (result) callbackBin = callback(result.identifier, result.command.instance as T);
 
 		this.observerBins.add(bin);
 		bin.Add(() => {
@@ -824,10 +877,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		let shouldTickAgain = true;
 		let lastProcessedInputCommandNumber: number = 0;
 		let lastProcessedInputTime = 0;
-		let lastCapturedState: CustomSnapshotData = {
-			data: undefined as unknown as Readonly<unknown>,
-			finished: false,
-		};
+		let lastCapturedState: CustomSnapshotData = [false, undefined as unknown as Readonly<unknown>];
 		// Note: active command data structure may be destroyed and recreated during replays.
 		// only store metadata about the current instance here and know that when retrieving
 		// activeCommand later using GetActiveCommandOnCharacter, it may not be the same data
@@ -848,10 +898,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			ResetInstance: () => {
 				lastProcessedInputCommandNumber = 0;
 				lastProcessedInputTime = 0;
-				lastCapturedState = {
-					data: undefined as unknown as Readonly<unknown>,
-					finished: false,
-				};
+				lastCapturedState = [false, undefined as unknown as Readonly<unknown>];
 			},
 		};
 
@@ -864,7 +911,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			// print("last processed cmd# for " + commandIdentifierStr + ": " + lastProcessedInputCommandNumber);
 			if (Game.IsServer()) {
 				this.SetHighestCompletedInstance(commandIdentifier);
-				this.onCommandEnded.Fire(commandIdentifier, lastCapturedState.data);
+				this.onCommandEnded.Fire(commandIdentifier, lastCapturedState[1]);
 				if (character.player) {
 					NetworkCommandEnd.server.FireAllClients(
 						commandIdentifierStr,
@@ -919,10 +966,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				}
 
 				const input = TaskUtil.RunWithoutYield(() => activeCommand.instance.GetCommand());
-				const inputWrapper: CustomInputData = {
-					finished: input === false,
-					data: input as Readonly<unknown>,
-				};
+				const inputWrapper: CustomInputData = [input === false, input as Readonly<unknown>];
 
 				character.AddCustomInputData(activeCommand.customDataKey, inputWrapper);
 			}),
@@ -959,21 +1003,21 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				// authoritative state for the command instead of processing a tick. We also mark it to stop processing on the next
 				// tick since this is the last tick that should be processed.
 				if (finalCommandData !== undefined && input.commandNumber === finalCommandData.commandNumber) {
-					activeCommand.instance.ResetToSnapshot(finalCommandData.snapshot.data);
+					activeCommand.instance.ResetToSnapshot(finalCommandData.snapshot[1]);
 					shouldTickAgain = false;
 					return;
 				}
 
 				// The command was finished. Call complete and don't tick.
 				const customInput = (customData as Map<string, CustomInputData>).get(activeCommand.customDataKey);
-				if (customInput && customInput.finished) {
+				if (customInput && customInput[0]) {
 					CommitEndedCommand();
 					return;
 				}
 
 				// Process a normal forward tick
 				const tickResult = TaskUtil.RunWithoutYield(() =>
-					activeCommand.instance.OnTick(customInput?.data, replay, input),
+					activeCommand.instance.OnTick(customInput?.[1], replay, input),
 				);
 				shouldTickAgain = tickResult !== false;
 				lastProcessedInputCommandNumber = input.commandNumber;
@@ -1009,10 +1053,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		activeCommand.bin.Add(
 			character.OnAddCustomSnapshotData.ConnectWithPriority(config.priority ?? SignalPriority.NORMAL, () => {
 				const state = TaskUtil.RunWithoutYield(() => activeCommand.instance.OnCaptureSnapshot());
-				const stateWrapper: CustomSnapshotData = {
-					data: state as Readonly<unknown>,
-					finished: !shouldTickAgain,
-				};
+				const stateWrapper: CustomSnapshotData = [!shouldTickAgain, state as Readonly<unknown>];
 				lastCapturedState = stateWrapper;
 				character.AddCustomSnapshotData(activeCommand.customDataKey, stateWrapper);
 
@@ -1038,7 +1079,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						return;
 					}
 					TaskUtil.RunWithoutYield(() =>
-						activeCommand.instance.OnObserverUpdate?.(aData.data, bData.data, delta),
+						activeCommand.instance.OnObserverUpdate?.(aData[1], bData[1], delta),
 					);
 				},
 			),
@@ -1072,7 +1113,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						activeCommand.created = true;
 						activeCommand.instance.Create?.();
 					}
-					TaskUtil.RunWithoutYield(() => activeCommand.instance.OnObserverReachedState?.(commandData!.data));
+					TaskUtil.RunWithoutYield(() => activeCommand.instance.OnObserverReachedState?.(commandData![1]));
 				},
 			),
 		);
@@ -1107,13 +1148,16 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	/**
 	 * Returns the currently running command instance if there is one.
 	 */
-	private GetActiveCommandByCommandId(character: Character, commandId: string) {
-		const commands = this.activeCommands.get(character.id);
+	private GetActiveCommandByCommandId(characterId: number, commandId: string) {
+		const commands = this.activeCommands.get(characterId);
 		if (!commands) return;
 
 		for (const [customDataKey, command] of commands) {
 			if (command.commandId === commandId) {
-				return new CommandInstanceIdentifier(character.id, command.commandId, command.instanceId);
+				return {
+					identifier: new CommandInstanceIdentifier(characterId, command.commandId, command.instanceId),
+					command,
+				};
 			}
 		}
 	}
@@ -1141,12 +1185,13 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	}
 
 	private BuildCustomDataKey(keyData: { commandId: string; instanceId: number }) {
-		return "cc:" + keyData.commandId + ":" + keyData.instanceId;
+		return "_" + keyData.commandId + ":" + keyData.instanceId;
 	}
 
 	private ParseCustomDataKey(characterId: number, dataKey: string): CommandInstanceIdentifier | undefined {
-		if (dataKey.sub(0, 3) !== "cc:") return;
-		const [commandId, instanceId] = dataKey.sub(4).split(":");
+		if (dataKey.sub(0, 1) !== "_") return;
+		const [commandId, instanceId] = dataKey.sub(2).split(":");
+		// print(`commandId: ${commandId}, instanceId: ${instanceId}`);
 
 		return new CommandInstanceIdentifier(characterId, commandId, tonumber(instanceId) ?? 0);
 	}

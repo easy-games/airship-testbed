@@ -80,7 +80,7 @@ export default class NametagComponent extends AirshipBehaviour {
 
 			// Smooth the the volume level for UI
 			const smoothingSpeed = 10; // Higher = snappier, lower = smoother
-			this.currentSpeakingLevel = math.lerp(
+			this.currentSpeakingLevel = math.lerpClamped(
 				this.currentSpeakingLevel,
 				speakingLevel,
 				Time.deltaTime * smoothingSpeed,

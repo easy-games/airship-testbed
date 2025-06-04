@@ -7,6 +7,27 @@ import { NetworkSignal } from "./Network/NetworkSignal";
 import { PlayerDto } from "./Player/Player";
 import { TeamDto } from "./Team/Team";
 
+export interface SentChatMessage {
+	type: "sent";
+	internalMessageId?: number;
+	message: string;
+	senderPrefix?: string;
+	senderClientId?: number;
+};
+
+export interface UpdateChatMessage {
+	type: "update",
+	internalMessageId: number;
+	message: string;
+}
+
+export interface RemoveChatMessage {
+	type: "remove",
+	internalMessageId: number;
+}
+
+export type ChatMessageNetworkEvent = SentChatMessage | UpdateChatMessage | RemoveChatMessage;
+
 export const CoreNetwork = {
 	ClientToServer: {
 		Ready: new NetworkSignal("Ready"),
@@ -44,7 +65,7 @@ export const CoreNetwork = {
 		),
 		CharacterModelChanged: new NetworkSignal<[characterModelId: number]>("CharacterModelChanged"),
 		/** Fired when a player sends a chat message with the raw chat message */
-		ChatMessage: new NetworkSignal<[message: string, senderPrefix?: string, senderClientId?: number]>(
+		ChatMessage: new NetworkSignal<[ev: ChatMessageNetworkEvent]>(
 			"ChatMessage",
 		),
 		SetAccessory: new NetworkSignal<[entityId: number, slot: AccessorySlot, accessoryPath: string]>("SetAccessory"),

@@ -77,19 +77,6 @@ declare function tick(): number;
 /** Time since the game started running. Will be 0 in Studio when not running the game. */
 declare function time(): number;
 
-declare namespace System {
-	namespace IO {
-		enum SearchOption {
-			TopDirectoryOnly,
-			AllDirectories,
-		}
-	}
-	export class Guid {
-		public static NewGuid(): Guid;
-		public ToString(): string;
-	}
-}
-
 // interface CSDictionary<Key, Value> {
 // 	Keys: Key[];
 // 	Values: Value[];
@@ -1474,6 +1461,17 @@ interface PhysicsConstructor {
 		direction: Vector3,
 		maxDistance: number,
 		layerMask: number,
+	): LuaTuple<
+		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
+		| [hit: false, point: undefined, normal: undefined, collider: undefined]
+	>;
+	SphereCast(
+		origin: Vector3,
+		radius: number,
+		direction: Vector3,
+		maxDistance: number,
+		layerMask: number,
+		queryTriggerInteraction: QueryTriggerInteraction,
 	): LuaTuple<
 		| [hit: true, point: Vector3, normal: Vector3, collider: Collider]
 		| [hit: false, point: undefined, normal: undefined, collider: undefined]
@@ -4225,7 +4223,7 @@ interface EventSystem extends UIBehaviour {
 
 	IsPointerOverGameObject(): boolean;
 	IsPointerOverGameObject(pointerId: number): boolean;
-	RaycastAll(eventData: PointerEventData, raycastResults: RaycastResult[]): void;
+	RaycastAll(eventData: PointerEventData): RaycastResult[];
 	SetSelectedGameObject(selected: GameObject, pointer: BaseEventData): void;
 	SetSelectedGameObject(selected: GameObject | undefined): void;
 	ToString(): string;

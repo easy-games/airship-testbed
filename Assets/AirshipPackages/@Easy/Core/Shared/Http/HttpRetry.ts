@@ -10,7 +10,7 @@ import { keys } from "../Util/ObjectUtils";
  *          If undefined is returned the promise returned by {@link HttpRetry} will be resolved with the response.
  */
 function defaultRetrieveRetryTime(response: HttpResponse): number | undefined {
-	return tonumber(response.GetHeader("Retry-After"));
+	return tonumber(response.headers.Get("Retry-After"));
 }
 
 const DEFAULT_MAX_WAIT_TIME_SECONDS = 20;
@@ -63,7 +63,7 @@ class HttpTask {
 		public readonly config: HttpRetryConfig,
 		public readonly resolve: (response: HttpResponse) => void,
 		public readonly reject: (err: any) => void,
-	) {}
+	) { }
 
 	public execute() {
 		this.retryCount++;
@@ -128,7 +128,7 @@ interface RateLimitInstructionBase<T extends RateLimitInstructionType> {
  * This happens when the request is rate limited but the response headers don't provide a retry time.
  */
 interface RateLimitPassThroughErrorInstruction
-	extends RateLimitInstructionBase<RateLimitInstructionType.PassThroughError> {}
+	extends RateLimitInstructionBase<RateLimitInstructionType.PassThroughError> { }
 
 /**
  * A rate limit instruction which indicates that the request should be retried.
@@ -140,7 +140,7 @@ interface RateLimitRetryInstruction extends RateLimitInstructionBase<RateLimitIn
 /**
  * A rate limit instruction which indicates that the request was successful.
  */
-interface RateLimitSuccessInstruction extends RateLimitInstructionBase<RateLimitInstructionType.Success> {}
+interface RateLimitSuccessInstruction extends RateLimitInstructionBase<RateLimitInstructionType.Success> { }
 
 type RateLimitInstruction =
 	| RateLimitPassThroughErrorInstruction

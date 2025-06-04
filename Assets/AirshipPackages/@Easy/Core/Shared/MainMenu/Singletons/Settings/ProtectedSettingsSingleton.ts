@@ -330,11 +330,12 @@ export class ProtectedSettingsSingleton {
 
 	public SetAntiAliasing(level: number): void {
 		this.data.antiAliasing = level;
+		if (Game.IsEditor()) return;
 		const pipelineAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
 		if (level === 1) {
 			pipelineAsset.msaaSampleCount = 2;
 		} else {
-			pipelineAsset.msaaSampleCount = 1;
+			pipelineAsset.msaaSampleCount = 0;
 		}
 	}
 

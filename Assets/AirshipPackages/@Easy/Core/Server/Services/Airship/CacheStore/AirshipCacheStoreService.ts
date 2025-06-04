@@ -26,7 +26,7 @@ export class AirshipCacheStoreService {
 		Platform.Server.CacheStore = this;
 	}
 
-	protected OnStart(): void {}
+	protected OnStart(): void { }
 
 	/**
 	 * Gets the cached data for the provided key.
@@ -104,9 +104,7 @@ export class AirshipCacheStoreService {
 	 */
 	private CheckKey(key: string): void {
 		if (!key || key.match("^[%w%.%:_%-]+$")[0] === undefined) {
-			throw error(
-				`Bad key provided (${key}). Ensure that your cache store keys only include alphanumeric characters or _-.:`,
-			);
+			throw `Bad key provided (${key}). Ensure that your cache store keys only include alphanumeric characters or _-.:`;
 		}
 	}
 }

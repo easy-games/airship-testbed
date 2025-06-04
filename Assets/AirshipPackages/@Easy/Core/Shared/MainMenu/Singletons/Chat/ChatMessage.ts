@@ -5,7 +5,7 @@ export default class ChatMessage extends AirshipBehaviour {
 	public button: Button;
 	public image: Image;
 
-	override Start(): void {}
+	override Start(): void { }
 
 	public SetUrl(url: string): void {
 		this.button.enabled = true;
@@ -15,6 +15,12 @@ export default class ChatMessage extends AirshipBehaviour {
 				Application.OpenURL(url);
 			}),
 		);
+	}
+
+	public RemoveUrl(): void {
+		this.button.enabled = false;
+		this.image.raycastTarget = false;
+		this.bin.Clean();
 	}
 
 	override OnDestroy(): void {

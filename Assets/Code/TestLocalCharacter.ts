@@ -34,9 +34,9 @@ export default class TestLocalCharacter extends AirshipSingleton {
 	}
 
 	protected Update(dt: number): void {
-		if (Airship.Input.IsDown("t") && !PredictedCommandManager.Get().IsCommandInstanceActive(this.cmd, true)) {
-			this.cmd = PredictedCommandManager.Get().RunCommand(this.CMD_IDENTIFIER);
-		}
+		// if (Airship.Input.IsDown("t") && !PredictedCommandManager.Get().IsCommandInstanceActive(this.cmd, true)) {
+		// 	this.cmd = PredictedCommandManager.Get().RunCommand(this.CMD_IDENTIFIER);
+		// }
 	}
 
 	override OnDestroy(): void {}

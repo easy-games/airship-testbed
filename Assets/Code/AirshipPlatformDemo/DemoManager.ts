@@ -212,7 +212,7 @@ export default class DemoManager extends AirshipBehaviour {
 		// 	// 	this.npcCharacter.movement.AddImpulse(
 		// 	// 		new Vector3(
 		// 	// 			math.random() * this.testImpulseForce * 2 - this.testImpulseForce,
-		// 	// 			math.lerp(0, this.testImpulseForce * 2, math.random()),
+		// 	// 			math.lerpClamped(0, this.testImpulseForce * 2, math.random()),
 		// 	// 			math.random() * this.testImpulseForce * 2 - this.testImpulseForce,
 		// 	// 		),
 		// 	// 	);

@@ -280,8 +280,11 @@ export class DirectMessageController {
 				let text =
 					ColorUtil.ColoredText(Theme.pink, "To ") +
 					ColorUtil.ColoredText(Theme.white, status.username) +
-					ColorUtil.ColoredText(Theme.gray, ": " + message);
+					ColorUtil.ColoredText(Theme.gray, ": " + (data.transformedMessage ? data.transformedMessage : message));
 				Dependency<ClientChatSingleton>().RenderChatMessage(text);
+			}
+			if (data.transformedMessage) {
+				messageObj.setMessageText(data.transformedMessage);
 			}
 		} else {
 			messageObj.delete();
@@ -328,6 +331,8 @@ export class DirectMessageController {
 			this.GetMessages("party").push(errorMessage);
 			this.RenderChatMessage(errorMessage, true, true);
 			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Error.ogg");
+		} else if (sendResponse.transformedMessage) {
+			messageObj.setMessageText(sendResponse.transformedMessage);
 		}
 
 		// predict send for sender
@@ -344,7 +349,7 @@ export class DirectMessageController {
 		dm: DirectMessage,
 		receivedWhileOpen: boolean,
 		isParty?: boolean,
-	): { delete: () => void } {
+	): { delete: () => void; setMessageText: (str: string) => void } {
 		let outgoing = dm.sender === Game.localPlayer.userId;
 
 		let messageGo: GameObject;
@@ -355,6 +360,16 @@ export class DirectMessageController {
 		}
 		const messageRefs = messageGo.GetComponent<GameObjectReferences>()!;
 		const text = messageRefs.GetValue("UI", "Text") as TMP_Text;
+
+		const setMessageText = (str: string) => {
+			if (isParty && !outgoing) {
+				const member = this.partyController.party?.members.find((u) => u.uid === dm.sender);
+				let username = member?.username ?? "Unknown";
+				text.text = username + ": " + str;
+			} else {
+				text.text = str;
+			}
+		};
 
 		if (isParty && !outgoing) {
 			const content = messageGo.transform.GetChild(0);
@@ -367,13 +382,9 @@ export class DirectMessageController {
 				profilePictureGo.SetActive(true);
 			});
 			content.GetChild(1).gameObject.SetActive(true);
-
-			const member = this.partyController.party?.members.find((u) => u.uid === dm.sender);
-			let username = member?.username ?? "Unknown";
-			text.text = username + ": " + dm.text;
-		} else {
-			text.text = dm.text;
 		}
+
+		setMessageText(dm.text);
 
 		let doScroll = this.scrollRect!.verticalNormalizedPosition <= 0.06;
 
@@ -391,6 +402,7 @@ export class DirectMessageController {
 					Object.Destroy(messageGo);
 				}
 			},
+			setMessageText,
 		};
 	}
 

@@ -4,6 +4,7 @@ import Inventory from "@Easy/Core/Shared/Inventory/Inventory";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
 import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import AirshipEmoteSingleton from "../Emote/AirshipEmoteSingleton";
@@ -12,10 +13,10 @@ import { ItemStack } from "../Inventory/ItemStack";
 import { BeforeLocalInventoryHeldSlotChanged } from "../Inventory/Signal/BeforeLocalInventoryHeldSlotChanged";
 import NametagComponent from "../Nametag/NametagComponent";
 import { Keyboard, Mouse } from "../UserInput";
+import ObjectUtils from "../Util/ObjectUtils";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
 import { EmoteStartSignal } from "./Signal/EmoteStartSignal";
-import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
 
 /**
  * A character is a (typically human) object in the scene. It controls movement and default animation.
@@ -74,7 +75,7 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized()
 	public inventory: Inventory;
 	@NonSerialized() public heldItem?: ItemStack;
-	@NonSerialized() public heldSlot = -1;
+	@NonSerialized() public heldSlot = 0;
 	@NonSerialized() public readonly onHeldSlotChanged = new Signal<number>();
 	/** Used to cancel changing held item slots. */
 	@NonSerialized() public readonly onBeforeLocalHeldSlotChanged = new Signal<BeforeLocalInventoryHeldSlotChanged>();
@@ -100,7 +101,7 @@ export default class Character extends AirshipBehaviour {
 	 * to connect to OnAddCustomInputData for the tick about to be processed. Only fires for the local
 	 * character.
 	 */
-	public PreCreateCommand = new Signal<[]>();
+	public PreCreateCommand = new Signal<[commandNumber: number]>();
 	/**
 	 * Fires before command processing.
 	 *
@@ -323,14 +324,14 @@ export default class Character extends AirshipBehaviour {
 				// If we are authority, send held slot in the snapshot
 				this.bin.Add(
 					this.OnAddCustomSnapshotData.ConnectWithPriority(SignalPriority.MONITOR, () => {
-						this.AddCustomSnapshotData("heldSlot", this.heldSlot);
+						this.AddCustomSnapshotData("s", this.heldSlot);
 					}),
 				);
 			} else {
 				// If we are not authority, send it in the input
 				this.bin.Add(
 					this.OnAddCustomInputData.ConnectWithPriority(SignalPriority.MONITOR, () => {
-						this.AddCustomInputData("heldSlot", this.heldSlot);
+						this.AddCustomInputData("s", this.heldSlot);
 					}),
 				);
 			}
@@ -343,7 +344,7 @@ export default class Character extends AirshipBehaviour {
 				// Read from client input and set if we are authority. Client has authority over held slot
 				this.bin.Add(
 					this.OnUseCustomInputData.ConnectWithPriority(SignalPriority.HIGH, (data) => {
-						const held = data.get("heldSlot") as number;
+						const held = data.get("s") as number;
 						if (held === undefined) return;
 						if (held === this.heldSlot) return;
 						this.SetHeldSlotInternal(held);
@@ -355,14 +356,14 @@ export default class Character extends AirshipBehaviour {
 					this.OnAddCustomSnapshotData.ConnectWithPriority(SignalPriority.MONITOR, () => {
 						// We send what the client initially sent in the input since we want to client to
 						// be authoritative
-						this.AddCustomSnapshotData("heldSlot", slot);
+						this.AddCustomSnapshotData("s", slot);
 					}),
 				);
 			} else {
 				// Read from interpolated state and set held item.
 				this.bin.Add(
 					this.OnInterpolateReachedSnapshot.ConnectWithPriority(SignalPriority.HIGH, (data) => {
-						const held = data.get("heldSlot") as number;
+						const held = data.get("s") as number;
 						if (held === undefined) return;
 						if (held === this.heldSlot) return;
 						this.SetHeldSlotInternal(held);
@@ -411,7 +412,7 @@ export default class Character extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			movementWithSignals.OnCreateCommand((commandNumber) => {
-				this.PreCreateCommand.Fire();
+				this.PreCreateCommand.Fire(commandNumber);
 				this.CollectCustomInputData(commandNumber);
 			}),
 		);
@@ -504,9 +505,9 @@ export default class Character extends AirshipBehaviour {
 			return;
 		}
 		//Convert queued data into binary blob
-		let customInputDataQueue: { key: string; value: unknown }[] = [];
+		let customInputDataQueue: Record<string, unknown> = {};
 		this.queuedCustomInputData.forEach((value, key) => {
-			customInputDataQueue.push({ key: key, value: value });
+			customInputDataQueue[key] = value;
 		});
 		this.queuedCustomInputData.clear();
 		//Pass to C#
@@ -520,9 +521,9 @@ export default class Character extends AirshipBehaviour {
 			return;
 		}
 		//Convert queued data into binary blob
-		let customSnapshotDataQueue: { key: string; value: unknown }[] = [];
+		let customSnapshotDataQueue: Record<string, unknown> = {};
 		this.queuedCustomSnapshotData.forEach((value, key) => {
-			customSnapshotDataQueue.push({ key: key, value: value });
+			customSnapshotDataQueue[key] = value;
 		});
 		this.queuedCustomSnapshotData.clear();
 		//Pass to C#
@@ -531,13 +532,11 @@ export default class Character extends AirshipBehaviour {
 
 	private ParseCustomSnapshotData(snapshot: CharacterSnapshotData): Map<string, unknown> {
 		//Decode binary block into usable key value array
-		const allData = snapshot.customData
-			? (snapshot.customData.Decode() as { key: string; value: unknown }[])
-			: undefined;
+		const allData = snapshot.customData ? (snapshot.customData.Decode() as Record<string, unknown>) : undefined;
 		const allCustomData: Map<string, unknown> = new Map();
 		if (allData) {
-			for (const data of allData) {
-				allCustomData.set(data.key, data.value);
+			for (const [key, value] of ObjectUtils.entries(allData)) {
+				allCustomData.set(key as string, value);
 			}
 		}
 		return allCustomData;
@@ -545,11 +544,11 @@ export default class Character extends AirshipBehaviour {
 
 	private ParseCustomInputData(input: CharacterInputData): Map<string, unknown> {
 		//Decode binary block into usable key value array
-		const allData = input.customData ? (input.customData.Decode() as { key: string; value: unknown }[]) : undefined;
+		const allData = input.customData ? (input.customData.Decode() as Record<string, unknown>) : undefined;
 		const allCustomData: Map<string, unknown> = new Map();
 		if (allData) {
-			for (const data of allData) {
-				allCustomData.set(data.key, data.value);
+			for (const [key, value] of ObjectUtils.entries(allData)) {
+				allCustomData.set(key as string, value);
 			}
 		}
 		return allCustomData;

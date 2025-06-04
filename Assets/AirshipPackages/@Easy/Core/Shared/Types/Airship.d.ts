@@ -57,6 +57,7 @@ interface PlayerInfo extends Component {
 	userId: string;
 	username: string;
 	profileImageId: string;
+	orgRoleName: string;
 	voiceChatAudioSource: AudioSource;
 }
 
@@ -69,6 +70,7 @@ interface PlayerInfoDto {
 	userId: string;
 	username: string;
 	profileImageId: string;
+	orgRoleName: string;
 	gameObject: GameObject;
 }
 
@@ -121,7 +123,6 @@ interface StateSnapshot {
 interface CharacterSnapshotData extends StateSnapshot {
 	position: Vector3;
 	velocity: Vector3;
-	impulseVelocity: Vector3;
 	currentSpeed: number;
 	inputDisabled: boolean;
 	isFlying: boolean;
@@ -129,12 +130,10 @@ interface CharacterSnapshotData extends StateSnapshot {
 	jumpCount: number;
 	airborneFromImpulse: boolean;
 	alreadyJumped: boolean;
-	prevMoveDir: Vector3;
 	lastGroundedMoveDir: Vector3;
 	isCrouching: boolean;
 	prevStepUp: boolean;
 	isGrounded: boolean;
-	animGrounded: boolean;
 	state: CharacterState;
 	prevState: CharacterState;
 	timeSinceBecameGrounded: number;
@@ -216,7 +215,7 @@ interface CharacterMovement extends Component {
 	//Public
 	enabled: boolean;
 	disableInput: boolean;
-	rigidbody: Rigidbody;
+	rb: Rigidbody;
 	rootTransform: Transform; //The true position transform
 	airshipTransform: Transform; //The transform controlled by the movement script
 	graphicTransform: Transform; //A transform we can animate

@@ -172,8 +172,12 @@ export class ColorUtil {
 			else h2 += 1;
 		}
 
-		const result = Color.HSVToRGB(math.lerp(h1, h2, alpha) % 1, math.lerp(s1, s2, alpha), math.lerp(v1, v2, alpha));
-		result.a = math.lerp(col1.a, col2.a, alpha);
+		const result = Color.HSVToRGB(
+			math.lerpClamped(h1, h2, alpha) % 1,
+			math.lerpClamped(s1, s2, alpha),
+			math.lerpClamped(v1, v2, alpha),
+		);
+		result.a = math.lerpClamped(col1.a, col2.a, alpha);
 		return result;
 	}
 }
