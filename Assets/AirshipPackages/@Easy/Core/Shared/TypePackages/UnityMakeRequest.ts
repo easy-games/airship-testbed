@@ -53,12 +53,26 @@ function encodeQueryString(query: object) {
 
 const UNITY_MAKE_REQUEST_RETRY = HttpRetryInstance();
 
-export type UnityMakeRequestError = { message: string; status: number };
+export type UnityMakeRequestError = { message: string; status: number; responseMessage: string | undefined };
 
+
+/*
+ * Errors have to be strings
+ * Errors when thrown are prepended with the stack, so we need to find where the JSON starts (if it exists) then parse the error
+ *
+ * Example:
+ * airshippackages/@easy/core/shared/mainmenu/components/sendfriendrequest/sendfriendrequestmodal.lua:117:
+ * airshippackages/@easy/core/shared/typepackages/game-coordinator-types.lua:268:
+ * airshippackages/@easy/core/shared/typepackages/unitymakerequest.lua:191:
+ * {"message":"{\"message\":\"Invalid user.\",\"error\":\"Bad Request\",\"statusCode\":400}","responseMessage":"Invalid user.","status":400}
+ */
 export function isUnityMakeRequestError(err: unknown): UnityMakeRequestError | undefined {
 	if (!err || !typeIs(err, "string")) return undefined;
 	try {
-		const typedError = json.decode<Partial<UnityMakeRequestError>>(err);
+		const findResult = err.find("{");
+		if (!typeIs(findResult?.[0], "number")) return undefined;
+		const jsonPart = err.sub(findResult[0]);
+		const typedError = json.decode<Partial<UnityMakeRequestError>>(jsonPart);
 		if (typedError.message === undefined || typedError.status === undefined) return undefined;
 
 		return typedError as UnityMakeRequestError;
@@ -111,7 +125,22 @@ export function UnityMakeRequest(baseUrl: string): MakeRequest {
 				`Unable to complete request ${request.routeId}.\n Status Code:  ${response.statusCode}.\n `,
 				response.error,
 			);
-			throw json.encode({ message: response.error, status: response.statusCode });
+			let responseMessage: string | undefined;
+			try {
+				// Attempt to extract the message property from the response object.
+				// It is an array if the error is from our backend validation framework
+				const errObj = json.decode<{ message?: string | string[] }>(response.error);
+				if (errObj.message) {
+					if (typeIs(errObj.message, "string")) {
+						responseMessage = errObj.message;
+					} else if (typeIs(errObj.message[0], "string")) {
+						responseMessage = errObj.message[0];
+					}
+				}
+			} catch {
+				// If we can't extract the error message text, do nothing
+			}
+			throw json.encode({ message: response.error, status: response.statusCode, responseMessage });
 		}
 
 		if (!response.data || response.data.trim() === "") return undefined as T;

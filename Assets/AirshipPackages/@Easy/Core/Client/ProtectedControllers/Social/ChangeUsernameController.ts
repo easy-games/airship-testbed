@@ -110,7 +110,7 @@ export class ChangeUsernameController {
 		this.submitButtonDisabled.SetActive(status !== "success");
 	}
 
-	protected OnStart(): void {}
+	protected OnStart(): void { }
 
 	private CheckUsername(): void {
 		let username = this.inputField.text;

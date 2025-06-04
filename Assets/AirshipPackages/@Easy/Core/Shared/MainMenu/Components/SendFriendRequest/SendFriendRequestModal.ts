@@ -124,8 +124,8 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 			this.inputOutlineGO.SetActive(true);
 		} catch (err) {
 			let umrError;
-			if ((umrError = isUnityMakeRequestError(err)) && umrError.status === 422) {
-				this.responseText.text = `Player "${username}\" does not exist.`;
+			if ((umrError = isUnityMakeRequestError(err)) && umrError.status === 400) {
+				this.responseText.text = umrError.responseMessage ?? "An unknown error occurred";
 			} else {
 				this.responseText.text = "Failed to send friend requst. Please try again later.";
 			}
