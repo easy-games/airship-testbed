@@ -28,7 +28,7 @@ export default class DeleteAccountButton extends AirshipBehaviour {
 					} catch (err) {
 						let umrError;
 						if ((umrError = isUnityMakeRequestError(err))) {
-							error(umrError.message);
+							error((umrError.responseMessage ?? "An unknown error occurred"));
 						}
 					}
 				});

@@ -86,7 +86,7 @@ export default class SearchSingleton {
 		} catch (err) {
 			let umrError;
 			if ((umrError = isUnityMakeRequestError(err))) {
-				warn("Failed to decode popular games: " + umrError.message);
+				warn("Failed to decode popular games: " + (umrError.responseMessage ?? "An unknown error occurred"));
 			}
 
 			task.delay(1, () => {
