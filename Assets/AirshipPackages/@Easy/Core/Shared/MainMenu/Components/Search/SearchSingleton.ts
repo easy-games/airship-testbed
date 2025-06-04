@@ -60,7 +60,8 @@ export default class SearchSingleton {
 				this.myGamesIds.add(g.id);
 			}
 		} catch (err: unknown) {
-			if (isUnityMakeRequestError(err) && 400 <= err.status && err.status < 500) {
+			let umrError;
+			if ((umrError = isUnityMakeRequestError(err)) && 400 <= umrError.status && umrError.status < 500) {
 				return;
 			}
 
@@ -83,8 +84,9 @@ export default class SearchSingleton {
 				this.AddGames([...data.recentlyUpdated, ...data.popular]);
 			});
 		} catch (err) {
-			if (isUnityMakeRequestError(err)) {
-				warn("Failed to decode popular games: " + err.message);
+			let umrError;
+			if ((umrError = isUnityMakeRequestError(err))) {
+				warn("Failed to decode popular games: " + umrError.message);
 			}
 
 			task.delay(1, () => {

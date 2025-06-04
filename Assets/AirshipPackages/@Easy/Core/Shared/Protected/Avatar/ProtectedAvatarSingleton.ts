@@ -194,8 +194,9 @@ export class ProtectedAvatarSingleton {
 			const result = await contentServiceClient.outfits.getActiveOutfit();
 			return result.outfit;
 		} catch (err) {
-			if (isUnityMakeRequestError(err)) {
-				CoreLogger.Error("failed to load user equipped outfit: " + (err.message ?? "Empty Data"));
+			let umrError;
+			if ((umrError = isUnityMakeRequestError(err))) {
+				CoreLogger.Error("failed to load user equipped outfit: " + (umrError.message ?? "Empty Data"));
 			}
 			throw err;
 		}
@@ -206,8 +207,9 @@ export class ProtectedAvatarSingleton {
 			const result = await contentServiceClient.outfits.getUserActiveOutfit({ uid: userId });
 			return result.outfit;
 		} catch (err) {
-			if (isUnityMakeRequestError(err)) {
-				CoreLogger.Error("failed to load users equipped outfit: " + (err.message ?? "Empty Data"));
+			let umrError;
+			if ((umrError = isUnityMakeRequestError(err))) {
+				CoreLogger.Error("failed to load users equipped outfit: " + (umrError.message ?? "Empty Data"));
 			}
 			throw err;
 		}
@@ -218,8 +220,9 @@ export class ProtectedAvatarSingleton {
 			const result = await contentServiceClient.outfits.getOutfit({ outfitId });
 			return result.outfit;
 		} catch (err) {
-			if (isUnityMakeRequestError(err)) {
-				CoreLogger.Error("failed to load user outfit: " + (err.message ?? "Empty Data"));
+			let umrError;
+			if ((umrError = isUnityMakeRequestError(err))) {
+				CoreLogger.Error("failed to load user outfit: " + (umrError.message ?? "Empty Data"));
 			}
 			throw err;
 		}
@@ -230,8 +233,9 @@ export class ProtectedAvatarSingleton {
 			const result = await contentServiceClient.outfits.createOutfit(outfit);
 			return result.outfit;
 		} catch (err) {
-			if (isUnityMakeRequestError(err)) {
-				CoreLogger.Error("Error creating outfit: " + err.message);
+			let umrError;
+			if ((umrError = isUnityMakeRequestError(err))) {
+				CoreLogger.Error("Error creating outfit: " + umrError.message);
 			}
 			throw err;
 		}
@@ -241,8 +245,9 @@ export class ProtectedAvatarSingleton {
 		try {
 			await contentServiceClient.outfits.loadOutfit({ outfitId });
 		} catch (err) {
-			if (isUnityMakeRequestError(err)) {
-				CoreLogger.Error("Failed to equip outfit: " + err.message);
+			let umrError;
+			if ((umrError = isUnityMakeRequestError(err))) {
+				CoreLogger.Error("Failed to equip outfit: " + umrError.message);
 			}
 			throw err;
 		}
@@ -296,8 +301,9 @@ export class ProtectedAvatarSingleton {
 		try {
 			return contentServiceClient.outfits.updateOutfit({ data: update, params: { outfitId } }).expect().outfit;
 		} catch (err) {
-			if (isUnityMakeRequestError(err)) {
-				CoreLogger.Error("Error Updating Outfit: " + err.message);
+			let umrError;
+			if ((umrError = isUnityMakeRequestError(err))) {
+				CoreLogger.Error("Error Updating Outfit: " + umrError.message);
 			}
 			throw err;
 		}
@@ -354,8 +360,9 @@ export class ProtectedAvatarSingleton {
 
 			return imageId;
 		} catch (err) {
-			if (isUnityMakeRequestError(err)) {
-				CoreLogger.Error("Error getting item image resource: " + err.message);
+			let umrError;
+			if ((umrError = isUnityMakeRequestError(err))) {
+				CoreLogger.Error("Error getting item image resource: " + umrError.message);
 			}
 			return "";
 		}

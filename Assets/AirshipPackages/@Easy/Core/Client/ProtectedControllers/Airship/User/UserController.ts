@@ -89,7 +89,8 @@ export class ProtectedUserController {
 			const result = await client.users.getByUid({ uid: userId });
 			return result.user;
 		} catch (err) {
-			if (isUnityMakeRequestError(err) && err.status === 404) {
+			let umrError;
+			if ((umrError = isUnityMakeRequestError(err)) && umrError.status === 404) {
 				return undefined;
 			}
 			throw err;

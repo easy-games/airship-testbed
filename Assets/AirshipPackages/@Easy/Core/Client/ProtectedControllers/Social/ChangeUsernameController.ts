@@ -91,7 +91,8 @@ export class ChangeUsernameController {
 			this.submitButton.SetActive(false);
 			this.submitButtonDisabled.SetActive(true);
 		} catch (err) {
-			if (isUnityMakeRequestError(err) && err.status === 409) {
+			let umrError;
+			if ((umrError = isUnityMakeRequestError(err)) && umrError.status === 409) {
 				this.SetResponseText("error", `The username "${text}" is taken.`);
 				return;
 			}

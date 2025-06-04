@@ -55,10 +55,16 @@ const UNITY_MAKE_REQUEST_RETRY = HttpRetryInstance();
 
 export type UnityMakeRequestError = { message: string; status: number };
 
-export function isUnityMakeRequestError(err: unknown): err is UnityMakeRequestError {
-	if (!err) return false;
-	const typedErr = err as Partial<UnityMakeRequestError>;
-	return typedErr.message !== undefined && typedErr.status !== undefined;
+export function isUnityMakeRequestError(err: unknown): UnityMakeRequestError | undefined {
+	if (!err || !typeIs(err, "string")) return undefined;
+	try {
+		const typedError = json.decode<Partial<UnityMakeRequestError>>(err);
+		if (typedError.message === undefined || typedError.status === undefined) return undefined;
+
+		return typedError as UnityMakeRequestError;
+	} catch {
+		return undefined;
+	}
 }
 
 export function UnityMakeRequest(baseUrl: string): MakeRequest {
