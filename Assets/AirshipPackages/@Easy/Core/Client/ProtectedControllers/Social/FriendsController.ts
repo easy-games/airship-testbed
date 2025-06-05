@@ -1,5 +1,10 @@
 import { RightClickMenuController } from "@Easy/Core/Client/ProtectedControllers//UI/RightClickMenu/RightClickMenuController";
 import { Airship } from "@Easy/Core/Shared/Airship";
+import {
+	AirshipUpdateStatusDto,
+	AirshipUser,
+	AirshipUserStatusData,
+} from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 import { Asset } from "@Easy/Core/Shared/Asset";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
@@ -12,6 +17,8 @@ import NoFriendsCardComponent from "@Easy/Core/Shared/MainMenu/Components/Friend
 import SocialFriendRequestsButtonComponent from "@Easy/Core/Shared/MainMenu/Components/SocialFriendRequestsButtonComponent";
 import SocialNotificationComponent from "@Easy/Core/Shared/MainMenu/Components/SocialNotificationComponent";
 import { Protected } from "@Easy/Core/Shared/Protected";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
@@ -30,13 +37,6 @@ import { TransferController } from "../Transfer/TransferController";
 import { RightClickMenuButton } from "../UI/RightClickMenu/RightClickMenuButton";
 import { DirectMessageController } from "./DirectMessages/DirectMessageController";
 import { SocialNotificationType } from "./SocialNotificationType";
-import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
-import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import {
-	AirshipUpdateStatusDto,
-	AirshipUser,
-	AirshipUserStatusData,
-} from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 
 interface PendingSocialNotification {
 	type: SocialNotificationType;
@@ -253,7 +253,7 @@ export class ProtectedFriendsController {
 				// 	}),
 				// );
 
-				AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/FriendRequest.wav", {
+				AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/FriendRequest.mp33", {
 					volumeScale: 0.3,
 				});
 				if (Game.coreContext === CoreContext.GAME) {

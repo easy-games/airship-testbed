@@ -1,3 +1,5 @@
+import { AirshipPartyInternalSnapshot } from "@Easy/Core/Shared/Airship/Types/AirshipParty";
+import { AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
@@ -6,6 +8,8 @@ import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import PartyCard from "@Easy/Core/Shared/MainMenu/Components/Party/PartyCard";
 import PartyMember from "@Easy/Core/Shared/MainMenu/Components/PartyMember";
 import { Protected } from "@Easy/Core/Shared/Protected";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
@@ -17,17 +21,15 @@ import { SocketController } from "../Socket/SocketController";
 import { ProtectedFriendsController } from "./FriendsController";
 import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
 import { SocialNotificationType } from "./SocialNotificationType";
-import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
-import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import { AirshipPartyInternalSnapshot } from "@Easy/Core/Shared/Airship/Types/AirshipParty";
-import { AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Controller({})
 export class MainMenuPartyController {
 	public party: AirshipPartyInternalSnapshot | undefined;
-	public onPartyUpdated = new Signal<[newParty: AirshipPartyInternalSnapshot | undefined, oldParty: AirshipPartyInternalSnapshot | undefined]>();
+	public onPartyUpdated = new Signal<
+		[newParty: AirshipPartyInternalSnapshot | undefined, oldParty: AirshipPartyInternalSnapshot | undefined]
+	>();
 
 	private partyCard!: PartyCard;
 	private partyCardContents!: GameObject;
@@ -43,7 +45,7 @@ export class MainMenuPartyController {
 	constructor(
 		private readonly mainMenuController: MainMenuController,
 		private readonly socketController: SocketController,
-	) { }
+	) {}
 
 	/**
 	 * @returns True if both a party leader and party has more than 1 player.
@@ -68,13 +70,16 @@ export class MainMenuPartyController {
 			}
 		});
 
-		this.socketController.On<AirshipUserStatusData[]>("game-coordinator/party-member-status-update-multi", (data) => {
-			if (!this.party) return;
+		this.socketController.On<AirshipUserStatusData[]>(
+			"game-coordinator/party-member-status-update-multi",
+			(data) => {
+				if (!this.party) return;
 
-			this.partyLeaderStatusReceived = true;
-			const partyLeader = data.find((d) => d.userId === this.party!.leader);
-			this.partyCard.UpdateInfo(partyLeader);
-		});
+				this.partyLeaderStatusReceived = true;
+				const partyLeader = data.find((d) => d.userId === this.party!.leader);
+				this.partyCard.UpdateInfo(partyLeader);
+			},
+		);
 
 		Dependency<ProtectedFriendsController>().socialNotificationHandlers.set(
 			SocialNotificationType.PartyInvite,
@@ -103,7 +108,7 @@ export class MainMenuPartyController {
 				data.members[0].uid,
 				data,
 			);
-			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/FriendRequest.wav", {
+			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/FriendRequest.mp3", {
 				volumeScale: 0.3,
 			});
 			if (Game.coreContext === CoreContext.GAME) {
