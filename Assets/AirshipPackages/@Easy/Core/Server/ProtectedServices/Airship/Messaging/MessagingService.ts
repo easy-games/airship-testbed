@@ -2,6 +2,7 @@ import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 
 export const enum MessagingServiceBridgeTopics {
 	Subscribe = "MessagingService:Subscribe",
@@ -18,6 +19,7 @@ export class MessagingService {
 	public onSocketConnectionChanged = new Signal<[connected: boolean]>();
 	public doReconnect = true;
 	public cancelSessionReportTask: () => void | undefined;
+	private customMessagesSent: number = 0;
 
 	constructor() {
 		if (!Game.IsServer()) return;
@@ -28,7 +30,13 @@ export class MessagingService {
 
 		contextbridge.callback<ServerBridgeApiPublish>(
 			MessagingServiceBridgeTopics.Publish,
-			(_, topic, data) => MessagingManager.PublishAsync("custom", topic, json.encode(data)),
+			(_, topic, data) => {
+				const wasSuccessful = MessagingManager.PublishAsync("custom", topic, json.encode(data));
+				if (wasSuccessful) {
+					this.customMessagesSent++;
+				}
+				return wasSuccessful;
+			},
 		);
 	}
 
@@ -51,6 +59,9 @@ export class MessagingService {
 			if (this.doReconnect) {
 				this.Connect();
 			}
+		});
+		SetInterval(20, () => {
+			AgonesCore.Agones.SetAnnotation("MessagingCustomSent", `${this.customMessagesSent}`);
 		});
 	}
 
