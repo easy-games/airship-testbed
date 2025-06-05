@@ -73,7 +73,9 @@ export class CharacterInput {
 
 		const updateMouseKeyboardControls = (dt: number) => {
 			if (!this.enabled) return;
-			if (EventSystem.current.currentSelectedGameObject !== undefined) return;
+			if (EventSystem.current.currentSelectedGameObject !== undefined) {
+				return;
+			}
 
 			const [success, err] = pcall(() => {
 				const w = Airship.Input.IsDown("Forward");
