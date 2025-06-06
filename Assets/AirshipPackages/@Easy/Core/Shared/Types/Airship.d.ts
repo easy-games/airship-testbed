@@ -136,9 +136,7 @@ interface CharacterSnapshotData extends StateSnapshot {
 	isGrounded: boolean;
 	state: CharacterState;
 	prevState: CharacterState;
-	timeSinceBecameGrounded: number;
-	timeSinceWasGrounded: number;
-	timeSinceJump: number;
+	canJump: number;
 	lookVector: Vector3;
 	customData: BinaryBlob;
 }
