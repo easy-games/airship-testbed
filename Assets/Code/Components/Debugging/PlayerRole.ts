@@ -9,6 +9,22 @@ export default class PlayerRole extends AirshipBehaviour {
 				print(`Player ${player.username} has no org role.`);
 			}
 		});
+
+		// Airship.Inventory.RegisterItem("WoodSword", {
+		// 	displayName: "Wood Sword",
+		// 	maxStackSize: 1,
+		// 	accessoryPaths: ["Assets/Resources/Prefabs/WoodSword.prefab"],
+		// 	// image: "Assets/Resources/ItemRenders/wood_sword.png",
+		// });
+		// if (Game.IsServer()) {
+		// 	Airship.Characters.ObserveCharacters((c) => {
+		// 		const inv = c.inventory;
+		// 		inv.AddItem(new ItemStack("WoodSword"));
+		// 		inv.AddItem(new ItemStack("WoodSword"));
+		// 		inv.AddItem(new ItemStack("WoodSword"));
+		// 		inv.AddItem(new ItemStack("WoodSword"));
+		// 	});
+		// }
 	}
 
 	override OnDestroy(): void {}
