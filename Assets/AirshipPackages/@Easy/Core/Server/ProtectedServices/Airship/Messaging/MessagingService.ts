@@ -31,7 +31,7 @@ export class MessagingService {
 		contextbridge.callback<ServerBridgeApiPublish>(
 			MessagingServiceBridgeTopics.Publish,
 			(_, topic, data) => {
-				const wasSuccessful = MessagingManager.PublishAsync("custom", topic, json.encode(data));
+				const wasSuccessful = MessagingManager.PublishAsync("custom", topic, data);
 				if (wasSuccessful) {
 					this.customMessagesSent++;
 				}
@@ -65,24 +65,24 @@ export class MessagingService {
 		});
 	}
 
-	public On<T = unknown>(topicNamespace: string, topicName: string, callback: (data: T) => void): () => void {
+	public On(topicNamespace: string, topicName: string, callback: (data: string) => void): () => void {
 		task.spawn(() => {
 			MessagingManager.SubscribeAsync(topicNamespace, topicName);
 		});
 
 		return this.onEvent.Connect((incomingTopicNamespace, incomingTopicName, d) => {
 			if (incomingTopicNamespace === topicNamespace && incomingTopicName === topicName) {
-				callback(json.decode(d));
+				callback(d);
 			}
 		});
 	}
 
-	public Publish(topicNamespace: string, topicName: string, data: unknown = undefined): void {
+	public Publish(topicNamespace: string, topicName: string, data: string): void {
 		if (data === undefined) {
-			data = { _hold: "yes" };
+			throw "Data cannot be undefined when publishing to a topic.";
 		}
 		task.spawn(() => {
-			MessagingManager.PublishAsync(topicNamespace, topicName, json.encode(data));
+			MessagingManager.PublishAsync(topicNamespace, topicName, data);
 		});
 	}
 
