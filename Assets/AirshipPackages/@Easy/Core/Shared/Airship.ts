@@ -108,7 +108,7 @@ export namespace Platform {
 		 */
 		export let User = undefined! as AirshipUserService;
 		/**
-		 * Provides access to user information.
+		 * Provides Publish/Subscribe functionality for communicating across different game servers
 		 */
 		export let Messaging = undefined! as AirshipMessagingService;
 	}
