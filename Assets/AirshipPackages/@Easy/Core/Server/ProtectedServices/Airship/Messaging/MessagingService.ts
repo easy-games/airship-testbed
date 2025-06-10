@@ -18,7 +18,6 @@ export class MessagingService {
 	private onEvent = new Signal<[topicNamespace: string, topicName: string, data: string]>();
 	public onSocketConnectionChanged = new Signal<[connected: boolean]>();
 	public doReconnect = true;
-	public cancelSessionReportTask: () => void | undefined;
 	private customMessagesSent: number = 0;
 
 	constructor() {
@@ -91,7 +90,7 @@ export class MessagingService {
 	}
 
 	public Connect(): void {
-		if (Game.IsEditor() && !Game.IsInternal()) return;
+		if (Game.IsEditor()) return;
 		this.doReconnect = true;
 		let connected = MessagingManager.ConnectAsyncInternal();
 		this.onSocketConnectionChanged.Fire(connected);
