@@ -21,6 +21,8 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public backdropHolder?: GameObject;
 	public cameraRig: Transform;
 	public cameraPivot: Transform;
+	public inGameVolume: Volume;
+	public mainMenuVolume: Volume;
 
 	@Header("Zoom")
 	public startingOffset = 4.4;
@@ -147,6 +149,13 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 					Bridge.SetSkyboxMaterial(skyboxMat);
 				});
 			}
+		}
+		if (Game.IsInGame()) {
+			this.inGameVolume.gameObject.SetActive(true);
+			this.mainMenuVolume.gameObject.SetActive(false);
+		} else {
+			this.inGameVolume.gameObject.SetActive(false);
+			this.mainMenuVolume.gameObject.SetActive(true);
 		}
 
 		this.currentZoomOffset = this.maxOffset;

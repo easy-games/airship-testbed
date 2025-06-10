@@ -123,10 +123,10 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 			this.responseText.color = ColorUtil.HexToColor("#3BE267");
 			this.inputOutlineGO.SetActive(true);
 		} catch (err) {
-			if (isUnityMakeRequestError(err) && err.status === 422) {
-				this.responseText.text = `Player "${username}\" does not exist.`;
+			if (isUnityMakeRequestError(err)) {
+				this.responseText.text = err.responseMessage() ?? "Failed to send friend request. Please try again later.";
 			} else {
-				this.responseText.text = "Failed to send friend requst. Please try again later.";
+				this.responseText.text = "Failed to send friend request. Please try again later.";
 			}
 			this.responseText.color = Theme.red;
 			task.unscaledDelay(0, () => {

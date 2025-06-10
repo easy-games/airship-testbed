@@ -66,19 +66,20 @@ export class CameraSystem {
 		});
 
 		const stopOnLateUpdate = OnLateUpdate.ConnectWithPriority(SignalPriority.HIGHEST, (dt) => {
-			if (!CameraReferences.mainCamera) {
+			if (!Airship.Camera.cameraRig?.mainCamera) {
 				return;
 			}
-			let camTransform = this.currentMode.OnLateUpdate(dt);
+			let calculatedTransform = this.currentMode.OnLateUpdate(dt);
 
 			// Run game specified functions to update CameraTransform
 			for (const updateFunc of this.updateTransformCallbacks) {
-				const newTransform = updateFunc(camTransform);
-				if (newTransform) camTransform = newTransform;
+				const newTransform = updateFunc(calculatedTransform);
+				if (newTransform) calculatedTransform = newTransform;
 			}
+			const cameraHolder = Airship.Camera.cameraRig!.transform;
 
-			CameraReferences.cameraHolder!.SetPositionAndRotation(camTransform.position, camTransform.rotation);
-			this.currentMode.OnPostUpdate(CameraReferences.cameraHolder!);
+			cameraHolder.SetPositionAndRotation(calculatedTransform.position, calculatedTransform.rotation);
+			this.currentMode.OnPostUpdate(cameraHolder);
 			if (Airship.Camera.IsFOVManaged()) {
 				for (const [cameraType, fovState] of this.fovStateMap) {
 					if (!fovState.fovSpringMoving) continue;

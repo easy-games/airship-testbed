@@ -289,8 +289,13 @@ export class FixedCameraMode extends CameraMode {
 	}
 
 	OnPostUpdate(cameraHolder: Transform) {
-		cameraHolder.LookAt(this.lastCameraPos);
-		if (this.shouldBumpForOcclusion && this.lastTargetPos) {
+		// This breaks the camera in first person.
+		// What is the point of this line?
+		if (!Airship.Camera.IsFirstPerson()) {
+			cameraHolder.LookAt(this.lastCameraPos);
+		}
+
+		if (this.shouldBumpForOcclusion && this.lastTargetPos && !Airship.Camera.IsFirstPerson()) {
 			const yOffset = this.yOffset + this.currentCrouchYOffset;
 			let targetPosition = this.lastTargetPos.add(Vector3.up.mul(yOffset));
 

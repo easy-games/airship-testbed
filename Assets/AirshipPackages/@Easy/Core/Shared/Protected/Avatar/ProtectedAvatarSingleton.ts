@@ -195,7 +195,7 @@ export class ProtectedAvatarSingleton {
 			return result.outfit;
 		} catch (err) {
 			if (isUnityMakeRequestError(err)) {
-				CoreLogger.Error("failed to load user equipped outfit: " + (err.message ?? "Empty Data"));
+				CoreLogger.Error("failed to load user equipped outfit: " + (err.responseMessage() ?? "Empty Data"));
 			}
 			throw err;
 		}
@@ -207,7 +207,7 @@ export class ProtectedAvatarSingleton {
 			return result.outfit;
 		} catch (err) {
 			if (isUnityMakeRequestError(err)) {
-				CoreLogger.Error("failed to load users equipped outfit: " + (err.message ?? "Empty Data"));
+				CoreLogger.Error("failed to load users equipped outfit: " + (err.responseMessage() ?? "Empty Data"));
 			}
 			throw err;
 		}
@@ -219,7 +219,7 @@ export class ProtectedAvatarSingleton {
 			return result.outfit;
 		} catch (err) {
 			if (isUnityMakeRequestError(err)) {
-				CoreLogger.Error("failed to load user outfit: " + (err.message ?? "Empty Data"));
+				CoreLogger.Error("failed to load user outfit: " + (err.responseMessage() ?? "Empty Data"));
 			}
 			throw err;
 		}
@@ -231,7 +231,7 @@ export class ProtectedAvatarSingleton {
 			return result.outfit;
 		} catch (err) {
 			if (isUnityMakeRequestError(err)) {
-				CoreLogger.Error("Error creating outfit: " + err.message);
+				CoreLogger.Error("Error creating outfit: " + (err.responseMessage() ?? "An unknown error occurred"));
 			}
 			throw err;
 		}
@@ -242,7 +242,7 @@ export class ProtectedAvatarSingleton {
 			await contentServiceClient.outfits.loadOutfit({ outfitId });
 		} catch (err) {
 			if (isUnityMakeRequestError(err)) {
-				CoreLogger.Error("Failed to equip outfit: " + err.message);
+				CoreLogger.Error("Failed to equip outfit: " + (err.responseMessage() ?? "An unknown error occurred"));
 			}
 			throw err;
 		}
@@ -297,7 +297,7 @@ export class ProtectedAvatarSingleton {
 			return contentServiceClient.outfits.updateOutfit({ data: update, params: { outfitId } }).expect().outfit;
 		} catch (err) {
 			if (isUnityMakeRequestError(err)) {
-				CoreLogger.Error("Error Updating Outfit: " + err.message);
+				CoreLogger.Error("Error Updating Outfit: " + (err.responseMessage() ?? "An unknown error occurred"));
 			}
 			throw err;
 		}
@@ -355,7 +355,7 @@ export class ProtectedAvatarSingleton {
 			return imageId;
 		} catch (err) {
 			if (isUnityMakeRequestError(err)) {
-				CoreLogger.Error("Error getting item image resource: " + err.message);
+				CoreLogger.Error("Error getting item image resource: " + (err.responseMessage() ?? "An unknown error occurred"));
 			}
 			return "";
 		}

@@ -2790,7 +2790,7 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 0
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: allowFirstPersonToggle
       type: boolean
       objectType: 

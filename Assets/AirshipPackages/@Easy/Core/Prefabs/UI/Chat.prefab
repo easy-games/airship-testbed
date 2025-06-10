@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4470850130474952005}
   - component: {fileID: 4470850131987886327}
   - component: {fileID: 905569452693961293}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Chat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +146,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: 73e1847e-20e6-446a-acc5-475cc4b96303
-  hash: 93cb81f698b7635a501f16aa71481abf
   script: {fileID: 4872170270887285682, guid: b0324fea8136c4925bed8c7fc11514a9, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Singletons/Chat/ChatWindow.lua
   forceContext: 0
@@ -205,7 +204,7 @@ GameObject:
   - component: {fileID: 4470850130521673979}
   - component: {fileID: 4470850130521673980}
   - component: {fileID: 4470850130521673981}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Viewport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,7 +294,7 @@ GameObject:
   - component: {fileID: 4470850130733272437}
   - component: {fileID: 4470850130733272438}
   - component: {fileID: 8278080395397086744}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Wrapper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -384,7 +383,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4470850130777425830}
   - component: {fileID: 4470850130777425829}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -439,7 +438,7 @@ GameObject:
   - component: {fileID: 4470850130914412303}
   - component: {fileID: 4470850130914412304}
   - component: {fileID: 9007989634671883532}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -557,7 +556,7 @@ GameObject:
   - component: {fileID: 4470850130915096569}
   - component: {fileID: 4470850130915096567}
   - component: {fileID: 4470850130915096568}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -630,7 +629,7 @@ GameObject:
   - component: {fileID: 4470850130923203887}
   - component: {fileID: 4470850130923203885}
   - component: {fileID: 4470850130923203886}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -708,7 +707,7 @@ GameObject:
   - component: {fileID: 4470850131294389243}
   - component: {fileID: 4470850131294389244}
   - component: {fileID: 4470850131294389245}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: InputField (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -885,7 +884,7 @@ GameObject:
   - component: {fileID: 4470850131590940502}
   - component: {fileID: 4470850131590940499}
   - component: {fileID: 5522199307042657007}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -961,7 +960,7 @@ GameObject:
   - component: {fileID: 4470850131772067200}
   - component: {fileID: 4470850131772067326}
   - component: {fileID: 4470850131772067327}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1098,7 +1097,7 @@ GameObject:
   - component: {fileID: 4470850132099671975}
   - component: {fileID: 4470850132099671976}
   - component: {fileID: 4470850132099671977}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Placeholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
