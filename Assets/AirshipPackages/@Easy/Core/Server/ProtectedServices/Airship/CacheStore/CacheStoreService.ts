@@ -54,7 +54,7 @@ export class ProtectedCacheStoreService {
 	}
 
 	public async GetKey<T>(key: string, expireTimeSec?: number): Promise<ReturnType<ServerBridgeApiCacheGetKey<T>>> {
-		const expiry = expireTimeSec !== undefined ? math.clamp(expireTimeSec, 0, this.maxExpireSec) : undefined;
+		const expiry = expireTimeSec !== undefined ? math.clamp(expireTimeSec, 1, this.maxExpireSec) : undefined;
 		const result = await client.get<T>({ params: { key }, query: { expiry } });
 		return result.record;
 	}
@@ -64,7 +64,7 @@ export class ProtectedCacheStoreService {
 		data: T,
 		expireTimeSec: number,
 	): Promise<ReturnType<ServerBridgeApiCacheSetKey<T>>> {
-		const expiry = expireTimeSec !== undefined ? math.clamp(expireTimeSec, 0, this.maxExpireSec) : undefined;
+		const expiry = expireTimeSec !== undefined ? math.clamp(expireTimeSec, 1, this.maxExpireSec) : undefined;
 		const result = await client.set<T>({
 			data: {
 				__airship_dto_version__: 1,
@@ -81,10 +81,10 @@ export class ProtectedCacheStoreService {
 	}
 
 	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<ReturnType<ServerBridgeApiCacheSetKeyTTL>> {
-		const expiry = math.clamp(expireTimeSec, 0, this.maxExpireSec);
+		const expiry = math.clamp(expireTimeSec, 1, this.maxExpireSec);
 		await client.get({ params: { key }, query: { expiry } }).then((record) => record.record);
 		return expiry;
 	}
 
-	protected OnStart(): void {}
+	protected OnStart(): void { }
 }
