@@ -15,14 +15,15 @@ import Inventory from "./Inventory";
 import { InventoryUIVisibility } from "./InventoryUIVisibility";
 import {
 	CancellableInventorySlotInteractionEvent,
+	InventoryEvent,
 	InventorySlotMouseClickEvent,
 	SlotDragEndedEvent,
-	InventoryEvent,
 } from "./Signal/SlotInteractionEvent";
 
 export default class AirshipInventoryUI extends AirshipBehaviour {
 	@Header("Variables")
 	public darkBackground = true;
+	public closeOnClickOutside = true;
 
 	@Header("Hotbar")
 	public hotbarCanvas!: Canvas;
@@ -104,6 +105,17 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				this.OpenBackpack();
 			}
 		});
+
+		if (this.closeOnClickOutside) {
+			this.bin.AddEngineEventConnection(
+				CanvasAPI.OnPointerEvent(this.dropItemCatcher.gameObject, (direction, button) => {
+					if (!this.IsBackpackShown()) return;
+					if (direction === PointerDirection.DOWN) {
+						AppManager.Close();
+					}
+				}),
+			);
+		}
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnDropEvent(this.dropItemCatcher.gameObject, (e) => {
