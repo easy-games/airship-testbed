@@ -69,6 +69,8 @@ interface CleanupQueueItem {
 
 /**
  * A set of utilities that allow you to quickly play an Audio Clip with configuration.
+ *
+ * Audio sources are pooled for improved performance.
  */
 export class AudioManager {
 	private static audioSourceTemplate: GameObject | undefined;
@@ -160,7 +162,7 @@ export class AudioManager {
 	/**
 	 * Plays an audio resource. It will play positionally if a position is supplied in the config. Otherwise
 	 * the audio will play globally.
-	 * 
+	 *
 	 * @param audioResource Audio resource to play. This can be either an AudioClip or an AudioRandomConatiner.
 	 * @param config Configure how the sound is played.
 	 */
@@ -185,11 +187,12 @@ export class AudioManager {
 		if (config?.loop !== undefined || !providedAudioSource) audioSource.loop = config?.loop ?? false;
 		if (config?.pitch !== undefined || !providedAudioSource) audioSource.pitch = config?.pitch ?? 1;
 		if (config?.volumeScale !== undefined || !providedAudioSource) audioSource.volume = config?.volumeScale ?? 1;
-		if (config?.mixerGroup !== undefined || !providedAudioSource) audioSource.outputAudioMixerGroup = config?.mixerGroup!;
+		if (config?.mixerGroup !== undefined || !providedAudioSource)
+			audioSource.outputAudioMixerGroup = config?.mixerGroup!;
 
 		audioSource.resource = audioResource;
 		audioSource.Play();
-		
+
 		this.globalAudioSources.set(audioSource.gameObject.GetInstanceID(), audioSource);
 		if (!audioSource.loop) {
 			const clip = audioSource.clip;
@@ -256,11 +259,12 @@ export class AudioManager {
 		if (config?.dopplerLevel !== undefined || !providedAudioSource) {
 			audioSource.dopplerLevel = config?.dopplerLevel ?? 0;
 		}
-		if (config?.mixerGroup !== undefined || !providedAudioSource) audioSource.outputAudioMixerGroup = config?.mixerGroup!;
-		
+		if (config?.mixerGroup !== undefined || !providedAudioSource)
+			audioSource.outputAudioMixerGroup = config?.mixerGroup!;
+
 		audioSource.resource = audioResource;
 		audioSource.Play();
-		
+
 		if (!audioSource.loop) {
 			const clip = audioSource.clip;
 			this.cleanupQueue.add({
