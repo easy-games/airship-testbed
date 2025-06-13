@@ -177,7 +177,7 @@ export class MessagingService {
 				this.unsuccessfulReconnectAttempts = 0;
 			}
 			const delay = calculateDelay(this.unsuccessfulReconnectAttempts);
-			const delayMsg = (this.doReconnect && delay) ? "Retrying in " + delay + " seconds." : "";
+			const delayMsg = (this.doReconnect && delay) ? "Retrying in " + math.floor(delay) + " seconds." : "";
 			warn(`Disconnected from messaging. ${delayMsg}` + reason);
 			this.onSocketConnectionChanged.Fire(false);
 
