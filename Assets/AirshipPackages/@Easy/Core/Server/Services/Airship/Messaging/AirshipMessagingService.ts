@@ -1,10 +1,10 @@
 import {
 	MessagingServiceBridgeTopics,
 	ServerBridgeApiPublish,
-	ServerBridgeApiSubscribe
+	ServerBridgeApiSubscribe,
+	ServerBridgeApiUnsubscribe
 } from "@Easy/Core/Server/ProtectedServices/Airship/Messaging/MessagingService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { AirshipDataStoreLockInfo, AirshipDataStoreLockMode } from "@Easy/Core/Shared/Airship/Types/AirshipDataStore";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
@@ -14,7 +14,7 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
  */
 @Service({})
 export class AirshipMessagingService {
-	private onEvent = new Signal<[topic: string, data: any]>();
+	private onEvent = new Signal<[topic: string, data: unknown]>();
 	constructor() {
 		if (!Game.IsServer()) return;
 
@@ -23,8 +23,9 @@ export class AirshipMessagingService {
 
 	protected OnStart(): void {
 		if (!Game.IsServer()) return;
-		contextbridge.subscribe<(context: LuauContext, args: { topicNamespace: string, topicName: string, data: string }) => void>(MessagingServiceBridgeTopics.IncomingMessage, (_, { topicNamespace, topicName, data }) => {
-			this.onEvent.Fire(topicName, json.decode(data));
+		contextbridge.subscribe<(context: LuauContext, args: { topic: TopicDescription, data: string }) => void>(MessagingServiceBridgeTopics.IncomingMessage, (_, { topic, data }) => {
+			const decodedData: { data: unknown } = json.decode(data);
+			this.onEvent.Fire(topic.topicName, decodedData.data);
 		});
 	}
 
@@ -40,32 +41,30 @@ export class AirshipMessagingService {
 	 * @param callback The function that will be called when a message is received on the subscribed topic.
 	 * @returns An object containing a success flag (if the topic was able to be subscribed to) and an unsubscribe function.
 	 */
-	public Subscribe<T = unknown>(topic: string, callback: (data: T) => void): { success: boolean, unsubscribe: () => void } {
+	public Subscribe<T = unknown>(topic: string, callback: (data: T) => void): { unsubscribe: () => void } {
 		this.CheckTopicName(topic);
 
 		const retVal = this.onEvent.Connect((e, d) => {
 			if (e === topic) {
-				callback(d);
+				callback(d as T);
 			}
 		});
 
-		const success = contextbridge.invoke<ServerBridgeApiSubscribe>(
+		contextbridge.invoke<ServerBridgeApiSubscribe>(
 			MessagingServiceBridgeTopics.Subscribe,
 			LuauContext.Protected,
 			topic,
 		);
 
-		if (!success) {
-			retVal(); // Go ahead and unsubscribe since the request wasn't successful. No-op returned method
-			return {
-				success: false,
-				unsubscribe: () => { },
-			};
-		}
-
 		return {
-			success,
-			unsubscribe: retVal,
+			unsubscribe: () => {
+				retVal();
+				contextbridge.invoke<ServerBridgeApiUnsubscribe>(
+					MessagingServiceBridgeTopics.Unsubscribe,
+					LuauContext.Protected,
+					topic,
+				);
+			},
 		};
 	}
 
@@ -75,14 +74,23 @@ export class AirshipMessagingService {
 	 * @param data The data to be sent
 	 * @returns A boolean indicating whether the publish was successful.
 	 */
-	public Publish(topic: string, data: any): boolean {
+	public Publish(topic: string, data: unknown): Promise<{ success: boolean }> {
 		this.CheckTopicName(topic);
-		return contextbridge.invoke<ServerBridgeApiPublish>(
-			MessagingServiceBridgeTopics.Publish,
-			LuauContext.Protected,
-			topic,
-			json.encode(data),
-		);
+		return new Promise((resolve, reject) => {
+			task.defer(() => {
+				try {
+					const res = contextbridge.invoke<ServerBridgeApiPublish>(
+						MessagingServiceBridgeTopics.Publish,
+						LuauContext.Protected,
+						topic,
+						json.encode({ data }),
+					);
+					resolve({ success: res.success });
+				} catch (error) {
+					reject(error);
+				}
+			});
+		});
 	}
 
 }

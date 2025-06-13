@@ -1328,13 +1328,25 @@ interface ChatroomAgent {
 	Dispose(): void;
 }
 
+enum Scope {
+	Game = 0,
+	Server = 1,
+}
+
+interface TopicDescription {
+	scope: Scope;
+	topicNamespace: string;
+	topicName: string;
+}
+
 interface MessagingManager {
 	ConnectAsyncInternal(): boolean;
 	IsConnected(): boolean;
-	SubscribeAsync(topicNamespace: string, topicName: string): boolean;
-	PublishAsync(topicNamespace: string, topicName: string, data: string): boolean;
+	SubscribeAsync(scope: Scope, topicNamespace: string, topicName: string): boolean;
+	UnsubscribeAsync(scope: Scope, topicNamespace: string, topicName: string): boolean;
+	PublishAsync(scope: Scope, topicNamespace: string, topicName: string, data: string): boolean;
 	Instance: {
-		OnEvent(callback: (topicNamespace: string, topicName: string, data: string) => void): EngineEventConnection;
+		OnEvent(callback: (topic: TopicDescription, data: string) => void): EngineEventConnection;
 		OnDisconnected(callback: (disconnectReason: string) => void): EngineEventConnection;
 	};
 }
