@@ -189,8 +189,6 @@ export class MessagingService {
 					print("Attempting to reconnect to messaging service...");
 					this.Connect();
 				});
-			} else {
-
 			}
 		});
 
