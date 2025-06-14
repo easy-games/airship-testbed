@@ -33470,6 +33470,8 @@ interface CharacterJointConstructor {
 }
 declare const CharacterJoint: CharacterJointConstructor;
     
+    
+    
 interface Application {
 
 
@@ -53570,6 +53572,7 @@ interface CharacterMovementSettings extends MonoBehaviour {
     drag: number;
     airDragMultiplier: number;
     airSpeedMultiplier: number;
+    airAcceleration: number;
     detectStepUps: boolean;
     alwaysStepUp: boolean;
     assistedLedgeJump: boolean;
