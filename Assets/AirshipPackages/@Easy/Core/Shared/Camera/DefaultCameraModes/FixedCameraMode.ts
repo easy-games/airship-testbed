@@ -6,6 +6,7 @@ import { CameraMode, CameraTransform } from "..";
 import { TweenEasingFunction } from "../../Tween/EasingFunctions";
 import { Tween } from "../../Tween/Tween";
 import ObjectUtils from "../../Util/ObjectUtils";
+import { Signal } from "../../Util/Signal";
 import { CameraConstants, FixedCameraConfig } from "../CameraConstants";
 import { OcclusionCameraManager } from "../OcclusionCameraManager";
 
@@ -21,6 +22,7 @@ export class FixedCameraMode extends CameraMode {
 	private readonly touchscreen = this.OnStopBin.Add(new Touchscreen());
 
 	public config: FixedCameraConfig;
+	public onLateUpdateComplete = new Signal();
 	private locked = false;
 	private shouldBumpForOcclusion = true;
 	private xOffset = 0;
@@ -256,6 +258,7 @@ export class FixedCameraMode extends CameraMode {
 	OnLateUpdate(dt: number) {
 		const characterTarget = this.GetCharacterTarget();
 		if (characterTarget && (characterTarget.IsDead() || characterTarget.IsDestroyed())) {
+			this.onLateUpdateComplete.Fire();
 			return new CameraTransform(this.lastTargetPos ?? Vector3.zero, this.lastRot ?? Quaternion.identity);
 		}
 
@@ -285,6 +288,8 @@ export class FixedCameraMode extends CameraMode {
 		const rotation = Quaternion.LookRotation(lookVector, Vector3.up);
 		this.lastRot = rotation;
 
+		this.cameraForwardVector = lookVector;
+		this.onLateUpdateComplete.Fire();
 		return new CameraTransform(newCameraPos, rotation);
 	}
 

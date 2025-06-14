@@ -370,6 +370,7 @@ GameObject:
   - component: {fileID: 7877576865563315073}
   - component: {fileID: 7270479773071441371}
   - component: {fileID: 3239827073778428190}
+  - component: {fileID: 5121598207645430061}
   m_Layer: 3
   m_Name: AirshipCharacter
   m_TagString: Character
@@ -1064,6 +1065,19 @@ MonoBehaviour:
   animWalkSpeed: 4.4444447
   animRunSpeed: 6.6666665
   animCrouchSpeed: 2.1233335
+--- !u!114 &5121598207645430061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8616685848737228372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b62514caa1042aa940720aff8b0fd68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterMovement: {fileID: 7877576865563315073}
 --- !u!1001 &3492179243954559087
 PrefabInstance:
   m_ObjectHideFlags: 0
