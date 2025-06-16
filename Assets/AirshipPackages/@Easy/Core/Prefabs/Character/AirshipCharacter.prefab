@@ -1032,6 +1032,7 @@ MonoBehaviour:
   drag: 0.25
   airDragMultiplier: 1
   airSpeedMultiplier: 1
+  airAcceleration: 60
   detectStepUps: 1
   alwaysStepUp: 0
   assistedLedgeJump: 1
