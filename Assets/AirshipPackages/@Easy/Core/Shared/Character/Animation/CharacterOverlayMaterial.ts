@@ -1,4 +1,5 @@
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { Game } from "../../Game";
 
 export default class CharacterOverlayMaterial extends AirshipBehaviour {
 	@Header("Templates")
@@ -18,6 +19,11 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 	private currentStaticRenderers: MeshRenderer[] = [];
 	private currentRenderers: Renderer[] = [];
 	private currentMaterial?: Material;
+
+	protected Awake(): void {
+		if (this.defaultOverlayMaterialTemplate)
+			this.defaultOverlayMaterialTemplate = new Material(this.defaultOverlayMaterialTemplate);
+	}
 
 	override Start(): void {
 		//print("Overlay start");
@@ -54,24 +60,30 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 						// }
 					}
 					this.currentMaterial = undefined;
-					this.AddExtraRenderers();
+					this.AddAllExtraRenderers();
 					this.SetOverlayMaterial(this.defaultOverlayMaterialTemplate);
 				}),
 			);
 		}
-		this.AddExtraRenderers();
+		this.AddAllExtraRenderers();
 	}
 
-	private AddExtraRenderers() {
-		for (let ren of this.extraSkinnedMeshRenderers) {
+	private AddAllExtraRenderers() {
+		this.AddExtraRenderers(this.currentSkinnedRenderers, this.extraSkinnedMeshRenderers);
+		this.AddExtraRenderers(this.currentStaticRenderers, this.extraMeshRenderers);
+	}
+
+	private AddExtraRenderers(current: Renderer[], extras: Renderer[]) {
+		for (let ren of extras) {
 			if (ren) {
-				this.currentSkinnedRenderers.push(ren);
-				this.currentRenderers.push(ren);
-			}
-		}
-		for (let ren of this.extraMeshRenderers) {
-			if (ren) {
-				this.currentStaticRenderers.push(ren);
+				// If in editor make sure we're not duplicating renderers
+				if (Game.IsEditor()) {
+					if (current.find((el) => el === ren)) {
+						Debug.LogError("Unnecessarily including extra skinned renderer: " + ren.name, ren);
+					}
+				}
+
+				current.push(ren);
 				this.currentRenderers.push(ren);
 			}
 		}
@@ -90,7 +102,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 			}
 			const index = ren.sharedMesh.subMeshCount - (this.skinnedMeshHaveOverlayMesh ? 1 : 0);
 			if (newMaterial) {
-				ren.SetMaterial(index, newMaterial);
+				ren.SetSharedMaterial(index, newMaterial);
 			} else {
 				Bridge.RemoveMaterial(ren, index);
 			}
@@ -103,7 +115,7 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 			if (filter?.mesh) {
 				const index = filter.sharedMesh.subMeshCount;
 				if (newMaterial) {
-					ren.SetMaterial(index, newMaterial);
+					ren.SetSharedMaterial(index, newMaterial);
 				} else {
 					Bridge.RemoveMaterial(ren, index);
 				}
@@ -136,5 +148,9 @@ export default class CharacterOverlayMaterial extends AirshipBehaviour {
 
 	public GetAllRenderers() {
 		return this.currentRenderers;
+	}
+
+	public GetCurrentMaterial() {
+		return this.currentMaterial;
 	}
 }
