@@ -875,6 +875,7 @@ interface ServerManager extends MonoBehaviour {
 
 interface Renderer {
 	SetMaterial(index: number, material: Material): void;
+	SetSharedMaterial(index: number, material: Material): void;
 }
 
 interface PhysicsScene {

@@ -7,6 +7,7 @@ import { Theme } from "@Easy/Core/Shared/Util/Theme";
 export class TpAllCommand extends ChatCommand {
 	constructor() {
 		super("tpAll");
+		super.requiresPermission = true;
 	}
 
 	public Execute(player: Player, args: string[]): void {

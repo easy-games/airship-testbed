@@ -4,6 +4,7 @@ import DateParser from "@Easy/Core/Shared/DateParser";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
@@ -19,8 +20,8 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 	public playerCountText!: TMP_Text;
 
 	public buttonGo!: GameObject;
-	public gameImage!: CloudImage;
-	public orgImage!: CloudImage;
+	public gameImg: RawImage;
+	public orgImg: RawImage;
 	public authorText!: TMP_Text;
 	public canvasGroup: CanvasGroup;
 
@@ -36,7 +37,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 
 	private bin = new Bin();
 
-	public Awake(): void { }
+	public Awake(): void {}
 
 	override Start(): void {
 		const mainMenu = Dependency<MainMenuSingleton>();
@@ -67,7 +68,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		});
 	}
 
-	override OnDestroy(): void { }
+	override OnDestroy(): void {}
 
 	override OnDisable(): void {
 		this.bin.Clean();
@@ -95,44 +96,20 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		{
 			// Game image
 			let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".png";
-			if (!this.gameImage) {
-				print("game image not found.");
-				Debug.Break();
-			}
-			this.gameImage.url = url;
-			// this.gameImage.image.color = new Color(0, 0, 0, 1);
-			const downloadConn = this.gameImage.OnFinishedLoading.Connect((success) => {
-				// if (success) {
-				// 	NativeTween.GraphicColor(this.gameImage.image, new Color(1, 1, 1, 1), 0.2).SetUseUnscaledTime(true);
-				// } else {
-				// 	NativeTween.GraphicColor(this.gameImage.image, new Color(0, 0, 0, 1), 0.2).SetUseUnscaledTime(true);
-				// }
-			});
-			this.gameImage.StartDownload();
-			this.bin.Add(() => {
-				// Bridge.DisconnectEvent(downloadConn);
-				downloadConn.Disconnect();
+			task.spawn(async () => {
+				const tex = await Protected.Cache.DownloadImage(url);
+				this.gameImg.texture = tex;
+				this.gameImg.color = Color.white;
 			});
 		}
 
 		if (gameDto.organization) {
 			// Org image
 			let url = AirshipUrl.CDN + "/images/" + gameDto.organization.iconImageId + ".png";
-			this.orgImage.url = url;
-			this.orgImage.image.color = new Color(0, 0, 0, 0.3);
-			const downloadConn = this.orgImage.OnFinishedLoading.Connect((success) => {
-				if (success) {
-					NativeTween.GraphicColor(this.orgImage.image, new Color(1, 1, 1, 1), 0.2).SetUseUnscaledTime(true);
-				} else {
-					NativeTween.GraphicColor(this.orgImage.image, new Color(0, 0, 0, 0.3), 0.2).SetUseUnscaledTime(
-						true,
-					);
-				}
-			});
-			this.orgImage.StartDownload();
-			this.bin.Add(() => {
-				// Bridge.DisconnectEvent(downloadConn);
-				downloadConn.Disconnect();
+			task.spawn(async () => {
+				const tex = await Protected.Cache.DownloadImage(url);
+				this.orgImg.texture = tex;
+				this.orgImg.color = Color.white;
 			});
 		}
 

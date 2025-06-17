@@ -5,7 +5,7 @@ import { Player } from "@Easy/Core/Shared/Player/Player";
 
 export class KillCommand extends ChatCommand {
 	constructor() {
-		super("kill", ["die"]);
+		super("kill", ["die"], undefined, "Kills your character (or another player's)", true);
 	}
 
 	public Execute(player: Player, args: string[]): void {

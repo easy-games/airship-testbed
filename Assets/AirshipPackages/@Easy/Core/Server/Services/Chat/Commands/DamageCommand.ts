@@ -5,7 +5,7 @@ import { Player } from "@Easy/Core/Shared/Player/Player";
 
 export class DamageCommand extends ChatCommand {
 	constructor() {
-		super("damage", [], "[amount]");
+		super("damage", [], "[amount]", "Deals damage to your character (or another player)", true);
 	}
 
 	public Execute(player: Player, args: string[]): void {
