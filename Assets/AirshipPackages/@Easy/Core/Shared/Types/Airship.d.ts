@@ -117,7 +117,14 @@ interface CharacterMovementEngineEvents {
 
 interface StateSnapshot {
 	lastProcessedCommand: number;
+	/**
+	 * The time the snapshot was created. This time is local to the client/server that created it.
+	 */
 	time: number;
+	/**
+	 * The tick the snapshot was created. This tick is local to the client/server that created it.
+	 */
+	tick: number;
 }
 
 interface CharacterSnapshotData extends StateSnapshot {
@@ -143,7 +150,14 @@ interface CharacterSnapshotData extends StateSnapshot {
 
 interface InputCommand {
 	commandNumber: number;
+	/**
+	 * The time the input was created. This time is local to the client/server that created it.
+	 */
 	time: number;
+	/**
+	 * The tick the input was created. This tick is local to the client/server that created it.
+	 */
+	tick: number;
 }
 
 interface CharacterInputData extends InputCommand {
