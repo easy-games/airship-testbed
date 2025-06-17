@@ -1,5 +1,6 @@
 import { TransferController } from "@Easy/Core/Client/ProtectedControllers/Transfer/TransferController";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { TweenEasingFunction } from "@Easy/Core/Shared/Tween/EasingFunctions";
 import { Tween } from "@Easy/Core/Shared/Tween/Tween";
@@ -24,6 +25,7 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 	public playerCountText: TMP_Text;
 	public endCountdownText: TMP_Text;
 	public startCountdownText: TMP_Text;
+	public roundedCorners: ImageWithRoundedCorners;
 
 	private startTime: number;
 	private endTime: number;
@@ -56,6 +58,12 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 				true,
 			),
 		);
+
+		if (Game.IsMobile()) {
+			this.gameThumbnailImg.gameObject.SetActive(false);
+			this.roundedCorners.radius = 0;
+			this.roundedCorners.Validate();
+		}
 	}
 
 	private UpdateTimers(): void {
