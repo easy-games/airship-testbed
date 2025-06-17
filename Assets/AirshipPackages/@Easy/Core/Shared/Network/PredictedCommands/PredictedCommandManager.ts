@@ -420,119 +420,123 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			// Handles setting snapshot state for commands. This is handled here because we may need to re-create
 			// instances of the command that have already been cleaned up if we roll back to a time when the command
 			// was still running.
-			character.bin.Add(
-				character.OnResetToSnapshot.Connect((customSnapshotData, snapshot) => {
-					// First, make sure any commands that shouldn't be running at this snapshot are destroyed.
-					const currentCommands = this.activeCommands.get(character.id);
-					currentCommands?.forEach((activeCommand) => {
-						if (customSnapshotData.has(activeCommand.customDataKey)) {
-							// This command should be active, so we don't need to clean it up
-							// print(
-							// 	"command is active on target snapshot, ignoring. Expect to reset " +
-							// 		activeCommand.customDataKey,
-							// );
-							activeCommand.ResetInstance(); // Resets the internal instance fields so they are fresh for the replay
-							return;
-						}
-
-						// print("active command is not active on snapshot, removing" + activeCommand.customDataKey);
-						// Remove all other commands.
-						activeCommand.bin.Clean();
-					});
-
-					// Handle reseting or creating commands that are part of the snapshot we are resetting to.
-					(customSnapshotData as Map<string, Readonly<CustomSnapshotData>>).forEach(
-						(value, customDataKey) => {
-							// If it's not custom data controlled by us, ignore it
-							const commandIdentifier = this.ParseCustomDataKey(character.id, customDataKey);
-							if (!commandIdentifier) return;
-
-							// See if the command is already running
-							let activeCommand = this.GetActiveCommandByIdentifier(commandIdentifier);
-							if (!activeCommand) {
+			// For now server will not handle OnResetToSnapshot. This means lag compensation will only reposition
+			// characters (and will not reset command state). This is as an optimization.
+			if (!Game.IsServer()) {
+				character.bin.Add(
+					character.OnResetToSnapshot.Connect((customSnapshotData, snapshot) => {
+						// First, make sure any commands that shouldn't be running at this snapshot are destroyed.
+						const currentCommands = this.activeCommands.get(character.id);
+						currentCommands?.forEach((activeCommand) => {
+							if (customSnapshotData.has(activeCommand.customDataKey)) {
+								// This command should be active, so we don't need to clean it up
 								// print(
-								// 	"command was not active when resetting. Expect to create " +
-								// 		commandIdentifier.stringify(),
+								// 	"command is active on target snapshot, ignoring. Expect to reset " +
+								// 		activeCommand.customDataKey,
 								// );
-								// If it's not running, create it
-								activeCommand = this.SetupCommand(
-									character,
-									commandIdentifier.commandId,
-									commandIdentifier.instanceId,
-								);
+								activeCommand.ResetInstance(); // Resets the internal instance fields so they are fresh for the replay
+								return;
+							}
+
+							// print("active command is not active on snapshot, removing" + activeCommand.customDataKey);
+							// Remove all other commands.
+							activeCommand.bin.Clean();
+						});
+
+						// Handle reseting or creating commands that are part of the snapshot we are resetting to.
+						(customSnapshotData as Map<string, Readonly<CustomSnapshotData>>).forEach(
+							(value, customDataKey) => {
+								// If it's not custom data controlled by us, ignore it
+								const commandIdentifier = this.ParseCustomDataKey(character.id, customDataKey);
+								if (!commandIdentifier) return;
+
+								// See if the command is already running
+								let activeCommand = this.GetActiveCommandByIdentifier(commandIdentifier);
 								if (!activeCommand) {
-									warn(
-										`Failed to set up command ${
-											commandIdentifier.commandId
-										} (id: ${commandIdentifier.stringify()}) for replay. This may cause unusual replay behavior.`,
-									);
-									return;
-								}
-							}
-
-							// Reset the command to the provided state snapshot.
-							let data = value[1];
-							const confirmedState = this.confirmedFinalState.get(commandIdentifier.stringify());
-							// Overwrite with last confirmed data if required
-							if (confirmedState) {
-								// Our authoritative state is saying this command should already have ended, so don't create it.
-								if (confirmedState.commandNumber < snapshot.lastProcessedCommand) {
 									// print(
-									// 	"Confirmed state for " +
-									// 		commandIdentifier.stringify() +
-									// 		" exists but it's before this command, ignoring reset.",
+									// 	"command was not active when resetting. Expect to create " +
+									// 		commandIdentifier.stringify(),
 									// );
-									activeCommand.bin.Clean(); // Remove the command since the snapshot shouldn't have had this command in it.
-									return;
+									// If it's not running, create it
+									activeCommand = this.SetupCommand(
+										character,
+										commandIdentifier.commandId,
+										commandIdentifier.instanceId,
+									);
+									if (!activeCommand) {
+										warn(
+											`Failed to set up command ${
+												commandIdentifier.commandId
+											} (id: ${commandIdentifier.stringify()}) for replay. This may cause unusual replay behavior.`,
+										);
+										return;
+									}
 								}
-								data = confirmedState.snapshot[1];
-							}
 
-							// If the command was predicted to end before this snapshot and we are seeing the command
-							// as part of the snapshot, reset the unconfirmedFinalState, since our prediction was obviously inaccurate.
-							const unconfirmedEnd = this.unconfirmedFinalState.get(commandIdentifier.stringify());
-							if (unconfirmedEnd && unconfirmedEnd.commandNumber < snapshot.lastProcessedCommand) {
-								// print("deleting invalid unconfirmed state for " + commandIdentifier.stringify());
-								this.unconfirmedFinalState.delete(commandIdentifier.stringify());
-							}
-
-							if (Game.IsClient()) {
-								// If the client predicted a cancellation that didn't occur (since we are seeing snapshot data for it after the cancel
-								// should have occured), remove it so that we don't use it in our resimulations.
-								const predictedCancel = this.predictedCancellations.get(commandIdentifier.stringify());
-								if (predictedCancel && predictedCancel.commandNumber < snapshot.lastProcessedCommand) {
-									this.predictedCancellations.delete(commandIdentifier.stringify());
+								// Reset the command to the provided state snapshot.
+								let data = value[1];
+								const confirmedState = this.confirmedFinalState.get(commandIdentifier.stringify());
+								// Overwrite with last confirmed data if required
+								if (confirmedState) {
+									// Our authoritative state is saying this command should already have ended, so don't create it.
+									if (confirmedState.commandNumber < snapshot.lastProcessedCommand) {
+										// print(
+										// 	"Confirmed state for " +
+										// 		commandIdentifier.stringify() +
+										// 		" exists but it's before this command, ignoring reset.",
+										// );
+										activeCommand.bin.Clean(); // Remove the command since the snapshot shouldn't have had this command in it.
+										return;
+									}
+									data = confirmedState.snapshot[1];
 								}
-							}
 
-							// If we need to use this command and it's not been created yet, create it.
-							if (!activeCommand.created) {
-								// print(
-								// 	"active command " +
-								// 		activeCommand.customDataKey +
-								// 		" was not intialized on target snapshot, creating",
-								// );
-								activeCommand.created = true;
-								TaskUtil.RunWithoutYield(() => activeCommand.instance.Create?.());
-							}
+								// If the command was predicted to end before this snapshot and we are seeing the command
+								// as part of the snapshot, reset the unconfirmedFinalState, since our prediction was obviously inaccurate.
+								const unconfirmedEnd = this.unconfirmedFinalState.get(commandIdentifier.stringify());
+								if (unconfirmedEnd && unconfirmedEnd.commandNumber < snapshot.lastProcessedCommand) {
+									// print("deleting invalid unconfirmed state for " + commandIdentifier.stringify());
+									this.unconfirmedFinalState.delete(commandIdentifier.stringify());
+								}
 
-							// print("resetting " + activeCommand.customDataKey);
-							TaskUtil.RunWithoutYield(() => activeCommand.instance.ResetToSnapshot(data));
+								if (Game.IsClient()) {
+									// If the client predicted a cancellation that didn't occur (since we are seeing snapshot data for it after the cancel
+									// should have occured), remove it so that we don't use it in our resimulations.
+									const predictedCancel = this.predictedCancellations.get(commandIdentifier.stringify());
+									if (predictedCancel && predictedCancel.commandNumber < snapshot.lastProcessedCommand) {
+										this.predictedCancellations.delete(commandIdentifier.stringify());
+									}
+								}
 
-							// Finished means that the command ended on the tick we are resetting to, so remove it from
-							// the active command list so it doesn't continue to tick in our predictions.
-							if (value[0]) {
-								// print(
-								// 	"cmd " +
-								// 		activeCommand.customDataKey +
-								// 		" finished on this tick. Removing from active command list.",
-								// );
-								activeCommand.bin.Clean();
-							}
-						},
-					);
-				}),
-			);
+								// If we need to use this command and it's not been created yet, create it.
+								if (!activeCommand.created) {
+									// print(
+									// 	"active command " +
+									// 		activeCommand.customDataKey +
+									// 		" was not intialized on target snapshot, creating",
+									// );
+									activeCommand.created = true;
+									TaskUtil.RunWithoutYield(() => activeCommand.instance.Create?.());
+								}
+
+								// print("resetting " + activeCommand.customDataKey);
+								TaskUtil.RunWithoutYield(() => activeCommand.instance.ResetToSnapshot(data));
+
+								// Finished means that the command ended on the tick we are resetting to, so remove it from
+								// the active command list so it doesn't continue to tick in our predictions.
+								if (value[0]) {
+									// print(
+									// 	"cmd " +
+									// 		activeCommand.customDataKey +
+									// 		" finished on this tick. Removing from active command list.",
+									// );
+									activeCommand.bin.Clean();
+								}
+							},
+						);
+					}),
+				);
+			}
 
 			// Clean the top level character entry when a character is removed.
 			// This handles cleaning each active command
