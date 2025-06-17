@@ -1,3 +1,4 @@
+import MenuFeaturedEvent from "@Easy/Core/Client/Components/HomePage/FeaturedEvent/MenuFeaturedEvent";
 import { SocketController } from "@Easy/Core/Client/ProtectedControllers/Socket/SocketController";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import SearchSingleton from "@Easy/Core/Shared/MainMenu/Components/Search/SearchSingleton";
@@ -11,23 +12,28 @@ import { MainMenuBlockSingleton } from "../../../Client/ProtectedControllers//Se
 import { Asset } from "../../Asset";
 import DateParser from "../../DateParser";
 import { Game } from "../../Game";
+import { ContentServiceGames } from "../../TypePackages/content-service-types";
+import { UnityMakeRequest } from "../../TypePackages/UnityMakeRequest";
 import inspect from "../../Util/Inspect";
 import { ProtectedUtil } from "../../Util/ProtectedUtil";
 import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 import DiscordHero from "./DiscordHero";
 import MainMenuPageComponent from "./MainMenuPageComponent";
-import { ContentServiceGames } from "../../TypePackages/content-service-types";
-import { UnityMakeRequest } from "../../TypePackages/UnityMakeRequest";
 
 const gamesClient = new ContentServiceGames.Client(UnityMakeRequest(AirshipUrl.ContentService));
 
 export default class HomePageComponent extends MainMenuPageComponent {
+	@Header("References")
 	public mainContent!: Transform;
 	public mainSortedContentLayoutGroup: VerticalLayoutGroup;
-	public spacerPrefab!: GameObject;
-	public sortPrefab!: GameObject;
 	public scrollRect!: ScrollRect;
 	public verticalLayoutGroup: VerticalLayoutGroup;
+
+	@Header("Prefabs")
+	public spacerPrefab!: GameObject;
+	public sortPrefab!: GameObject;
+	public featuredEventPrefab: GameObject;
+
 	private bin = new Bin();
 	private sorts = new Map<SortId, SortComponent>();
 	private addedDiscordHero = false;
@@ -54,6 +60,14 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		super.OpenPage(params);
 		this.ClearSorts();
 		this.addedDiscordHero = false;
+
+		this.CreateFeaturedEvent(
+			"47c5fdbd-bf3f-4a5b-9ad3-dea11a52a762",
+			"Beta playtest of BedWars 2! Only available for the weekend. <u>Leaderboard & stats enabled.</u>",
+			1750446000,
+			1750597200,
+		);
+
 		this.CreateSort(SortId.Popular, "Popular");
 		this.CreateSort(SortId.RecentlyUpdated, "Recently Updated");
 
@@ -113,6 +127,12 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		sortComponent.SetTitle(title);
 		sortComponent.pageScrollRect = this.scrollRect;
 		this.sorts.set(sortId, sortComponent);
+	}
+
+	private CreateFeaturedEvent(gameId: string, description: string, startTime: number, endTime: number): void {
+		const go = Instantiate(this.featuredEventPrefab, this.mainContent);
+		const featuredEvent = go.GetAirshipComponent<MenuFeaturedEvent>()!;
+		featuredEvent.Init(gameId, description, startTime, endTime);
 	}
 
 	private CreateSpacer(): void {

@@ -53572,7 +53572,8 @@ interface CharacterMovementSettings extends MonoBehaviour {
     drag: number;
     airDragMultiplier: number;
     airSpeedMultiplier: number;
-    airAcceleration: number;
+    additionalNoInputDrag: number;
+    airInputAcceleration: number;
     detectStepUps: boolean;
     alwaysStepUp: boolean;
     assistedLedgeJump: boolean;
