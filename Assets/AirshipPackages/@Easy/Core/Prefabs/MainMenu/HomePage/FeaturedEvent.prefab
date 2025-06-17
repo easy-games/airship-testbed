@@ -1545,7 +1545,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &751213754169112408
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1560,10 +1560,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 84136945986832960}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 550, y: -248.25}
-  m_SizeDelta: {x: 552.59, y: 28.2992}
+  m_AnchorMin: {x: 0.465, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -83.17917}
+  m_SizeDelta: {x: -68.9623, y: 25.97}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &6607555756844464813
 CanvasRenderer:
@@ -1620,7 +1620,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24.1
+  m_fontSize: 22.15
   m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1955,7 +1955,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 1bce4f87bf9e83d4f9a1e86dfa3e5a07, type: 3}
+  m_Texture: {fileID: 0}
   m_UVRect:
     serializedVersion: 2
     x: 0
