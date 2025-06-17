@@ -1,5 +1,6 @@
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { Player } from "@Easy/Core/Shared/Player/Player";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 
 export class TeamCommand extends ChatCommand {
 	constructor() {
@@ -11,6 +12,6 @@ export class TeamCommand extends ChatCommand {
 			return;
 		}
 
-		player.SendMessage(`You are on Team [${player.team.id}]`);
+		player.SendMessage(`[Team] You are on ${ChatColor.Color(player.team.color, ChatColor.Bold(player.team.id))}`);
 	}
 }

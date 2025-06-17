@@ -6,7 +6,7 @@ import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 
 export class KickCommand extends ChatCommand {
 	constructor() {
-		super("kick", [], "/kick <player> [message]");
+		super("kick", [], "/kick <player> [message]", "Kicks a player from the server.", true);
 	}
 
 	public Execute(player: Player, args: string[]): void {

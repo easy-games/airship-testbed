@@ -16,11 +16,12 @@ export abstract class ChatCommand {
 		public aliases: string[] = [],
 		public usage: string = "",
 		public description: string = "",
+		public requiresPermission = false,
 	) {}
 
 	/**
 	 * Execute is run on the server when a client runs a command.
-	 * 
+	 *
 	 * @param player The player running the command.
 	 * @param args A list of arguments to the command (all contents after the command label split by space).
 	 * For example in the command ``/teleport 1 2 3`` args would be ``1``, ``2``, ``3``.

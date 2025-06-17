@@ -6,13 +6,14 @@ import { Theme } from "@Easy/Core/Shared/Util/Theme";
 export class FlyCommand extends ChatCommand {
 	constructor() {
 		super("fly");
+		super.requiresPermission = true;
 	}
 	public Execute(player: Player, args: string[]): void {
 		if (!player.character?.movement) {
 			warn("Fly command does not work while using non-default movement");
 			return;
 		}
-		
+
 		if (player.character) {
 			const flying = !player.character.movement.IsFlying();
 			player.character.movement.SetDebugFlying(flying);

@@ -10,7 +10,7 @@ import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 
 export class BotCommand extends ChatCommand {
 	constructor() {
-		super("bot", [], "[amount]");
+		super("bot", [], "[amount]", "Spawns bot players", true);
 	}
 
 	public Execute(player: Player, args: string[]): void {
