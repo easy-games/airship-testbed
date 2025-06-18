@@ -28,6 +28,6 @@ export class MessageCommand extends ChatCommand {
 				text += " ";
 			}
 		}
-		Dependency<DirectMessageController>().SendDirectMessage(friend.uid, text);
+		task.defer(() => Dependency<DirectMessageController>().SendDirectMessage(friend.uid, text));
 	}
 }
