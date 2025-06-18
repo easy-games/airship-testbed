@@ -49,6 +49,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 			if (Game.IsMobile() && st === "sm") {
 				this.mainSortedContentLayoutGroup.padding.top = 20;
 				this.verticalLayoutGroup.padding.left = 4;
+				this.verticalLayoutGroup.padding.right = 4;
 			}
 		});
 		if (Game.IsMobile()) {

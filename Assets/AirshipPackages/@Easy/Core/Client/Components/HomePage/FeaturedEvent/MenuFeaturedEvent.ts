@@ -61,7 +61,7 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 
 		if (Game.IsMobile()) {
 			this.gameThumbnailImg.gameObject.SetActive(false);
-			this.roundedCorners.radius = 0;
+			this.roundedCorners.radius = 15;
 			this.roundedCorners.Validate();
 		}
 	}
