@@ -91,7 +91,7 @@ export class AirshipChatSingleton {
 		contextbridge.subscribe<(fromContext: LuauContext, msg: string, fromConnId: number) => void>(
 			"ProtectedChat:SendMessage",
 			(fromContext, text, fromConnId) => {
-				const messageId = this.messageIdCounter++;
+				const messageId = `AirshipChatSingleton:${this.messageIdCounter++}`;
 				const player = Airship.Players.FindByConnectionId(fromConnId);
 				if (!player) {
 					warn("Couldn't find player when trying to send chat message. connId=" + fromConnId);
@@ -152,7 +152,7 @@ export class AirshipChatSingleton {
 								if (moderationResult.messageBlockedReasons.size() > 0) {
 									player.SendMessage(
 										"Your message was blocked for violating our community guidelines for the following reason(s): " +
-											moderationResult.messageBlockedReasons.join(", "),
+										moderationResult.messageBlockedReasons.join(", "),
 									);
 								} else {
 									player.SendMessage(
@@ -231,8 +231,8 @@ export class AirshipChatSingleton {
 		if (!Game.IsServer()) {
 			error(
 				"Error trying to call RegisterCommand " +
-					command.commandLabel +
-					": Can only register command on server.",
+				command.commandLabel +
+				": Can only register command on server.",
 			);
 		}
 
