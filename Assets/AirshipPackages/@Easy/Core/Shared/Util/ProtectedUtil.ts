@@ -17,6 +17,12 @@ export class ProtectedUtil {
 		// print(`safeArea.min: ${safeArea.min}, safeArea.max: ${safeArea.max}`);
 		if (Game.IsPortrait()) {
 			notchHeight = safeArea.y / 2;
+
+			// For some reason Android does it from bottom-left, instead of top-left like iOS... don't ask me why
+			// this hasn't been made consistent by Unity...
+			if (Game.platform === AirshipPlatform.Android) {
+				notchHeight = (Screen.height - (Screen.safeArea.y + Screen.safeArea.height)) / 2;
+			}
 		} else {
 			notchHeight = Screen.height - safeArea.yMax;
 		}
