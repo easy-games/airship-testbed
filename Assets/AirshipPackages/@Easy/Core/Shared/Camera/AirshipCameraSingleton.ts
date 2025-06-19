@@ -57,6 +57,10 @@ export class AirshipCameraSingleton {
 	private fps?: FirstPersonCameraSystem;
 	public activeCameraMode: CameraMode | undefined;
 
+	private fixedCameraMode: FixedCameraMode | undefined;
+	private orbitCameraMode: OrbitCameraMode | undefined;
+	private flyCameraMode: FlyCameraMode | undefined;
+
 	public characterCameraMode: CharacterCameraMode = CharacterCameraMode.Fixed;
 	public onCameraModeChanged = new Signal<[mode: CameraMode]>();
 
@@ -420,13 +424,25 @@ export class AirshipCameraSingleton {
 		const target =
 			Game.localPlayer.character?.model ?? GameObject.CreateAtPos(Vector3.zero, "CameraTargetPlaceholder");
 		if (characterCameraMode === CharacterCameraMode.Fixed) {
+			if (this.fixedCameraMode) {
+				this.SetModeInternal(this.fixedCameraMode);
+				return this.fixedCameraMode;
+			}
+
 			const mode = new FixedCameraMode(target);
+			this.fixedCameraMode = mode;
 			this.SetModeInternal(mode);
 			return mode;
 		} else {
+			if (this.orbitCameraMode) {
+				this.SetModeInternal(this.orbitCameraMode);
+				return this.orbitCameraMode;
+			}
+
 			const mode = new OrbitCameraMode(target, {
 				characterLocked: characterCameraMode === CharacterCameraMode.OrbitFixed,
 			});
+			this.orbitCameraMode = mode;
 			this.SetModeInternal(mode);
 			return mode;
 		}

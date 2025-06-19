@@ -66,9 +66,6 @@ export class OrbitCameraMode extends CameraMode {
 		this.SetOcclusionBumping(
 			this.config.shouldOcclusionBump ?? CameraConstants.DefaultFixedCameraConfig.shouldOcclusionBump,
 		);
-		if (Airship.Camera.IsEnabled()) {
-			this.OnEnabled();
-		}
 
 		Airship.Input.CreateAction(OrbitArrowKey.Left, Binding.Key(Key.LeftArrow));
 		Airship.Input.CreateAction(OrbitArrowKey.Right, Binding.Key(Key.RightArrow));

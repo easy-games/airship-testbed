@@ -1,15 +1,12 @@
-import { Airship } from "@Easy/Core/Shared/Airship";
-
 export default class PlayerRole extends AirshipBehaviour {
 	override Start(): void {
-		Airship.Players.onPlayerJoined.Connect((player) => {
-			if (player.orgRoleName) {
-				print(`Player ${player.username} has org role ${player.orgRoleName}`);
-			} else {
-				print(`Player ${player.username} has no org role.`);
-			}
-		});
-
+		// Airship.Players.onPlayerJoined.Connect((player) => {
+		// 	if (player.orgRoleName) {
+		// 		print(`Player ${player.username} has org role ${player.orgRoleName}`);
+		// 	} else {
+		// 		print(`Player ${player.username} has no org role.`);
+		// 	}
+		// });
 		// Airship.Inventory.RegisterItem("WoodSword", {
 		// 	displayName: "Wood Sword",
 		// 	maxStackSize: 1,
@@ -25,6 +22,11 @@ export default class PlayerRole extends AirshipBehaviour {
 		// 		inv.AddItem(new ItemStack("WoodSword"));
 		// 	});
 		// }
+		// while (Airship.Camera.GetMode() === undefined) {
+		// 	task.wait();
+		// }
+		// const cam = Airship.Camera.GetMode<FixedCameraMode>()!;
+		// cam.SetZOffset(10);
 	}
 
 	override OnDestroy(): void {}

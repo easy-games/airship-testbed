@@ -81,9 +81,6 @@ export class FixedCameraMode extends CameraMode {
 		this.SetOcclusionBumping(
 			this.config.shouldOcclusionBump ?? CameraConstants.DefaultFixedCameraConfig.shouldOcclusionBump,
 		);
-		if (Airship.Camera.IsEnabled()) {
-			this.OnEnabled();
-		}
 	}
 
 	private SetupMobileControls() {

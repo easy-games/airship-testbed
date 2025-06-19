@@ -152,7 +152,10 @@ export class CameraSystem {
 
 		if (this.enabled) this.currentMode.OnStop();
 		this.currentMode = mode;
-		if (this.enabled) this.currentMode.OnStart(CameraReferences.mainCamera!, CameraReferences.cameraHolder!);
+		if (this.enabled) {
+			this.currentMode.OnEnabled();
+			this.currentMode.OnStart(CameraReferences.mainCamera!, CameraReferences.cameraHolder!);
+		}
 	}
 
 	/**
