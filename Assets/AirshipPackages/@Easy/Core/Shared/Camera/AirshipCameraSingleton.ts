@@ -425,6 +425,7 @@ export class AirshipCameraSingleton {
 			Game.localPlayer.character?.model ?? GameObject.CreateAtPos(Vector3.zero, "CameraTargetPlaceholder");
 		if (characterCameraMode === CharacterCameraMode.Fixed) {
 			if (this.fixedCameraMode) {
+				this.fixedCameraMode.SetTarget(target);
 				this.SetModeInternal(this.fixedCameraMode);
 				return this.fixedCameraMode;
 			}
@@ -435,6 +436,7 @@ export class AirshipCameraSingleton {
 			return mode;
 		} else {
 			if (this.orbitCameraMode) {
+				this.orbitCameraMode.SetTarget(target);
 				this.SetModeInternal(this.orbitCameraMode);
 				return this.orbitCameraMode;
 			}

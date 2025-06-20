@@ -66,7 +66,6 @@ export class FixedCameraMode extends CameraMode {
 	constructor(target: GameObject, config?: FixedCameraConfig) {
 		super(target);
 		this.Init(config ?? CameraConstants.DefaultFixedCameraConfig);
-		this.SetupMobileControls();
 	}
 
 	private Init(config: FixedCameraConfig): void {
@@ -125,6 +124,8 @@ export class FixedCameraMode extends CameraMode {
 	}
 
 	OnStart(camera: Camera, rootTransform: Transform) {
+		this.SetupMobileControls();
+
 		this.occlusionCam = rootTransform.GetComponent<OcclusionCam>()!;
 		if (this.occlusionCam === undefined) {
 			this.occlusionCam = rootTransform.gameObject.AddComponent<OcclusionCam>();
@@ -152,7 +153,7 @@ export class FixedCameraMode extends CameraMode {
 		// TODO: Maybe we move this out of here and add a signal that fires when the camera mode
 		// is changed?
 		let characterLogicBin: Bin | undefined;
-		if (this.character && this.character.IsLocalCharacter()) {
+		if (this.character && this.character.IsLocalCharacter() && !this.character.IsDestroyed()) {
 			characterLogicBin = Airship.Camera.ManageFixedCameraForLocalCharacter(this, this.character);
 			this.OnStopBin.Add(() => characterLogicBin!.Clean());
 		}
