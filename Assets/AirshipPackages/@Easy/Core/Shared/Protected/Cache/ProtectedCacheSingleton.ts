@@ -22,8 +22,8 @@ export class ProtectedCacheSingleton implements OnStart {
 			return new Promise((res, rej) => {
 				const bin = new Bin();
 				bin.Add(
-					this.onTextureDownloaded.Connect((url, tex) => {
-						if (url === url) {
+					this.onTextureDownloaded.Connect((doneUrl, tex) => {
+						if (url === doneUrl) {
 							bin.Clean();
 							res(tex);
 						}
