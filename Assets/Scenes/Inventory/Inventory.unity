@@ -119,6 +119,107 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &20448365
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.8106918
+      objectReference: {fileID: 0}
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.035
+      objectReference: {fileID: 0}
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2239007561113176391, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: sceneId
+      value: 385727981
+      objectReference: {fileID: 0}
+    - target: {fileID: 5909396085095196289, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_Name
+      value: DodgyChest
+      objectReference: {fileID: 0}
+    - target: {fileID: 6586723700555306793, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: script
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6586723700555306793, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: scriptPath
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6586723700555306793, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5909396085095196289, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 20448367}
+  m_SourcePrefab: {fileID: 100100000, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+--- !u!1 &20448366 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5909396085095196289, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+  m_PrefabInstance: {fileID: 20448365}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &20448367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20448366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guid: 
+  script: {fileID: -334282340280919298, guid: c696cecb932abde47a5df7015c1b0d3c, type: 3}
+  scriptPath: Assets/Code/Components/Debugging/Inventory/InventoryClientSyncTest.lua
+  forceContext: 0
+  metadata:
+    name: 
+    singleton: 0
+    decorators: []
+    properties: []
+    displayIcon: {fileID: 0}
+    displayName: 
 --- !u!1001 &166227966
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1517,4 +1618,5 @@ SceneRoots:
   - {fileID: 1646236297}
   - {fileID: 649009432}
   - {fileID: 166227966}
+  - {fileID: 20448365}
   - {fileID: 600171314}
