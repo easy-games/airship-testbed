@@ -65,7 +65,7 @@ export class CameraSystem {
 			this.currentMode.OnUpdate(dt);
 		});
 
-		const stopOnLateUpdate = OnLateUpdate.ConnectWithPriority(SignalPriority.HIGHEST, (dt) => {
+		const stopOnLateUpdate = OnLateUpdate.ConnectWithPriority(SignalPriority.LOW, (dt) => {
 			if (!Airship.Camera.cameraRig?.mainCamera) {
 				return;
 			}
