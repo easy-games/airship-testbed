@@ -532,10 +532,11 @@ export class AirshipCameraSingleton {
 			// });
 
 			//Every frame set the characters look vector to match the cameras
-			const lookVectorSync = OnLateUpdate.ConnectWithPriority(SignalPriority.HIGHEST, () => {
+			const lookVectorSync = OnLateUpdate.ConnectWithPriority(SignalPriority.LOWEST, () => {
 				if (!character.movement) return;
 				if (character.movement.disableInput) return;
-				character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
+				// print("AirshipCameraSingleton.SetLookVector Time: " + Time.time);
+				character.movement.SetLookVector(mode.cameraForwardVector);
 			});
 
 			if (character.movement) {
@@ -579,9 +580,9 @@ export class AirshipCameraSingleton {
 				if (!character.movement) return;
 				if (character.movement.disableInput) return;
 				if (characterLocked) {
-					character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
+					character.movement.SetLookVector(mode.cameraForwardVector);
 				} else {
-					character.movement.SetLookVectorRecurringToMoveDir();
+					character.movement.SetLookVectorToMoveDir();
 				}
 			});
 

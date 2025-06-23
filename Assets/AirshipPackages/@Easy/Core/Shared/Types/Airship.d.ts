@@ -188,8 +188,7 @@ interface CharacterMovement extends Component {
 	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouch: boolean, moveDirMode: number): void;
 	SetMovementEnabled(isEnabled: boolean): void;
 	SetLookVector(lookVector: Vector3): void;
-	SetLookVectorRecurring(lookVector: Vector3): void;
-	SetLookVectorRecurringToMoveDir(): void;
+	SetLookVectorToMoveDir(): void;
 	SetCustomInputData(customData: BinaryBlob): void;
 	SetCustomSnapshotData(customData: BinaryBlob): void;
 	SetFlying(enabled: boolean): void;
