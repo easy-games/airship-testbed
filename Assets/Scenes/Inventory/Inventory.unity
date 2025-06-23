@@ -173,7 +173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5909396085095196289, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
       propertyPath: m_Name
-      value: DodgyChest
+      value: ChestFarmer
       objectReference: {fileID: 0}
     - target: {fileID: 6586723700555306793, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
       propertyPath: script
@@ -209,15 +209,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guid: 
+  guid: 02710e99-bb1c-4cf2-bf0b-b68b62cc2396
   script: {fileID: -334282340280919298, guid: c696cecb932abde47a5df7015c1b0d3c, type: 3}
   scriptPath: Assets/Code/Components/Debugging/Inventory/InventoryClientSyncTest.lua
   forceContext: 0
   metadata:
-    name: 
+    name: InventoryClientSyncTest
     singleton: 0
     decorators: []
-    properties: []
+    properties:
+    - name: testType
+      type: IntEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: Code/Components/Debugging/Inventory/InventoryClientSyncTest@InventoryTestType
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
 --- !u!1001 &166227966
@@ -334,7 +352,43 @@ MonoBehaviour:
     name: InventoryTestManager
     singleton: 0
     decorators: []
-    properties: []
+    properties:
+    - name: passiveSpawnIron
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: passiveIronSpawnCooldown
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 0.1
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
 --- !u!114 &600171316
@@ -1106,6 +1160,125 @@ MonoBehaviour:
       modified: 0
     displayIcon: {fileID: 0}
     displayName: 
+--- !u!1001 &700241667
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 9.810692
+      objectReference: {fileID: 0}
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.035
+      objectReference: {fileID: 0}
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 349931625061261644, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2239007561113176391, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: sceneId
+      value: 827307905
+      objectReference: {fileID: 0}
+    - target: {fileID: 5909396085095196289, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: m_Name
+      value: ChestFarmer (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6586723700555306793, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: script
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6586723700555306793, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      propertyPath: scriptPath
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6586723700555306793, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5909396085095196289, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 700241669}
+  m_SourcePrefab: {fileID: 100100000, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+--- !u!1 &700241668 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5909396085095196289, guid: 8ca96561601f4664ab84393c43f1c79d, type: 3}
+  m_PrefabInstance: {fileID: 700241667}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &700241669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 700241668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guid: 02710e99-bb1c-4cf2-bf0b-b68b62cc2396
+  script: {fileID: -334282340280919298, guid: c696cecb932abde47a5df7015c1b0d3c, type: 3}
+  scriptPath: Assets/Code/Components/Debugging/Inventory/InventoryClientSyncTest.lua
+  forceContext: 0
+  metadata:
+    name: InventoryClientSyncTest
+    singleton: 0
+    decorators: []
+    properties:
+    - name: testType
+      type: IntEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: Code/Components/Debugging/Inventory/InventoryClientSyncTest@InventoryTestType
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 1
+    displayIcon: {fileID: 0}
+    displayName: 
 --- !u!1 &779978846
 GameObject:
   m_ObjectHideFlags: 0
@@ -1470,6 +1643,22 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1418770345}
     - target: {fileID: 7736549642688669425, guid: 241cf930257357542a77bc6d7fb552e4, type: 3}
+      propertyPath: m_BackGroundColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7736549642688669425, guid: 241cf930257357542a77bc6d7fb552e4, type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7736549642688669425, guid: 241cf930257357542a77bc6d7fb552e4, type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7736549642688669425, guid: 241cf930257357542a77bc6d7fb552e4, type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7736549642688669425, guid: 241cf930257357542a77bc6d7fb552e4, type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 4294842911
       objectReference: {fileID: 0}
@@ -1619,4 +1808,5 @@ SceneRoots:
   - {fileID: 649009432}
   - {fileID: 166227966}
   - {fileID: 20448365}
+  - {fileID: 700241667}
   - {fileID: 600171314}
