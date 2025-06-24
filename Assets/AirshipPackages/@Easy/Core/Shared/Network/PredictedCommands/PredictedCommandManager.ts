@@ -592,7 +592,12 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				this.confirmedFinalState.set(commandIdentifierStr, {
 					commandNumber: commandNumber,
 					snapshot: stateData,
-					tick: character.movement.GetLocalSimulationTickFromCommandNumber(commandNumber),
+					// We use a last tick + a buffer because observing clients don't add commandNumbers to their local state timeline
+					// until after they have interped the character for those frames. GetLocalSimulationTickFromCommandNumber
+					// would always return zero because of that. Since we only use this value for cleanup, it's safe to
+					// set it to an arbitrary value, we basically just need to keep this information around long enough for us to interpolate
+					// over the command number the state is associated with so the end event can be fired at the correct time in OnInterpolateReachedSnapshot
+					tick: AirshipSimulationManager.Instance.tick + NetworkClient.sendRate,
 				});
 				return;
 			}
