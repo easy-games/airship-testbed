@@ -251,6 +251,10 @@ interface CharacterMovement extends Component {
 
 interface AirshipSimulationManager extends MonoBehaviour {
 	replaying: boolean;
+	/** Tick number of the current or last processed tick. Derived from Time.fixedTime. Will update during replays */
+	tick: number;
+	/** Unscaled fixed time. Generally reflects Time.unscaledFixedTime, but will update during replays */
+	time: number;
 	OnSetSnapshot(callback: (tick: number) => void): EngineEventConnection;
 	OnTick(callback: (tick: number, time: number, replay: boolean) => void): EngineEventConnection;
 	OnHistoryLifetimeReached(callback: (tick: number) => void): EngineEventConnection;
