@@ -4133,10 +4133,84 @@ declare const enum VFXSpawnerLoopState {
     Looping = 2,
     DelayingAfterLoop = 3,
 }
+declare const enum RotationOrder {
+    XYZ = 0,
+    XZY = 1,
+    YXZ = 2,
+    YZX = 3,
+    ZXY = 4,
+    Default = 4,
+    ZYX = 5,
+}
+declare const enum TangentMode {
+    AutoSmooth = 0,
+    Linear = 1,
+    Mirrored = 2,
+    Continuous = 3,
+    Broken = 4,
+}
+declare const enum EmbeddedSplineDataType {
+    Int = 0,
+    Float = 1,
+    Float4 = 2,
+    Object = 3,
+}
+declare const enum BezierTangent {
+    In = 0,
+    Out = 1,
+}
+declare const enum SplineModification {
+    Default = 0,
+    ClosedModified = 1,
+    KnotModified = 2,
+    KnotInserted = 3,
+    KnotRemoved = 4,
+    KnotReordered = 5,
+}
+declare const enum LoopMode {
+    Once = 0,
+    Loop = 1,
+    LoopEaseInOnce = 2,
+    PingPong = 3,
+}
+declare const enum Method {
+    Time = 0,
+    Speed = 1,
+}
+declare const enum EasingMode {
+    None = 0,
+    EaseIn = 1,
+    EaseOut = 2,
+    EaseInOut = 3,
+}
+declare const enum AlignmentMode {
+    None = 0,
+    SplineElement = 1,
+    SplineObject = 2,
+    World = 3,
+}
+declare const enum AlignAxis {
+    XAxis = 0,
+    YAxis = 1,
+    ZAxis = 2,
+    NegativeXAxis = 3,
+    NegativeYAxis = 4,
+    NegativeZAxis = 5,
+}
+declare const enum PathIndexUnit {
+    Distance = 0,
+    Normalized = 1,
+    Knot = 2,
+}
 declare const enum LoadingStatus {
     NotLoading = 0,
     Loading = 1,
     Loaded = 2,
+}
+declare const enum CrouchEdgeDetection {
+    None = 0,
+    UseMeshNormals = 1,
+    UseAxisAlignedNormals = 2,
 }
 declare const enum CharacterState {
     Idle = 0,
@@ -53170,6 +53244,1242 @@ interface VisualEffectConstructor {
 }
 declare const VisualEffect: VisualEffectConstructor;
     
+interface BezierCurve {
+    P0: float3;
+    P1: float3;
+    P2: float3;
+    P3: float3;
+    Tangent0: float3;
+    Tangent1: float3;
+
+
+
+    Equals(other: BezierCurve): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    GetInvertedCurve(): BezierCurve;
+    Transform(matrix: float4x4): BezierCurve;
+
+
+}
+    
+interface float3 {
+    x: number;
+    y: number;
+    z: number;
+    readonly xxxx: float4;
+    readonly xxxy: float4;
+    readonly xxxz: float4;
+    readonly xxyx: float4;
+    readonly xxyy: float4;
+    readonly xxyz: float4;
+    readonly xxzx: float4;
+    readonly xxzy: float4;
+    readonly xxzz: float4;
+    readonly xyxx: float4;
+    readonly xyxy: float4;
+    readonly xyxz: float4;
+    readonly xyyx: float4;
+    readonly xyyy: float4;
+    readonly xyyz: float4;
+    readonly xyzx: float4;
+    readonly xyzy: float4;
+    readonly xyzz: float4;
+    readonly xzxx: float4;
+    readonly xzxy: float4;
+    readonly xzxz: float4;
+    readonly xzyx: float4;
+    readonly xzyy: float4;
+    readonly xzyz: float4;
+    readonly xzzx: float4;
+    readonly xzzy: float4;
+    readonly xzzz: float4;
+    readonly yxxx: float4;
+    readonly yxxy: float4;
+    readonly yxxz: float4;
+    readonly yxyx: float4;
+    readonly yxyy: float4;
+    readonly yxyz: float4;
+    readonly yxzx: float4;
+    readonly yxzy: float4;
+    readonly yxzz: float4;
+    readonly yyxx: float4;
+    readonly yyxy: float4;
+    readonly yyxz: float4;
+    readonly yyyx: float4;
+    readonly yyyy: float4;
+    readonly yyyz: float4;
+    readonly yyzx: float4;
+    readonly yyzy: float4;
+    readonly yyzz: float4;
+    readonly yzxx: float4;
+    readonly yzxy: float4;
+    readonly yzxz: float4;
+    readonly yzyx: float4;
+    readonly yzyy: float4;
+    readonly yzyz: float4;
+    readonly yzzx: float4;
+    readonly yzzy: float4;
+    readonly yzzz: float4;
+    readonly zxxx: float4;
+    readonly zxxy: float4;
+    readonly zxxz: float4;
+    readonly zxyx: float4;
+    readonly zxyy: float4;
+    readonly zxyz: float4;
+    readonly zxzx: float4;
+    readonly zxzy: float4;
+    readonly zxzz: float4;
+    readonly zyxx: float4;
+    readonly zyxy: float4;
+    readonly zyxz: float4;
+    readonly zyyx: float4;
+    readonly zyyy: float4;
+    readonly zyyz: float4;
+    readonly zyzx: float4;
+    readonly zyzy: float4;
+    readonly zyzz: float4;
+    readonly zzxx: float4;
+    readonly zzxy: float4;
+    readonly zzxz: float4;
+    readonly zzyx: float4;
+    readonly zzyy: float4;
+    readonly zzyz: float4;
+    readonly zzzx: float4;
+    readonly zzzy: float4;
+    readonly zzzz: float4;
+    readonly xxx: float3;
+    readonly xxy: float3;
+    readonly xxz: float3;
+    readonly xyx: float3;
+    readonly xyy: float3;
+    xyz: float3;
+    readonly xzx: float3;
+    xzy: float3;
+    readonly xzz: float3;
+    readonly yxx: float3;
+    readonly yxy: float3;
+    yxz: float3;
+    readonly yyx: float3;
+    readonly yyy: float3;
+    readonly yyz: float3;
+    yzx: float3;
+    readonly yzy: float3;
+    readonly yzz: float3;
+    readonly zxx: float3;
+    zxy: float3;
+    readonly zxz: float3;
+    zyx: float3;
+    readonly zyy: float3;
+    readonly zyz: float3;
+    readonly zzx: float3;
+    readonly zzy: float3;
+    readonly zzz: float3;
+    readonly xx: float2;
+    xy: float2;
+    xz: float2;
+    yx: float2;
+    readonly yy: float2;
+    yz: float2;
+    zx: float2;
+    zy: float2;
+    readonly zz: float2;
+    Item: number;
+
+
+
+    Equals(rhs: float3): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: IFormatProvider): string;
+
+
+}
+    
+interface float4 {
+    x: number;
+    y: number;
+    z: number;
+    w: number;
+    readonly xxxx: float4;
+    readonly xxxy: float4;
+    readonly xxxz: float4;
+    readonly xxxw: float4;
+    readonly xxyx: float4;
+    readonly xxyy: float4;
+    readonly xxyz: float4;
+    readonly xxyw: float4;
+    readonly xxzx: float4;
+    readonly xxzy: float4;
+    readonly xxzz: float4;
+    readonly xxzw: float4;
+    readonly xxwx: float4;
+    readonly xxwy: float4;
+    readonly xxwz: float4;
+    readonly xxww: float4;
+    readonly xyxx: float4;
+    readonly xyxy: float4;
+    readonly xyxz: float4;
+    readonly xyxw: float4;
+    readonly xyyx: float4;
+    readonly xyyy: float4;
+    readonly xyyz: float4;
+    readonly xyyw: float4;
+    readonly xyzx: float4;
+    readonly xyzy: float4;
+    readonly xyzz: float4;
+    xyzw: float4;
+    readonly xywx: float4;
+    readonly xywy: float4;
+    xywz: float4;
+    readonly xyww: float4;
+    readonly xzxx: float4;
+    readonly xzxy: float4;
+    readonly xzxz: float4;
+    readonly xzxw: float4;
+    readonly xzyx: float4;
+    readonly xzyy: float4;
+    readonly xzyz: float4;
+    xzyw: float4;
+    readonly xzzx: float4;
+    readonly xzzy: float4;
+    readonly xzzz: float4;
+    readonly xzzw: float4;
+    readonly xzwx: float4;
+    xzwy: float4;
+    readonly xzwz: float4;
+    readonly xzww: float4;
+    readonly xwxx: float4;
+    readonly xwxy: float4;
+    readonly xwxz: float4;
+    readonly xwxw: float4;
+    readonly xwyx: float4;
+    readonly xwyy: float4;
+    xwyz: float4;
+    readonly xwyw: float4;
+    readonly xwzx: float4;
+    xwzy: float4;
+    readonly xwzz: float4;
+    readonly xwzw: float4;
+    readonly xwwx: float4;
+    readonly xwwy: float4;
+    readonly xwwz: float4;
+    readonly xwww: float4;
+    readonly yxxx: float4;
+    readonly yxxy: float4;
+    readonly yxxz: float4;
+    readonly yxxw: float4;
+    readonly yxyx: float4;
+    readonly yxyy: float4;
+    readonly yxyz: float4;
+    readonly yxyw: float4;
+    readonly yxzx: float4;
+    readonly yxzy: float4;
+    readonly yxzz: float4;
+    yxzw: float4;
+    readonly yxwx: float4;
+    readonly yxwy: float4;
+    yxwz: float4;
+    readonly yxww: float4;
+    readonly yyxx: float4;
+    readonly yyxy: float4;
+    readonly yyxz: float4;
+    readonly yyxw: float4;
+    readonly yyyx: float4;
+    readonly yyyy: float4;
+    readonly yyyz: float4;
+    readonly yyyw: float4;
+    readonly yyzx: float4;
+    readonly yyzy: float4;
+    readonly yyzz: float4;
+    readonly yyzw: float4;
+    readonly yywx: float4;
+    readonly yywy: float4;
+    readonly yywz: float4;
+    readonly yyww: float4;
+    readonly yzxx: float4;
+    readonly yzxy: float4;
+    readonly yzxz: float4;
+    yzxw: float4;
+    readonly yzyx: float4;
+    readonly yzyy: float4;
+    readonly yzyz: float4;
+    readonly yzyw: float4;
+    readonly yzzx: float4;
+    readonly yzzy: float4;
+    readonly yzzz: float4;
+    readonly yzzw: float4;
+    yzwx: float4;
+    readonly yzwy: float4;
+    readonly yzwz: float4;
+    readonly yzww: float4;
+    readonly ywxx: float4;
+    readonly ywxy: float4;
+    ywxz: float4;
+    readonly ywxw: float4;
+    readonly ywyx: float4;
+    readonly ywyy: float4;
+    readonly ywyz: float4;
+    readonly ywyw: float4;
+    ywzx: float4;
+    readonly ywzy: float4;
+    readonly ywzz: float4;
+    readonly ywzw: float4;
+    readonly ywwx: float4;
+    readonly ywwy: float4;
+    readonly ywwz: float4;
+    readonly ywww: float4;
+    readonly zxxx: float4;
+    readonly zxxy: float4;
+    readonly zxxz: float4;
+    readonly zxxw: float4;
+    readonly zxyx: float4;
+    readonly zxyy: float4;
+    readonly zxyz: float4;
+    zxyw: float4;
+    readonly zxzx: float4;
+    readonly zxzy: float4;
+    readonly zxzz: float4;
+    readonly zxzw: float4;
+    readonly zxwx: float4;
+    zxwy: float4;
+    readonly zxwz: float4;
+    readonly zxww: float4;
+    readonly zyxx: float4;
+    readonly zyxy: float4;
+    readonly zyxz: float4;
+    zyxw: float4;
+    readonly zyyx: float4;
+    readonly zyyy: float4;
+    readonly zyyz: float4;
+    readonly zyyw: float4;
+    readonly zyzx: float4;
+    readonly zyzy: float4;
+    readonly zyzz: float4;
+    readonly zyzw: float4;
+    zywx: float4;
+    readonly zywy: float4;
+    readonly zywz: float4;
+    readonly zyww: float4;
+    readonly zzxx: float4;
+    readonly zzxy: float4;
+    readonly zzxz: float4;
+    readonly zzxw: float4;
+    readonly zzyx: float4;
+    readonly zzyy: float4;
+    readonly zzyz: float4;
+    readonly zzyw: float4;
+    readonly zzzx: float4;
+    readonly zzzy: float4;
+    readonly zzzz: float4;
+    readonly zzzw: float4;
+    readonly zzwx: float4;
+    readonly zzwy: float4;
+    readonly zzwz: float4;
+    readonly zzww: float4;
+    readonly zwxx: float4;
+    zwxy: float4;
+    readonly zwxz: float4;
+    readonly zwxw: float4;
+    zwyx: float4;
+    readonly zwyy: float4;
+    readonly zwyz: float4;
+    readonly zwyw: float4;
+    readonly zwzx: float4;
+    readonly zwzy: float4;
+    readonly zwzz: float4;
+    readonly zwzw: float4;
+    readonly zwwx: float4;
+    readonly zwwy: float4;
+    readonly zwwz: float4;
+    readonly zwww: float4;
+    readonly wxxx: float4;
+    readonly wxxy: float4;
+    readonly wxxz: float4;
+    readonly wxxw: float4;
+    readonly wxyx: float4;
+    readonly wxyy: float4;
+    wxyz: float4;
+    readonly wxyw: float4;
+    readonly wxzx: float4;
+    wxzy: float4;
+    readonly wxzz: float4;
+    readonly wxzw: float4;
+    readonly wxwx: float4;
+    readonly wxwy: float4;
+    readonly wxwz: float4;
+    readonly wxww: float4;
+    readonly wyxx: float4;
+    readonly wyxy: float4;
+    wyxz: float4;
+    readonly wyxw: float4;
+    readonly wyyx: float4;
+    readonly wyyy: float4;
+    readonly wyyz: float4;
+    readonly wyyw: float4;
+    wyzx: float4;
+    readonly wyzy: float4;
+    readonly wyzz: float4;
+    readonly wyzw: float4;
+    readonly wywx: float4;
+    readonly wywy: float4;
+    readonly wywz: float4;
+    readonly wyww: float4;
+    readonly wzxx: float4;
+    wzxy: float4;
+    readonly wzxz: float4;
+    readonly wzxw: float4;
+    wzyx: float4;
+    readonly wzyy: float4;
+    readonly wzyz: float4;
+    readonly wzyw: float4;
+    readonly wzzx: float4;
+    readonly wzzy: float4;
+    readonly wzzz: float4;
+    readonly wzzw: float4;
+    readonly wzwx: float4;
+    readonly wzwy: float4;
+    readonly wzwz: float4;
+    readonly wzww: float4;
+    readonly wwxx: float4;
+    readonly wwxy: float4;
+    readonly wwxz: float4;
+    readonly wwxw: float4;
+    readonly wwyx: float4;
+    readonly wwyy: float4;
+    readonly wwyz: float4;
+    readonly wwyw: float4;
+    readonly wwzx: float4;
+    readonly wwzy: float4;
+    readonly wwzz: float4;
+    readonly wwzw: float4;
+    readonly wwwx: float4;
+    readonly wwwy: float4;
+    readonly wwwz: float4;
+    readonly wwww: float4;
+    readonly xxx: float3;
+    readonly xxy: float3;
+    readonly xxz: float3;
+    readonly xxw: float3;
+    readonly xyx: float3;
+    readonly xyy: float3;
+    xyz: float3;
+    xyw: float3;
+    readonly xzx: float3;
+    xzy: float3;
+    readonly xzz: float3;
+    xzw: float3;
+    readonly xwx: float3;
+    xwy: float3;
+    xwz: float3;
+    readonly xww: float3;
+    readonly yxx: float3;
+    readonly yxy: float3;
+    yxz: float3;
+    yxw: float3;
+    readonly yyx: float3;
+    readonly yyy: float3;
+    readonly yyz: float3;
+    readonly yyw: float3;
+    yzx: float3;
+    readonly yzy: float3;
+    readonly yzz: float3;
+    yzw: float3;
+    ywx: float3;
+    readonly ywy: float3;
+    ywz: float3;
+    readonly yww: float3;
+    readonly zxx: float3;
+    zxy: float3;
+    readonly zxz: float3;
+    zxw: float3;
+    zyx: float3;
+    readonly zyy: float3;
+    readonly zyz: float3;
+    zyw: float3;
+    readonly zzx: float3;
+    readonly zzy: float3;
+    readonly zzz: float3;
+    readonly zzw: float3;
+    zwx: float3;
+    zwy: float3;
+    readonly zwz: float3;
+    readonly zww: float3;
+    readonly wxx: float3;
+    wxy: float3;
+    wxz: float3;
+    readonly wxw: float3;
+    wyx: float3;
+    readonly wyy: float3;
+    wyz: float3;
+    readonly wyw: float3;
+    wzx: float3;
+    wzy: float3;
+    readonly wzz: float3;
+    readonly wzw: float3;
+    readonly wwx: float3;
+    readonly wwy: float3;
+    readonly wwz: float3;
+    readonly www: float3;
+    readonly xx: float2;
+    xy: float2;
+    xz: float2;
+    xw: float2;
+    yx: float2;
+    readonly yy: float2;
+    yz: float2;
+    yw: float2;
+    zx: float2;
+    zy: float2;
+    readonly zz: float2;
+    zw: float2;
+    wx: float2;
+    wy: float2;
+    wz: float2;
+    readonly ww: float2;
+    Item: number;
+
+
+
+    Equals(rhs: float4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: IFormatProvider): string;
+
+
+}
+    
+interface float2 {
+    x: number;
+    y: number;
+    readonly xxxx: float4;
+    readonly xxxy: float4;
+    readonly xxyx: float4;
+    readonly xxyy: float4;
+    readonly xyxx: float4;
+    readonly xyxy: float4;
+    readonly xyyx: float4;
+    readonly xyyy: float4;
+    readonly yxxx: float4;
+    readonly yxxy: float4;
+    readonly yxyx: float4;
+    readonly yxyy: float4;
+    readonly yyxx: float4;
+    readonly yyxy: float4;
+    readonly yyyx: float4;
+    readonly yyyy: float4;
+    readonly xxx: float3;
+    readonly xxy: float3;
+    readonly xyx: float3;
+    readonly xyy: float3;
+    readonly yxx: float3;
+    readonly yxy: float3;
+    readonly yyx: float3;
+    readonly yyy: float3;
+    readonly xx: float2;
+    xy: float2;
+    yx: float2;
+    readonly yy: float2;
+    Item: number;
+
+
+
+    Equals(rhs: float2): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: IFormatProvider): string;
+
+
+}
+    
+interface float2Constructor {
+    readonly zero: float2;
+
+
+    new(x: number, y: number): float2;
+    new(xy: float2): float2;
+    new(v: number): float2;
+    new(v: boolean): float2;
+    new(v: bool2): float2;
+    new(v: number): float2;
+    new(v: int2): float2;
+    new(v: number): float2;
+    new(v: uint2): float2;
+    new(v: half): float2;
+    new(v: half2): float2;
+    new(v: number): float2;
+    new(v: double2): float2;
+
+
+
+}
+declare const float2: float2Constructor;
+    
+interface float4Constructor {
+    readonly zero: float4;
+
+
+    new(x: number, y: number, z: number, w: number): float4;
+    new(x: number, y: number, zw: float2): float4;
+    new(x: number, yz: float2, w: number): float4;
+    new(x: number, yzw: float3): float4;
+    new(xy: float2, z: number, w: number): float4;
+    new(xy: float2, zw: float2): float4;
+    new(xyz: float3, w: number): float4;
+    new(xyzw: float4): float4;
+    new(v: number): float4;
+    new(v: boolean): float4;
+    new(v: bool4): float4;
+    new(v: number): float4;
+    new(v: int4): float4;
+    new(v: number): float4;
+    new(v: uint4): float4;
+    new(v: half): float4;
+    new(v: half4): float4;
+    new(v: number): float4;
+    new(v: double4): float4;
+
+
+
+}
+declare const float4: float4Constructor;
+    
+interface float3Constructor {
+    readonly zero: float3;
+
+
+    new(x: number, y: number, z: number): float3;
+    new(x: number, yz: float2): float3;
+    new(xy: float2, z: number): float3;
+    new(xyz: float3): float3;
+    new(v: number): float3;
+    new(v: boolean): float3;
+    new(v: bool3): float3;
+    new(v: number): float3;
+    new(v: int3): float3;
+    new(v: number): float3;
+    new(v: uint3): float3;
+    new(v: half): float3;
+    new(v: half3): float3;
+    new(v: number): float3;
+    new(v: double3): float3;
+
+
+
+}
+declare const float3: float3Constructor;
+    
+interface float4x4 {
+    c0: float4;
+    c1: float4;
+    c2: float4;
+    c3: float4;
+    readonly Item: float4&;
+
+
+
+    Equals(rhs: float4x4): boolean;
+    Equals(o: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: IFormatProvider): string;
+
+
+}
+    
+interface quaternion {
+    value: float4;
+
+
+
+    Equals(x: quaternion): boolean;
+    Equals(x: unknown): boolean;
+    GetHashCode(): number;
+    ToString(): string;
+    ToString(format: string, formatProvider: IFormatProvider): string;
+
+
+}
+    
+interface quaternionConstructor {
+    readonly identity: quaternion;
+
+
+    new(x: number, y: number, z: number, w: number): quaternion;
+    new(value: float4): quaternion;
+    new(m: float3x3): quaternion;
+    new(m: float4x4): quaternion;
+
+
+    AxisAngle(axis: float3, angle: number): quaternion;
+    Euler(xyz: float3, order: RotationOrder): quaternion;
+    Euler(x: number, y: number, z: number, order: RotationOrder): quaternion;
+    EulerXYZ(xyz: float3): quaternion;
+    EulerXYZ(x: number, y: number, z: number): quaternion;
+    EulerXZY(xyz: float3): quaternion;
+    EulerXZY(x: number, y: number, z: number): quaternion;
+    EulerYXZ(xyz: float3): quaternion;
+    EulerYXZ(x: number, y: number, z: number): quaternion;
+    EulerYZX(xyz: float3): quaternion;
+    EulerYZX(x: number, y: number, z: number): quaternion;
+    EulerZXY(xyz: float3): quaternion;
+    EulerZXY(x: number, y: number, z: number): quaternion;
+    EulerZYX(xyz: float3): quaternion;
+    EulerZYX(x: number, y: number, z: number): quaternion;
+    LookRotation(forward: float3, up: float3): quaternion;
+    LookRotationSafe(forward: float3, up: float3): quaternion;
+    RotateX(angle: number): quaternion;
+    RotateY(angle: number): quaternion;
+    RotateZ(angle: number): quaternion;
+
+}
+declare const quaternion: quaternionConstructor;
+    
+interface float4x4Constructor {
+    readonly identity: float4x4;
+    readonly zero: float4x4;
+
+
+    new(c0: float4, c1: float4, c2: float4, c3: float4): float4x4;
+    new(m00: number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number, m30: number, m31: number, m32: number, m33: number): float4x4;
+    new(v: number): float4x4;
+    new(v: boolean): float4x4;
+    new(v: bool4x4): float4x4;
+    new(v: number): float4x4;
+    new(v: int4x4): float4x4;
+    new(v: number): float4x4;
+    new(v: uint4x4): float4x4;
+    new(v: number): float4x4;
+    new(v: double4x4): float4x4;
+    new(rotation: float3x3, translation: float3): float4x4;
+    new(rotation: quaternion, translation: float3): float4x4;
+    new(transform: RigidTransform): float4x4;
+
+
+    AxisAngle(axis: float3, angle: number): float4x4;
+    Euler(xyz: float3, order: RotationOrder): float4x4;
+    Euler(x: number, y: number, z: number, order: RotationOrder): float4x4;
+    EulerXYZ(xyz: float3): float4x4;
+    EulerXYZ(x: number, y: number, z: number): float4x4;
+    EulerXZY(xyz: float3): float4x4;
+    EulerXZY(x: number, y: number, z: number): float4x4;
+    EulerYXZ(xyz: float3): float4x4;
+    EulerYXZ(x: number, y: number, z: number): float4x4;
+    EulerYZX(xyz: float3): float4x4;
+    EulerYZX(x: number, y: number, z: number): float4x4;
+    EulerZXY(xyz: float3): float4x4;
+    EulerZXY(x: number, y: number, z: number): float4x4;
+    EulerZYX(xyz: float3): float4x4;
+    EulerZYX(x: number, y: number, z: number): float4x4;
+    LookAt(eye: float3, target: float3, up: float3): float4x4;
+    Ortho(width: number, height: number, near: number, far: number): float4x4;
+    OrthoOffCenter(left: number, right: number, bottom: number, top: number, near: number, far: number): float4x4;
+    PerspectiveFov(verticalFov: number, aspect: number, near: number, far: number): float4x4;
+    PerspectiveOffCenter(left: number, right: number, bottom: number, top: number, near: number, far: number): float4x4;
+    RotateX(angle: number): float4x4;
+    RotateY(angle: number): float4x4;
+    RotateZ(angle: number): float4x4;
+    Scale(s: number): float4x4;
+    Scale(x: number, y: number, z: number): float4x4;
+    Scale(scales: float3): float4x4;
+    Translate(vector: float3): float4x4;
+    TRS(translation: float3, rotation: quaternion, scale: float3): float4x4;
+
+}
+declare const float4x4: float4x4Constructor;
+    
+interface BezierCurveConstructor {
+
+
+    new(p0: float3, p1: float3): BezierCurve;
+    new(p0: float3, p1: float3, p2: float3): BezierCurve;
+    new(p0: float3, p1: float3, p2: float3, p3: float3): BezierCurve;
+    new(a: BezierKnot, b: BezierKnot): BezierCurve;
+
+
+    FromTangent(pointA: float3, tangentOutA: float3, pointB: float3, tangentInB: float3): BezierCurve;
+
+}
+declare const BezierCurve: BezierCurveConstructor;
+    
+interface BezierKnot extends ISerializationCallbackReceiver {
+    Position: float3;
+    TangentIn: float3;
+    TangentOut: float3;
+    Rotation: quaternion;
+
+
+
+    Equals(other: BezierKnot): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    OnAfterDeserialize(): void;
+    OnBeforeSerialize(): void;
+    ToString(): string;
+    Transform(matrix: float4x4): BezierKnot;
+
+
+}
+    
+interface BezierKnotConstructor {
+
+
+    new(position: float3): BezierKnot;
+    new(position: float3, tangentIn: float3, tangentOut: float3): BezierKnot;
+    new(position: float3, tangentIn: float3, tangentOut: float3, rotation: quaternion): BezierKnot;
+
+
+
+}
+declare const BezierKnot: BezierKnotConstructor;
+    
+interface CurveUtility {
+
+
+
+
+
+}
+    
+interface DistanceToInterpolation {
+    Distance: number;
+    T: number;
+
+
+
+
+
+}
+    
+interface CurveUtilityConstructor {
+
+
+
+
+    ApproximateLength(curve: BezierCurve): number;
+    CalculateCurveLengths(curve: BezierCurve, lookupTable: Readonly<DistanceToInterpolation[]>): void;
+    CalculateCurveLengths(curve: BezierCurve, lookupTable: Readonly<DistanceToInterpolation[]>): void;
+    CalculateLength(curve: BezierCurve, resolution: number): number;
+    EvaluateAcceleration(curve: BezierCurve, t: number): float3;
+    EvaluateCurvature(curve: BezierCurve, t: number): number;
+    EvaluatePosition(curve: BezierCurve, t: number): float3;
+    EvaluateTangent(curve: BezierCurve, t: number): float3;
+    GetDistanceToInterpolation(curve: BezierCurve, distance: number): number;
+    GetDistanceToInterpolation<T>(lut: T, distance: number): number;
+    GetNearestPoint(curve: BezierCurve, ray: Ray, resolution: number): float3;
+    GetNearestPoint(curve: BezierCurve, ray: Ray, position: float3&, interpolation: Single&, resolution: number): number;
+    Split(curve: BezierCurve, t: number, left: BezierCurve&, right: BezierCurve&): void;
+
+}
+declare const CurveUtility: CurveUtilityConstructor;
+    
+interface ISpline {
+    readonly Closed: boolean;
+
+
+
+    GetCurve(index: number): BezierCurve;
+    GetCurveInterpolation(curveIndex: number, curveDistance: number): number;
+    GetCurveLength(index: number): number;
+    GetCurveUpVector(index: number, t: number): float3;
+    GetLength(): number;
+
+
+}
+    
+interface Spline extends Readonly<BezierKnot[]> {
+    readonly Count: number;
+    readonly IsReadOnly: boolean;
+    Knots: Readonly<BezierKnot[]>;
+    Closed: boolean;
+    Item: BezierKnot;
+
+
+
+    Add(item: BezierKnot): void;
+    Add(knotPosition: float3, tangentMode: TangentMode): void;
+    Add(item: BezierKnot, mode: TangentMode): void;
+    Add(item: BezierKnot, mode: TangentMode, tension: number): void;
+    Add(spline: Readonly<BezierKnot[]>): void;
+    AddRange(knotPositions: Readonly<float3[]>, tangentMode: TangentMode): void;
+    Clear(): void;
+    Contains(item: BezierKnot): boolean;
+    Copy(copyFrom: Readonly<BezierKnot[]>): void;
+    CopyTo(array: Readonly<BezierKnot[]>, arrayIndex: number): void;
+    EnforceTangentModeNoNotify(index: number): void;
+    EnforceTangentModeNoNotify(range: Readonly<number[]>): void;
+    GetAutoSmoothTension(index: number): number;
+    GetCurve(index: number): BezierCurve;
+    GetCurveInterpolation(curveIndex: number, curveDistance: number): number;
+    GetCurveLength(index: number): number;
+    GetCurveUpVector(index: number, t: number): float3;
+    GetEnumerator(): IEnumerator<BezierKnot>;
+    GetFloat4DataKeys(): Readonly<string[]>;
+    GetFloat4DataValues(): Readonly<Readonly<DataPoint<float4>[]>[]>;
+    GetFloatDataKeys(): Readonly<string[]>;
+    GetFloatDataValues(): Readonly<Readonly<DataPoint<number>[]>[]>;
+    GetIntDataKeys(): Readonly<string[]>;
+    GetIntDataValues(): Readonly<Readonly<DataPoint<number>[]>[]>;
+    GetLength(): number;
+    GetObjectDataKeys(): Readonly<string[]>;
+    GetObjectDataValues(): Readonly<Readonly<DataPoint<Object>[]>[]>;
+    GetOrCreateFloat4Data(key: string): Readonly<DataPoint<float4>[]>;
+    GetOrCreateFloatData(key: string): Readonly<DataPoint<number>[]>;
+    GetOrCreateIntData(key: string): Readonly<DataPoint<number>[]>;
+    GetOrCreateObjectData(key: string): Readonly<DataPoint<Object>[]>;
+    GetSplineDataKeys(type: EmbeddedSplineDataType): Readonly<string[]>;
+    GetTangentMode(index: number): TangentMode;
+    IndexOf(item: BezierKnot): number;
+    Insert(index: number, knot: BezierKnot): void;
+    Insert(index: number, knot: BezierKnot, mode: TangentMode): void;
+    Insert(index: number, knot: BezierKnot, mode: TangentMode, tension: number): void;
+    Insert(index: number, knotPosition: float3, tangentMode: TangentMode): void;
+    InsertRange(index: number, knotPositions: Readonly<float3[]>, tangentMode: TangentMode): void;
+    Remove(item: BezierKnot): boolean;
+    RemoveAt(index: number): void;
+    RemoveFloat4Data(key: string): boolean;
+    RemoveFloatData(key: string): boolean;
+    RemoveIntData(key: string): boolean;
+    RemoveObjectData(key: string): boolean;
+    Resize(newSize: number): void;
+    SetAutoSmoothTension(index: number, tension: number): void;
+    SetAutoSmoothTension(range: Readonly<number[]>, tension: number): void;
+    SetAutoSmoothTensionNoNotify(index: number, tension: number): void;
+    SetAutoSmoothTensionNoNotify(range: Readonly<number[]>, tension: number): void;
+    SetFloat4Data(key: string, value: Readonly<DataPoint<float4>[]>): void;
+    SetFloatData(key: string, value: Readonly<DataPoint<number>[]>): void;
+    SetIntData(key: string, value: Readonly<DataPoint<number>[]>): void;
+    SetKnot(index: number, value: BezierKnot, main: BezierTangent): void;
+    SetKnotNoNotify(index: number, value: BezierKnot, main: BezierTangent): void;
+    SetObjectData(key: string, value: Readonly<DataPoint<Object>[]>): void;
+    SetTangentMode(mode: TangentMode): void;
+    SetTangentMode(index: number, mode: TangentMode, main: BezierTangent): void;
+    SetTangentMode(range: Readonly<number[]>, mode: TangentMode, main: BezierTangent): void;
+    SetTangentModeNoNotify(index: number, mode: TangentMode, main: BezierTangent): void;
+    ToArray(): Readonly<BezierKnot[]>;
+    TryGetFloat4Data(key: string, data: Readonly<DataPoint<float4>[]>): boolean;
+    TryGetFloatData(key: string, data: Readonly<DataPoint<number>[]>): boolean;
+    TryGetIntData(key: string, data: Readonly<DataPoint<number>[]>): boolean;
+    TryGetObjectData(key: string, data: Readonly<DataPoint<Object>[]>): boolean;
+    Warmup(): void;
+
+
+}
+    
+interface IDataPoint {
+    Index: number;
+
+
+
+
+
+}
+    
+interface DataPoint<TDataType> extends IDataPoint {
+    Index: number;
+    Value: TDataType;
+
+
+
+    CompareTo(other: DataPoint<TDataType>): number;
+    CompareTo(other: number): number;
+    ToString(): string;
+
+
+}
+    
+interface DataPointConstructor {
+
+
+    new(index: number, value: TDataType): DataPoint<TDataType>;
+
+
+
+}
+declare const DataPoint: DataPointConstructor;
+    
+interface SplineConstructor {
+
+
+    new(): Spline;
+    new(knotCapacity: number, closed: boolean): Spline;
+    new(knots: Readonly<BezierKnot[]>, closed: boolean): Spline;
+    new(knotPositions: Readonly<float3[]>, tangentMode: TangentMode, closed: boolean): Spline;
+    new(spline: Readonly<BezierKnot[]>): Spline;
+
+
+
+    readonly Changed: MonoSignal<Readonly<BezierKnot[]>, number, SplineModification>;
+}
+declare const Spline: SplineConstructor;
+    
+interface SplineComponent extends MonoBehaviour {
+
+
+
+
+
+}
+    
+interface SplineAnimate extends SplineComponent {
+    Container: SplineContainer;
+    PlayOnAwake: boolean;
+    Loop: LoopMode;
+    AnimationMethod: Method;
+    Duration: number;
+    MaxSpeed: number;
+    Easing: EasingMode;
+    Alignment: AlignmentMode;
+    ObjectForwardAxis: AlignAxis;
+    ObjectUpAxis: AlignAxis;
+    NormalizedTime: number;
+    ElapsedTime: number;
+    StartOffset: number;
+    readonly IsPlaying: boolean;
+
+    readonly Updated: MonoSignal<Vector3, Quaternion>;
+    readonly Completed: MonoSignal<void>;
+
+
+    Pause(): void;
+    Play(): void;
+    Restart(autoplay: boolean): void;
+    Update(): void;
+
+
+}
+    
+interface ISplineContainer {
+    Splines: Readonly<Readonly<BezierKnot[]>[]>;
+    readonly KnotLinkCollection: KnotLinkCollection;
+
+
+
+
+
+}
+    
+interface KnotLinkCollection {
+    readonly Count: number;
+
+
+
+    Clear(): void;
+    GetKnotLinks(knotIndex: SplineKnotIndex): Readonly<SplineKnotIndex[]>;
+    KnotIndexChanged(splineIndex: number, previousKnotIndex: number, newKnotIndex: number): void;
+    KnotIndexChanged(previousIndex: SplineKnotIndex, newIndex: SplineKnotIndex): void;
+    KnotInserted(splineIndex: number, knotIndex: number): void;
+    KnotInserted(index: SplineKnotIndex): void;
+    KnotRemoved(splineIndex: number, knotIndex: number): void;
+    KnotRemoved(index: SplineKnotIndex): void;
+    Link(knotA: SplineKnotIndex, knotB: SplineKnotIndex): void;
+    ShiftKnotIndices(index: SplineKnotIndex, offset: number): void;
+    SplineIndexChanged(previousIndex: number, newIndex: number): void;
+    SplineRemoved(splineIndex: number): void;
+    TryGetKnotLinks(knotIndex: SplineKnotIndex, linkedKnots: Readonly<SplineKnotIndex[]>): boolean;
+    Unlink(knot: SplineKnotIndex): void;
+
+
+}
+    
+interface SplineKnotIndex {
+    Spline: number;
+    Knot: number;
+
+
+
+    Equals(otherIndex: SplineKnotIndex): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    IsValid(): boolean;
+    ToString(): string;
+
+
+}
+    
+interface SplineKnotIndexConstructor {
+    Invalid: SplineKnotIndex;
+
+
+    new(spline: number, knot: number): SplineKnotIndex;
+
+
+
+}
+declare const SplineKnotIndex: SplineKnotIndexConstructor;
+    
+interface KnotLinkCollectionConstructor {
+
+
+    new(): KnotLinkCollection;
+
+
+
+}
+declare const KnotLinkCollection: KnotLinkCollectionConstructor;
+    
+interface SplineContainer extends MonoBehaviour, ISerializationCallbackReceiver, ISplineContainer {
+    Splines: Readonly<Readonly<BezierKnot[]>[]>;
+    readonly KnotLinkCollection: KnotLinkCollection;
+    readonly Item: Readonly<BezierKnot[]>;
+    Spline: Readonly<BezierKnot[]>;
+
+
+
+    CalculateLength(): number;
+    CalculateLength(splineIndex: number): number;
+    Evaluate(t: number, position: float3&, tangent: float3&, upVector: float3&): boolean;
+    Evaluate(splineIndex: number, t: number, position: float3&, tangent: float3&, upVector: float3&): boolean;
+    Evaluate<T>(spline: T, t: number, position: float3&, tangent: float3&, upVector: float3&): boolean;
+    EvaluateAcceleration(t: number): float3;
+    EvaluateAcceleration(splineIndex: number, t: number): float3;
+    EvaluateAcceleration<T>(spline: T, t: number): float3;
+    EvaluatePosition(t: number): float3;
+    EvaluatePosition(splineIndex: number, t: number): float3;
+    EvaluatePosition<T>(spline: T, t: number): float3;
+    EvaluateTangent(t: number): float3;
+    EvaluateTangent(splineIndex: number, t: number): float3;
+    EvaluateTangent<T>(spline: T, t: number): float3;
+    EvaluateUpVector(t: number): float3;
+    EvaluateUpVector(splineIndex: number, t: number): float3;
+    EvaluateUpVector<T>(spline: T, t: number): float3;
+    OnAfterDeserialize(): void;
+    OnBeforeSerialize(): void;
+    Warmup(): void;
+
+
+}
+    
+interface SplineContainerConstructor {
+
+
+    new(): SplineContainer;
+
+
+
+    readonly SplineAdded: MonoSignal<SplineContainer, number>;
+    readonly SplineRemoved: MonoSignal<SplineContainer, number>;
+    readonly SplineReordered: MonoSignal<SplineContainer, number, number>;
+}
+declare const SplineContainer: SplineContainerConstructor;
+    
+interface SplineAnimateConstructor {
+
+
+    new(): SplineAnimate;
+
+
+
+}
+declare const SplineAnimate: SplineAnimateConstructor;
+    
+interface SplineUtility {
+
+
+
+
+
+}
+    
+interface SplineInfo extends ISerializationCallbackReceiver {
+    readonly Object: Object;
+    Container: ISplineContainer;
+    readonly Transform: Transform;
+    readonly Spline: Readonly<BezierKnot[]>;
+    Index: number;
+    readonly LocalToWorld: float4x4;
+
+
+
+    Equals(other: SplineInfo): boolean;
+    Equals(obj: unknown): boolean;
+    GetHashCode(): number;
+    OnAfterDeserialize(): void;
+    OnBeforeSerialize(): void;
+
+
+}
+    
+interface SplineInfoConstructor {
+
+
+    new(container: ISplineContainer, index: number): SplineInfo;
+
+
+
+}
+declare const SplineInfo: SplineInfoConstructor;
+    
+interface SplineUtilityConstructor {
+    DefaultTension: number;
+    CatmullRomTension: number;
+    PickResolutionMin: number;
+    PickResolutionDefault: number;
+    PickResolutionMax: number;
+    DrawResolutionDefault: number;
+
+
+
+
+    AddSpline<T>(container: T): Readonly<BezierKnot[]>;
+    AddSpline<T>(container: T, spline: Readonly<BezierKnot[]>): void;
+    AreKnotLinked(container: ISplineContainer, knotA: SplineKnotIndex, knotB: SplineKnotIndex): boolean;
+    CalculateLength<T>(spline: T, transform: float4x4): number;
+    CalculateUpVector<T>(spline: T, t: number): float3;
+    ConvertIndexUnit<T>(spline: T, t: number, targetPathUnit: PathIndexUnit): number;
+    ConvertIndexUnit<T>(spline: T, value: number, fromPathUnit: PathIndexUnit, targetPathUnit: PathIndexUnit): number;
+    CopyKnotLinks<T>(container: T, srcSplineIndex: number, destSplineIndex: number): void;
+    CurveToSplineT<T>(spline: T, curve: number): number;
+    DuplicateSpline(container: ISplineContainer, fromKnot: SplineKnotIndex, toKnot: SplineKnotIndex, newSplineIndex: Int32&): void;
+    Evaluate<T>(spline: T, t: number, position: float3&, tangent: float3&, upVector: float3&): boolean;
+    EvaluateAcceleration<T>(spline: T, t: number): float3;
+    EvaluateCurvature<T>(spline: T, t: number): number;
+    EvaluateCurvatureCenter<T>(spline: T, t: number): float3;
+    EvaluateNurbs(t: number, controlPoints: Readonly<float3[]>, knotVector: Readonly<number[]>, order: number, position: float3&): boolean;
+    EvaluatePosition<T>(spline: T, t: number): float3;
+    EvaluateTangent<T>(spline: T, t: number): float3;
+    EvaluateUpVector<T>(spline: T, t: number): float3;
+    FitSplineToPoints(points: Readonly<float3[]>, errorThreshold: number, closed: boolean, spline: Readonly<BezierKnot[]>): boolean;
+    GetAutoSmoothKnot(position: float3, previous: float3, next: float3): BezierKnot;
+    GetAutoSmoothKnot(position: float3, previous: float3, next: float3, normal: float3): BezierKnot;
+    GetAutoSmoothKnot(position: float3, previous: float3, next: float3, normal: float3, tension: number): BezierKnot;
+    GetAutoSmoothTangent(previous: float3, next: float3, tension: number): float3;
+    GetAutoSmoothTangent(previous: float3, current: float3, next: float3, tension: number): float3;
+    GetBounds<T>(spline: T): Bounds;
+    GetBounds<T>(spline: T, transform: float4x4): Bounds;
+    GetCatmullRomTangent(previous: float3, next: float3): float3;
+    GetCurveCount<T>(spline: T): number;
+    GetNearestPoint<T>(spline: T, ray: Ray, nearest: float3&, t: Single&, resolution: number, iterations: number): number;
+    GetNearestPoint<T>(spline: T, point: float3, nearest: float3&, t: Single&, resolution: number, iterations: number): number;
+    GetNormalizedInterpolation<T>(spline: T, t: number, originalPathUnit: PathIndexUnit): number;
+    GetPointAtLinearDistance<T>(spline: T, fromT: number, relativeDistance: number, resultPointT: Single&): float3;
+    GetSubdivisionCount(length: number, resolution: number): number;
+    JoinSplinesOnKnots(container: ISplineContainer, mainKnot: SplineKnotIndex, otherKnot: SplineKnotIndex): SplineKnotIndex;
+    LinkKnots<T>(container: T, knotA: SplineKnotIndex, knotB: SplineKnotIndex): void;
+    Next<T>(spline: T, index: number): BezierKnot;
+    NextIndex<T>(spline: T, index: number): number;
+    Previous<T>(spline: T, index: number): BezierKnot;
+    PreviousIndex<T>(spline: T, index: number): number;
+    ReducePoints<T>(line: T, epsilon: number): Readonly<float3[]>;
+    ReducePoints<T>(line: T, results: Readonly<float3[]>, epsilon: number): void;
+    RemoveSpline<T>(container: T, spline: Readonly<BezierKnot[]>): boolean;
+    RemoveSplineAt<T>(container: T, splineIndex: number): boolean;
+    ReorderSpline<T>(container: T, previousSplineIndex: number, newSplineIndex: number): boolean;
+    ReverseFlow(container: ISplineContainer, splineIndex: number): void;
+    ReverseFlow(splineInfo: SplineInfo): void;
+    ReverseFlow(spline: Readonly<BezierKnot[]>): void;
+    SetLinkedKnotPosition<T>(container: T, index: SplineKnotIndex): void;
+    SetPivot(container: SplineContainer, position: Vector3): void;
+    SplineToCurveT<T>(spline: T, splineT: number, curveT: Single&): number;
+    SplitSplineOnKnot(container: ISplineContainer, knotInfo: SplineKnotIndex): SplineKnotIndex;
+    UnlinkKnots<T>(container: T, knots: Readonly<SplineKnotIndex[]>): void;
+
+}
+declare const SplineUtility: SplineUtilityConstructor;
+    
 interface AnimationEventData extends ScriptableObject {
     key: string;
     stringValue: string;
@@ -53548,7 +54858,7 @@ interface CharacterMovementSettings extends MonoBehaviour {
     inAirDirectionalControl: number;
     accelerationTurnFriction: number;
     autoCrouch: boolean;
-    preventFallingWhileCrouching: boolean;
+    preventFallingWhileCrouching: CrouchEdgeDetection;
     preventStepUpWhileCrouching: boolean;
     crouchSpeedMultiplier: number;
     crouchHeightMultiplier: number;
