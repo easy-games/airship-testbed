@@ -65,7 +65,7 @@ export class CameraSystem {
 			this.currentMode.OnUpdate(dt);
 		});
 
-		const stopOnLateUpdate = OnLateUpdate.ConnectWithPriority(SignalPriority.HIGHEST, (dt) => {
+		const stopOnLateUpdate = OnLateUpdate.ConnectWithPriority(SignalPriority.LOW, (dt) => {
 			if (!Airship.Camera.cameraRig?.mainCamera) {
 				return;
 			}
@@ -152,7 +152,10 @@ export class CameraSystem {
 
 		if (this.enabled) this.currentMode.OnStop();
 		this.currentMode = mode;
-		if (this.enabled) this.currentMode.OnStart(CameraReferences.mainCamera!, CameraReferences.cameraHolder!);
+		if (this.enabled) {
+			this.currentMode.OnEnabled();
+			this.currentMode.OnStart(CameraReferences.mainCamera!, CameraReferences.cameraHolder!);
+		}
 	}
 
 	/**

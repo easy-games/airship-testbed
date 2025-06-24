@@ -45,7 +45,6 @@ export class FixedCameraMode extends CameraMode {
 	private lookBehind = false;
 
 	public cameraForwardVector = Vector3.zero;
-	private cameraRightVector = new Vector3(0, 0, 1);
 
 	private lastCameraPos = new Vector3(0, 0, 0);
 
@@ -66,7 +65,6 @@ export class FixedCameraMode extends CameraMode {
 	constructor(target: GameObject, config?: FixedCameraConfig) {
 		super(target);
 		this.Init(config ?? CameraConstants.DefaultFixedCameraConfig);
-		this.SetupMobileControls();
 	}
 
 	private Init(config: FixedCameraConfig): void {
@@ -81,9 +79,6 @@ export class FixedCameraMode extends CameraMode {
 		this.SetOcclusionBumping(
 			this.config.shouldOcclusionBump ?? CameraConstants.DefaultFixedCameraConfig.shouldOcclusionBump,
 		);
-		if (Airship.Camera.IsEnabled()) {
-			this.OnEnabled();
-		}
 	}
 
 	private SetupMobileControls() {
@@ -128,6 +123,8 @@ export class FixedCameraMode extends CameraMode {
 	}
 
 	OnStart(camera: Camera, rootTransform: Transform) {
+		this.SetupMobileControls();
+
 		this.occlusionCam = rootTransform.GetComponent<OcclusionCam>()!;
 		if (this.occlusionCam === undefined) {
 			this.occlusionCam = rootTransform.gameObject.AddComponent<OcclusionCam>();
@@ -155,7 +152,7 @@ export class FixedCameraMode extends CameraMode {
 		// TODO: Maybe we move this out of here and add a signal that fires when the camera mode
 		// is changed?
 		let characterLogicBin: Bin | undefined;
-		if (this.character && this.character.IsLocalCharacter()) {
+		if (this.character && this.character.IsLocalCharacter() && !this.character.IsDestroyed()) {
 			characterLogicBin = Airship.Camera.ManageFixedCameraForLocalCharacter(this, this.character);
 			this.OnStopBin.Add(() => characterLogicBin!.Clean());
 		}
@@ -258,6 +255,7 @@ export class FixedCameraMode extends CameraMode {
 		if (characterTarget && (characterTarget.IsDead() || characterTarget.IsDestroyed())) {
 			return new CameraTransform(this.lastTargetPos ?? Vector3.zero, this.lastRot ?? Quaternion.identity);
 		}
+		let visualTarget = characterTarget?.model.transform ?? this.target?.transform;
 
 		let xOffset = this.xOffset;
 
@@ -273,17 +271,26 @@ export class FixedCameraMode extends CameraMode {
 		const yPos = this.zOffset * math.cos(this.rotationX);
 
 		const posOffset = new Vector3(xPos, yPos, zPos);
-		const targetPos = this.target?.transform.position ?? Vector3.zero;
+		const targetPos = visualTarget?.position ?? Vector3.zero;
 		this.lastTargetPos = targetPos;
 
-		let yOffset = this.yOffset + this.currentCrouchYOffset;
-		const cameraPos = targetPos.add(new Vector3(0, yOffset, 0)).add(this.cameraRightVector.mul(xOffset));
-		this.lastCameraPos = cameraPos;
-
-		const newCameraPos = cameraPos.add(this.staticOffset ?? posOffset);
 		const lookVector = posOffset.mul(-1).normalized;
 		const rotation = Quaternion.LookRotation(lookVector, Vector3.up);
 		this.lastRot = rotation;
+
+		let yOffset = this.yOffset + this.currentCrouchYOffset;
+		const cameraPos = targetPos.add(new Vector3(0, yOffset, 0)).add(rotation.mul(Vector3.right).mul(xOffset));
+		this.lastCameraPos = cameraPos;
+
+		const newCameraPos = cameraPos.add(this.staticOffset ?? posOffset);
+
+		// print(
+		// 	`rotY: ${rotY}, cameraPos: ${newCameraPos}, targetPos: ${targetPos}`,
+		// );
+
+		// if (characterTarget) {
+		// 	characterTarget.model.transform.rotation = Quaternion.LookRotation(lookVector.WithY(0));
+		// }
 
 		return new CameraTransform(newCameraPos, rotation);
 	}
@@ -320,7 +327,6 @@ export class FixedCameraMode extends CameraMode {
 			const dist = cameraHolder.position.sub(targetPosition).magnitude;
 			this.onTargetDistance.Fire(dist, this.occlusionCam.transform.position, targetPosition);
 		}
-		this.cameraRightVector = cameraHolder.right;
 		this.cameraForwardVector = this.lookBehind ? cameraHolder.forward.mul(-1) : cameraHolder.forward;
 	}
 
