@@ -252,7 +252,7 @@ interface CharacterMovement extends Component {
 interface AirshipSimulationManager extends MonoBehaviour {
 	replaying: boolean;
 	OnSetSnapshot(callback: (tick: number) => void): EngineEventConnection;
-	OnTick(callback: (tick: number, replay: boolean) => void): EngineEventConnection;
+	OnTick(callback: (tick: number, time: number, replay: boolean) => void): EngineEventConnection;
 	OnHistoryLifetimeReached(callback: (tick: number) => void): EngineEventConnection;
 }
 
