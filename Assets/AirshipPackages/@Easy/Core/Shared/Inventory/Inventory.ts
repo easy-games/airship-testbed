@@ -230,7 +230,7 @@ export default class Inventory extends AirshipBehaviour {
 						CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
 							this.id,
 							slot,
-							undefined,
+							e.itemStack.itemType,
 							e.amount,
 						);
 					}),
@@ -244,7 +244,7 @@ export default class Inventory extends AirshipBehaviour {
 							this.id,
 							slot,
 							e.itemType,
-							undefined,
+							e.itemStack.amount,
 						);
 					}),
 				);
