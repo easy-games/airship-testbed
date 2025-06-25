@@ -12,7 +12,7 @@ export default class CharacterAnimation extends AirshipBehaviour {
 	private deathClip?: AnimationClip;
 	private deathClipViewmodel?: AnimationClip;
 
-	public OnAnimationEvent = new Signal<[key: string, strValue?: string, intValue?: number, floatValue?: number]>();
+	public onAnimationEvent = new Signal<[key: string, strValue?: string, intValue?: number, floatValue?: number]>();
 
 	private readonly flashTransitionDuration = 0.035;
 	private readonly flashOnTime = 0.07;
@@ -50,8 +50,8 @@ export default class CharacterAnimation extends AirshipBehaviour {
 				this.bin.AddEngineEventConnection(
 					animEvents.OnAnimEvent((key) => {
 						this.HandleAnimationEvents(key);
-						if (this.OnAnimationEvent) {
-							this.OnAnimationEvent.Fire(key);
+						if (this.onAnimationEvent) {
+							this.onAnimationEvent.Fire(key);
 						}
 					}),
 				);
@@ -59,8 +59,8 @@ export default class CharacterAnimation extends AirshipBehaviour {
 				this.bin.AddEngineEventConnection(
 					animEvents.OnAnimObjEvent((data) => {
 						this.HandleAnimationEvents(data.key, data.stringValue, data.intValue, data.floatValue);
-						if (this.OnAnimationEvent) {
-							this.OnAnimationEvent.Fire(data.key, data.stringValue, data.intValue, data.floatValue);
+						if (this.onAnimationEvent) {
+							this.onAnimationEvent.Fire(data.key, data.stringValue, data.intValue, data.floatValue);
 						}
 					}),
 				);
@@ -91,9 +91,10 @@ export default class CharacterAnimation extends AirshipBehaviour {
 	}
 
 	public PlayDeath() {
-		//Play death animation
+		// Play death animation
 		if (this.character.IsLocalCharacter()) {
-			//Lock Inputs
+			// Lock Inputs
+			// todo: why are we doing this here?
 			if (this.character.movement) this.character.movement.disableInput = true;
 		}
 		const deathClip = this.isFirstPerson ? this.deathClipViewmodel : this.deathClip;
@@ -140,7 +141,7 @@ export default class CharacterAnimation extends AirshipBehaviour {
 		return this.viewModelEnabled;
 	}
 
-	public Destroy(): void {
+	public OnDestroy(): void {
 		this.bin.Clean();
 	}
 
