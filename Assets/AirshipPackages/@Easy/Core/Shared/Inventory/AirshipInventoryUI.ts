@@ -129,10 +129,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		);
 	}
 
-	public SetHealtbarVisible(visible: boolean) {
-		// this.healthBar.transform.gameObject.SetActive(visible);
-	}
-
 	public SetHotbarVisible(visible: boolean) {
 		this.hotbarContent.gameObject.SetActive(visible);
 	}
