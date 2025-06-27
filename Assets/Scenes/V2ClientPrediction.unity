@@ -2860,7 +2860,7 @@ MonoBehaviour:
         tags: []
       decorators: []
       nullable: 0
-      serializedValue: 0
+      serializedValue: 1
       serializedObject: {fileID: 0}
       modified: 1
     - name: fixedXOffset
@@ -6515,12 +6515,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guid: 
+  guid: df278400-4d70-4a75-a5e3-121014f12196
   script: {fileID: 4534876074585211741, guid: 7ea7debb016d50c439f448d662249b2c, type: 3}
   scriptPath: Assets/Code/Components/InventoryDemoManager.lua
   forceContext: 0
   metadata:
-    name: 
+    name: InventoryDemoManager
     singleton: 0
     decorators: []
     properties: []

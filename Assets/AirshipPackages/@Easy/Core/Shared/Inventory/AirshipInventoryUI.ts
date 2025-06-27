@@ -196,14 +196,14 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	private SetupHotbar(): Bin {
 		this.hotbarCanvas.enabled = true;
 
-		let init = false; // TODO: @luke why is this false to start with? It looks like it's only ever false, but it works?
+		let init = true;
 		return Game.localPlayer.ObserveCharacter((character) => {
 			if (!character) {
 				return;
 			}
-			for (let i = 0; i < this.hotbarSlots; i++) {
-				this.UpdateHotbarSlot(i, character.GetHeldSlot() ?? 0, undefined, true);
-			}
+			// for (let i = 0; i < this.hotbarSlots; i++) {
+			// 	this.UpdateHotbarSlot(i, character.GetHeldSlot() ?? 0, undefined, true);
+			// }
 
 			const invBin = new Bin();
 			const slotBinMap = new Map<number, Bin>();
@@ -431,9 +431,11 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 		if (init) {
 			const tileComponent = go.GetAirshipComponent<AirshipInventoryTile>()!;
-			CanvasAPI.OnClickEvent(tileComponent.button.gameObject, () => {
-				Game.localPlayer.character?.SetHeldSlot(slot);
-			});
+			this.bin.Add(
+				tileComponent.button.onClick.Connect(() => {
+					Game.localPlayer.character?.SetHeldSlot(slot);
+				}),
+			);
 		}
 	}
 
