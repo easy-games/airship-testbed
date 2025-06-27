@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7566797586292866402}
   - component: {fileID: 5189031555702888496}
   - component: {fileID: 2245620844483191104}
+  - component: {fileID: 3041506277148561385}
   m_Layer: 6
   m_Name: ProximityPrompt
   m_TagString: Untagged
@@ -60,6 +61,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 74097a08-949f-4574-8714-8ae0f1d9f38a
   script: {fileID: 183749498165355873, guid: 9851b2a991bb1c24c82f8213eb177e5b, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt.lua
   forceContext: 0
@@ -365,8 +367,61 @@ MonoBehaviour:
       serializedValue: 0
       serializedObject: {fileID: 0}
       modified: 0
+    - name: hideWhenDead
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators:
+      - name: Tooltip
+        parameters:
+        - type: string
+          serializedValue: '"If true the prompt will be hidden when a player is dead"'
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: canvasDistanceCondition
+      type: object
+      objectType: CanvasDistanceCondition
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 3041506277148561385}
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
+--- !u!114 &3041506277148561385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 473965666970111262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7285fb0a325b41fcaa523ef35f6f28d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxDistance: 10
 --- !u!1 &473965667367053343
 GameObject:
   m_ObjectHideFlags: 0

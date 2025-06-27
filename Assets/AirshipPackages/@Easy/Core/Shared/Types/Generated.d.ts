@@ -11979,6 +11979,8 @@ interface BinaryBlob {
 
 
 
+    ApplyDiff(bytes: Readonly<number[]>): BinaryBlob;
+    CreateDiff(other: BinaryBlob): Readonly<number[]>;
     Equals(other: BinaryBlob): boolean;
 
 
@@ -52057,6 +52059,66 @@ interface VoxelWorldConstructor {
 
 }
 declare const VoxelWorld: VoxelWorldConstructor;
+    
+interface CanvasDistanceCondition extends MonoBehaviour {
+    maxDistanceSqrd: number;
+    maxDistance: number;
+
+
+
+
+
+}
+    
+interface CanvasDistanceConditionConstructor {
+
+
+    new(): CanvasDistanceCondition;
+
+
+
+}
+declare const CanvasDistanceCondition: CanvasDistanceConditionConstructor;
+    
+interface Singleton<T extends MonoBehaviour> extends MonoBehaviour {
+
+
+
+    OnApplicationQuit(): void;
+
+
+}
+    
+interface SingletonConstructor {
+    readonly IsAwake: boolean;
+    readonly Instance: T;
+
+
+
+
+
+}
+declare const Singleton: SingletonConstructor;
+    
+interface CanvasDistanceManager extends Singleton<CanvasDistanceManager> {
+
+
+
+    Register(canvasObject: CanvasDistanceCondition): void;
+    SetCamera(cam: Camera): void;
+
+
+}
+    
+interface CanvasDistanceManagerConstructor {
+
+
+    new(): CanvasDistanceManager;
+
+
+
+}
+declare const CanvasDistanceManager: CanvasDistanceManagerConstructor;
     
 interface ActiveAccessory {
     AccessoryComponent: AccessoryComponent;
