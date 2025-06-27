@@ -6457,6 +6457,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1579921900}
   - component: {fileID: 1579921899}
+  - component: {fileID: 1579921901}
   m_Layer: 0
   m_Name: Org Debug (Can Delete)
   m_TagString: Untagged
@@ -6502,6 +6503,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1579921901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579921898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guid: 
+  script: {fileID: 4534876074585211741, guid: 7ea7debb016d50c439f448d662249b2c, type: 3}
+  scriptPath: Assets/Code/Components/InventoryDemoManager.lua
+  forceContext: 0
+  metadata:
+    name: 
+    singleton: 0
+    decorators: []
+    properties: []
+    displayIcon: {fileID: 0}
+    displayName: 
 --- !u!1 &1591683283
 GameObject:
   m_ObjectHideFlags: 0

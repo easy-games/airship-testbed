@@ -78,7 +78,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 	override Awake() {
 		this.hotbarCanvas.enabled = false;
-		this.backpackCanvas.enabled = false;
+		this.backpackCanvas.gameObject.SetActive(false);
 	}
 
 	override Start(): void {
@@ -159,14 +159,18 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 		this.hotbarCanvas.enabled = false;
 
-		AppManager.OpenCanvas(this.backpackCanvas, {
-			onClose: () => {
+		this.backpackCanvas.gameObject.SetActive(true);
+		AppManager.OpenCustom(
+			() => {
 				this.backpackShown = false;
+				this.backpackCanvas.gameObject.SetActive(false);
 				this.hotbarCanvas.enabled = true;
 				this.backpackOpenBin.Clean();
 			},
-			noDarkBackground: this.darkBackground === false,
-		});
+			{
+				darkBackground: this.darkBackground,
+			},
+		);
 
 		if (Airship.Inventory.localInventory) {
 			Airship.Inventory.onInventoryOpened.Fire(new InventoryEvent(Airship.Inventory.localInventory));
@@ -335,8 +339,8 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				const visual = button.transform.GetChild(0).gameObject;
 				const clone = Object.Instantiate(visual, this.backpackCanvas.transform);
 
-				const slotNumber = clone.transform.Find("SlotNumber");
-				slotNumber?.gameObject.SetActive(false);
+				// const slotNumber = clone.transform.Find("SlotNumber");
+				// slotNumber?.gameObject.SetActive(false);
 
 				clone.transform.SetAsLastSibling();
 
