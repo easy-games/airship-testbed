@@ -11,7 +11,7 @@ export default class InventoryDemoManager extends AirshipSingleton {
 			displayName: "Wood Sword",
 			maxStackSize: 1,
 			accessoryPaths: ["Assets/Resources/Prefabs/WoodSword.prefab"],
-			// image: "Assets/Resources/ItemRenders/wood_sword.png",
+			image: "Assets/AirshipPackages/@Easy/Core/Prefabs/EmoteImages/HandsUp.png",
 		});
 		Airship.Characters.ObserveCharacters((c) => {
 			c.inventory.AddItem(new ItemStack(DemoItemType.WoodSword));
