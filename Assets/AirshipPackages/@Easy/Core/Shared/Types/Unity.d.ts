@@ -2109,6 +2109,14 @@ interface GameObject extends Object {
 
 	/**Sets the layer on this game object and all descendants */
 	SetLayerRecursive(layer: number): void;
+	/**
+	 * Replaces any layer that matches the replaceMask with layer.
+	 * Applies to this GameObject and any descendants.
+	 * 
+	 * @param layer Layer id
+	 * @param replaceMask Layer bitmask
+	 */
+	ReplaceLayerRecursive(layer: number, replaceMask: number);
 }
 declare const gameObject: GameObject;
 
