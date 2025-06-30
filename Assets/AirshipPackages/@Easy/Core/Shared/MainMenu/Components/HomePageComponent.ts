@@ -65,8 +65,8 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		this.CreateFeaturedEvent(
 			"47c5fdbd-bf3f-4a5b-9ad3-dea11a52a762",
 			"Beta playtest of BedWars 2! Only available for the weekend. <u>Leaderboard & stats enabled.</u>",
-			1750446000,
-			1750597200,
+			1751655600,
+			1752174000,
 		);
 
 		this.CreateSort(SortId.Popular, "Popular");
