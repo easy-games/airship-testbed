@@ -4880,10 +4880,10 @@ interface Random {
 	 *
 	 * ```ts
 	 * const items = ["Pencil", "Pen", "Feather"];
-	 * const item = rng.PickItem(items);
+	 * const [item, index] = rng.PickItem(items);
 	 * ```
 	 */
-	PickItem<T>(tbl: T[]): T;
+	PickItem<T>(tbl: T[]): LuaTuple<[value: T, index: number]>;
 
 	/**
 	 * Returns a random item in the given array, using the given weights.
@@ -4895,10 +4895,10 @@ interface Random {
 	 * ```ts
 	 * const items = ["Leather Hat", "Golden Bat", "Diamond Glove"];
 	 * const weights = table.freeze([15, 5, 2.5]);
-	 * const randomItem = rng.PickItemWeighted(items, weights);
+	 * const [randomItem, index] = rng.PickItemWeighted(items, weights);
 	 * ```
 	 */
-	PickItemWeighted<T>(tbl: T[], weights: readonly number[]): T;
+	PickItemWeighted<T>(tbl: T[], weights: readonly number[]): LuaTuple<[value: T, index: number]>;
 
 	/** Shuffles the given array in-place. This uses the Fisher-Yates algorithm. */
 	ShuffleArray<T>(tbl: T[]): T[];
