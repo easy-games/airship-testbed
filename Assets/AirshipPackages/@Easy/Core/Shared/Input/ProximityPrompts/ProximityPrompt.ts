@@ -88,11 +88,14 @@ export default class ProximityPrompt extends AirshipBehaviour {
 			});
 		}
 
-		this.bin.AddEngineEventConnection(
-			CanvasAPI.OnClickEvent(this.button.gameObject, () => {
-				this.Activate();
-			}),
-		);
+		if (!Game.IsMobile()) {
+			this.bin.AddEngineEventConnection(
+				CanvasAPI.OnClickEvent(this.button.gameObject, () => {
+					this.Activate();
+				}),
+			);
+		}
+
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnPointerEvent(this.button.gameObject, (dir, btn) => {
 				if (dir === PointerDirection.DOWN) {
