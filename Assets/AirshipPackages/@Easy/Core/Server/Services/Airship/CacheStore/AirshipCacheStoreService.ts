@@ -1,5 +1,6 @@
 import {
 	CacheStoreServiceBridgeTopics,
+	ServerBridgeApiCacheDeleteKey,
 	ServerBridgeApiCacheGetKey,
 	ServerBridgeApiCacheSetKey,
 	ServerBridgeApiCacheSetKeyTTL,
@@ -75,11 +76,16 @@ export class AirshipCacheStoreService {
 	 * Deletes the data associated with the provided key.
 	 * @param key The key to use. Keys must be alphanumeric and may include the following symbols: _-.:
 	 */
-	public async DeleteKey(key: string): Promise<number> {
+	public async DeleteKey<T = unknown>(key: string, returnValue: boolean = false): Promise<T | undefined> {
 		this.CheckKey(key);
 
-		const res = await this.SetKeyTTL(key, 0);
-		return res;
+		const result = contextbridge.invoke<ServerBridgeApiCacheDeleteKey<T>>(
+			CacheStoreServiceBridgeTopics.DeleteKey,
+			LuauContext.Protected,
+			key,
+			returnValue,
+		);
+		return result?.value;
 	}
 
 	/**
