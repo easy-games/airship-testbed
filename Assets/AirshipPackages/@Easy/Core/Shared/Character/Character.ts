@@ -267,9 +267,14 @@ export default class Character extends AirshipBehaviour {
 		this.maxHealth = maxHealth;
 		this.despawned = false;
 		this.initialized = true;
-		this.displayName = displayName || "";
-		if (player) {
-			this.displayName = player.username;
+		if (displayName !== undefined) {
+			this.displayName = displayName;
+		} else {
+			if (player) {
+				this.displayName = player.username;
+			} else {
+				this.displayName = "";
+			}
 		}
 
 		// print("Outfitdto: " + inspect(outfitDto));
