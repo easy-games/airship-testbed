@@ -268,6 +268,9 @@ export default class Character extends AirshipBehaviour {
 		this.despawned = false;
 		this.initialized = true;
 		this.displayName = displayName || "";
+		if (player) {
+			this.displayName = player.username;
+		}
 
 		// print("Outfitdto: " + inspect(outfitDto));
 		if (Game.IsClient() && this.IsLocalCharacter()) {
