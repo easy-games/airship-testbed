@@ -274,17 +274,6 @@ interface Vector3 {
 	/** Constructs a new Vector3 with the maximum value picked per axis. */
 	Max(other: Vector3): Vector3;
 
-	/**
-	 * Rotates a vector current towards target. This function is similar to MoveTowards except that
-	 * the vector is treated as a direction rather than a position. The current vector will be rotated
-	 * round toward the target direction by an angle of maxRadiansDelta, although it will land exactly
-	 * on the target rather than overshoot. If the magnitudes of current and target are different, then
-	 * the magnitude of the result will be linearly interpolated during the rotation. If a negative value
-	 * is used for maxRadiansDelta, the vector will rotate away from target until it is pointing in exactly
-	 * the opposite direction, then stops.
-	 */
-	RotateTowards: (current: Vector3, target: Vector3, maxRadiansDelta: number, maxMagnitudeDelta: number) => Vector3;
-
 	/** Constructs a Vector3 where the vector is moved toward `target`. */
 	MoveTowards(target: Vector3, maxDistanceDelta: number): Vector3;
 
@@ -383,6 +372,17 @@ interface Vector3Constructor {
 
 	/** Constructs a new Vector3 with the maximum value picked per axis. */
 	Max: (a: Vector3, b: Vector3) => Vector3;
+
+	/**
+	 * Rotates a vector current towards target. This function is similar to MoveTowards except that
+	 * the vector is treated as a direction rather than a position. The current vector will be rotated
+	 * round toward the target direction by an angle of maxRadiansDelta, although it will land exactly
+	 * on the target rather than overshoot. If the magnitudes of current and target are different, then
+	 * the magnitude of the result will be linearly interpolated during the rotation. If a negative value
+	 * is used for maxRadiansDelta, the vector will rotate away from target until it is pointing in exactly
+	 * the opposite direction, then stops.
+	 */
+	RotateTowards: (current: Vector3, target: Vector3, maxRadiansDelta: number, maxMagnitudeDelta: number) => Vector3;
 
 	/** Constructs a Vector3 where the vector is moved toward `target`. */
 	MoveTowards: (start: Vector3, target: Vector3, maxDistanceDelta: number) => Vector3;
