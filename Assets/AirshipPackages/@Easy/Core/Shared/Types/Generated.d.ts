@@ -48881,6 +48881,29 @@ interface SnapshotInterpolationSettingsConstructor {
 }
 declare const SnapshotInterpolationSettings: SnapshotInterpolationSettingsConstructor;
     
+interface ExponentialMovingAverage {
+    Value: number;
+    Variance: number;
+    StandardDeviation: number;
+
+
+
+    Add(newValue: number): void;
+    Reset(): void;
+
+
+}
+    
+interface ExponentialMovingAverageConstructor {
+
+
+    new(n: number): ExponentialMovingAverage;
+
+
+
+}
+declare const ExponentialMovingAverage: ExponentialMovingAverageConstructor;
+    
 interface SpawnDelegate extends MulticastDelegate {
 
 
@@ -48977,8 +49000,8 @@ interface NetworkClientConstructor {
     connectionQualityMethod: ConnectionQualityMethod;
     connectionQualityInterval: number;
     snapshotSettings: SnapshotInterpolationSettings;
-    bufferTimeMultiplier: number;
     snapshots: CSDictionary<number, TimeSnapshot>;
+    driftEma: ExponentialMovingAverage;
     dynamicAdjustment: boolean;
     dynamicAdjustmentTolerance: number;
     deliveryTimeEmaDuration: number;
@@ -48990,6 +49013,7 @@ interface NetworkClientConstructor {
     readonly activeHost: boolean;
     readonly isConnecting: boolean;
     readonly isConnected: boolean;
+    readonly bufferTimeMultiplier: number;
     readonly initialBufferTime: number;
     readonly bufferTime: number;
 
@@ -51782,7 +51806,7 @@ interface VoxelWorld extends MonoBehaviour {
     useSimplifiedVoxels: boolean;
     doVisuals: boolean;
     debugReloadOnScriptReloadMode: boolean;
-    focusPosition: Vector3;
+    useCameraAsFocusPosition: boolean;
     autoLoad: boolean;
     voxelWorldFile: WorldSaveFile;
     worldNetworker: VoxelWorldNetworker;
@@ -51802,6 +51826,7 @@ interface VoxelWorld extends MonoBehaviour {
     renderingDisabled: boolean;
     hasUnsavedChanges: boolean;
     loadingStatus: LoadingStatus;
+    focusPosition: Vector3;
 
     readonly BeforeVoxelChunkUpdated: MonoSignal<Chunk>;
     readonly VoxelChunkUpdated: MonoSignal<Chunk>;
@@ -51854,6 +51879,7 @@ interface VoxelWorld extends MonoBehaviour {
     TransformVectorToLocalSpace(vec: Vector3): Vector3;
     TransformVectorToWorldSpace(vec: Vector3): Vector3;
     Update(): void;
+    UpdateFocusCamera(focusCamera: Camera): void;
     WaitForChunkToLoad(voxel: Vector3): void;
     WriteTemporaryVoxelCollisionAt(pos: Vector3, num: number): void;
     WriteVoxelAt(pos: Vector3, num: number, priority: boolean): void;
