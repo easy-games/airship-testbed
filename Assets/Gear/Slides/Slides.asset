@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
-  m_Name: Sandals Gear
+  m_Name: Slides
   m_EditorClassIdentifier: 
-  classId: e470bddd-4357-4e07-b2a5-7a1264f91edd
+  classId: 1d6be338-ed8c-4453-804e-b8f87f97e82b
   accessoryPrefabs:
-  - {fileID: 8682557596486675826, guid: 39d88352661604a42b90aa3682277981, type: 3}
+  - {fileID: 5316815792475142254, guid: cd20d1187a7f8c44fb3188a5f72870ab, type: 3}
+  - {fileID: 1713257620156648460, guid: 04d4952f50a55fc4fb77d3fb510cbda3, type: 3}
   face: {fileID: 0}
