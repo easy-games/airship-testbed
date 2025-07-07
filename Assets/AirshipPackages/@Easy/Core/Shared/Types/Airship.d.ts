@@ -799,7 +799,7 @@ interface PoolManager {
 	SpawnObject(prefab: Object): GameObject;
 	SpawnObject(prefab: Object, parent: Transform): GameObject;
 	SpawnObject(prefab: Object, worldPosition: Vector3, worldRotation: Quaternion): GameObject;
-	SpawnObject(prefab: Object, localPosition: Vector3, localRotation: Quaternion, parent: Transform): GameObject;
+	SpawnObject(prefab: Object, worldPosition: Vector3, worldPosition: Quaternion, parent: Transform): GameObject;
 	ReleaseObject(clone: GameObject);
 }
 
