@@ -223,7 +223,6 @@ GameObject:
   - component: {fileID: 2840055367427727092}
   - component: {fileID: 2708076279346976898}
   - component: {fileID: 5159033584935680143}
-  - component: {fileID: 4311702382900975305}
   m_Layer: 5
   m_Name: Backpack
   m_TagString: Untagged
@@ -273,7 +272,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!114 &2708076279346976898
 MonoBehaviour:
@@ -315,33 +314,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &4311702382900975305
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 505313876140797496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e87e0668ae7abb47800944852d422c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isStaticInstance: 0
-  staticBundleId: 
-  bundledReferences:
-  - key: Backpack
-    keyValuePairs:
-    - key: Wrapper
-      value: {fileID: 941995171320676467}
-    - key: HotbarContent
-      value: {fileID: 3896219111938771018}
-    - key: BackpackContent
-      value: {fileID: 5881436139970050875}
-    - key: ArmorContent
-      value: {fileID: 0}
-    - key: DraggedItem
-      value: {fileID: 0}
 --- !u!1 &690250989902576605
 GameObject:
   m_ObjectHideFlags: 0
@@ -354,7 +326,6 @@ GameObject:
   - component: {fileID: 5164574974672459112}
   - component: {fileID: 3705253151411669969}
   - component: {fileID: 130452668502696262}
-  - component: {fileID: 2900149717262365848}
   m_Layer: 5
   m_Name: Hotbar
   m_TagString: Untagged
@@ -445,33 +416,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2900149717262365848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 690250989902576605}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e87e0668ae7abb47800944852d422c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isStaticInstance: 1
-  staticBundleId: Inventory
-  bundledReferences:
-  - key: UI
-    keyValuePairs:
-    - key: HotbarContentGO
-      value: {fileID: 2441968268321366707}
-    - key: HealthBarTransform
-      value: {fileID: 0}
-  - key: Healthbar
-    keyValuePairs:
-    - key: ArmorLabelImage
-      value: {fileID: 0}
-    - key: ArmorLabelText
-      value: {fileID: 0}
 --- !u!1 &941995171320676467
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,7 +523,6 @@ RectTransform:
   - {fileID: 7221330958820637826}
   - {fileID: 1771319467939482707}
   - {fileID: 3100341515336870315}
-  - {fileID: 3091494703772840301}
   m_Father: {fileID: 1039062089699594261}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -617,7 +560,6 @@ RectTransform:
   m_Children:
   - {fileID: 2932857602138476005}
   - {fileID: 9049025873487229340}
-  - {fileID: 5551504091489642667}
   - {fileID: 4519081610771123717}
   m_Father: {fileID: 523842975888754032}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -638,7 +580,7 @@ GameObject:
   - component: {fileID: 7300157447496003365}
   - component: {fileID: 6653057636510168103}
   - component: {fileID: 6469316517426917314}
-  - component: {fileID: 9207846887485421855}
+  - component: {fileID: 4776883246721125386}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -730,7 +672,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &9207846887485421855
+--- !u!114 &4776883246721125386
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -742,7 +684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HorizontalFit: 2
+  m_HorizontalFit: 1
   m_VerticalFit: 0
 --- !u!1 &2463736014071383226
 GameObject:
@@ -990,16 +932,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -1078346614930307222, guid: fe05de064d900419ebaaa88c2b1dc60b, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/AirshipInventoryTile.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: 07438423-606f-4a4d-beb2-796fecdcc465
+  script: {fileID: -1078346614930307222, guid: fe05de064d900419ebaaa88c2b1dc60b, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/AirshipInventoryTile.lua
+  forceContext: 0
+  metadata:
     name: AirshipInventoryTile
     singleton: 0
     decorators: []
@@ -1014,6 +951,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -1033,6 +973,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1048,6 +991,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1063,6 +1009,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1078,6 +1027,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Tooltip
         parameters:
@@ -1089,7 +1041,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!1 &2714160799116691424
 GameObject:
   m_ObjectHideFlags: 0
@@ -1370,7 +1321,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8193851932582081949}
+  m_Father: {fileID: 523842975888754032}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -1689,16 +1640,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -1078346614930307222, guid: fe05de064d900419ebaaa88c2b1dc60b, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/AirshipInventoryTile.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: 7236c6a0-1d17-402e-a798-9cf1e080018f
+  script: {fileID: -1078346614930307222, guid: fe05de064d900419ebaaa88c2b1dc60b, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/AirshipInventoryTile.lua
+  forceContext: 0
+  metadata:
     name: AirshipInventoryTile
     singleton: 0
     decorators: []
@@ -1713,6 +1659,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -1732,6 +1681,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1747,6 +1699,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1762,6 +1717,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1777,6 +1735,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Tooltip
         parameters:
@@ -1788,7 +1749,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!1 &4361704041040700027
 GameObject:
   m_ObjectHideFlags: 0
@@ -2073,16 +2033,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -1078346614930307222, guid: fe05de064d900419ebaaa88c2b1dc60b, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/AirshipInventoryTile.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: 088efd2f-960c-4c67-b680-bba6c7ae1f06
+  script: {fileID: -1078346614930307222, guid: fe05de064d900419ebaaa88c2b1dc60b, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/AirshipInventoryTile.lua
+  forceContext: 0
+  metadata:
     name: AirshipInventoryTile
     singleton: 0
     decorators: []
@@ -2097,6 +2052,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -2116,6 +2074,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -2131,6 +2092,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -2146,6 +2110,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -2161,6 +2128,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Tooltip
         parameters:
@@ -2172,7 +2142,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!1 &5029926955900013645
 GameObject:
   m_ObjectHideFlags: 0
@@ -2342,6 +2311,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8810751632843122556}
+  - {fileID: 3091494703772840301}
   m_Father: {fileID: 6537414816789647736}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2851,6 +2821,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8193851932582081949}
+  - {fileID: 5551504091489642667}
   m_Father: {fileID: 438658898338488462}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2984,11 +2955,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8810751632843122556}
+  m_Father: {fileID: 1039062089699594261}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 7.7368, y: -5.8406}
+  m_AnchoredPosition: {x: 7.7368, y: -6.119561}
   m_SizeDelta: {x: 55.2948, y: 16.163605}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &3989527098900748290
@@ -3735,16 +3706,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -2939589968898363016, guid: 576a6c2d1516748d48c5084b8a63b071, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/AirshipInventoryUI.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: 3bdaaf96-f05e-40ac-b67e-23ff15e34842
+  script: {fileID: -2939589968898363016, guid: 576a6c2d1516748d48c5084b8a63b071, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/AirshipInventoryUI.lua
+  forceContext: 0
+  metadata:
     name: AirshipInventoryUI
     singleton: 0
     decorators: []
@@ -3759,6 +3725,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -3778,6 +3747,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -3793,6 +3765,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -3812,6 +3787,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Tooltip
         parameters:
@@ -3832,6 +3810,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -3847,6 +3828,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -3862,6 +3846,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -3877,6 +3864,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -3892,6 +3882,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -3911,6 +3904,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -3926,6 +3922,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -3941,6 +3940,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -3960,6 +3962,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -3983,14 +3988,52 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 7775973747016066066}
       modified: 1
+    - name: closeOnClickOutside
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: hotbarSlots
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 9
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!1 &7313483051804321396
 GameObject:
   m_ObjectHideFlags: 0
@@ -4312,16 +4355,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -1078346614930307222, guid: fe05de064d900419ebaaa88c2b1dc60b, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/AirshipInventoryTile.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: 2add79f9-e0c2-4779-831c-edbe5e3a2398
+  script: {fileID: -1078346614930307222, guid: fe05de064d900419ebaaa88c2b1dc60b, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Inventory/AirshipInventoryTile.lua
+  forceContext: 0
+  metadata:
     name: AirshipInventoryTile
     singleton: 0
     decorators: []
@@ -4336,6 +4374,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -4355,6 +4396,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -4370,6 +4414,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -4385,6 +4432,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -4400,6 +4450,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Tooltip
         parameters:
@@ -4411,7 +4464,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!1 &8304833801952232345
 GameObject:
   m_ObjectHideFlags: 0

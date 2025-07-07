@@ -982,8 +982,12 @@ MonoBehaviour:
   headTop: {fileID: 1392744600335101891}
   neck: {fileID: 3142486938543884698}
   spineChest: {fileID: 9103960562246501033}
+  chestBack: {fileID: 0}
+  chestFront: {fileID: 0}
   heldItemL: {fileID: 7851928764977798893}
   heldItemR: {fileID: 1855668378367972431}
+  shoulderItemL: {fileID: 0}
+  shoulderItemR: {fileID: 0}
   headColor: {fileID: 0}
   bodyColor: {fileID: 0}
   armsColor: {fileID: 0}

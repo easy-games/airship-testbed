@@ -69,7 +69,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 	@NonSerialized() public draggingState: DraggingState | undefined;
 	private draggingBin = new Bin();
-	private spriteCacheForItemType = new Map<string, Sprite>();
 
 	private bin = new Bin();
 	private backpackOpenBin = new Bin();
@@ -78,7 +77,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 	override Awake() {
 		this.hotbarCanvas.enabled = false;
-		this.backpackCanvas.enabled = false;
+		this.backpackCanvas.gameObject.SetActive(false);
 	}
 
 	override Start(): void {
@@ -130,10 +129,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		);
 	}
 
-	public SetHealtbarVisible(visible: boolean) {
-		// this.healthBar.transform.gameObject.SetActive(visible);
-	}
-
 	public SetHotbarVisible(visible: boolean) {
 		this.hotbarContent.gameObject.SetActive(visible);
 	}
@@ -159,14 +154,18 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 		this.hotbarCanvas.enabled = false;
 
-		AppManager.OpenCanvas(this.backpackCanvas, {
-			onClose: () => {
+		this.backpackCanvas.gameObject.SetActive(true);
+		AppManager.OpenCustom(
+			() => {
 				this.backpackShown = false;
+				this.backpackCanvas.gameObject.SetActive(false);
 				this.hotbarCanvas.enabled = true;
 				this.backpackOpenBin.Clean();
 			},
-			noDarkBackground: this.darkBackground === false,
-		});
+			{
+				darkBackground: this.darkBackground,
+			},
+		);
 
 		if (Airship.Inventory.localInventory) {
 			Airship.Inventory.onInventoryOpened.Fire(new InventoryEvent(Airship.Inventory.localInventory));
@@ -197,14 +196,14 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	private SetupHotbar(): Bin {
 		this.hotbarCanvas.enabled = true;
 
-		let init = false; // TODO: @luke why is this false to start with? It looks like it's only ever false, but it works?
+		let init = true;
 		return Game.localPlayer.ObserveCharacter((character) => {
 			if (!character) {
 				return;
 			}
-			for (let i = 0; i < this.hotbarSlots; i++) {
-				this.UpdateHotbarSlot(i, character.GetHeldSlot() ?? 0, undefined, true);
-			}
+			// for (let i = 0; i < this.hotbarSlots; i++) {
+			// 	this.UpdateHotbarSlot(i, character.GetHeldSlot() ?? 0, undefined, true);
+			// }
 
 			const invBin = new Bin();
 			const slotBinMap = new Map<number, Bin>();
@@ -289,17 +288,15 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 		const itemType = itemStack.itemType;
 		let imageSrc = itemStack.itemDef.image;
-		let texture2d: Texture2D | undefined;
+		let sprite: Sprite | undefined;
 		if (imageSrc) {
-			texture2d = Asset.LoadAssetIfExists<Texture2D>(imageSrc);
-		}
-		if (texture2d) {
-			let cachedSprite = this.spriteCacheForItemType.get(itemStack.itemDef.itemType);
-			if (!cachedSprite) {
-				cachedSprite = Bridge.MakeDefaultSprite(texture2d);
-				this.spriteCacheForItemType.set(itemType, cachedSprite);
+			if (!StringUtils.endsWith(imageSrc, ".sprite")) {
+				imageSrc += ".sprite";
 			}
-			tileComponent.itemImage.sprite = cachedSprite;
+			sprite = Asset.LoadAssetIfExists<Sprite>(imageSrc);
+		}
+		if (sprite) {
+			tileComponent.itemImage.sprite = sprite;
 			tileComponent.itemImage.enabled = true;
 			tileComponent.itemName.enabled = false;
 		} else {
@@ -335,8 +332,8 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				const visual = button.transform.GetChild(0).gameObject;
 				const clone = Object.Instantiate(visual, this.backpackCanvas.transform);
 
-				const slotNumber = clone.transform.Find("SlotNumber");
-				slotNumber?.gameObject.SetActive(false);
+				// const slotNumber = clone.transform.Find("SlotNumber");
+				// slotNumber?.gameObject.SetActive(false);
 
 				clone.transform.SetAsLastSibling();
 
@@ -434,9 +431,11 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 		if (init) {
 			const tileComponent = go.GetAirshipComponent<AirshipInventoryTile>()!;
-			CanvasAPI.OnClickEvent(tileComponent.button.gameObject, () => {
-				Game.localPlayer.character?.SetHeldSlot(slot);
-			});
+			this.bin.Add(
+				tileComponent.button.onClick.Connect(() => {
+					Game.localPlayer.character?.SetHeldSlot(slot);
+				}),
+			);
 		}
 	}
 

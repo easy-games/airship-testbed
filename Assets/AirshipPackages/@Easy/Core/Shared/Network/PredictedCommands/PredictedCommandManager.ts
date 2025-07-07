@@ -130,10 +130,10 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	private unconfirmedCommands: Map<string, { commandNumber: number }> = new Map();
 
 	/** Used by the client to queue confirm final state data for a command. */
-	private unconfirmedFinalState: Map<string, { commandNumber: number; snapshot: CustomSnapshotData; time: number }> =
+	private unconfirmedFinalState: Map<string, { commandNumber: number; snapshot: CustomSnapshotData; tick: number }> =
 		new Map();
 	/** Used by the client to resimulate the confirmed final stat of a command. */
-	private confirmedFinalState: Map<string, { commandNumber: number; snapshot: CustomSnapshotData; time: number }> =
+	private confirmedFinalState: Map<string, { commandNumber: number; snapshot: CustomSnapshotData; tick: number }> =
 		new Map();
 
 	/** Used to track requests to cancel running commands. */
@@ -141,7 +141,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	/**
 	 * Used on the client to track when a command was cancelled on the client so that it can be re-cancelled during replays.
 	 */
-	private predictedCancellations: Map<string, { commandNumber: number; time: number }> = new Map();
+	private predictedCancellations: Map<string, { commandNumber: number; tick: number }> = new Map();
 
 	protected Start(): void {
 		Airship.Characters.ObserveCharacters((character) => {
@@ -403,7 +403,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 						this.confirmedFinalState.set(commandInstanceIdentifier, {
 							commandNumber: 0,
 							// This time is used for when we should remove the confirmedState, so it needs to be accurate
-							time: character.movement.GetLocalSimulationTimeFromCommandNumber(commandNumber),
+							tick: character.movement.GetLocalSimulationTickFromCommandNumber(commandNumber),
 							snapshot: [true, undefined as unknown as Readonly<unknown>],
 						});
 
@@ -502,8 +502,13 @@ export default class PredictedCommandManager extends AirshipSingleton {
 								if (Game.IsClient()) {
 									// If the client predicted a cancellation that didn't occur (since we are seeing snapshot data for it after the cancel
 									// should have occured), remove it so that we don't use it in our resimulations.
-									const predictedCancel = this.predictedCancellations.get(commandIdentifier.stringify());
-									if (predictedCancel && predictedCancel.commandNumber < snapshot.lastProcessedCommand) {
+									const predictedCancel = this.predictedCancellations.get(
+										commandIdentifier.stringify(),
+									);
+									if (
+										predictedCancel &&
+										predictedCancel.commandNumber < snapshot.lastProcessedCommand
+									) {
 										this.predictedCancellations.delete(commandIdentifier.stringify());
 									}
 								}
@@ -587,7 +592,12 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				this.confirmedFinalState.set(commandIdentifierStr, {
 					commandNumber: commandNumber,
 					snapshot: stateData,
-					time: character.movement.GetLocalSimulationTimeFromCommandNumber(commandNumber),
+					// We use a last tick + a buffer because observing clients don't add commandNumbers to their local state timeline
+					// until after they have interped the character for those frames. GetLocalSimulationTickFromCommandNumber
+					// would always return zero because of that. Since we only use this value for cleanup, it's safe to
+					// set it to an arbitrary value, we basically just need to keep this information around long enough for us to interpolate
+					// over the command number the state is associated with so the end event can be fired at the correct time in OnInterpolateReachedSnapshot
+					tick: AirshipSimulationManager.Instance.tick + NetworkClient.sendRate,
 				});
 				return;
 			}
@@ -595,7 +605,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			this.confirmedFinalState.set(commandIdentifierStr, {
 				commandNumber: commandNumber,
 				snapshot: stateData,
-				time: character.movement.GetLocalSimulationTimeFromCommandNumber(commandNumber),
+				tick: character.movement.GetLocalSimulationTickFromCommandNumber(commandNumber),
 			});
 			this.onCommandEnded.Fire(commandIdenfitier, stateData[1]);
 
@@ -634,7 +644,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			this.confirmedFinalState.set(commandIdentifierStr, {
 				commandNumber: 0,
 				// This time is used for when we should remove the confirmedState, so it needs to be accurate
-				time: character.movement.GetLocalSimulationTimeFromCommandNumber(commandNumber),
+				tick: character.movement.GetLocalSimulationTickFromCommandNumber(commandNumber),
 				snapshot: [true, undefined as unknown as Readonly<unknown>],
 			});
 
@@ -668,18 +678,18 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 		if (Game.IsClient()) {
 			this.globalBin.AddEngineEventConnection(
-				AirshipSimulationManager.Instance.OnHistoryLifetimeReached((time) => {
+				AirshipSimulationManager.Instance.OnHistoryLifetimeReached((tick) => {
 					// Clean up any data we will never need to use again
 					this.predictedCancellations.forEach((data, key) => {
-						if (data.time < time) this.predictedCancellations.delete(key);
+						if (data.tick < tick) this.predictedCancellations.delete(key);
 					});
 
 					this.unconfirmedFinalState.forEach((data, key) => {
-						if (data.time < time) this.unconfirmedFinalState.delete(key);
+						if (data.tick < tick) this.unconfirmedFinalState.delete(key);
 					});
 
 					this.confirmedFinalState.forEach((data, key) => {
-						if (data.time < time) {
+						if (data.tick < tick) {
 							// print("removing confirmed final state for " + key);
 							// We set the highest completed instance here since the client will need to resim up to the confirmed final state
 							// during replays. The instance hasn't really "completed" until we can be sure that it will never run again on the
@@ -880,7 +890,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 		let shouldTickAgain = true;
 		let lastProcessedInputCommandNumber: number = 0;
-		let lastProcessedInputTime = 0;
+		let lastProcessedInputTick = 0;
 		let lastCapturedState: CustomSnapshotData = [false, undefined as unknown as Readonly<unknown>];
 		// Note: active command data structure may be destroyed and recreated during replays.
 		// only store metadata about the current instance here and know that when retrieving
@@ -901,7 +911,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			// doing it one tick later and need to keep data like this around :/
 			ResetInstance: () => {
 				lastProcessedInputCommandNumber = 0;
-				lastProcessedInputTime = 0;
+				lastProcessedInputTick = 0;
 				lastCapturedState = [false, undefined as unknown as Readonly<unknown>];
 			},
 		};
@@ -932,7 +942,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					this.unconfirmedFinalState.set(commandIdentifierStr, {
 						commandNumber: lastProcessedInputCommandNumber,
 						snapshot: lastCapturedState,
-						time: lastProcessedInputTime,
+						tick: lastProcessedInputTick,
 					});
 					// print(
 					// 	"setting unconfirmed state for " +
@@ -948,7 +958,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				if (Game.IsClient()) {
 					this.predictedCancellations.set(commandIdentifierStr, {
 						commandNumber: lastProcessedInputCommandNumber,
-						time: lastProcessedInputTime,
+						tick: lastProcessedInputTick,
 					});
 				}
 			}
@@ -1025,7 +1035,7 @@ export default class PredictedCommandManager extends AirshipSingleton {
 				);
 				shouldTickAgain = tickResult !== false;
 				lastProcessedInputCommandNumber = input.commandNumber;
-				lastProcessedInputTime = input.time;
+				lastProcessedInputTick = input.tick;
 
 				// If we have a queued cancellation from outside of our command processing functions, apply it here so
 				// that we do not tick again.

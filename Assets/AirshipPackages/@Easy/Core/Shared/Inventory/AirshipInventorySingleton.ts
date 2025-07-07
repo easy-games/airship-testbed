@@ -221,14 +221,24 @@ export class AirshipInventorySingleton {
 			const inv = this.GetInventory(invId);
 			if (!inv) return;
 
-			const itemStack = inv.GetItem(slot);
-			if (itemStack === undefined) return;
+			let itemStack = inv.GetItem(slot);
+			if (itemStack === undefined && itemType !== undefined && amount !== undefined) {
+				// The server has the authority on this, so we should trust it.
+				itemStack = new ItemStack(itemType);
+				inv.SetItem(slot, itemStack);
+			}
+
+			if (itemStack === undefined) {
+				// Still no item stack!
+				return;
+			}
+
+			if (amount !== undefined) {
+				itemStack.SetAmount(amount, { noNetwork: Game.IsHosting() });
+			}
 
 			if (itemType !== undefined) {
 				itemStack.SetItemType(itemType);
-			}
-			if (amount !== undefined) {
-				itemStack.SetAmount(amount, { noNetwork: Game.IsHosting() });
 			}
 		});
 	}

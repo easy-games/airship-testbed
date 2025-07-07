@@ -191,7 +191,7 @@ export class AudioManager {
 			audioSource.outputAudioMixerGroup = config?.mixerGroup!;
 
 		audioSource.resource = audioResource;
-		audioSource.Play();
+		audioSource.PlayDelayed(0.01);
 
 		this.globalAudioSources.set(audioSource.gameObject.GetInstanceID(), audioSource);
 		if (!audioSource.loop) {
@@ -263,7 +263,7 @@ export class AudioManager {
 			audioSource.outputAudioMixerGroup = config?.mixerGroup!;
 
 		audioSource.resource = audioResource;
-		audioSource.Play();
+		audioSource.PlayDelayed(0.01);
 
 		if (!audioSource.loop) {
 			const clip = audioSource.clip;

@@ -60,12 +60,22 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	 * This only works on the Client.
 	 **/
 	@NonSerialized() public onHidden = new Signal<void>();
+	/**
+	 * Used to manage Proximity Prompt culling. If a distance condition is provided
+	 * its max range will be kept to the Proximity Prompt's max range + 10.
+	 */
+	@SerializeField()
+	private canvasDistanceCondition?: CanvasDistanceCondition;
 
 	private shownBin = new Bin();
 	private bin = new Bin();
 	private shown = false;
 	/** Position on enable */
 	private initialPosition: Vector3;
+
+	protected Awake(): void {
+		if (this.canvasDistanceCondition) this.canvasDistanceCondition.maxDistance = this.maxRange + 10;
+	}
 
 	override OnEnable(): void {
 		this.initialPosition = this.transform.position;
@@ -78,11 +88,14 @@ export default class ProximityPrompt extends AirshipBehaviour {
 			});
 		}
 
-		this.bin.AddEngineEventConnection(
-			CanvasAPI.OnClickEvent(this.button.gameObject, () => {
-				this.Activate();
-			}),
-		);
+		if (!Game.IsMobile()) {
+			this.bin.AddEngineEventConnection(
+				CanvasAPI.OnClickEvent(this.button.gameObject, () => {
+					this.Activate();
+				}),
+			);
+		}
+
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnPointerEvent(this.button.gameObject, (dir, btn) => {
 				if (dir === PointerDirection.DOWN) {
@@ -141,6 +154,8 @@ export default class ProximityPrompt extends AirshipBehaviour {
 
 	public SetMaxRange(val: number): void {
 		(this.maxRange as number) = val;
+		if (this.canvasDistanceCondition) this.canvasDistanceCondition.maxDistance = val + 10;
+
 	}
 
 	/**

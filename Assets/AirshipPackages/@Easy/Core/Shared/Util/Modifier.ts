@@ -47,8 +47,8 @@ export class Modifier<T extends defined> {
 		this.TriggerObservers();
 	}
 
-	/** Trigger all observers when we make a change to the tickets */
-	private TriggerObservers() {
+	/** Manually trigger all observer functions. You do not need to call this manually -- it is done automatically when adding/removing tickets.  */
+	public TriggerObservers() {
 		const valueList = this.GetTickets();
 		for (const observer of this.ticketObservers) {
 			task.spawn(() => {
