@@ -373,6 +373,17 @@ interface Vector3Constructor {
 	/** Constructs a new Vector3 with the maximum value picked per axis. */
 	Max: (a: Vector3, b: Vector3) => Vector3;
 
+	/**
+	 * Rotates a vector current towards target. This function is similar to MoveTowards except that
+	 * the vector is treated as a direction rather than a position. The current vector will be rotated
+	 * round toward the target direction by an angle of maxRadiansDelta, although it will land exactly
+	 * on the target rather than overshoot. If the magnitudes of current and target are different, then
+	 * the magnitude of the result will be linearly interpolated during the rotation. If a negative value
+	 * is used for maxRadiansDelta, the vector will rotate away from target until it is pointing in exactly
+	 * the opposite direction, then stops.
+	 */
+	RotateTowards: (current: Vector3, target: Vector3, maxRadiansDelta: number, maxMagnitudeDelta: number) => Vector3;
+
 	/** Constructs a Vector3 where the vector is moved toward `target`. */
 	MoveTowards: (start: Vector3, target: Vector3, maxDistanceDelta: number) => Vector3;
 
@@ -875,6 +886,7 @@ interface ServerManager extends MonoBehaviour {
 
 interface Renderer {
 	SetMaterial(index: number, material: Material): void;
+	SetSharedMaterial(index: number, material: Material): void;
 }
 
 interface PhysicsScene {
@@ -2108,6 +2120,14 @@ interface GameObject extends Object {
 
 	/**Sets the layer on this game object and all descendants */
 	SetLayerRecursive(layer: number): void;
+	/**
+	 * Replaces any layer that matches the replaceMask with layer.
+	 * Applies to this GameObject and any descendants.
+	 *
+	 * @param layer Layer id
+	 * @param replaceMask Layer bitmask
+	 */
+	ReplaceLayerRecursive(layer: number, replaceMask: number);
 }
 declare const gameObject: GameObject;
 
@@ -4846,7 +4866,70 @@ interface MultiAimConstraintConstructor {
 }
 declare const MultiAimConstraint: MultiAimConstraintConstructor;
 
-interface RandomConstructor {}
+interface Random {
+	/** Generates a random integer between `min` and `max`, both inclusive. */
+	Int(min: number, max: number): number;
+
+	/** Generates a random number between `min` and `max`, both inclusive. */
+	Number(min: number, max: number): number;
+
+	/** Generates a random number between `0` and `max`, both inclusive. */
+	Number(max: number): number;
+
+	/** Generates a random number between `0` and `1`. */
+	Number(): number;
+
+	/** Generates a random unit vector. */
+	UnitVector3(): Vector3;
+
+	/** Generates a random unit vector. */
+	UnitVector2(): Vector2;
+
+	/** Returns a random item in the given array. */
+	/**
+	 * Returns a random item in the given array.
+	 *
+	 * ```ts
+	 * const items = ["Pencil", "Pen", "Feather"];
+	 * const [item, index] = rng.PickItem(items);
+	 * ```
+	 */
+	PickItem<T>(tbl: T[]): LuaTuple<[value: T, index: number]>;
+
+	/**
+	 * Returns a random item in the given array, using the given weights.
+	 * Weights must be >= 0.
+	 *
+	 * Note: This function heavily optimizes for immutable weights, so
+	 * always call `table.freeze` on the weights array after its creation.
+	 *
+	 * ```ts
+	 * const items = ["Leather Hat", "Golden Bat", "Diamond Glove"];
+	 * const weights = table.freeze([15, 5, 2.5]);
+	 * const [randomItem, index] = rng.PickItemWeighted(items, weights);
+	 * ```
+	 */
+	PickItemWeighted<T>(tbl: T[], weights: readonly number[]): LuaTuple<[value: T, index: number]>;
+
+	/** Shuffles the given array in-place. This uses the Fisher-Yates algorithm. */
+	ShuffleArray<T>(tbl: T[]): T[];
+
+	/** Creates a new Random generator with the current state of this generator. */
+	Clone(): Random;
+}
+interface RandomConstructor {
+	/**
+	 * Construct a new Random generator. The given seed will be
+	 * converted to an unsigned integer.
+	 */
+	new (seed: number): Random;
+
+	/**
+	 * Construct a new Random generator. The seed is chosen from an
+	 * internal entropy source.
+	 */
+	new (): Random;
+}
 declare const Random: RandomConstructor;
 
 interface VolumeProfile extends ScriptableObject {

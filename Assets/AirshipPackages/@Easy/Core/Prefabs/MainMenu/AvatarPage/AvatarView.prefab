@@ -986,6 +986,24 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 5398343825928969501}
       modified: 1
+    - name: mobileZoomOffset
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 8.23
+      serializedObject: {fileID: 0}
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
 --- !u!1 &3851732383462049854

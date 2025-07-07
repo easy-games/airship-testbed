@@ -30,6 +30,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	public maxOffset = 7;
 	public zoomSensitivity = 0.2;
 	public zoomLerpSpeed = 1;
+	public mobileZoomOffset = 8;
 	private goalOffset = this.startingOffset;
 	private currentZoomOffset = this.startingOffset;
 
@@ -87,18 +88,30 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	}
 
 	protected Update(dt: number): void {
-		this.currentZoomOffset = math.smoothStep(this.currentZoomOffset, this.goalOffset, dt * this.zoomLerpSpeed);
-		this.currentZoomOffset = math.clamp(this.currentZoomOffset, this.minOffset, this.maxOffset);
+		if (Game.IsMobile()) {
+			this.currentZoomOffset = this.mobileZoomOffset;
+			// return;
+		} else {
+			this.currentZoomOffset = math.smoothStep(this.currentZoomOffset, this.goalOffset, dt * this.zoomLerpSpeed);
+			this.currentZoomOffset = math.clamp(this.currentZoomOffset, this.minOffset, this.maxOffset);
+		}
 
 		// this.currentZoomOffset = this.goalOffset;
 		// print("offset: " + this.currentZoomOffset + ", goal: " + this.goalOffset);
 
 		let dir = this.avatarCamera.transform.position.sub(this.cameraPivot.position).normalized;
 		this.avatarCamera.transform.position = this.cameraPivot.position.add(dir.mul(this.currentZoomOffset));
+		if (Game.IsMobile()) {
+			this.avatarCamera.transform.position = this.avatarCamera.transform.position.WithX(0);
+		}
 		// this.avatarCamera.transform.LookAt(this.cameraPivot.position);
 	}
 
 	public OnEnable(): void {
+		if (Game.deviceType === AirshipDeviceType.Phone) {
+			this.avatarCamera.transform.localPosition = new Vector3(0, -1.21, -8.13);
+			this.avatarCamera.transform.localRotation = Quaternion.Euler(6.2, 0, 0);
+		}
 		this.bin.Add(
 			OnUpdate.Connect((dt) => {
 				// Spin velocity
@@ -161,17 +174,13 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		this.currentZoomOffset = this.maxOffset;
 		this.goalOffset = this.startingOffset;
 		this.bin.Connect(Mouse.onScrolled, (event) => {
-			try {
-				const t = new PointerEventData(EventSystem.current);
-				t.position = Mouse.position;
-				const results = EventSystem.current.RaycastAll(t);
-				for (let result of results) {
-					if (result.gameObject.GetComponent<ScrollRect>() !== undefined) {
-						return;
-					}
+			const t = new PointerEventData(EventSystem.current);
+			t.position = Mouse.position;
+			const results = EventSystem.current.RaycastAll(t);
+			for (let result of results) {
+				if (result.gameObject.GetComponent<ScrollRect>() !== undefined) {
+					return;
 				}
-			} catch (err) {
-				// support old airship version
 			}
 
 			this.goalOffset -= event.delta * this.zoomSensitivity;
@@ -256,7 +265,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 
 	public CameraFocusSlot(slotType: AccessorySlot) {
 		this.targetTransform = this.GetFocusTransform(slotType);
-		this.CameraFocusTransform(this.targetTransform);
+		// this.CameraFocusTransform(this.targetTransform);
 	}
 
 	public GetFocusTransform(slotType: AccessorySlot) {
@@ -292,31 +301,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		// 	return this.cameraWaypointBack;
 		// }
 		return this.cameraWaypointDefault;
-	}
-
-	public CameraFocusTransform(transform?: Transform, instant = false) {
-		// this.targetTransform = transform;
-		// if (this.avatarCamera?.transform && this.targetTransform) {
-		// 	if (instant) {
-		// 		this.avatarCamera.transform.localPosition = this.targetTransform.localPosition;
-		// 		this.avatarCamera.transform.localRotation = this.targetTransform.localRotation;
-		// 	} else {
-		// 		NativeTween.LocalPosition(
-		// 			this.avatarCamera.transform,
-		// 			this.targetTransform.localPosition,
-		// 			this.cameraTransitionDuration,
-		// 		)
-		// 			.SetEaseQuadInOut()
-		// 			.SetUseUnscaledTime(true);
-		// 		NativeTween.LocalRotation(
-		// 			this.avatarCamera.transform,
-		// 			this.targetTransform.localRotation.eulerAngles,
-		// 			this.cameraTransitionDuration,
-		// 		)
-		// 			.SetEaseQuadInOut()
-		// 			.SetUseUnscaledTime(true);
-		// 	}
-		// }
 	}
 
 	public CreateRenderScene() {

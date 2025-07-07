@@ -2,6 +2,7 @@ import { ProtectedUserController } from "../Client/ProtectedControllers/Airship/
 import { ProtectedPlayersSingleton } from "./MainMenu/Singletons/ProtectedPlayersSingleton";
 import { ProtectedSettingsSingleton } from "./MainMenu/Singletons/Settings/ProtectedSettingsSingleton";
 import { ProtectedAvatarSingleton } from "./Protected/Avatar/ProtectedAvatarSingleton";
+import { ProtectedCacheSingleton } from "./Protected/Cache/ProtectedCacheSingleton";
 import { ProtectedVoiceChatSingleton } from "./Protected/VoiceChat/ProtectedVoiceChatSingleton";
 
 /**
@@ -14,4 +15,5 @@ export const Protected = {
 	Settings: undefined! as ProtectedSettingsSingleton,
 	Avatar: undefined! as ProtectedAvatarSingleton,
 	VoiceChat: undefined! as ProtectedVoiceChatSingleton,
+	Cache: undefined! as ProtectedCacheSingleton,
 };

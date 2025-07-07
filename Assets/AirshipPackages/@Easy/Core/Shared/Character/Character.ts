@@ -267,7 +267,15 @@ export default class Character extends AirshipBehaviour {
 		this.maxHealth = maxHealth;
 		this.despawned = false;
 		this.initialized = true;
-		this.displayName = displayName || "";
+		if (displayName !== undefined) {
+			this.displayName = displayName;
+		} else {
+			if (player) {
+				this.displayName = player.username;
+			} else {
+				this.displayName = "";
+			}
+		}
 
 		// print("Outfitdto: " + inspect(outfitDto));
 		if (Game.IsClient() && this.IsLocalCharacter()) {
@@ -532,7 +540,8 @@ export default class Character extends AirshipBehaviour {
 
 	private ParseCustomSnapshotData(snapshot: CharacterSnapshotData): Map<string, unknown> {
 		//Decode binary block into usable key value array
-		const allData = snapshot.customData ? (snapshot.customData.Decode() as Record<string, unknown>) : undefined;
+		const customData = snapshot.customData;
+		const allData = customData ? (customData.Decode() as Record<string, unknown>) : undefined;
 		const allCustomData: Map<string, unknown> = new Map();
 		if (allData) {
 			for (const [key, value] of ObjectUtils.entries(allData)) {
@@ -544,7 +553,8 @@ export default class Character extends AirshipBehaviour {
 
 	private ParseCustomInputData(input: CharacterInputData): Map<string, unknown> {
 		//Decode binary block into usable key value array
-		const allData = input.customData ? (input.customData.Decode() as Record<string, unknown>) : undefined;
+		const customData = input.customData;
+		const allData = customData ? (customData.Decode() as Record<string, unknown>) : undefined;
 		const allCustomData: Map<string, unknown> = new Map();
 		if (allData) {
 			for (const [key, value] of ObjectUtils.entries(allData)) {

@@ -522,7 +522,7 @@ MonoBehaviour:
   maxResolution: 256
   atlasSize: 4096
   pointFiltering: 0
-  blockDefinionLists:
+  blockDefinitionLists:
   - {fileID: 11400000, guid: 3b00e01234fed9d46856dd9cd2db5b3f, type: 2}
 --- !u!4 &73344695
 Transform:
@@ -584,7 +584,6 @@ Transform:
   - {fileID: 1336453812}
   - {fileID: 1274085139}
   - {fileID: 1082431082}
-  - {fileID: 1096188701}
   m_Father: {fileID: 1077937132}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &77746376
@@ -1303,12 +1302,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: metadata.properties.Array.data[8].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: metadata.properties.Array.data[9].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_metadata.properties.Array.data[8].modified
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_metadata.properties.Array.data[9].modified
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: metadata.properties.Array.data[8].serializedValue
+      value: Firework
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: metadata.properties.Array.data[9].serializedValue
+      value: Launch
       objectReference: {fileID: 0}
     - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_metadata.properties.Array.data[8].serializedValue
@@ -2411,6 +2426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 39c09d1c-f166-41d2-9f0a-1561825843f9
   script: {fileID: 8963047173616105519, guid: af14ee7d043814fc19c90a08afcca895, type: 3}
   scriptPath: Assets/Code/AirshipPlatformDemo/CharacterSwapper.lua
   forceContext: 0
@@ -3687,6 +3703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 463306c5-dd1e-4027-a205-4c9a1bf1b9f3
   script: {fileID: -7457400017309096293, guid: 5f714b65018654154ab5143dba8d4c7a, type: 3}
   scriptPath: Assets/Code/Components/LaunchButton.lua
   forceContext: 0
@@ -7258,6 +7275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 4ca697b5-8adf-46e7-ad9e-e598bb163716
   script: {fileID: 796400153169862170, guid: c4fa48bfb1281a04baca6e795001cd63, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterConfigSetup.lua
   forceContext: 0
@@ -9339,6 +9357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 6da738d2-2509-4676-85e7-4a56d8b83681
   script: {fileID: -4677867687655643797, guid: 58888838f0b9ee14399e0c3e5b729b78, type: 3}
   scriptPath: Assets/Code/AirshipPlatformDemo/DemoManager.lua
   forceContext: 0
@@ -9505,6 +9524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 5bd18573-1e47-42f5-bbac-7435666f1d2b
   script: {fileID: -938344475688608531, guid: ea70673a889c767468ce1b291ca92c1a, type: 3}
   scriptPath: Assets/Code/AirshipPlatformDemo/CharacterMovementTestKeys.lua
   forceContext: 0
@@ -11364,50 +11384,6 @@ MonoBehaviour:
   colorSettings:
   - baseColor: {r: 0.5377358, g: 0.43637308, b: 0.39822888, a: 1}
   addedByEditorScript: 0
---- !u!1 &1096188699
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1096188701}
-  - component: {fileID: 1096188700}
-  m_Layer: 0
-  m_Name: ModelDemo
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!114 &1096188700
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1096188699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 133c966e53784130bb69a80c320e1a57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1096188701
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1096188699}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.49, y: 2.29, z: 2.93}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 74598409}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1119986049
 GameObject:
   m_ObjectHideFlags: 0
@@ -12149,6 +12125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: df9801e3-4510-4c72-94fc-153dd545654f
   script: {fileID: 3874102147928444048, guid: d7cc5f546129a45968eb53cc5ac77acb, type: 3}
   scriptPath: Assets/Code/Components/CharacterSpawner.lua
   forceContext: 0
@@ -12205,6 +12182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 19170201-0732-41bf-8f56-55431ce064a2
   script: {fileID: -1661148726056955554, guid: 6722dee8b34524a97865c142a5725459, type: 3}
   scriptPath: Assets/Code/Components/NPCSpawner.lua
   forceContext: 0
@@ -14593,6 +14571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 2c4580e5-d9b8-4022-b09c-4cb243b48284
   script: {fileID: -7457400017309096293, guid: 5f714b65018654154ab5143dba8d4c7a, type: 3}
   scriptPath: Assets/Code/Components/LaunchButton.lua
   forceContext: 0
@@ -17606,12 +17585,32 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 40352570}
     - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: metadata.properties.Array.data[0].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: metadata.properties.Array.data[1].modified
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_metadata.properties.Array.data[0].modified
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_metadata.properties.Array.data[1].modified
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: metadata.properties.Array.data[0].serializedValue
+      value: Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: metadata.properties.Array.data[1].serializedValue
+      value: Press
+      objectReference: {fileID: 0}
+    - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: metadata.properties.Array.data[4].serializedValue
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_metadata.properties.Array.data[0].serializedValue
@@ -19607,6 +19606,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffdbf2e5de07a2a48be696e24d5b6e44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useSimplifiedVoxels: 0
   debugReloadOnScriptReloadMode: 0
   autoLoad: 1
   voxelWorldFile: {fileID: 11400000, guid: a529f331543968645840a5b3baa612ba, type: 2}

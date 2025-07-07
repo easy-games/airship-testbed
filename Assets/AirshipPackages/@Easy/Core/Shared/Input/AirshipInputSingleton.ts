@@ -22,6 +22,7 @@ import { MobileButtonConfig } from "./Mobile/MobileButton";
 import MobileControlsCanvas from "./Mobile/MobileControlsCanvas";
 import TouchJoystick from "./Mobile/TouchJoystick";
 import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
+import { SetInterval } from "../Util/Timer";
 
 export enum InputActionDirection {
 	/**
@@ -32,11 +33,6 @@ export enum InputActionDirection {
 	 * Action is triggered by a down event.
 	 */
 	Down,
-}
-
-interface ContextKeybindUpdate {
-	action: string;
-	id: number;
 }
 
 /**
@@ -385,7 +381,7 @@ export class AirshipInputSingleton {
 			task.defer(() => {
 				contextbridge.broadcast(
 					"ProtectedKeybind:Updated",
-					action.name,
+					action.internalName,
 					action.id,
 					castedBinding.isKeyBinding,
 					castedBinding.key,
@@ -397,7 +393,7 @@ export class AirshipInputSingleton {
 			task.defer(() => {
 				contextbridge.broadcast(
 					"ProtectedKeybind:Updated",
-					action.name,
+					action.internalName,
 					action.id,
 					castedBinding.isKeyBinding,
 					undefined,
@@ -521,6 +517,46 @@ export class AirshipInputSingleton {
 		this.actionToMobileButtonTable.set(lowerName, mobileButtonsForAction);
 
 		return mobileButton;
+	}
+
+	/**
+	 * Returns the string representation of the provided action's keybind. If the action does not
+	 * exist, or if called from a mobile context, this returns empty string.
+	 *
+	 * @returns The string representation of the action's binding.
+	 */
+	public GetKeybindDisplay(actionName: string): string {
+		if (Game.IsMobile()) return "";
+		const kbBinding = this.GetActionByInputType(actionName, ActionInputType.Keyboard)?.binding;
+		if (kbBinding) return kbBinding.GetDisplayName() ?? "";
+		const mouseBinding = this.GetActionByInputType(actionName, ActionInputType.Mouse)?.binding;
+		if (mouseBinding) return mouseBinding.GetDisplayName() ?? "";
+		return "";
+	}
+
+	/**
+	 * Observes keybind updates associated with the provided action name. Use the returned function to
+	 * disconnect from this event.
+	 *
+	 * @param actionName The name of the action to observe.
+	 * @param callback The callback to invoke with the updated `InputAction`.
+	 * @returns A disconnect function.
+	 */
+	public ObserveKeybind(actionName: string, callback: (action: InputAction) => void): () => void {
+		const connection = this.onActionBound.Connect((inputAction) => {
+			const lowerName = actionName.lower();
+			if (lowerName === inputAction.internalName) {
+				callback(inputAction);
+			}
+		});
+		const actions = this.GetActions(actionName);
+		for (const action of actions) {
+			task.defer(() => {
+				callback(action);
+			});
+			break;
+		}
+		return connection;
 	}
 
 	/**
@@ -728,13 +764,13 @@ export class AirshipInputSingleton {
 	 * @param action An `InputAction`.
 	 */
 	private AddActionToTable(action: InputAction): void {
-		let existingActions = this.actionTable.get(action.name) ?? [];
+		let existingActions = this.actionTable.get(action.internalName) ?? [];
 		if (existingActions.size() > 0) {
 			existingActions.push(action);
 		} else {
 			existingActions = [action];
 		}
-		this.actionTable.set(action.name, existingActions);
+		this.actionTable.set(action.internalName, existingActions);
 	}
 	/**
 	 * Creates listeners for provided `InputAction` based on it's binding.
@@ -745,13 +781,13 @@ export class AirshipInputSingleton {
 		const signalCleanup = new Bin();
 
 		const fireUpSignalIfDown = () => {
-			const isDown = this.actionDownState.has(action.name);
+			const isDown = this.actionDownState.has(action.internalName);
 			if (isDown) {
-				const upSignals = this.actionUpSignals.get(action.name) ?? [];
+				const upSignals = this.actionUpSignals.get(action.internalName) ?? [];
 				for (const signal of upSignals) {
-					signal.Fire(new InputActionEvent(action.name, false));
+					signal.Fire(new InputActionEvent(action.internalName, false));
 				}
-				this.actionDownState.delete(action.name);
+				this.actionDownState.delete(action.internalName);
 			}
 		};
 
@@ -780,21 +816,21 @@ export class AirshipInputSingleton {
 					Keyboard.OnKeyDown(action.binding.config.key, (event) => {
 						const isModifierKeyDown = Keyboard.IsKeyDown(action.binding.GetModifierAsKey());
 						if (!isModifierKeyDown) return;
-						this.actionDownState.add(action.name);
-						const actionDownSignals = this.actionDownSignals.get(action.name);
+						this.actionDownState.add(action.internalName);
+						const actionDownSignals = this.actionDownSignals.get(action.internalName);
 						if (!actionDownSignals) return;
 						const inactiveSignalIndices = [];
 						let signalIndex = 0;
 						for (const signal of actionDownSignals) {
 							if (signal.HasConnections()) {
-								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
+								signal.Fire(new InputActionEvent(action.internalName, event.uiProcessed));
 							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
 						this.ClearDestroyedSignals(
-							action.name,
+							action.internalName,
 							InputActionDirection.Down,
 							inactiveSignalIndices,
 							actionDownSignals,
@@ -803,23 +839,23 @@ export class AirshipInputSingleton {
 				);
 				signalCleanup.Add(
 					Keyboard.OnKeyUp(action.binding.config.key, (event) => {
-						const isDown = this.actionDownState.has(action.name);
+						const isDown = this.actionDownState.has(action.internalName);
 						if (!isDown) return;
-						this.actionDownState.delete(action.name);
-						const actionUpSignals = this.actionUpSignals.get(action.name);
+						this.actionDownState.delete(action.internalName);
+						const actionUpSignals = this.actionUpSignals.get(action.internalName);
 						if (!actionUpSignals) return;
 						const inactiveSignalIndices = [];
 						let signalIndex = 0;
 						for (const signal of actionUpSignals) {
 							if (signal.HasConnections()) {
-								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
+								signal.Fire(new InputActionEvent(action.internalName, event.uiProcessed));
 							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
 						this.ClearDestroyedSignals(
-							action.name,
+							action.internalName,
 							InputActionDirection.Up,
 							inactiveSignalIndices,
 							actionUpSignals,
@@ -828,23 +864,23 @@ export class AirshipInputSingleton {
 				);
 				signalCleanup.Add(
 					Keyboard.OnKeyUp(action.binding.GetModifierAsKey(), (event) => {
-						const isDown = this.actionDownState.has(action.name);
+						const isDown = this.actionDownState.has(action.internalName);
 						if (!isDown) return;
-						this.actionDownState.delete(action.name);
-						const actionUpSignals = this.actionUpSignals.get(action.name);
+						this.actionDownState.delete(action.internalName);
+						const actionUpSignals = this.actionUpSignals.get(action.internalName);
 						if (!actionUpSignals) return;
 						const inactiveSignalIndices = [];
 						let signalIndex = 0;
 						for (const signal of actionUpSignals) {
 							if (signal.HasConnections()) {
-								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
+								signal.Fire(new InputActionEvent(action.internalName, event.uiProcessed));
 							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
 						this.ClearDestroyedSignals(
-							action.name,
+							action.internalName,
 							InputActionDirection.Up,
 							inactiveSignalIndices,
 							actionUpSignals,
@@ -856,21 +892,21 @@ export class AirshipInputSingleton {
 					Mouse.OnButtonDown(action.binding.config.mouseButton, (event) => {
 						const isModifierKeyDown = Keyboard.IsKeyDown(action.binding.GetModifierAsKey());
 						if (!isModifierKeyDown) return;
-						this.actionDownState.add(action.name);
-						const actionDownSignals = this.actionDownSignals.get(action.name);
+						this.actionDownState.add(action.internalName);
+						const actionDownSignals = this.actionDownSignals.get(action.internalName);
 						if (!actionDownSignals) return;
 						const inactiveSignalIndices = [];
 						let signalIndex = 0;
 						for (const signal of actionDownSignals) {
 							if (signal.HasConnections()) {
-								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
+								signal.Fire(new InputActionEvent(action.internalName, event.uiProcessed));
 							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
 						this.ClearDestroyedSignals(
-							action.name,
+							action.internalName,
 							InputActionDirection.Down,
 							inactiveSignalIndices,
 							actionDownSignals,
@@ -879,23 +915,23 @@ export class AirshipInputSingleton {
 				);
 				signalCleanup.Add(
 					Mouse.OnButtonUp(action.binding.config.mouseButton, (event) => {
-						const isDown = this.actionDownState.has(action.name);
+						const isDown = this.actionDownState.has(action.internalName);
 						if (!isDown) return;
-						this.actionDownState.delete(action.name);
-						const actionUpSignals = this.actionUpSignals.get(action.name);
+						this.actionDownState.delete(action.internalName);
+						const actionUpSignals = this.actionUpSignals.get(action.internalName);
 						if (!actionUpSignals) return;
 						const inactiveSignalIndices = [];
 						let signalIndex = 0;
 						for (const signal of actionUpSignals) {
 							if (signal.HasConnections()) {
-								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
+								signal.Fire(new InputActionEvent(action.internalName, event.uiProcessed));
 							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
 						this.ClearDestroyedSignals(
-							action.name,
+							action.internalName,
 							InputActionDirection.Up,
 							inactiveSignalIndices,
 							actionUpSignals,
@@ -904,23 +940,23 @@ export class AirshipInputSingleton {
 				);
 				signalCleanup.Add(
 					Keyboard.OnKeyUp(action.binding.GetModifierAsKey(), (event) => {
-						const isDown = this.actionDownState.has(action.name);
+						const isDown = this.actionDownState.has(action.internalName);
 						if (!isDown) return;
-						this.actionDownState.delete(action.name);
-						const actionUpSignals = this.actionUpSignals.get(action.name);
+						this.actionDownState.delete(action.internalName);
+						const actionUpSignals = this.actionUpSignals.get(action.internalName);
 						if (!actionUpSignals) return;
 						const inactiveSignalIndices = [];
 						let signalIndex = 0;
 						for (const signal of actionUpSignals) {
 							if (signal.HasConnections()) {
-								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
+								signal.Fire(new InputActionEvent(action.internalName, event.uiProcessed));
 							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
 						this.ClearDestroyedSignals(
-							action.name,
+							action.internalName,
 							InputActionDirection.Up,
 							inactiveSignalIndices,
 							actionUpSignals,
@@ -949,23 +985,23 @@ export class AirshipInputSingleton {
 						if (isChatOpen && action.binding.GetInputType() === ActionInputType.Keyboard) {
 							return;
 						}
-						const isDown = this.actionDownState.has(action.name);
+						const isDown = this.actionDownState.has(action.internalName);
 						if (isDown) return;
-						this.actionDownState.add(action.name);
-						const actionDownSignals = this.actionDownSignals.get(action.name);
+						this.actionDownState.add(action.internalName);
+						const actionDownSignals = this.actionDownSignals.get(action.internalName);
 						if (!actionDownSignals) return;
 						const inactiveSignalIndices = [];
 						let signalIndex = 0;
 						for (const signal of actionDownSignals) {
 							if (signal.HasConnections()) {
-								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
+								signal.Fire(new InputActionEvent(action.internalName, event.uiProcessed));
 							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
 						this.ClearDestroyedSignals(
-							action.name,
+							action.internalName,
 							InputActionDirection.Down,
 							inactiveSignalIndices,
 							actionDownSignals,
@@ -974,23 +1010,23 @@ export class AirshipInputSingleton {
 				);
 				signalCleanup.Add(
 					Keyboard.OnKeyUp(action.binding.config.key, (event) => {
-						const wasDown = this.actionDownState.has(action.name);
+						const wasDown = this.actionDownState.has(action.internalName);
 						if (!wasDown) return;
-						this.actionDownState.delete(action.name);
-						const actionUpSignals = this.actionUpSignals.get(action.name);
+						this.actionDownState.delete(action.internalName);
+						const actionUpSignals = this.actionUpSignals.get(action.internalName);
 						if (!actionUpSignals) return;
 						const inactiveSignalIndices = [];
 						let signalIndex = 0;
 						for (const signal of actionUpSignals) {
 							if (signal.HasConnections()) {
-								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
+								signal.Fire(new InputActionEvent(action.internalName, event.uiProcessed));
 							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
 						this.ClearDestroyedSignals(
-							action.name,
+							action.internalName,
 							InputActionDirection.Up,
 							inactiveSignalIndices,
 							actionUpSignals,
@@ -1008,23 +1044,23 @@ export class AirshipInputSingleton {
 							// do not propagate action event. Do not ever propagate if control scheme is touch.
 							return;
 						}
-						const isDown = this.actionDownState.has(action.name);
+						const isDown = this.actionDownState.has(action.internalName);
 						if (isDown) return;
-						this.actionDownState.add(action.name);
-						const actionDownSignals = this.actionDownSignals.get(action.name);
+						this.actionDownState.add(action.internalName);
+						const actionDownSignals = this.actionDownSignals.get(action.internalName);
 						if (!actionDownSignals) return;
 						const inactiveSignalIndices = [];
 						let signalIndex = 0;
 						for (const signal of actionDownSignals) {
 							if (signal.HasConnections()) {
-								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
+								signal.Fire(new InputActionEvent(action.internalName, event.uiProcessed));
 							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
 						this.ClearDestroyedSignals(
-							action.name,
+							action.internalName,
 							InputActionDirection.Down,
 							inactiveSignalIndices,
 							actionDownSignals,
@@ -1033,23 +1069,23 @@ export class AirshipInputSingleton {
 				);
 				signalCleanup.Add(
 					Mouse.OnButtonUp(action.binding.config.mouseButton, (event) => {
-						const wasDown = this.actionDownState.has(action.name);
+						const wasDown = this.actionDownState.has(action.internalName);
 						if (!wasDown) return;
-						this.actionDownState.delete(action.name);
-						const actionUpSignals = this.actionUpSignals.get(action.name);
+						this.actionDownState.delete(action.internalName);
+						const actionUpSignals = this.actionUpSignals.get(action.internalName);
 						if (!actionUpSignals) return;
 						const inactiveSignalIndices = [];
 						let signalIndex = 0;
 						for (const signal of actionUpSignals) {
 							if (signal.HasConnections()) {
-								signal.Fire(new InputActionEvent(action.name, event.uiProcessed));
+								signal.Fire(new InputActionEvent(action.internalName, event.uiProcessed));
 							} else if (signal.isDestroyed) {
 								inactiveSignalIndices.push(signalIndex);
 							}
 							signalIndex++;
 						}
 						this.ClearDestroyedSignals(
-							action.name,
+							action.internalName,
 							InputActionDirection.Up,
 							inactiveSignalIndices,
 							actionUpSignals,
@@ -1162,7 +1198,7 @@ export class AirshipInputSingleton {
 			const clientSettings = Protected.Settings.WaitForSettingsLoaded().expect();
 			const gameOverrides = clientSettings.gameKeybindOverrides[gameId];
 			if (!gameOverrides) return;
-			const actionOverride = gameOverrides[action.name];
+			const actionOverride = gameOverrides[action.internalName];
 			if (!actionOverride) return;
 			const bindingFromSettings = this.CreateBindingFromSerializedAction(actionOverride);
 			action.UpdateBinding(bindingFromSettings);

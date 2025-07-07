@@ -35,7 +35,14 @@ export class ShutdownService {
 			}
 
 			const players = PlayerManagerBridge.Instance.GetPlayers();
-			const playerCount = players.size();
+			let playerCount = 0;
+			for (let p of players) {
+				// bot check
+				if (p.connectionId > 0 && p.connectionId < 50_000) {
+					continue;
+				}
+				playerCount++;
+			}
 
 			if (playerCount > 0) {
 				this.playerConnected = true;

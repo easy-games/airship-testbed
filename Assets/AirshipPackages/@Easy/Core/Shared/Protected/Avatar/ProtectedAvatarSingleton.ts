@@ -1,22 +1,22 @@
 import { AuthController } from "@Easy/Core/Client/ProtectedControllers/Auth/AuthController";
+import {
+	AirshipCreateOutfitDto,
+	AirshipGearClothingSubcategory,
+	AirshipGearItem,
+	AirshipOutfit,
+	AirshipUpdateOutfitDto,
+} from "../../Airship/Types/AirshipPlatformInventory";
 import { Dependency, Singleton } from "../../Flamework";
 import { Game } from "../../Game";
 import { HttpRetryInstance } from "../../Http/HttpRetry";
 import { CoreLogger } from "../../Logger/CoreLogger";
 import { Protected } from "../../Protected";
+import { ContentServiceClient } from "../../TypePackages/content-service-types";
+import { isUnityMakeRequestError, UnityMakeRequest } from "../../TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "../../Util/AirshipUrl";
 import { ColorUtil } from "../../Util/ColorUtil";
 import { RandomUtil } from "../../Util/RandomUtil";
 import { Signal } from "../../Util/Signal";
-import { ContentServiceClient } from "../../TypePackages/content-service-types";
-import { isUnityMakeRequestError, UnityMakeRequest } from "../../TypePackages/UnityMakeRequest";
-import {
-	AirshipGearItem,
-	AirshipOutfit,
-	AirshipGearClothingSubcategory,
-	AirshipCreateOutfitDto,
-	AirshipUpdateOutfitDto,
-} from "../../Airship/Types/AirshipPlatformInventory";
 
 const contentServiceClient = new ContentServiceClient(UnityMakeRequest(AirshipUrl.ContentService));
 
@@ -355,7 +355,9 @@ export class ProtectedAvatarSingleton {
 			return imageId;
 		} catch (err) {
 			if (isUnityMakeRequestError(err)) {
-				CoreLogger.Error("Error getting item image resource: " + (err.responseMessage() ?? "An unknown error occurred"));
+				CoreLogger.Error(
+					"Error getting item image resource: " + (err.responseMessage() ?? "An unknown error occurred"),
+				);
 			}
 			return "";
 		}
@@ -393,6 +395,10 @@ export class ProtectedAvatarSingleton {
 				return AccessorySlot.Ears;
 			case AirshipGearClothingSubcategory.Nose:
 				return AccessorySlot.Nose;
+			case AirshipGearClothingSubcategory.LeftFoot:
+				return AccessorySlot.LeftFoot;
+			case AirshipGearClothingSubcategory.RightFoot:
+				return AccessorySlot.RightFoot;
 			default:
 				warn("unknown GearClothingSubcategory mapping: " + slot);
 				return AccessorySlot.Root;

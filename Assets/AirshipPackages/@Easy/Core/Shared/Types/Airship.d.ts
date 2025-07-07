@@ -117,7 +117,14 @@ interface CharacterMovementEngineEvents {
 
 interface StateSnapshot {
 	lastProcessedCommand: number;
-	time: number;
+	/**
+	 * The time the snapshot was created. This time is local to the client/server that created it.
+	 */
+	// time: number;
+	/**
+	 * The tick the snapshot was created. This tick is local to the client/server that created it.
+	 */
+	tick: number;
 }
 
 interface CharacterSnapshotData extends StateSnapshot {
@@ -143,7 +150,14 @@ interface CharacterSnapshotData extends StateSnapshot {
 
 interface InputCommand {
 	commandNumber: number;
-	time: number;
+	/**
+	 * The time the input was created. This time is local to the client/server that created it.
+	 */
+	// time: number;
+	/**
+	 * The tick the input was created. This tick is local to the client/server that created it.
+	 */
+	tick: number;
 }
 
 interface CharacterInputData extends InputCommand {
@@ -174,8 +188,7 @@ interface CharacterMovement extends Component {
 	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouch: boolean, moveDirMode: number): void;
 	SetMovementEnabled(isEnabled: boolean): void;
 	SetLookVector(lookVector: Vector3): void;
-	SetLookVectorRecurring(lookVector: Vector3): void;
-	SetLookVectorRecurringToMoveDir(): void;
+	SetLookVectorToMoveDir(): void;
 	SetCustomInputData(customData: BinaryBlob): void;
 	SetCustomSnapshotData(customData: BinaryBlob): void;
 	SetFlying(enabled: boolean): void;
@@ -200,13 +213,13 @@ interface CharacterMovement extends Component {
 	// GetCurrentMoveInputData(): MoveInputData;
 	RequestResimulation(commandNumber: number): boolean;
 	/**
-	 * Get's the simulation time that generated the provided command number. This returns the time in the local
+	 * Get's the simulation tick that generated the provided command number. This returns the tick in the local
 	 * simulation timeline.
 	 *
 	 * **Note: This only works for command numbers which have been completed, meaning that using this function in the OnTick and passing the input command number
 	 * will result in 0 as the simulation time. The local simulation time for an input is always included with the command number in the input object.**
 	 * */
-	GetLocalSimulationTimeFromCommandNumber(commandNumber: number): number;
+	GetLocalSimulationTickFromCommandNumber(commandNumber: number): number;
 	/** If this character movement has final authority on character position and values. */
 	IsAuthority(): boolean;
 
@@ -237,10 +250,13 @@ interface CharacterMovement extends Component {
 
 interface AirshipSimulationManager extends MonoBehaviour {
 	replaying: boolean;
-	OnSetSnapshot(callback: (time: number) => void): EngineEventConnection;
-	OnTick(callback: (time: number, replay: boolean) => void): EngineEventConnection;
-	OnHistoryLifetimeReached(callback: (time: number) => void): EngineEventConnection;
-	GetLastSimulationTime(time: number): number;
+	/** Tick number of the current or last processed tick. Derived from Time.fixedTime. Will update during replays */
+	tick: number;
+	/** Unscaled fixed time. Generally reflects Time.unscaledFixedTime, but will update during replays */
+	time: number;
+	OnSetSnapshot(callback: (tick: number) => void): EngineEventConnection;
+	OnTick(callback: (tick: number, time: number, replay: boolean) => void): EngineEventConnection;
+	OnHistoryLifetimeReached(callback: (tick: number) => void): EngineEventConnection;
 }
 
 interface AirshipSimulationManagerWithLagCompensation {
@@ -783,7 +799,7 @@ interface PoolManager {
 	SpawnObject(prefab: Object): GameObject;
 	SpawnObject(prefab: Object, parent: Transform): GameObject;
 	SpawnObject(prefab: Object, worldPosition: Vector3, worldRotation: Quaternion): GameObject;
-	SpawnObject(prefab: Object, localPosition: Vector3, localRotation: Quaternion, parent: Transform): GameObject;
+	SpawnObject(prefab: Object, worldPosition: Vector3, worldPosition: Quaternion, parent: Transform): GameObject;
 	ReleaseObject(clone: GameObject);
 }
 

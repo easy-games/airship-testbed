@@ -57,6 +57,10 @@ export class AirshipCameraSingleton {
 	private fps?: FirstPersonCameraSystem;
 	public activeCameraMode: CameraMode | undefined;
 
+	private fixedCameraMode: FixedCameraMode | undefined;
+	private orbitCameraMode: OrbitCameraMode | undefined;
+	private flyCameraMode: FlyCameraMode | undefined;
+
 	public characterCameraMode: CharacterCameraMode = CharacterCameraMode.Fixed;
 	public onCameraModeChanged = new Signal<[mode: CameraMode]>();
 
@@ -125,7 +129,8 @@ export class AirshipCameraSingleton {
 			const flyingBin = new Bin();
 
 			Keyboard.OnKeyDown(Key.P, (event) => {
-				if (event.uiProcessed) return;
+				//TODO add easy org check instead of role
+				if (event.uiProcessed || Game.localPlayer?.orgRoleName === undefined) return;
 				if (Keyboard.IsKeyDown(Key.LeftShift)) {
 					if (flyCam) {
 						flyCam = false;
@@ -420,13 +425,27 @@ export class AirshipCameraSingleton {
 		const target =
 			Game.localPlayer.character?.model ?? GameObject.CreateAtPos(Vector3.zero, "CameraTargetPlaceholder");
 		if (characterCameraMode === CharacterCameraMode.Fixed) {
+			if (this.fixedCameraMode) {
+				this.fixedCameraMode.SetTarget(target);
+				this.SetModeInternal(this.fixedCameraMode);
+				return this.fixedCameraMode;
+			}
+
 			const mode = new FixedCameraMode(target);
+			this.fixedCameraMode = mode;
 			this.SetModeInternal(mode);
 			return mode;
 		} else {
+			if (this.orbitCameraMode) {
+				this.orbitCameraMode.SetTarget(target);
+				this.SetModeInternal(this.orbitCameraMode);
+				return this.orbitCameraMode;
+			}
+
 			const mode = new OrbitCameraMode(target, {
 				characterLocked: characterCameraMode === CharacterCameraMode.OrbitFixed,
 			});
+			this.orbitCameraMode = mode;
 			this.SetModeInternal(mode);
 			return mode;
 		}
@@ -514,10 +533,11 @@ export class AirshipCameraSingleton {
 			// });
 
 			//Every frame set the characters look vector to match the cameras
-			const lookVectorSync = OnLateUpdate.ConnectWithPriority(SignalPriority.HIGHEST, () => {
+			const lookVectorSync = OnLateUpdate.ConnectWithPriority(SignalPriority.LOWEST, () => {
 				if (!character.movement) return;
 				if (character.movement.disableInput) return;
-				character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
+				// print("AirshipCameraSingleton.SetLookVector Time: " + Time.time);
+				character.movement.SetLookVector(mode.cameraForwardVector);
 			});
 
 			if (character.movement) {
@@ -561,9 +581,9 @@ export class AirshipCameraSingleton {
 				if (!character.movement) return;
 				if (character.movement.disableInput) return;
 				if (characterLocked) {
-					character.movement.SetLookVectorRecurring(mode.cameraForwardVector);
+					character.movement.SetLookVector(mode.cameraForwardVector);
 				} else {
-					character.movement.SetLookVectorRecurringToMoveDir();
+					character.movement.SetLookVectorToMoveDir();
 				}
 			});
 

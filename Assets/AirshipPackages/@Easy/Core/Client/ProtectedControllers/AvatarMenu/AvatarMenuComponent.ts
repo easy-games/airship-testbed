@@ -22,7 +22,6 @@ import { MainMenuPageType } from "../MainMenuPageName";
 import AvatarAccessoryBtn from "./AvatarAccessoryBtn";
 import AvatarMenuBtn from "./AvatarMenuBtn";
 import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
-import AvatarRenderComponent from "./AvatarRenderComponent";
 import OutfitButton from "./Outfit/OutfitButtonComponent";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
 
@@ -180,18 +179,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		this.DestroyItemButtons();
-
-		if (Game.IsEditor()) {
-			Keyboard.OnKeyDown(Key.PrintScreen, (event) => {
-				if (Keyboard.IsKeyDown(Key.LeftShift)) {
-					if (this.inThumbnailMode) {
-						this.LeaveThumbnailMode();
-					} else {
-						this.EnterThumbnailMode();
-					}
-				}
-			});
-		}
 	}
 
 	private RefreshAvatar() {
@@ -302,7 +289,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.mainMenu?.avatarView?.ShowAvatar();
 		this.mainMenu?.ToggleGameBG(false);
 		this.RefreshAvatar();
-		this.mainMenu?.avatarView?.CameraFocusTransform(this.mainMenu?.avatarView?.cameraWaypointDefault, true);
 
 		this.SelectMainNav(0);
 		this.SelectSubNav(0);
@@ -327,7 +313,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private SelectMainNav(index: number) {
-		if (this.activeMainIndex === index || !this.mainNavBtns || this.inThumbnailMode) {
+		if (this.activeMainIndex === index || !this.mainNavBtns) {
 			return;
 		}
 
@@ -357,9 +343,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private SelectSubNav(subIndex: number) {
-		if (this.inThumbnailMode) {
-			return;
-		}
 		this.activeSubIndex = subIndex;
 
 		this.DestroyItemButtons();
@@ -696,7 +679,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private SelectOutfit(index: number, notifyServer: boolean = true) {
-		if (index < 0 || index >= Protected.Avatar.outfits.size() || this.inThumbnailMode) {
+		if (index < 0 || index >= Protected.Avatar.outfits.size()) {
 			error(`Index ${index} out of range of outfits`);
 		}
 		this.currentUserOutfitIndex = index;
@@ -716,7 +699,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	public RenameOutfit(index: number, newName: string) {
-		if (index < 0 || index >= Protected.Avatar.outfits.size() || this.inThumbnailMode) {
+		if (index < 0 || index >= Protected.Avatar.outfits.size()) {
 			error(`Index ${index} out of range of outfits`);
 		}
 
@@ -839,122 +822,4 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private Revert() {
 		this.LoadCurrentOutfit().expect();
 	}
-
-	private thumbnailRenderList: Map<string, { accesory: AccessoryComponent; button: AvatarAccessoryBtn }> = new Map();
-	private thumbnailFaceRenderList: Map<string, { accesory: AccessoryFace; button: AvatarAccessoryBtn }> = new Map();
-	private inThumbnailMode = false;
-	private renderSetup?: AvatarRenderComponent;
-	/**
-	 * Internal use only`.
-	 *
-	 * @internal
-	 */
-	public EnterThumbnailMode() {
-		// if (!this.renderSetup) {
-		// 	this.renderSetup = this.mainMenu?.avatarView?.CreateRenderScene();
-		// }
-		// print("Entering Thumbnail Mode");
-		// this.mainMenu?.avatarView?.backdropHolder?.gameObject.SetActive(false);
-		// this.inThumbnailMode = true;
-		// this.SetDirty(true);
-		// this.ClearItembuttons();
-		// this.RemoveAllAccessories();
-		// //Accessories
-		// let foundItems = AvatarCollectionManager.instance.GetAllPossibleAvatarItems();
-		// let foundFaces = AvatarCollectionManager.instance.GetAllAvatarFaceItems();
-		// if (foundItems) {
-		// 	let allItems: { instanceId: string; item: AccessoryComponent }[] = [];
-		// 	for (let [key, value] of foundItems) {
-		// 		if (value && value.GetServerClassId() !== undefined && value.GetServerClassId() !== "") {
-		// 			let button = this.AddItemButton(
-		// 				value.GetServerClassId(),
-		// 				value.GetServerClassId(),
-		// 				value.name,
-		// 				() => {
-		// 					const alreadySelected = this.thumbnailRenderList
-		// 						.get(value.GetServerClassId())
-		// 						?.button.GetSelected();
-		// 					this.Log("Selecting item: " + value.ToString() + ": " + alreadySelected);
-		// 					this.thumbnailRenderList
-		// 						.get(value.GetServerClassId())
-		// 						?.button.SetSelected(!alreadySelected);
-		// 				},
-		// 			);
-		// 			button.SetSelected(false);
-		// 			this.thumbnailRenderList.set(value.GetServerClassId(), { accesory: value, button: button });
-		// 		}
-		// 	}
-		// 	for (let value of foundFaces) {
-		// 		if (value && value.GetServerClassId() !== undefined && value.GetServerClassId() !== "") {
-		// 			let button = this.AddItemButton(
-		// 				value.GetServerClassId(),
-		// 				value.GetServerClassId(),
-		// 				value.name,
-		// 				() => {
-		// 					const alreadySelected = this.thumbnailFaceRenderList
-		// 						.get(value.GetServerClassId())
-		// 						?.button.GetSelected();
-		// 					this.Log("Selecting face: " + value.ToString() + ": " + alreadySelected);
-		// 					this.thumbnailFaceRenderList
-		// 						.get(value.GetServerClassId())
-		// 						?.button.SetSelected(!alreadySelected);
-		// 				},
-		// 			);
-		// 			button.SetSelected(false);
-		// 			this.thumbnailFaceRenderList.set(value.GetServerClassId(), { accesory: value, button: button });
-		// 		}
-		// 	}
-		// 	this.DisplayClothingItems(allItems);
-		// }
-		// this.currentFocusedSlot = AccessorySlot.Root;
-		// this.mainMenu?.avatarView?.CameraFocusSlot(this.currentFocusedSlot);
-	}
-
-	/**
-	 * Internal use only`.
-	 *
-	 * @internal
-	 */
-	public LeaveThumbnailMode() {
-		print("Leaving Thumbnail Mode");
-		if (this.renderSetup) {
-			Object.Destroy(this.renderSetup);
-		}
-		this.DestroyItemButtons();
-		this.thumbnailRenderList.clear();
-		this.mainMenu?.avatarView?.backdropHolder?.gameObject.SetActive(true);
-		this.OpenPage();
-	}
-
-	/**
-	 * Internal use only`.
-	 *
-	 * @internal
-	 */
-	// private RenderThumbnails() {
-	// 	if (!this.renderSetup) {
-	// 		return;
-	// 	}
-
-	// 	this.renderSetup.uploadThumbnails = true;
-	// 	if (Airship.Input.IsDown(CoreAction.Sprint)) {
-	// 		print("Rendering All Items");
-	// 		this.renderSetup.RenderAllItems();
-	// 	} else {
-	// 		print("Rendering Selected Items");
-	// 		this.renderSetup.CreateItemCamera();
-	// 		this.renderSetup?.SetupForRenders(false);
-	// 		for (let [key, value] of this.thumbnailRenderList) {
-	// 			if (value && value.button.GetSelected()) {
-	// 				this.renderSetup?.RenderItem(value.accesory);
-	// 			}
-	// 		}
-	// 		this.renderSetup?.SetupForRenders(true);
-	// 		for (let [key, value] of this.thumbnailFaceRenderList) {
-	// 			if (value && value.button.GetSelected()) {
-	// 				this.renderSetup?.RenderFace(value.accesory);
-	// 			}
-	// 		}
-	// 	}
-	// }
 }

@@ -43,11 +43,11 @@ export default class CharacterRendering extends AirshipBehaviour {
 
 			if (this.character.IsLocalCharacter() || this.enableIfNotLocalCharacter) {
 				if (this.useTransparentOnCameraClose && this.autoSetStencilLayer) {
-					this.SetLayerRecursive(this.character.rig.transform, Layer.LOCAL_STENCIL_MASK);
+					this.character.rig.gameObject.ReplaceLayerRecursive(Layer.LOCAL_STENCIL_MASK, ~(1 << Layer.TRANSPARENT_FX));
 				}
 				this.SetAlpha(1);
 			} else {
-				this.SetLayerRecursive(this.character.rig.transform, Layer.CHARACTER);
+				this.character.rig.gameObject.ReplaceLayerRecursive(Layer.CHARACTER, ~(1 << Layer.TRANSPARENT_FX));
 			}
 		}
 	}
@@ -56,17 +56,6 @@ export default class CharacterRendering extends AirshipBehaviour {
 		this.enableIfNotLocalCharacter = enabled;
 		this.Init();
 		this.Refresh();
-	}
-
-	private SetLayerRecursive(transform: Transform, layer: number) {
-		//Check if we can change this game objects layer
-		if (transform.gameObject.layer !== Layer.TRANSPARENT_FX) {
-			transform.gameObject.layer = layer;
-		}
-		for (let i = 0; i < transform.childCount; i++) {
-			const t = transform.GetChild(i);
-			this.SetLayerRecursive(t, layer);
-		}
 	}
 
 	private Refresh() {

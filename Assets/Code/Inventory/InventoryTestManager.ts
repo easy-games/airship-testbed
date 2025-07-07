@@ -3,6 +3,9 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 
 export default class InventoryTestManager extends AirshipSingleton {
+	public passiveSpawnIron = true;
+	public passiveIronSpawnCooldown = 0.1;
+
 	override Start(): void {
 		Airship.Inventory.RegisterItem("Iron", {
 			displayName: "Iron Ingot",
@@ -12,15 +15,17 @@ export default class InventoryTestManager extends AirshipSingleton {
 		if (Game.IsServer()) {
 			// example passive iron
 			Airship.Players.ObservePlayers((player) => {
-				const ironPassiveThread = task.spawn(() => {
-					while (task.wait(1.5)) {
-						player.character?.inventory.AddItem(new ItemStack("Iron", 1));
-					}
-				});
+				if (this.passiveSpawnIron) {
+					const ironPassiveThread = task.spawn(() => {
+						while (task.wait(this.passiveIronSpawnCooldown)) {
+							player.character?.inventory.AddItem(new ItemStack("Iron", 1));
+						}
+					});
 
-				return () => {
-					task.cancel(ironPassiveThread);
-				};
+					return () => {
+						task.cancel(ironPassiveThread);
+					};
+				}
 			});
 		}
 

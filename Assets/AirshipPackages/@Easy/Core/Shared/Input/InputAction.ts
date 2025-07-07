@@ -113,10 +113,15 @@ export class InputAction {
 	 * The capitalized version of this binding's name.
 	 */
 	private properlyCapitalizedName: string;
+	/**
+	 * The action's internal name.
+	 */
+	public internalName: string;
 
 	constructor(name: string, binding: Binding, isSecondary: boolean, category = "General", isCore = false) {
 		this.id = InputAction.InputActionId++;
-		this.name = name.lower();
+		this.name = name;
+		this.internalName = name.lower();
 		this.properlyCapitalizedName = name;
 		this.isCore = isCore;
 		this.defaultBinding = ObjectUtils.deepCopy(binding);

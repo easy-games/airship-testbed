@@ -4,7 +4,7 @@ import { Player } from "@Easy/Core/Shared/Player/Player";
 
 export class EntityCommand extends ChatCommand {
 	constructor() {
-		super("entity", ["e"], "[health]");
+		super("entity", ["e"], "[health]", "Spawns an NPC", true);
 	}
 
 	public Execute(player: Player, args: string[]): void {

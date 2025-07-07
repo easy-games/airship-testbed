@@ -8,7 +8,7 @@ import { Theme } from "@Easy/Core/Shared/Util/Theme";
 
 export class SetTeamCommand extends ChatCommand {
 	constructor() {
-		super("setTeam", [], "<player> <team>");
+		super("setTeam", [], "<player> <team>", "Sets a player's team", true);
 	}
 
 	public Execute(player: Player, args: string[]): void {

@@ -21,7 +21,7 @@ import { MainMenuController } from "../../MainMenuController";
 import { ProtectedFriendsController } from "../FriendsController";
 import { MainMenuPartyController } from "../MainMenuPartyController";
 import { DirectMessage } from "./DirectMessage";
-import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { GameCoordinatorChat, GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 
@@ -29,6 +29,7 @@ const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordin
 
 @Controller({})
 export class DirectMessageController {
+	private internalMessageId: number = 1;
 	private incomingMessagePrefab = AssetBridge.Instance.LoadAsset(
 		"AirshipPackages/@Easy/Core/Prefabs/UI/Messages/IncomingMessage.prefab",
 	) as GameObject;
@@ -251,6 +252,14 @@ export class DirectMessageController {
 		return this.lastMessagedFriend;
 	}
 
+	private generateDMForDisplay(targetUsername: string, message: string) {
+		const text =
+			ColorUtil.ColoredText(Theme.pink, "To ") +
+			ColorUtil.ColoredText(Theme.white, targetUsername) +
+			ColorUtil.ColoredText(Theme.gray, ": " + message);
+		return text;
+	}
+
 	public SendDirectMessage(uid: string, message: string): void {
 		const status = this.friendsController.GetFriendStatus(uid);
 		if (status === undefined) return;
@@ -260,6 +269,8 @@ export class DirectMessageController {
 		}
 
 		if (message === "") return;
+		const messageId = `DirectMessageController:${this.internalMessageId++}`;
+		const clientChat = Dependency<ClientChatSingleton>()
 
 		this.inputField!.text = "";
 		let sentMessage: DirectMessage = {
@@ -273,30 +284,29 @@ export class DirectMessageController {
 			pitch: 1.5,
 		});
 		const messageObj = this.RenderChatMessage(sentMessage, true);
+		if (Game.coreContext === CoreContext.GAME) {
+			clientChat.RenderChatMessage(this.generateDMForDisplay(status.username, message), messageId);
+		}
 
-		const data = client.chat.sendDirectMessage({ target: uid, text: message }).expect();
+		let data: GameCoordinatorChat.SendMessageResponse = client.chat.sendDirectMessage({ target: uid, text: message }).expect();
+
 		if (data.messageSent) {
-			if (Game.coreContext === CoreContext.GAME) {
-				let text =
-					ColorUtil.ColoredText(Theme.pink, "To ") +
-					ColorUtil.ColoredText(Theme.white, status.username) +
-					ColorUtil.ColoredText(Theme.gray, ": " + (data.transformedMessage ? data.transformedMessage : message));
-				Dependency<ClientChatSingleton>().RenderChatMessage(text);
-			}
 			if (data.transformedMessage) {
+				if (Game.coreContext === CoreContext.GAME) {
+					clientChat.UpdateChatMessage(messageId, this.generateDMForDisplay(status.username, data.transformedMessage));
+				}
 				messageObj.setMessageText(data.transformedMessage);
+				sentMessage.text = data.transformedMessage;
 			}
 		} else {
-			messageObj.delete();
-			this.GetMessages(uid).filter((m) => m !== sentMessage);
+			const errorHeader = ColorUtil.ColoredText(Theme.red, `Failed to send: `) +
+				ColorUtil.ColoredText(Theme.gray, `"${data.reason ?? "Unknown Error"}".`)
+			if (Game.coreContext === CoreContext.GAME) {
+				clientChat.UpdateChatMessage(messageId, errorHeader + "\n" + this.generateDMForDisplay(status.username, message));
+			}
+			sentMessage.text = sentMessage.text + "\n" + errorHeader;
+			messageObj.setMessageText(sentMessage.text);
 			this.inputField!.text = message + this.inputField!.text;
-			let sentMessage: DirectMessage = {
-				sender: Game.localPlayer.userId,
-				sentAt: os.time(),
-				text: data.reason,
-			};
-			this.GetMessages(uid).push(sentMessage);
-			this.RenderChatMessage(sentMessage, true);
 			AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/UI_Error.ogg");
 		}
 	}

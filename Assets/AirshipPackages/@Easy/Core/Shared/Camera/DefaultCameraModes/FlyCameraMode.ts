@@ -48,9 +48,11 @@ export class FlyCameraMode extends CameraMode {
 	private readonly keysDown = new Set<Key>();
 
 	OnStart(camera: Camera, rootTransform: Transform) {
-		const transform = rootTransform;
-		this.positionSpring = new Spring(transform.position, 5);
-		this.xRotSpring = new Spring(new Vector3(math.rad(90), 0, 0), 5);
+		this.positionSpring = new Spring(rootTransform.position, 5);
+
+		this.rotationX = rootTransform.forward.x;
+		this.rotationY = rootTransform.forward.y;
+		this.xRotSpring = new Spring(new Vector3(this.rotationX, 0, 0), 5);
 		this.yRotVelSpring = new Spring(new Vector3(0, 0, 0), 3);
 		this.fovSpring = new Spring(new Vector3(0, 0, camera.fieldOfView), 3);
 		this.fovSpring.goal = new Vector3(0, 0, START_FOV);

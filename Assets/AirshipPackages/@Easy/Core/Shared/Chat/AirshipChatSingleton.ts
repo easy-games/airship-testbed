@@ -9,12 +9,10 @@ import { EntityCommand } from "@Easy/Core/Server/Services/Chat/Commands/EntityCo
 import { FlyCommand } from "@Easy/Core/Server/Services/Chat/Commands/FlyCommand";
 import { HealCommand } from "@Easy/Core/Server/Services/Chat/Commands/HealCommand";
 import { HelpCommand } from "@Easy/Core/Server/Services/Chat/Commands/HelpCommand";
-import { JoinCodeCommand } from "@Easy/Core/Server/Services/Chat/Commands/JoinCodeCommand";
 import { KickCommand } from "@Easy/Core/Server/Services/Chat/Commands/KickCommand";
 import { KillCommand } from "@Easy/Core/Server/Services/Chat/Commands/KillCommand";
 import { LagCommand } from "@Easy/Core/Server/Services/Chat/Commands/LagCommand";
 import { SetTeamCommand } from "@Easy/Core/Server/Services/Chat/Commands/SetTeamCommand";
-import { TeamChatCommand } from "@Easy/Core/Server/Services/Chat/Commands/TeamChatCommand";
 import { TeamCommand } from "@Easy/Core/Server/Services/Chat/Commands/TeamCommand";
 import TeamsCommand from "@Easy/Core/Server/Services/Chat/Commands/TeamsCommand";
 import { TpAllCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpAllCommand";
@@ -28,6 +26,7 @@ import { Game } from "../Game";
 import { Player } from "../Player/Player";
 import StringUtils from "../Types/StringUtil";
 import { Cancellable } from "../Util/Cancellable";
+import { ChatColor } from "../Util/ChatColor";
 import { ChatUtil } from "../Util/ChatUtil";
 import ObjectUtils from "../Util/ObjectUtils";
 import { Signal } from "../Util/Signal";
@@ -65,8 +64,6 @@ export class AirshipChatSingleton {
 	 */
 	public readonly onChatMessage = new Signal<ChatMessageEvent>().WithAllowYield(true);
 
-
-
 	constructor() {
 		Airship.Chat = this;
 		this.moderationService = new ProtectedModerationService();
@@ -94,7 +91,7 @@ export class AirshipChatSingleton {
 		contextbridge.subscribe<(fromContext: LuauContext, msg: string, fromConnId: number) => void>(
 			"ProtectedChat:SendMessage",
 			(fromContext, text, fromConnId) => {
-				const messageId = this.messageIdCounter++;
+				const messageId = `AirshipChatSingleton:${this.messageIdCounter++}`;
 				const player = Airship.Players.FindByConnectionId(fromConnId);
 				if (!player) {
 					warn("Couldn't find player when trying to send chat message. connId=" + fromConnId);
@@ -109,12 +106,25 @@ export class AirshipChatSingleton {
 					if (commandData) {
 						const command = this.commands.get(commandData.label);
 						if (command) {
+							if (command.requiresPermission && !Game.IsEditor()) {
+								// todo: add easy employee check
+								if (!player.orgRoleName) {
+									player.SendMessage(
+										ChatColor.Red(
+											`You do not have permission to use ${ChatColor.Yellow(
+												"/" + command.commandLabel,
+											)}`,
+										),
+									);
+									return;
+								}
+							}
 							command.Execute(player, commandData.args);
 							return;
 						}
 					}
 
-					player.SendMessage(`Invalid command: ${text}`);
+					player.SendMessage(ChatColor.Red(`Command not found: ${text}`));
 					return;
 				}
 
@@ -131,8 +141,6 @@ export class AirshipChatSingleton {
 				});
 
 				if (!Game.IsEditor()) {
-
-
 					this.moderationService
 						.ModerateChatMessage("public_chat", player.userId, result.message)
 						.then((moderationResult: ModerateChatMessageResponse) => {
@@ -147,7 +155,9 @@ export class AirshipChatSingleton {
 										moderationResult.messageBlockedReasons.join(", "),
 									);
 								} else {
-									player.SendMessage("Your message was blocked for violating our community guidelines.");
+									player.SendMessage(
+										"Your message was blocked for violating our community guidelines.",
+									);
 								}
 								return;
 							} else if (moderationResult.transformedMessage) {
@@ -194,7 +204,6 @@ export class AirshipChatSingleton {
 		if (!Game.IsServer()) return;
 		this.RegisterCommand(new EntityCommand());
 		this.RegisterCommand(new DamageCommand());
-		this.RegisterCommand(new JoinCodeCommand());
 		this.RegisterCommand(new TeamCommand());
 		this.RegisterCommand(new AddInventoryCommand());
 		this.RegisterCommand(new KillCommand());
@@ -207,7 +216,6 @@ export class AirshipChatSingleton {
 		this.RegisterCommand(new BotCommand());
 		this.RegisterCommand(new FlyCommand());
 		this.RegisterCommand(new HelpCommand());
-		this.RegisterCommand(new TeamChatCommand());
 		this.RegisterCommand(new KickCommand());
 		this.RegisterCommand(new TeamsCommand());
 	}

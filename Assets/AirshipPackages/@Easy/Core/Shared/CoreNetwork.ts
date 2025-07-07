@@ -9,7 +9,7 @@ import { TeamDto } from "./Team/Team";
 
 export interface SentChatMessage {
 	type: "sent";
-	internalMessageId?: number;
+	internalMessageId?: string;
 	message: string;
 	senderPrefix?: string;
 	senderClientId?: number;
@@ -17,13 +17,13 @@ export interface SentChatMessage {
 
 export interface UpdateChatMessage {
 	type: "update",
-	internalMessageId: number;
+	internalMessageId: string;
 	message: string;
 }
 
 export interface RemoveChatMessage {
 	type: "remove",
-	internalMessageId: number;
+	internalMessageId: string;
 }
 
 export type ChatMessageNetworkEvent = SentChatMessage | UpdateChatMessage | RemoveChatMessage;

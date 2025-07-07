@@ -147,9 +147,6 @@ export class AirshipPlayersSingleton {
 				this.InitClient();
 			}
 			if (Game.IsServer()) {
-				if (Game.IsClient()) {
-					Game.WaitForLocalPlayerLoaded();
-				}
 				this.InitServer();
 			}
 

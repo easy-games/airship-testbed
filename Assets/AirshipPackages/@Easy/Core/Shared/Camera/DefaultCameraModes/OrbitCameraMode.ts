@@ -52,7 +52,6 @@ export class OrbitCameraMode extends CameraMode {
 	constructor(target: GameObject, config?: OrbitCameraConfig) {
 		super(target);
 		this.Init(config ?? CameraConstants.DefaultOrbitCameraConfig);
-		this.SetupMobileControls();
 	}
 
 	private Init(config: OrbitCameraConfig): void {
@@ -66,9 +65,6 @@ export class OrbitCameraMode extends CameraMode {
 		this.SetOcclusionBumping(
 			this.config.shouldOcclusionBump ?? CameraConstants.DefaultFixedCameraConfig.shouldOcclusionBump,
 		);
-		if (Airship.Camera.IsEnabled()) {
-			this.OnEnabled();
-		}
 
 		Airship.Input.CreateAction(OrbitArrowKey.Left, Binding.Key(Key.LeftArrow));
 		Airship.Input.CreateAction(OrbitArrowKey.Right, Binding.Key(Key.RightArrow));
@@ -197,6 +193,8 @@ export class OrbitCameraMode extends CameraMode {
 	}
 
 	OnStart(camera: Camera, rootTransform: Transform) {
+		this.SetupMobileControls();
+
 		this.occlusionCam = rootTransform.GetComponent<OcclusionCam>()!;
 		if (this.occlusionCam === undefined) {
 			this.occlusionCam = rootTransform.gameObject.AddComponent<OcclusionCam>();
