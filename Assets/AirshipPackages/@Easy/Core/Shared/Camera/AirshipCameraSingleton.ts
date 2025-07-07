@@ -129,7 +129,8 @@ export class AirshipCameraSingleton {
 			const flyingBin = new Bin();
 
 			Keyboard.OnKeyDown(Key.P, (event) => {
-				if (event.uiProcessed) return;
+				//TODO add easy org check instead of role
+				if (event.uiProcessed || Game.localPlayer?.orgRoleName === undefined) return;
 				if (Keyboard.IsKeyDown(Key.LeftShift)) {
 					if (flyCam) {
 						flyCam = false;
