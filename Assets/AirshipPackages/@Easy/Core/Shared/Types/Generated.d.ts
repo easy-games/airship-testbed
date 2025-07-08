@@ -37642,14 +37642,15 @@ declare const ScreenCapture: ScreenCaptureConstructor;
     
 interface VoxelBlocks extends MonoBehaviour {
     maxResolution: number;
-    atlasSize: number;
+    atlasWidthTextures: number;
     pointFiltering: boolean;
     atlasMaterial: Material;
     atlas: TexturePacker;
-    loadedBlocks: CSDictionary<number, BlockDefinition>;
+    loadedBlocks: Readonly<BlockDefinition[]>;
     rootAssetPath: string;
     m_bundlePaths: Readonly<string[]>;
     blockDefinitionLists: Readonly<VoxelBlockDefinitionList[]>;
+    readonly atlasSize: number;
 
 
 
@@ -52335,4 +52336,37 @@ interface AirshipSteamFriendInfo {
 
 
 }
+    
+interface EditorPrefs {
+
+
+
+
+
+}
+    
+interface EditorPrefsConstructor {
+
+
+    new(): EditorPrefs;
+
+
+    DeleteAll(): void;
+    DeleteKey(key: string): void;
+    GetBool(key: string, defaultValue: boolean): boolean;
+    GetBool(key: string): boolean;
+    GetFloat(key: string, defaultValue: number): number;
+    GetFloat(key: string): number;
+    GetInt(key: string, defaultValue: number): number;
+    GetInt(key: string): number;
+    GetString(key: string, defaultValue: string): string;
+    GetString(key: string): string;
+    HasKey(key: string): boolean;
+    SetBool(key: string, value: boolean): void;
+    SetFloat(key: string, value: number): void;
+    SetInt(key: string, value: number): void;
+    SetString(key: string, value: string): void;
+
+}
+declare const EditorPrefs: EditorPrefsConstructor;
 
