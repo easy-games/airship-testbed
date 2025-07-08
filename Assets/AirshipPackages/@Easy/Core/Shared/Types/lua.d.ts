@@ -679,6 +679,15 @@ declare namespace math {
 
 	/** Returns `n` mapped from one range `[inMin, inMax]` to another `[outMin, outMax]`. */
 	function map(n: number, inMin: number, inMax: number, outMin: number, outMax: number): number;
+
+	/** Returns `n` snapped to the nearest multiple of `step`. */
+	function snap(n: number, step: number): number;
+
+	/** Returns the linear value from 0-1 representing the given decibels. */
+	function dbToLinear(db: number): number;
+
+	/** Returns the decibels from the given linear range of 0-1. */
+	function linearToDb(linear: number): number;
 }
 
 interface buffer {
