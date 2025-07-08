@@ -124,7 +124,7 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 				TweenEasingFunction.OutQuad,
 				1,
 				(val) => {
-					this.playerCountText.text = val + "";
+					this.playerCountText.text = math.round(val) + "";
 				},
 				0,
 				playerCount,
