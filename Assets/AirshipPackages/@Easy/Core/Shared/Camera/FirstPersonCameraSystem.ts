@@ -24,7 +24,7 @@ export class FirstPersonCameraSystem {
 	private bin: Bin;
 	private currentTime = 0.01;
 
-	public constructor(public readonly character: Character, startInFirstPerson: boolean) {
+	constructor(public readonly character: Character, startInFirstPerson: boolean) {
 		this.inFirstPerson = startInFirstPerson;
 		this.OnFirstPersonChanged(this.inFirstPerson);
 
