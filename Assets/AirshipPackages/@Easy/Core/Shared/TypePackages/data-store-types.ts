@@ -69,6 +69,15 @@ export namespace DataStoreServiceCache {
 		query?: SetDataQueryDto;
 		data: SetBodyDto<T> | unknown;
 	};
+	export interface DelDataQueryDto {
+		get?: boolean;
+	}
+	export type DeleteArgs = {
+		params: {
+			key: string;
+		};
+		query?: DelDataQueryDto;
+	};
 	export type TtlArgs = {
 		params: {
 			key: string;
@@ -82,6 +91,10 @@ export namespace DataStoreServiceCache {
 	export interface ClientSpec {
 		get<T = unknown>(args: GetArgs, options?: RequestOptions): Promise<{ record: CacheRecord<T> | undefined }>;
 		set<T = unknown>(args: SetArgs<T>, options?: RequestOptions): Promise<{ record: CacheRecord<T> | undefined }>;
+		delete<T = unknown>(
+			args: DeleteArgs,
+			options?: RequestOptions,
+		): Promise<{ record: CacheRecord<T> | undefined }>;
 		ttl(args: TtlArgs["params"], options?: RequestOptions): Promise<{ ttl: number }>;
 	}
 
@@ -115,6 +128,18 @@ export namespace DataStoreServiceCache {
 				retryKey: options?.retryKey ?? "DataStoreService:Cache:set",
 				query: args.query,
 				body: args.data,
+			});
+		}
+		async delete<T = unknown>(
+			args: DeleteArgs,
+			options?: RequestOptions,
+		): Promise<{ record: CacheRecord<T> | undefined }> {
+			return await this.makeRequest({
+				method: "DELETE",
+				routeId: "DataStoreService:Cache:delete",
+				path: `/cache/key/${encodeURIComponent(args.params.key)}`,
+				retryKey: options?.retryKey ?? "DataStoreService:Cache:delete",
+				query: args.query,
 			});
 		}
 		async ttl(args: TtlArgs["params"], options?: RequestOptions): Promise<{ ttl: number }> {
@@ -302,9 +327,7 @@ export namespace DataStoreServiceData {
 			return await this.makeRequest({
 				method: "POST",
 				routeId: "DataStoreService:Data:setAsUser",
-				path: `/data/game-id/${encodeURIComponent(args.params.gameId)}/key/${encodeURIComponent(
-					args.params.key,
-				)}`,
+				path: `/data/game-id/${encodeURIComponent(args.params.gameId)}/key/${encodeURIComponent(args.params.key)}`,
 				retryKey: options?.retryKey ?? "DataStoreService:Data:setAsUser",
 				query: args.query,
 				body: args.data,
@@ -329,9 +352,7 @@ export namespace DataStoreServiceData {
 			return await this.makeRequest({
 				method: "DELETE",
 				routeId: "DataStoreService:Data:deleteAsUser",
-				path: `/data/game-id/${encodeURIComponent(args.params.gameId)}/key/${encodeURIComponent(
-					args.params.key,
-				)}`,
+				path: `/data/game-id/${encodeURIComponent(args.params.gameId)}/key/${encodeURIComponent(args.params.key)}`,
 				retryKey: options?.retryKey ?? "DataStoreService:Data:deleteAsUser",
 				query: args.query,
 			});
@@ -472,9 +493,7 @@ export namespace DataStoreServiceLeaderboards {
 			return await this.makeRequest({
 				method: "POST",
 				routeId: "DataStoreService:Leaderboards:createLeaderboard",
-				path: `/leaderboards/game-id/${encodeURIComponent(
-					args.params.gameId,
-				)}/leaderboard-id/${encodeURIComponent(args.params.leaderboardId)}/create`,
+				path: `/leaderboards/game-id/${encodeURIComponent(args.params.gameId)}/leaderboard-id/${encodeURIComponent(args.params.leaderboardId)}/create`,
 				retryKey: options?.retryKey ?? "DataStoreService:Leaderboards:createLeaderboard",
 				body: args.data,
 			});
@@ -486,9 +505,7 @@ export namespace DataStoreServiceLeaderboards {
 			return await this.makeRequest({
 				method: "DELETE",
 				routeId: "DataStoreService:Leaderboards:deleteLeaderboard",
-				path: `/leaderboards/game-id/${encodeURIComponent(args.gameId)}/leaderboard-id/${encodeURIComponent(
-					args.leaderboardId,
-				)}`,
+				path: `/leaderboards/game-id/${encodeURIComponent(args.gameId)}/leaderboard-id/${encodeURIComponent(args.leaderboardId)}`,
 				retryKey: options?.retryKey ?? "DataStoreService:Leaderboards:deleteLeaderboard",
 			});
 		}
@@ -508,9 +525,7 @@ export namespace DataStoreServiceLeaderboards {
 			return await this.makeRequest({
 				method: "DELETE",
 				routeId: "DataStoreService:Leaderboards:deleteStat",
-				path: `/leaderboards/leaderboard-id/${encodeURIComponent(args.leaderboardId)}/id/${encodeURIComponent(
-					args.id,
-				)}/stats`,
+				path: `/leaderboards/leaderboard-id/${encodeURIComponent(args.leaderboardId)}/id/${encodeURIComponent(args.id)}/stats`,
 				retryKey: options?.retryKey ?? "DataStoreService:Leaderboards:deleteStat",
 			});
 		}
@@ -518,9 +533,7 @@ export namespace DataStoreServiceLeaderboards {
 			return await this.makeRequest({
 				method: "POST",
 				routeId: "DataStoreService:Leaderboards:deleteStats",
-				path: `/leaderboards/leaderboard-id/${encodeURIComponent(
-					args.params.leaderboardId,
-				)}/stats/batch-delete`,
+				path: `/leaderboards/leaderboard-id/${encodeURIComponent(args.params.leaderboardId)}/stats/batch-delete`,
 				retryKey: options?.retryKey ?? "DataStoreService:Leaderboards:deleteStats",
 				body: args.data,
 			});
@@ -532,9 +545,7 @@ export namespace DataStoreServiceLeaderboards {
 			return await this.makeRequest({
 				method: "GET",
 				routeId: "DataStoreService:Leaderboards:getRanking",
-				path: `/leaderboards/leaderboard-id/${encodeURIComponent(args.leaderboardId)}/id/${encodeURIComponent(
-					args.id,
-				)}/ranking`,
+				path: `/leaderboards/leaderboard-id/${encodeURIComponent(args.leaderboardId)}/id/${encodeURIComponent(args.id)}/ranking`,
 				retryKey: options?.retryKey ?? "DataStoreService:Leaderboards:getRanking",
 			});
 		}
@@ -562,9 +573,7 @@ export namespace DataStoreServiceLeaderboards {
 			return await this.makeRequest({
 				method: "POST",
 				routeId: "DataStoreService:Leaderboards:resetLeaderboard",
-				path: `/leaderboards/game-id/${encodeURIComponent(args.gameId)}/leaderboard-id/${encodeURIComponent(
-					args.leaderboardId,
-				)}/reset`,
+				path: `/leaderboards/game-id/${encodeURIComponent(args.gameId)}/leaderboard-id/${encodeURIComponent(args.leaderboardId)}/reset`,
 				retryKey: options?.retryKey ?? "DataStoreService:Leaderboards:resetLeaderboard",
 			});
 		}
