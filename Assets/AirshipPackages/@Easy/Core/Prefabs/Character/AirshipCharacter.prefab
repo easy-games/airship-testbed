@@ -977,7 +977,7 @@ MonoBehaviour:
   correctionInterpTime: 0.1
   correctionMaxMagnitude: 10
   autoCalibrateSkiddingSpeed: 1
-  ownerRotationLerpMod: 10
+  smoothedRotationSpeed: 360
   playAnimationOnServer: 1
   startingLookVector: {x: 0, y: 0, z: 0}
   compareResult: 0
