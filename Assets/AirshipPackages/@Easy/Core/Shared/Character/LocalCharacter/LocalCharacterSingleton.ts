@@ -43,9 +43,9 @@ export class LocalCharacterSingleton {
 			this.input = new CharacterInput(character);
 
 			// Set up camera
-			const cameraController = Dependency<AirshipCameraSingleton>();
-			cameraController.SetupCamera(character);
-			cameraController.SetupCameraControls(bin);
+			const airshipCameraSingleton = Dependency<AirshipCameraSingleton>();
+			airshipCameraSingleton.SetupCamera(character);
+			airshipCameraSingleton.SetupCameraControls(bin);
 
 			if (this.characterMovement) {
 				const stateChangedConn = this.characterMovement.OnStateChanged((state) => {
@@ -91,16 +91,17 @@ export class LocalCharacterSingleton {
 
 			// Cleanup:
 			bin.Add(() => {
-				if (cameraController.IsEnabled()) {
+				airshipCameraSingleton.fps?.Destroy();
+				if (airshipCameraSingleton.IsEnabled()) {
 					// If the camera mode's target is _not_ the local character don't
 					// clean up camera.
-					const mode = cameraController.GetMode();
+					const mode = airshipCameraSingleton.GetMode();
 					if (mode) {
 						const target = mode.GetTarget();
 						const isTargetLocalCharacter = target === character.model;
 						if (!isTargetLocalCharacter) return;
 					}
-					cameraController.CleanupCamera();
+					airshipCameraSingleton.CleanupCamera();
 				}
 			});
 

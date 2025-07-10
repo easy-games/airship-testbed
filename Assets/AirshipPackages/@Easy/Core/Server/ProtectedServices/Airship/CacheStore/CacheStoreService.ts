@@ -7,6 +7,7 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 export const enum CacheStoreServiceBridgeTopics {
 	GetKey = "CacheStore:GetKey",
 	SetKey = "CacheStore:SetKey",
+	DeleteKey = "CacheStore:DeleteKey",
 	SetKeyTTL = "CacheStore:SetKeyTTL",
 }
 
@@ -18,6 +19,10 @@ export type ServerBridgeApiCacheSetKey<T> = (
 	key: string,
 	data: T,
 	expireTimeSec: number,
+) => DataStoreServiceCache.CacheRecord<T> | undefined;
+export type ServerBridgeApiCacheDeleteKey<T> = (
+	key: string,
+	returnValue?: boolean,
 ) => DataStoreServiceCache.CacheRecord<T> | undefined;
 export type ServerBridgeApiCacheSetKeyTTL = (key: string, expireTimeSec: number) => number;
 
@@ -49,6 +54,13 @@ export class ProtectedCacheStoreService {
 			CacheStoreServiceBridgeTopics.SetKeyTTL,
 			(_, key, expireTimeSec) => {
 				return this.SetKeyTTL(key, expireTimeSec).expect();
+			},
+		);
+
+		contextbridge.callback<ServerBridgeApiCacheDeleteKey<unknown>>(
+			CacheStoreServiceBridgeTopics.DeleteKey,
+			(_, key, returnValue) => {
+				return this.DeleteKey(key, returnValue).expect();
 			},
 		);
 	}
@@ -84,6 +96,18 @@ export class ProtectedCacheStoreService {
 		const expiry = math.clamp(expireTimeSec, 1, this.maxExpireSec);
 		await client.get({ params: { key }, query: { expiry } }).then((record) => record.record);
 		return expiry;
+	}
+
+	public async DeleteKey(key: string, returnKey: boolean = false): Promise<ReturnType<ServerBridgeApiCacheDeleteKey<unknown>>> {
+		const res = await client.delete({
+			params: {
+				key,
+			},
+			query: {
+				get: returnKey,
+			},
+		});
+		return res.record;
 	}
 
 	protected OnStart(): void { }

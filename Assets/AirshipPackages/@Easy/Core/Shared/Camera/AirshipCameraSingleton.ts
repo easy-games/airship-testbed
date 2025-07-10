@@ -54,7 +54,7 @@ export class AirshipCameraSingleton {
 	/** Fires whenever the user changes their first-person state. */
 	public readonly firstPersonChanged = new Signal<[isFirstPerson: boolean]>();
 
-	private fps?: FirstPersonCameraSystem;
+	public fps?: FirstPersonCameraSystem;
 	public activeCameraMode: CameraMode | undefined;
 
 	private fixedCameraMode: FixedCameraMode | undefined;
@@ -368,7 +368,6 @@ export class AirshipCameraSingleton {
 	public CleanupCamera() {
 		this.cameraSystem?.SetOnClearCallback(undefined);
 		this.ClearMode();
-		this.fps?.Destroy();
 	}
 
 	/**
