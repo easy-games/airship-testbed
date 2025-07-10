@@ -136,6 +136,28 @@ export namespace GameCoordinatorMatchmaking {
 	export interface MatchConfig {
 		teams: MatchTeam[];
 	}
+	export interface PublicUser {
+		uid: string;
+		username: string;
+		usernameLower: string;
+		statusText?: string;
+		profileImageId?: string;
+		lastOnlineTime?: string;
+	}
+	export type MatchmakingMatchTeamGroupPlayer = PublicUser & { attributes: Record<string, unknown> };
+	export interface MatchmakingMatchTeamGroup {
+		id: string;
+		players: MatchmakingMatchTeamGroupPlayer[];
+		attributes: Record<string, unknown>;
+	}
+	export interface MatchmakingMatchTeam {
+		name: string;
+		groups: MatchmakingMatchTeamGroup[];
+	}
+	export interface MatchmakingMatchConfig {
+		teams: MatchmakingMatchTeam[];
+		queueId: string;
+	}
 	export interface TicketMember {
 		uid: string;
 		attributes?: unknown;
@@ -999,6 +1021,8 @@ export namespace GameCoordinatorTransfers {
 		requestTime: number;
 		transferSource: TransferSourceData;
 		user: PublicUser;
+		orgRoleName: string | undefined;
+		isEasyEmployee: boolean;
 		clientTransferData?: unknown;
 		serverTransferData?: unknown;
 	}
@@ -1074,7 +1098,9 @@ export namespace GameCoordinatorTransfers {
 		transferData?: unknown;
 		requiredPackages: PackageVersionLabel[];
 		transferSource: TransferSourceData;
+		orgRoleName: string | undefined;
 		loadingScreenImageId?: string;
+		clientTransferData: unknown;
 	}
 
 	export interface ClientSpec {
