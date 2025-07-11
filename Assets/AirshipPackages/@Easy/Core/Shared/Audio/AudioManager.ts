@@ -35,6 +35,11 @@ export interface PlaySoundConfig {
 	 */
 	rollOffMode?: AudioRolloffMode;
 	/**
+	 * Sets a custom animation curve rolloff for the Audio Source. This will override
+	 * rollOffMode.
+	 */
+	rolloffCustomCurve?: AnimationCurve;
+	/**
 	 * This should be a Game Object with an Audio Source on it. Normally Audio Manager
 	 * creates a new Audio Source to play your sound, but if you provide this template we
 	 * will clone it and play your sound from this object. All other config properties work
@@ -250,6 +255,10 @@ export class AudioManager {
 		if (config?.loop !== undefined || !providedAudioSource) audioSource.loop = config?.loop ?? false;
 		if (config?.rollOffMode !== undefined || !providedAudioSource)
 			audioSource.rolloffMode = config?.rollOffMode ?? AudioRolloffMode.Logarithmic;
+		if (config?.rolloffCustomCurve !== undefined) {
+			audioSource.rolloffMode = AudioRolloffMode.Custom;
+			audioSource.SetCustomCurve(AudioSourceCurveType.CustomRolloff, config.rolloffCustomCurve);
+		}
 		if (config?.maxDistance !== undefined || !providedAudioSource)
 			audioSource.maxDistance = config?.maxDistance ?? 500;
 		if (config?.minDistance !== undefined || !providedAudioSource)
