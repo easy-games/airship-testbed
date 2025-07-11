@@ -424,9 +424,13 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		const contentGO = go.transform.GetChild(0).gameObject;
 		const contentRect = contentGO.GetComponent<RectTransform>()!;
 		if (selectedSlot === slot && (this.prevHeldSlot !== slot || reset)) {
-			NativeTween.AnchoredPositionY(contentRect, 10, 0.1);
+			task.defer(() => {
+				NativeTween.AnchoredPositionY(contentRect, 10, 0.1);
+			});
 		} else if (selectedSlot !== slot && (this.prevHeldSlot === slot || reset)) {
-			NativeTween.AnchoredPositionY(contentRect, 0, 0.1);
+			task.defer(() => {
+				NativeTween.AnchoredPositionY(contentRect, 0, 0.1);
+			});
 		}
 
 		if (init) {
