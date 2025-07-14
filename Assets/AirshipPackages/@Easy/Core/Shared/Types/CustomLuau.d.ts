@@ -149,13 +149,13 @@ declare namespace json {
 }
 
 interface DateTimeData {
-	Year: number;
+	readonly Year: number;
 	/** Day of the month. */
-	Day: number;
-	Month: number;
-	Hour: number;
-	Minute: number;
-	Second: number;
+	readonly Day: number;
+	readonly Month: number;
+	readonly Hour: number;
+	readonly Minute: number;
+	readonly Second: number;
 }
 
 interface DateTime {
