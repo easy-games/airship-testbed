@@ -15,8 +15,10 @@ type Trackable =
 	| ((...args: unknown[]) => unknown)
 	| { destroy: () => void }
 	| { disconnect: () => void }
+	| { unsubscribe: () => void }
 	| { Destroy: () => void }
-	| { Disconnect: () => void };
+	| { Disconnect: () => void }
+	| { Unsubscribe: () => void };
 
 const FN_MARKER = "__bin_fn_marker__";
 const THREAD_MARKER = "__bin_thread_marker__";
