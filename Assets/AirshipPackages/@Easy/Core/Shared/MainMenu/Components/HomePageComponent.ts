@@ -180,7 +180,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 
 		let indexCounter = 0;
 		for (let sortId of sorts) {
-			const sortComponent = this.sorts.get(sortId)!;
+			const sortComponent = this.sorts.get(sortId);
 
 			if (sortId === SortId.DeveloperGames) {
 				if (!sortComponent) continue;
@@ -207,7 +207,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 					return true;
 				});
 
-				sortComponent.SetGames(games, indexCounter);
+				sortComponent!.SetGames(games, indexCounter);
 				indexCounter += games.size();
 			}
 		}
