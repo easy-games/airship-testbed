@@ -54,10 +54,14 @@ function getObjCleanupFn<T extends Trackable>(obj: T, cleanupMethod?: string): s
 			return "Destroy";
 		} else if ("Disconnect" in obj) {
 			return "Disconnect";
+		} else if ("Unsubscribe" in obj) {
+			return "Unsubscribe";
 		} else if ("destroy" in obj) {
 			return "destroy";
 		} else if ("disconnect" in obj) {
 			return "disconnect";
+		} else if ("unsubscribe" in obj) {
+			return "unsubscribe";
 		}
 	}
 	error(`failed to get cleanup function for object ${typeOf(obj)}: ${tostring(obj)}`, 3);
