@@ -70,6 +70,20 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		);
 
 		this.CreateSort(SortId.Popular, "Popular");
+
+		// show user games on mobile for now, only need the sort if the user actually has games
+		if (Game.IsMobile()) {
+			const searchSingleton = Dependency<SearchSingleton>();
+
+			if (searchSingleton.myGames.isEmpty()) {
+				searchSingleton.FetchMyGames();
+			}
+
+			if (!searchSingleton.myGames.isEmpty()) {
+				this.CreateSort(SortId.DeveloperGames, "My Games");
+			}
+		}
+
 		this.CreateSort(SortId.RecentlyUpdated, "Recently Updated");
 
 		Bridge.UpdateLayout(this.scrollRect.transform, true);
@@ -162,32 +176,46 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		sorts = ObjectUtils.keys(this.sorts);
 
 		const blockSingleton = Dependency<MainMenuBlockSingleton>();
+		const searchSingleton = Dependency<SearchSingleton>();
+
 		let indexCounter = 0;
 		for (let sortId of sorts) {
-			const sortComponent = this.sorts.get(sortId)!;
+			const sortComponent = this.sorts.get(sortId);
 
-			let games = res[sortId].filter(
-				(g) => g.lastVersionUpdate !== undefined && !blockSingleton.IsGameIdBlocked(g.id),
-			);
-			games = games.filter((g) => {
-				if (g.lastVersionUpdate === undefined) return false;
-				let timeUpdatedSeconds = DateParser.FromISO(g.lastVersionUpdate) as number;
+			if (sortId === SortId.DeveloperGames) {
+				if (!sortComponent) continue;
 
-				// Jan 6, 2025
-				if (timeUpdatedSeconds <= 1736205525) {
-					return false;
+				if (searchSingleton.myGames.isEmpty()) {
+					searchSingleton.FetchMyGames();
 				}
 
-				return true;
-			});
+				sortComponent.SetGames(searchSingleton.myGames, indexCounter);
+				indexCounter += searchSingleton.myGames.size();
+			} else {
+				let games = res[sortId as keyof typeof res].filter(
+					(g) => g.lastVersionUpdate !== undefined && !blockSingleton.IsGameIdBlocked(g.id),
+				);
+				games = games.filter((g) => {
+					if (g.lastVersionUpdate === undefined) return false;
+					let timeUpdatedSeconds = DateParser.FromISO(g.lastVersionUpdate) as number;
 
-			sortComponent.SetGames(games, indexCounter);
+					// Jan 6, 2025
+					if (timeUpdatedSeconds <= 1736205525) {
+						return false;
+					}
 
-			indexCounter += games.size();
+					return true;
+				});
+
+				sortComponent!.SetGames(games, indexCounter);
+				indexCounter += games.size();
+			}
 		}
 
 		task.spawn(() => {
-			Dependency<SearchSingleton>().AddGames([...res.recentlyUpdated, ...res.popular]);
+			const search = Dependency<SearchSingleton>();
+
+			search.AddGames([...res.recentlyUpdated, ...res.popular]);
 		});
 
 		if (!this.addedDiscordHero && !Game.IsMobile()) {
