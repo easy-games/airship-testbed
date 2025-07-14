@@ -39,7 +39,7 @@ export class AirshipMessagingService {
 	 * Subscribes to a topic, allowing you to receive messages published to that topic.
 	 * @param topic The topic to subscribe to.
 	 * @param callback The function that will be called when a message is received on the subscribed topic.
-	 * @returns An object containing a success flag (if the topic was able to be subscribed to) and an unsubscribe function.
+	 * @returns An object containing an unsubscribe function.
 	 */
 	public Subscribe<T = unknown>(topic: string, callback: (data: T) => void): { unsubscribe: () => void } {
 		this.CheckTopicName(topic);
