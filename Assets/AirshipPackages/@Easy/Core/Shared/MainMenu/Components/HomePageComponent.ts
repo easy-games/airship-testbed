@@ -189,8 +189,13 @@ export default class HomePageComponent extends MainMenuPageComponent {
 					searchSingleton.FetchMyGames();
 				}
 
-				sortComponent.SetGames(searchSingleton.myGames, indexCounter);
-				indexCounter += searchSingleton.myGames.size();
+				const developerGames = searchSingleton.myGames.filter((f) =>
+					f.platforms.includes(
+						ProtectedUtil.GetLocalPlatformString() as ContentServiceGames.DeploymentPlatform,
+					),
+				);
+				sortComponent.SetGames(developerGames, indexCounter);
+				indexCounter += developerGames.size();
 			} else {
 				let games = res[sortId as keyof typeof res].filter(
 					(g) => g.lastVersionUpdate !== undefined && !blockSingleton.IsGameIdBlocked(g.id),
