@@ -38,12 +38,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.25873765, g: 0.40889674, b: 0.6722641, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -259,6 +259,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -397,6 +398,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -530,6 +532,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -678,16 +681,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 5227639643789577525, guid: 68da35cddc41a4e399f5ec53ecf5f6db, type: 3}
-  m_fileFullPath: Assets/Code/Matchmaking/MatchmakerButton.ts
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: 73c78ffb-2986-4fa3-963b-196edd53648b
+  script: {fileID: 5227639643789577525, guid: 68da35cddc41a4e399f5ec53ecf5f6db, type: 3}
+  scriptPath: Assets/Code/Matchmaking/MatchmakerButton.ts
+  forceContext: 0
+  metadata:
     name: MatchmakerButton
     singleton: 0
     decorators: []
@@ -702,6 +700,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: AirshipPackages/@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt.ts
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -717,6 +718,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: Code/Matchmaking/MatchmakerButton@MatchmakingAction
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 2
@@ -724,7 +728,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!4 &270777059
 Transform:
   m_ObjectHideFlags: 0
@@ -885,6 +888,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 656221857}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &485895218
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6517521483168823064, guid: 046ef4adaa9ffc945b2951dcc17f8d58, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517521483168823064, guid: 046ef4adaa9ffc945b2951dcc17f8d58, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517521483168823064, guid: 046ef4adaa9ffc945b2951dcc17f8d58, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517521483168823064, guid: 046ef4adaa9ffc945b2951dcc17f8d58, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517521483168823064, guid: 046ef4adaa9ffc945b2951dcc17f8d58, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517521483168823064, guid: 046ef4adaa9ffc945b2951dcc17f8d58, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517521483168823064, guid: 046ef4adaa9ffc945b2951dcc17f8d58, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517521483168823064, guid: 046ef4adaa9ffc945b2951dcc17f8d58, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517521483168823064, guid: 046ef4adaa9ffc945b2951dcc17f8d58, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517521483168823064, guid: 046ef4adaa9ffc945b2951dcc17f8d58, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7196551055182178265, guid: 046ef4adaa9ffc945b2951dcc17f8d58, type: 3}
+      propertyPath: m_Name
+      value: LuauCore
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 046ef4adaa9ffc945b2951dcc17f8d58, type: 3}
 --- !u!114 &492201721 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
@@ -1045,6 +1105,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 311512507}
+    - target: {fileID: 1516763401155024849, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_metadata.properties.Array.data[0].modified
       value: 1
@@ -1117,6 +1181,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 46.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 23.235
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1151,16 +1235,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 5227639643789577525, guid: 68da35cddc41a4e399f5ec53ecf5f6db, type: 3}
-  m_fileFullPath: Assets/Code/Matchmaking/MatchmakerButton.ts
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: 42e1614d-eda6-4bcb-a919-9be4b96c2198
+  script: {fileID: 5227639643789577525, guid: 68da35cddc41a4e399f5ec53ecf5f6db, type: 3}
+  scriptPath: Assets/Code/Matchmaking/MatchmakerButton.ts
+  forceContext: 0
+  metadata:
     name: MatchmakerButton
     singleton: 0
     decorators: []
@@ -1175,6 +1254,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: AirshipPackages/@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt.ts
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1190,6 +1272,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: Code/Matchmaking/MatchmakerButton@MatchmakingAction
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 0
@@ -1197,7 +1282,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!4 &604630677
 Transform:
   m_ObjectHideFlags: 0
@@ -1245,16 +1329,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 5227639643789577525, guid: 68da35cddc41a4e399f5ec53ecf5f6db, type: 3}
-  m_fileFullPath: Assets/Code/Matchmaking/MatchmakerButton.ts
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: a9c100db-63ac-4086-8866-4683db647a55
+  script: {fileID: 5227639643789577525, guid: 68da35cddc41a4e399f5ec53ecf5f6db, type: 3}
+  scriptPath: Assets/Code/Matchmaking/MatchmakerButton.ts
+  forceContext: 0
+  metadata:
     name: MatchmakerButton
     singleton: 0
     decorators: []
@@ -1269,6 +1348,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: AirshipPackages/@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt.ts
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1284,6 +1366,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: Code/Matchmaking/MatchmakerButton@MatchmakingAction
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 5
@@ -1291,7 +1376,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!4 &656221857
 Transform:
   m_ObjectHideFlags: 0
@@ -1385,6 +1469,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1503,16 +1588,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 796400153169862170, guid: c4fa48bfb1281a04baca6e795001cd63, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterConfigSetup.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: 04358135-015d-4a90-b35d-369b0aa2f9b5
+  script: {fileID: 796400153169862170, guid: c4fa48bfb1281a04baca6e795001cd63, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/CharacterConfigSetup.lua
+  forceContext: 0
+  metadata:
     name: CharacterConfigSetup
     singleton: 0
     decorators: []
@@ -1527,6 +1607,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -1539,7 +1622,7 @@ MonoBehaviour:
             is also assigned in the NetworkPrefabCollection in Shared/Resources"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
+      serializedObject: {fileID: 5042559581574877564, guid: c6dc87ea1a89c3e4aa4c27ad6203c150, type: 3}
       modified: 1
     - name: movementSpace
       type: IntEnum
@@ -1551,6 +1634,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@Space
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 1
@@ -1566,6 +1652,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 1
@@ -1581,6 +1670,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 1
@@ -1596,6 +1688,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 1
@@ -1611,6 +1706,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -1630,6 +1728,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 0
@@ -1645,6 +1746,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 1
@@ -1660,6 +1764,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -1679,6 +1786,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -1698,6 +1808,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators:
       - name: Header
         parameters:
@@ -1722,6 +1835,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1737,6 +1853,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 1
@@ -1752,6 +1871,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: AirshipPackages/@Easy/Core/Shared/Inventory/InventoryUIVisibility@InventoryUIVisibility
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 1
@@ -1767,6 +1889,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 1
@@ -1782,14 +1907,230 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 1.08
       serializedObject: {fileID: 0}
       modified: 0
+    - name: useDefaultMovement
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators:
+      - name: Spacing
+        parameters:
+        - type: number
+          serializedValue: 5
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: characterCameraMode
+      type: IntEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: AirshipPackages/@Easy/Core/Shared/Character/LocalCharacter/CharacterCameraMode@CharacterCameraMode
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: fixedXOffset
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Character Camera Configuration"'
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Fixed Camera"'
+      nullable: 0
+      serializedValue: 0.45
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: fixedYOffset
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 1.7
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: fixedZOffset
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 3.5
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: fixedMinRotX
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: fixedMaxRotX
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 179
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: orbitRadius
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Orbit Camera"'
+      nullable: 0
+      serializedValue: 4
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: orbitYOffset
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 1.85
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: orbitMinRotX
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: orbitMaxRotX
+      type: number
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 179
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!4 &758285592
 Transform:
   m_ObjectHideFlags: 0
@@ -1885,46 +2226,6 @@ Material:
     - _WidthHeightRadius: {r: 1.4999999, g: 0.5, b: 0.1, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!21 &854218597
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 1.4999999, g: 0.5, b: 0.1, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &902706765
 GameObject:
   m_ObjectHideFlags: 0
@@ -1954,16 +2255,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 5227639643789577525, guid: 68da35cddc41a4e399f5ec53ecf5f6db, type: 3}
-  m_fileFullPath: Assets/Code/Matchmaking/MatchmakerButton.ts
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: 7fc69d05-7610-48ca-9fca-c0d9fd15d562
+  script: {fileID: 5227639643789577525, guid: 68da35cddc41a4e399f5ec53ecf5f6db, type: 3}
+  scriptPath: Assets/Code/Matchmaking/MatchmakerButton.ts
+  forceContext: 0
+  metadata:
     name: MatchmakerButton
     singleton: 0
     decorators: []
@@ -1978,6 +2274,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: AirshipPackages/@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt.ts
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -1993,6 +2292,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: Code/Matchmaking/MatchmakerButton@MatchmakingAction
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 1
@@ -2000,7 +2302,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!4 &902706767
 Transform:
   m_ObjectHideFlags: 0
@@ -2093,6 +2394,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2142,6 +2444,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 344158948}
+    - target: {fileID: 1516763401155024849, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_metadata.properties.Array.data[0].modified
       value: 1
@@ -2213,6 +2519,26 @@ PrefabInstance:
     - target: {fileID: 7566797586292866402, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 46.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 23.235
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2294,6 +2620,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2327,46 +2654,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1047292530}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!21 &1050394842
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 1.4999999, g: 0.5, b: 0.1, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &1077937131
 GameObject:
   m_ObjectHideFlags: 0
@@ -2440,46 +2727,6 @@ Material:
     - _WidthHeightRadius: {r: 1.4999999, g: 0.5, b: 0.1, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!21 &1145788799
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 1.4999999, g: 0.5, b: 0.1, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1001 &1167585143
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2496,6 +2743,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 1100596739}
+    - target: {fileID: 1516763401155024849, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_metadata.properties.Array.data[0].modified
       value: 1
@@ -2568,6 +2819,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 46.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 23.235
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2618,16 +2889,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 5227639643789577525, guid: 68da35cddc41a4e399f5ec53ecf5f6db, type: 3}
-  m_fileFullPath: Assets/Code/Matchmaking/MatchmakerButton.ts
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: 1232094c-5d9a-4aaa-ad2f-4728987acf77
+  script: {fileID: 5227639643789577525, guid: 68da35cddc41a4e399f5ec53ecf5f6db, type: 3}
+  scriptPath: Assets/Code/Matchmaking/MatchmakerButton.ts
+  forceContext: 0
+  metadata:
     name: MatchmakerButton
     singleton: 0
     decorators: []
@@ -2642,6 +2908,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: AirshipPackages/@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt.ts
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -2657,6 +2926,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: Code/Matchmaking/MatchmakerButton@MatchmakingAction
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 6
@@ -2664,7 +2936,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!4 &1206030987
 Transform:
   m_ObjectHideFlags: 0
@@ -2712,35 +2983,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 3874102147928444048, guid: d7cc5f546129a45968eb53cc5ac77acb, type: 3}
-  m_fileFullPath: Assets/Code/Components/CharacterSpawner.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: 78212f5c-2f71-4e08-866d-a3dfde0f4bba
+  script: {fileID: 3874102147928444048, guid: d7cc5f546129a45968eb53cc5ac77acb, type: 3}
+  scriptPath: Assets/Code/Components/CharacterSpawner.lua
+  forceContext: 0
+  metadata:
     name: CharacterSpawner
     singleton: 0
     decorators: []
     properties:
-    - name: spawnPoint
-      type: object
-      objectType: Transform
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 131862466}
-      modified: 1
     - name: delay
       type: number
       objectType: 
@@ -2751,14 +3002,16 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
-      serializedValue: 0
+      serializedValue: 2
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!4 &1239065292
 Transform:
   m_ObjectHideFlags: 0
@@ -2849,6 +3102,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2911,16 +3165,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 5227639643789577525, guid: 68da35cddc41a4e399f5ec53ecf5f6db, type: 3}
-  m_fileFullPath: Assets/Code/Matchmaking/MatchmakerButton.ts
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: f9c9921b-d551-4e33-ad6c-d468e850e311
+  script: {fileID: 5227639643789577525, guid: 68da35cddc41a4e399f5ec53ecf5f6db, type: 3}
+  scriptPath: Assets/Code/Matchmaking/MatchmakerButton.ts
+  forceContext: 0
+  metadata:
     name: MatchmakerButton
     singleton: 0
     decorators: []
@@ -2935,6 +3184,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: AirshipPackages/@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt.ts
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -2950,6 +3202,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: Code/Matchmaking/MatchmakerButton@MatchmakingAction
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 3
@@ -2957,7 +3212,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!4 &1273567186
 Transform:
   m_ObjectHideFlags: 0
@@ -3051,6 +3305,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3159,6 +3414,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3192,46 +3448,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1344632924}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!21 &1377295602
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 1.4999999, g: 0.5, b: 0.1, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1001 &1385968870
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3248,6 +3464,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 788793818}
+    - target: {fileID: 1516763401155024849, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_metadata.properties.Array.data[0].modified
       value: 1
@@ -3319,6 +3539,26 @@ PrefabInstance:
     - target: {fileID: 7566797586292866402, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 46.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 23.235
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3432,6 +3672,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3494,16 +3735,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 5227639643789577525, guid: 68da35cddc41a4e399f5ec53ecf5f6db, type: 3}
-  m_fileFullPath: Assets/Code/Matchmaking/MatchmakerButton.ts
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: 0175d1d9-3f68-4781-a309-0086dbdf3931
+  script: {fileID: 5227639643789577525, guid: 68da35cddc41a4e399f5ec53ecf5f6db, type: 3}
+  scriptPath: Assets/Code/Matchmaking/MatchmakerButton.ts
+  forceContext: 0
+  metadata:
     name: MatchmakerButton
     singleton: 0
     decorators: []
@@ -3518,6 +3754,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: AirshipPackages/@Easy/Core/Shared/Input/ProximityPrompts/ProximityPrompt.ts
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -3533,6 +3772,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: Code/Matchmaking/MatchmakerButton@MatchmakingAction
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 4
@@ -3540,7 +3782,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!4 &1606250523
 Transform:
   m_ObjectHideFlags: 0
@@ -3659,8 +3900,12 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!4 &1665474175
 Transform:
   m_ObjectHideFlags: 0
@@ -3751,6 +3996,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3835,86 +4081,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7566797586292866402, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
   m_PrefabInstance: {fileID: 1956651853}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &1720410827
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 1.4999999, g: 0.5, b: 0.1, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
---- !u!21 &1743104513
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 1.4999999, g: 0.5, b: 0.1, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &1771584111
 GameObject:
   m_ObjectHideFlags: 0
@@ -3992,8 +4158,12 @@ Light:
   m_BoundingSphereOverride: {x: 0.0000000060982677, y: 2.18334e+13, z: 0, w: -7.0853674e-22}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
 --- !u!4 &1771584113
 Transform:
   m_ObjectHideFlags: 0
@@ -4095,6 +4265,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 750190560}
+    - target: {fileID: 1516763401155024849, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_metadata.properties.Array.data[0].modified
       value: 1
@@ -4167,6 +4341,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 46.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 23.235
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4188,6 +4382,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 800182008}
+    - target: {fileID: 1516763401155024849, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_metadata.properties.Array.data[0].modified
       value: 1
@@ -4259,6 +4457,26 @@ PrefabInstance:
     - target: {fileID: 7566797586292866402, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 46.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 23.235
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4340,6 +4558,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4525,46 +4744,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1680939730}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &2014662596
-Material:
-  serializedVersion: 8
+--- !u!1 &2013457392
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: b552e385e8c7743738ed94f861911663, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 1.4999999, g: 0.5, b: 0.1, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2013457394}
+  - component: {fileID: 2013457393}
+  m_Layer: 0
+  m_Name: SocketManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2013457393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013457392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 388063b192924f8abe2910ed4066b17f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &2013457394
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013457392}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2019967653
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4581,6 +4804,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 562253091}
+    - target: {fileID: 1516763401155024849, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2245620844483191104, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_metadata.properties.Array.data[0].modified
       value: 1
@@ -4652,6 +4879,26 @@ PrefabInstance:
     - target: {fileID: 7566797586292866402, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 46.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 23.235
+      objectReference: {fileID: 0}
+    - target: {fileID: 7644493307902969492, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4732,6 +4979,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4839,6 +5087,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4946,6 +5195,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5053,6 +5303,7 @@ MeshRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5135,3 +5386,5 @@ SceneRoots:
   - {fileID: 656221857}
   - {fileID: 1606250523}
   - {fileID: 1206030987}
+  - {fileID: 485895218}
+  - {fileID: 2013457394}
