@@ -41,7 +41,7 @@ export class AirshipMessagingService {
 	 * @param callback The function that will be called when a message is received on the subscribed topic.
 	 * @returns An object containing an unsubscribe function.
 	 */
-	public Subscribe<T = unknown>(topic: string, callback: (data: T) => void): { unsubscribe: () => void } {
+	public Subscribe<T = unknown>(topic: string, callback: (data: T) => void): { unsubscribe: () => void; destroy: () => void } {
 		this.CheckTopicName(topic);
 
 		const retVal = this.onEvent.Connect((e, d) => {
@@ -56,15 +56,21 @@ export class AirshipMessagingService {
 			topic,
 		);
 
+		let unsubscribed = false;
+		const unsubscribe = () => {
+			if (unsubscribed) return;
+			unsubscribed = true;
+			retVal();
+			contextbridge.invoke<ServerBridgeApiUnsubscribe>(
+				MessagingServiceBridgeTopics.Unsubscribe,
+				LuauContext.Protected,
+				topic,
+			);
+		};
+
 		return {
-			unsubscribe: () => {
-				retVal();
-				contextbridge.invoke<ServerBridgeApiUnsubscribe>(
-					MessagingServiceBridgeTopics.Unsubscribe,
-					LuauContext.Protected,
-					topic,
-				);
-			},
+			unsubscribe,
+			destroy: unsubscribe,
 		};
 	}
 
