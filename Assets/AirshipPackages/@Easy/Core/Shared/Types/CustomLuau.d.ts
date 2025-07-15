@@ -149,14 +149,14 @@ declare namespace json {
 }
 
 interface DateTimeData {
-	readonly Year: number;
+	Year: number;
 	/** Day of the month. */
-	readonly Day: number;
-	readonly Month: number;
-	readonly Hour: number;
-	readonly Minute: number;
-	readonly Second: number;
-	readonly Millisecond: number;
+	Day: number;
+	Month: number;
+	Hour: number;
+	Minute: number;
+	Second: number;
+	Millisecond: number;
 }
 
 interface DateTime {
@@ -166,11 +166,11 @@ interface DateTime {
 	/** Unix timestamp in milliseconds. */
 	TimestampMilliseconds: number;
 
-	/** Get date and time information in local time. */
-	GetLocalTime(): DateTimeData;
+	/** Returns date and time information in local time. */
+	ToLocalTime(): Readonly<DateTimeData>;
 
-	/** Get date and time information in universal time. */
-	GetUniversalTime(): DateTimeData;
+	/** Returns date and time information in universal time. */
+	ToUniversalTime(): Readonly<DateTimeData>;
 
 	/** Returns the ISO 8601 string representation of the DateTime object. */
 	ToISO(): string;
