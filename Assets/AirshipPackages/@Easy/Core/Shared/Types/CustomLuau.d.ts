@@ -156,6 +156,7 @@ interface DateTimeData {
 	readonly Hour: number;
 	readonly Minute: number;
 	readonly Second: number;
+	readonly Millisecond: number;
 }
 
 interface DateTime {
