@@ -161,7 +161,10 @@ interface DateTimeData {
 
 interface DateTime {
 	/** Unix timestamp in seconds. */
-	Timestamp: number;
+	TimestampSeconds: number;
+
+	/** Unix timestamp in milliseconds. */
+	TimestampMilliseconds: number;
 
 	/** Get date and time information in local time. */
 	GetLocal(): DateTimeData;
@@ -197,8 +200,11 @@ interface DateTimeConstructor {
 		second?: number,
 	) => DateTime;
 
-	/** Constructs a DateTime object from the given unix timestamp (in seconds). */
-	fromTimestamp: (unixTimestamp: number) => DateTime;
+	/** Constructs a DateTime object from the given unix timestamp in seconds. */
+	fromTimestampSeconds: (unixTimestamp: number) => DateTime;
+
+	/** Constructs a DateTime object from the given unix timestamp in milliseconds. */
+	fromTimestampMilliseconds: (unixTimestampMs: number) => DateTime;
 
 	/** Constructs a DateTime object by parsing the given ISO 8601 string. */
 	fromISO: (iso: string) => DateTime;
