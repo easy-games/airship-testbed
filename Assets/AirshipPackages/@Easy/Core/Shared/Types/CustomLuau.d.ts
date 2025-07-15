@@ -167,10 +167,10 @@ interface DateTime {
 	TimestampMilliseconds: number;
 
 	/** Get date and time information in local time. */
-	GetLocal(): DateTimeData;
+	GetLocalTime(): DateTimeData;
 
 	/** Get date and time information in universal time. */
-	GetUniversal(): DateTimeData;
+	GetUniversalTime(): DateTimeData;
 
 	/** Returns the ISO 8601 string representation of the DateTime object. */
 	ToISO(): string;
