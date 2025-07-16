@@ -147,3 +147,67 @@ declare namespace json {
 	 */
 	function decode<T = unknown>(json: string): T;
 }
+
+interface DateTimeData {
+	Year: number;
+	/** Day of the month. */
+	Day: number;
+	Month: number;
+	Hour: number;
+	Minute: number;
+	Second: number;
+	Millisecond: number;
+}
+
+interface DateTime {
+	/** Unix timestamp in seconds. */
+	TimestampSeconds: number;
+
+	/** Unix timestamp in milliseconds. */
+	TimestampMilliseconds: number;
+
+	/** Returns date and time information in local time. */
+	ToLocalTime(): Readonly<DateTimeData>;
+
+	/** Returns date and time information in universal time. */
+	ToUniversalTime(): Readonly<DateTimeData>;
+
+	/** Returns the ISO 8601 string representation of the DateTime object. */
+	ToISO(): string;
+}
+
+interface DateTimeConstructor {
+	/** Constructs a new DateTime object representing the current date and time. */
+	now: () => DateTime;
+
+	/** Constructs a DateTime object representative of the given date and time values in local time. */
+	fromUniversalTime: (
+		year: number,
+		month?: number,
+		day?: number,
+		hour?: number,
+		minute?: number,
+		second?: number,
+	) => DateTime;
+
+	/** Constructs a DateTime object representative of the given date and time values in unix time. */
+	fromLocalTime: (
+		year: number,
+		month?: number,
+		day?: number,
+		hour?: number,
+		minute?: number,
+		second?: number,
+	) => DateTime;
+
+	/** Constructs a DateTime object from the given unix timestamp in seconds. */
+	fromTimestampSeconds: (unixTimestamp: number) => DateTime;
+
+	/** Constructs a DateTime object from the given unix timestamp in milliseconds. */
+	fromTimestampMilliseconds: (unixTimestampMs: number) => DateTime;
+
+	/** Constructs a DateTime object by parsing the given ISO 8601 string. */
+	fromISO: (iso: string) => DateTime;
+}
+
+declare const DateTime: DateTimeConstructor;
