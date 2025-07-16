@@ -1,7 +1,6 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { ControlScheme, Mouse, Preferred, Touchscreen } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { MathUtil } from "@Easy/Core/Shared/Util/MathUtil";
 import { CameraMode, CameraTransform } from "..";
 import { TweenEasingFunction } from "../../Tween/EasingFunctions";
 import { Tween } from "../../Tween/Tween";
@@ -257,12 +256,6 @@ export class FixedCameraMode extends CameraMode {
 		}
 		let visualTarget = characterTarget?.model.transform ?? this.target?.transform;
 
-		let xOffset = this.xOffset;
-
-		if (!this.locked && this.rotationX < math.rad(45)) {
-			xOffset = MathUtil.Map(this.rotationX, this.minRotX, math.rad(45), 0, xOffset);
-		}
-
 		// Polar to cartesian conversion (i.e. the 3D point around the sphere of the character):
 		const rotYOffset = this.lookBehind ? math.pi : 0;
 		const rotY = this.rotationY + rotYOffset - math.pi / 2;
@@ -279,7 +272,7 @@ export class FixedCameraMode extends CameraMode {
 		this.lastRot = rotation;
 
 		let yOffset = this.yOffset + this.currentCrouchYOffset;
-		const cameraPos = targetPos.add(new Vector3(0, yOffset, 0)).add(rotation.mul(Vector3.right).mul(xOffset));
+		const cameraPos = targetPos.add(new Vector3(0, yOffset, 0)).add(rotation.mul(Vector3.right).mul(this.xOffset));
 		this.lastCameraPos = cameraPos;
 
 		const newCameraPos = cameraPos.add(this.staticOffset ?? posOffset);
