@@ -181,20 +181,18 @@ export class FixedCameraMode extends CameraMode {
 		this.crouching = crouching;
 		this.crouchTweenBin.Clean();
 
-		if (Airship.Camera.IsFirstPerson()) {
-			if (crouching) {
-				this.crouchTweenBin.Add(
-					Tween.Number(TweenEasingFunction.Linear, 0.1, (val) => {
-						this.currentCrouchYOffset = val * this.crouchYOffset;
-					}),
-				);
-			} else {
-				this.crouchTweenBin.Add(
-					Tween.Number(TweenEasingFunction.Linear, 0.1, (val) => {
-						this.currentCrouchYOffset = (1 - val) * this.crouchYOffset;
-					}),
-				);
-			}
+		if (crouching) {
+			this.crouchTweenBin.Add(
+				Tween.Number(TweenEasingFunction.Linear, 0.1, (val) => {
+					this.currentCrouchYOffset = val * this.crouchYOffset;
+				}),
+			);
+		} else {
+			this.crouchTweenBin.Add(
+				Tween.Number(TweenEasingFunction.Linear, 0.1, (val) => {
+					this.currentCrouchYOffset = (1 - val) * this.crouchYOffset;
+				}),
+			);
 		}
 	}
 
