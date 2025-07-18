@@ -172,6 +172,18 @@ interface DateTime {
 	/** Returns date and time information in universal time. */
 	ToUniversalTime(): Readonly<DateTimeData>;
 
+	/**
+	 * Returns local time with the given format.
+	 * @see https://en.cppreference.com/w/cpp/chrono/c/strftime
+	 */
+	FormatLocalTime(format: string): string;
+
+	/**
+	 * Returns universal time with the given format.
+	 * @see https://en.cppreference.com/w/cpp/chrono/c/strftime
+	 */
+	FormatUniversalTime(format: string): string;
+
 	/** Returns the ISO 8601 string representation of the DateTime object. */
 	ToISO(): string;
 }
