@@ -188,6 +188,7 @@ interface DateTimeConstructor {
 		hour?: number,
 		minute?: number,
 		second?: number,
+		millisecond?: number,
 	) => DateTime;
 
 	/** Constructs a DateTime object representative of the given date and time values in unix time. */
@@ -198,6 +199,7 @@ interface DateTimeConstructor {
 		hour?: number,
 		minute?: number,
 		second?: number,
+		millisecond?: number,
 	) => DateTime;
 
 	/** Constructs a DateTime object from the given unix timestamp in seconds. */
