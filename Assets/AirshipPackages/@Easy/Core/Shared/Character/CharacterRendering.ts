@@ -12,9 +12,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 	@Tooltip("Will set everything under the rig to be on the StencilMask or LocalStencilMask layer")
 	public autoSetStencilLayer = true;
 	@Tooltip("How close you can be before the character is fully transparent")
-	public transparentDistance = 0.3;
-	@Tooltip("When using transparency how much distance between fully opaque and fully transparent")
-	public transparentMargin = 0.5;
+	public transparentDistance = 1;
 
 	private enableIfNotLocalCharacter = false;
 
@@ -43,7 +41,10 @@ export default class CharacterRendering extends AirshipBehaviour {
 
 			if (this.character.IsLocalCharacter() || this.enableIfNotLocalCharacter) {
 				if (this.useTransparentOnCameraClose && this.autoSetStencilLayer) {
-					this.character.rig.gameObject.ReplaceLayerRecursive(Layer.LOCAL_STENCIL_MASK, ~(1 << Layer.TRANSPARENT_FX));
+					this.character.rig.gameObject.ReplaceLayerRecursive(
+						Layer.LOCAL_STENCIL_MASK,
+						~(1 << Layer.TRANSPARENT_FX),
+					);
 				}
 				this.SetAlpha(1);
 			} else {
@@ -99,7 +100,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 		let flatDistance = Vector3.Distance(camPos, targetPos);
 
 		if (this.useTransparentOnCameraClose) {
-			let alpha = math.max(0, flatDistance - this.transparentDistance) / this.transparentMargin;
+			let alpha = math.max(0, flatDistance - this.transparentDistance) / this.transparentDistance;
 			this.SetAlpha(alpha);
 		} else {
 			this.character.rig?.gameObject?.SetActive(distance > this.transparentDistance);

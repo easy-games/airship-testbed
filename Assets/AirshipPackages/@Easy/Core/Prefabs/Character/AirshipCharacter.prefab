@@ -661,25 +661,7 @@ MonoBehaviour:
         tags: []
       decorators: []
       nullable: 0
-      serializedValue: 0.4
-      serializedObject: {fileID: 0}
-      modified: 1
-    - name: transparentMargin
-      type: number
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      jsDocs:
-        text: []
-        tags: []
-      decorators: []
-      nullable: 0
-      serializedValue: 0.6
+      serializedValue: 1
       serializedObject: {fileID: 0}
       modified: 1
     - name: useTransparentOnCameraClose

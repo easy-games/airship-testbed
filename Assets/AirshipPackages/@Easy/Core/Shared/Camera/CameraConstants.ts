@@ -60,12 +60,6 @@ export interface OrbitCameraConfig {
 	characterLocked?: boolean;
 }
 
-export const enum CameraPOV {
-	FirstPerson, // fixed
-	ThirdPerson, // fixed with configurable occlusion and first person toggling
-	Orbit,
-}
-
 /**
  * Fixed camera configuration. Describes the behaviour and appearance of camera.
  */

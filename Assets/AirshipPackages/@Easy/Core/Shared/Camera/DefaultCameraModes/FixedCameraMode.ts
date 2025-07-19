@@ -5,7 +5,7 @@ import { CameraMode, CameraTransform } from "..";
 import { TweenEasingFunction } from "../../Tween/EasingFunctions";
 import { Tween } from "../../Tween/Tween";
 import ObjectUtils from "../../Util/ObjectUtils";
-import { CameraConstants, CameraPOV, FixedCameraConfig } from "../CameraConstants";
+import { CameraConstants, FixedCameraConfig } from "../CameraConstants";
 import { OcclusionCameraManager } from "../OcclusionCameraManager";
 
 const TAU = math.pi * 2;
@@ -57,6 +57,7 @@ export class FixedCameraMode extends CameraMode {
 	private crouching = false;
 	private crouchTweenBin = new Bin();
 	private currentCrouchYOffset = 0;
+	private currentCrouchOffset = Vector3.zero;
 
 	/** How much the camera is vertically offset while crouching. */
 	public crouchYOffset = -0.57;
@@ -313,40 +314,12 @@ export class FixedCameraMode extends CameraMode {
 			}
 
 			//Collide camera with enviornment and send signal with new camera distance
-			const switchToFirstPersonDistance = 0.65;
 			const distance = this.occlusionCam.BumpForOcclusion(
 				targetPosition,
 				characterPos,
 				OcclusionCameraManager.GetMask(),
 			);
-			if (distance < switchToFirstPersonDistance) {
-				Airship.Camera.SetFirstPerson(true);
-			} else {
-				Airship.Camera.SetFirstPerson(false);
-			}
 			this.onTargetDistance.Fire(distance, this.occlusionCam.transform.position, targetPosition);
-		} else if (
-			this.lastTargetPos &&
-			Airship.Camera.IsFirstPerson() &&
-			Airship.Camera.GetDefaultCameraPOV() !== CameraPOV.FirstPerson
-		) {
-			const yOffset = this.yOffset + this.currentCrouchYOffset;
-			let targetPosition = this.lastTargetPos.add(Vector3.up.mul(yOffset));
-			const characterPos =
-				this.character?.transform.position.add(new Vector3(0, 1.65 + this.currentCrouchYOffset, 0)) ??
-				targetPosition;
-			if (!this.character) return;
-
-			const switchOutOfFirstPersonDistance = 1;
-			const [hit] = Physics.Raycast(
-				characterPos,
-				this.character.movement.GetLookVector().mul(-1),
-				switchOutOfFirstPersonDistance,
-			);
-
-			if (!hit) {
-				Airship.Camera.SetFirstPerson(false);
-			}
 		}
 		this.cameraForwardVector = this.lookBehind ? cameraHolder.forward.mul(-1) : cameraHolder.forward;
 	}
