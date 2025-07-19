@@ -57,7 +57,6 @@ export class FixedCameraMode extends CameraMode {
 	private crouching = false;
 	private crouchTweenBin = new Bin();
 	private currentCrouchYOffset = 0;
-	private currentCrouchOffset = Vector3.zero;
 
 	/** How much the camera is vertically offset while crouching. */
 	public crouchYOffset = -0.57;
