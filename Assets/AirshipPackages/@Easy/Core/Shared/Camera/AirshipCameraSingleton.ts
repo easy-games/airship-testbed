@@ -10,7 +10,7 @@ import { Keyboard } from "../UserInput";
 import { Bin } from "../Util/Bin";
 import { Signal, SignalPriority } from "../Util/Signal";
 import { OnLateUpdate, OnUpdate } from "../Util/Timer";
-import { CameraConstants } from "./CameraConstants";
+import { CameraConstants, CameraPOV } from "./CameraConstants";
 import { CameraReferences } from "./CameraReferences";
 import CameraRig from "./CameraRig";
 import { CameraSystem } from "./CameraSystem";
@@ -49,7 +49,10 @@ export class AirshipCameraSingleton {
 	private characterState: CharacterStateSnapshot | undefined;
 	private sprintFovMultiplier = 1.08;
 
-	private firstPerson = false;
+	/** POV we are using now, possibly just to handle a specific case */
+	private activeCameraPOV: CameraPOV | undefined;
+	/** Camera mode we use in the ideal case. We are always attempting to go back to this */
+	public defaultCameraPOV = CameraPOV.ThirdPerson;
 
 	/** Fires whenever the user changes their first-person state. */
 	public readonly firstPersonChanged = new Signal<[isFirstPerson: boolean]>();
@@ -137,15 +140,14 @@ export class AirshipCameraSingleton {
 						flyingBin.Clean();
 					} else {
 						flyCam = true;
-						let backToFirstPerson = this.firstPerson;
-						if (backToFirstPerson) {
+						if (this.defaultCameraPOV === CameraPOV.FirstPerson) {
 							this.SetFirstPerson(false);
 						}
 						this.SetModeInternal(new FlyCameraMode());
 						flyingBin.Add(() => {
 							this.ClearMode();
 							this.SetMode(this.characterCameraMode);
-							if (backToFirstPerson) {
+							if (this.defaultCameraPOV === CameraPOV.FirstPerson) {
 								this.SetFirstPerson(true);
 							}
 						});
@@ -322,7 +324,12 @@ export class AirshipCameraSingleton {
 
 	/** Returns `true` if the player is in first-person mode. */
 	public IsFirstPerson() {
-		return this.firstPerson;
+		return this.activeCameraPOV === CameraPOV.FirstPerson;
+	}
+
+	/** Returns `true` if the player is in first-person mode. */
+	public GetDefaultCameraPOV() {
+		return this.defaultCameraPOV;
 	}
 
 	/** Observes the current first-person state. */
@@ -336,7 +343,7 @@ export class AirshipCameraSingleton {
 		};
 
 		const disconnect = this.firstPersonChanged.Connect(onChanged);
-		onChanged(this.firstPerson);
+		onChanged(this.IsFirstPerson());
 
 		return () => {
 			disconnect();
@@ -357,7 +364,7 @@ export class AirshipCameraSingleton {
 		}
 
 		//Set up first person camera
-		this.fps = new FirstPersonCameraSystem(character, this.firstPerson);
+		this.fps = new FirstPersonCameraSystem(character, this.IsFirstPerson());
 	}
 
 	/**
@@ -477,7 +484,11 @@ export class AirshipCameraSingleton {
 			const setFirstPerson = () => {
 				mode.SetXOffset(CameraConstants.DefaultFirstPersonFixedCameraConfig.xOffset!);
 				mode.SetZOffset(CameraConstants.DefaultFirstPersonFixedCameraConfig.zOffset!);
-				mode.SetOcclusionBumping(CameraConstants.DefaultFirstPersonFixedCameraConfig.shouldOcclusionBump!);
+				const shouldOcclusionBump =
+					this.defaultCameraPOV === CameraPOV.FirstPerson
+						? CameraConstants.DefaultFirstPersonFixedCameraConfig.shouldOcclusionBump!
+						: true;
+				mode.SetOcclusionBumping(shouldOcclusionBump);
 				mode.SetStaticOffset(CameraConstants.DefaultFirstPersonFixedCameraConfig.staticOffset);
 				mode.SetLookBackwards(false);
 			};
@@ -603,7 +614,7 @@ export class AirshipCameraSingleton {
 	}
 
 	public ToggleFirstPerson() {
-		this.SetFirstPerson(!this.firstPerson);
+		this.SetFirstPerson(!this.IsFirstPerson());
 	}
 
 	/**
@@ -617,14 +628,14 @@ export class AirshipCameraSingleton {
 			"SetFirstPerson() can only be called when using CharacterCameraMode.Locked",
 		);
 
-		if (this.firstPerson === value) {
+		if (this.IsFirstPerson() === value) {
 			return;
 		}
 
-		this.firstPerson = value;
-		this.firstPersonChanged.Fire(this.firstPerson);
+		this.activeCameraPOV = value ? CameraPOV.FirstPerson : this.defaultCameraPOV;
+		this.firstPersonChanged.Fire(value);
 
-		this.fps?.OnFirstPersonChanged(this.firstPerson);
+		this.fps?.OnFirstPersonChanged(value);
 	}
 
 	/** Observes whether or not the player wants to look backwards. */

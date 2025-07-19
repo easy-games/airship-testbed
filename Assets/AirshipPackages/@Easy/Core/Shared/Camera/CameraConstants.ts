@@ -60,6 +60,12 @@ export interface OrbitCameraConfig {
 	characterLocked?: boolean;
 }
 
+export const enum CameraPOV {
+	FirstPerson, // fixed
+	ThirdPerson, // fixed with configurable occlusion and first person toggling
+	Orbit,
+}
+
 /**
  * Fixed camera configuration. Describes the behaviour and appearance of camera.
  */
@@ -86,9 +92,9 @@ export class CameraConstants {
 	 * Airship character in third person mode.
 	 */
 	public static DefaultFixedCameraConfig: Required<FixedCameraConfig> = {
-		xOffset: 0.45,
+		xOffset: 0.75,
 		yOffset: 1.7,
-		zOffset: 3.5,
+		zOffset: 2.5,
 		minRotX: 1,
 		maxRotX: 179,
 		shouldOcclusionBump: true,

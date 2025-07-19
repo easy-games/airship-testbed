@@ -34,7 +34,7 @@ interface SyncedBlob extends NetworkBehaviour {
 }
 
 interface BinaryBlobConstructor {
-	new(data: unknown): BinaryBlob;
+	new (data: unknown): BinaryBlob;
 }
 
 declare const BinaryBlob: BinaryBlobConstructor;
@@ -788,7 +788,7 @@ interface AnimationClipOptions {
 }
 
 interface AnimationClipOptionsConstructor {
-	new(): AnimationClipOptions;
+	new (): AnimationClipOptions;
 }
 
 declare const AnimationClipOptions: AnimationClipOptionsConstructor;
@@ -1058,7 +1058,7 @@ interface NetworkIdentity extends MonoBehaviour {
 	readonly onStopServer: MonoSignal<void>;
 }
 
-interface NetworkTime { }
+interface NetworkTime {}
 
 interface NetworkTimeConstructor {
 	// PingInterval: number;
@@ -1101,7 +1101,7 @@ interface NetworkTimeConstructor {
  */
 declare const NetworkTime: NetworkTimeConstructor;
 
-interface VolumeProfile extends ScriptableObject { }
+interface VolumeProfile extends ScriptableObject {}
 
 interface Volume extends MonoBehaviour {
 	/**
@@ -1132,11 +1132,11 @@ interface TubeRendererCS extends MonoBehaviour {
 }
 
 interface TubeRendererCSConstructor {
-	new(): TubeRendererCS;
+	new (): TubeRendererCS;
 }
 declare const TubeRendererCS: TubeRendererCSConstructor;
 
-interface NetworkBehaviour extends MonoBehaviour { }
+interface NetworkBehaviour extends MonoBehaviour {}
 
 interface LagCompensator extends NetworkBehaviour {
 	RaycastCheck(
@@ -1224,11 +1224,11 @@ interface OcclusionCam extends MonoBehaviour {
 	adjustToHead: boolean;
 	adjustToHeadHeightThreshold: number;
 
-	BumpForOcclusion(targetPos: Vector3, characterPos: Vector3, mask: number): void;
+	BumpForOcclusion(targetPos: Vector3, characterPos: Vector3, mask: number): number;
 	Init(camera: Camera): void;
 }
 interface OcclusionCamConstructor {
-	new(): OcclusionCam;
+	new (): OcclusionCam;
 }
 declare const OcclusionCam: OcclusionCamConstructor;
 
@@ -1236,7 +1236,7 @@ interface InternalCameraScreenshotRecorderConstructor {
 	onPictureTaken: OnPictureTaken;
 	readonly GetScreenshotTexture: Texture2D;
 
-	new(): CameraScreenshotRecorder;
+	new (): CameraScreenshotRecorder;
 
 	TakeScreenshot(fileName: string, superSampleSize: number, png: boolean): void;
 	TakeCameraScreenshot(camera: Camera, fileName: string, superSampleSize: number): void;
@@ -1258,12 +1258,12 @@ interface CameraScreenshotResponse {
 }
 
 interface CameraScreenshotResponseConstructor {
-	new(): CameraScreenshotResponse;
+	new (): CameraScreenshotResponse;
 }
 declare const CameraScreenshotResponse: CameraScreenshotResponseConstructor;
 
 interface AirshipUniVoiceNetworkConstructor {
-	new(): AirshipUniVoiceNetwork;
+	new (): AirshipUniVoiceNetwork;
 }
 declare const AirshipUniVoiceNetwork: AirshipUniVoiceNetworkConstructor;
 
