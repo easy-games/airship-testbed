@@ -10,7 +10,6 @@ import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import FriendCard from "@Easy/Core/Shared/MainMenu/Components/Friends/FriendCard";
 import NoFriendsCardComponent from "@Easy/Core/Shared/MainMenu/Components/Friends/NoFriendsCardComponent";
@@ -19,24 +18,20 @@ import SocialNotificationComponent from "@Easy/Core/Shared/MainMenu/Components/S
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
-import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { CanvasAPI, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { ProtectedPartyController } from "../Airship/Party/PartyController";
+import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
-import { TransferController } from "../Transfer/TransferController";
-import { RightClickMenuButton } from "../UI/RightClickMenu/RightClickMenuButton";
-import { DirectMessageController } from "./DirectMessages/DirectMessageController";
 import { SocialNotificationType } from "./SocialNotificationType";
+import { SteamFriendsProtectedController } from "./SteamFriendsProtectedController";
 
 interface PendingSocialNotification {
 	type: SocialNotificationType;
@@ -56,6 +51,7 @@ export class ProtectedFriendsController {
 	public outgoingFriendRequests: AirshipUser[] = [];
 	public friendStatuses: AirshipUserStatusData[] = [];
 	private renderedFriendUids = new Set<string>();
+	private renderedSteamFriendsWithNoAirshipAccountSteamIds = new Set<string>();
 	private statusText = "";
 	private friendBinMap = new Map<string, Bin>();
 	public friendStatusChanged = new Signal<AirshipUserStatusData>();
@@ -195,6 +191,18 @@ export class ProtectedFriendsController {
 					notif.extraData,
 				);
 			}
+		}
+
+		if (!Game.IsMobile()) {
+			task.spawn(() => {
+				SetInterval(
+					5,
+					() => {
+						this.UpdateSteamFriendsWithNoAirshipAccount();
+					},
+					true,
+				);
+			});
 		}
 
 		this.authController.WaitForAuthed().then(() => {
@@ -461,6 +469,55 @@ export class ProtectedFriendsController {
 		}
 	}
 
+	public UpdateSteamFriendsWithNoAirshipAccount(): void {
+		let startingIndex = this.renderedFriendUids.size();
+		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
+
+		// Create
+		for (let [userId, steamFriend] of Dependency<SteamFriendsProtectedController>().steamFriends) {
+			// If they are in the rendered friends list then they have an airship account and we shouldn't render them here.
+			if (this.renderedFriendUids.has(userId)) continue;
+
+			let steamId = userId.split("steam:")[1];
+			let go = friendsContent.transform.FindChild(`steam_guest:${steamId}`)?.gameObject;
+			let friendCard: FriendCard;
+			if (go === undefined) {
+				go = Object.Instantiate(
+					Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/MainMenu/Friend.prefab"),
+					friendsContent.transform,
+				) as GameObject;
+				go.name = `steam_guest:${steamId}`;
+
+				friendCard = go.GetAirshipComponent<FriendCard>()!;
+				friendCard.InitAsSteamFriendWithNoAirshipAccount(steamId);
+			} else {
+				friendCard = go.GetAirshipComponent<FriendCard>()!;
+			}
+
+			friendCard.UpdateSteamFriendWithNoAirshipAccount(steamFriend);
+		}
+
+		// Remove
+		let removed = new Array<string>();
+		for (const renderedSteamId of this.renderedSteamFriendsWithNoAirshipAccountSteamIds) {
+			if (
+				this.friendStatuses.find((f) => f.userId === renderedSteamId) === undefined ||
+				this.renderedFriendUids.has(`steam:${renderedSteamId}`)
+			) {
+				const go = friendsContent.transform.FindChild(`steam_guest:${renderedSteamId}`);
+				if (go) {
+					this.friendBinMap.get(renderedSteamId)?.Clean();
+					this.friendBinMap.delete(renderedSteamId);
+					Destroy(go);
+					removed.push(renderedSteamId);
+				}
+			}
+		}
+		for (let steamId of removed) {
+			this.renderedSteamFriendsWithNoAirshipAccountSteamIds.delete(steamId);
+		}
+	}
+
 	public UpdateFriendsList(): void {
 		let sorted = this.friendStatuses.sort((a, b) => {
 			let aOnline = a.status === "online" || a.status === "in_game";
@@ -478,7 +535,7 @@ export class ProtectedFriendsController {
 		const onlineCountText = this.mainMenuController.refs.GetValue("Social", "FriendsOnlineCounter") as TMP_Text;
 		onlineCountText.text = `(${onlineCount}/${this.friendStatuses.size()})`;
 
-		const mainCanvasRect = this.mainMenuController.mainContentCanvas.GetComponent<RectTransform>();
+		// const mainCanvasRect = this.mainMenuController.mainContentCanvas.GetComponent<RectTransform>();
 
 		// uncomment to test with no friends.
 		// sorted = [];
@@ -512,125 +569,21 @@ export class ProtectedFriendsController {
 					Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/MainMenu/Friend.prefab"),
 					friendsContent.transform,
 				) as GameObject;
+				go.name = friend.userId;
 
 				const friendCard = go.GetAirshipComponent<FriendCard>()!;
-				friendCard.friendId = friend.userId;
-
-				go.name = friend.userId;
-				const friendRect = go.GetComponent<RectTransform>()!;
+				friendCard.InitAsAirshipUser(friend);
 
 				const redirect = go.GetComponent<AirshipRedirectScroll>()!;
 				redirect.redirectTarget = this.friendsScrollRect;
 
-				const refs = go.GetComponent<GameObjectReferences>()!;
-				const joinButton = refs.GetValue("UI", "JoinButton");
-
 				this.renderedFriendUids.add(friend.userId);
 				init = true;
-
-				const Teleport = () => {
-					if (friend.status !== "in_game") return;
-					if (friend.game === undefined || friend.serverId === undefined) return;
-
-					print(
-						"Transfering to friend " +
-							friend.username +
-							". gameId=" +
-							friend.gameId +
-							", serverId=" +
-							friend.serverId,
-					);
-					Dependency<TransferController>().TransferToGameAsync(friend.gameId, friend.serverId);
-				};
-
-				const OpenMenu = () => {
-					const options: RightClickMenuButton[] = [];
-					if (friend.status !== "offline") {
-						if (Game.IsMobile() && friend.status === "in_game" && friend.gameId && friend.serverId) {
-							options.push({
-								text: "Teleport",
-								onClick: () => {
-									Teleport();
-								},
-							});
-						}
-
-						options.push(
-							{
-								text: "Join Party",
-								onClick: () => {
-									task.spawn(async () => {
-										await client.party.joinParty({ uid: friend.userId });
-									});
-								},
-							},
-							{
-								text: "Invite to Party",
-								onClick: () => {
-									Dependency<ProtectedPartyController>().InviteToParty(friend.userId);
-								},
-							},
-						);
-					}
-					if (!Game.IsMobile()) {
-						options.push({
-							text: "Send Message",
-							onClick: () => {
-								Dependency<DirectMessageController>().OpenFriend(friend.userId);
-							},
-						});
-					}
-					options.push({
-						text: "Unfriend",
-						onClick: () => {
-							task.spawn(() => {
-								task.spawn(() => {
-									const success = this.RejectFriendRequestAsync(friend.userId);
-								});
-							});
-						},
-					});
-
-					// let profilePanelPos = Bridge.ScreenPointToLocalPointInRectangle(
-					// 	mainCanvasRect,
-					// 	new Vector2(go!.transform.position.x - 5, go!.transform.position.y),
-					// );
-					// profilePanelPos = profilePanelPos.add(new Vector2(-friendRect.rect.width / 2, friendRect.rect.height / 2));
-					// Dependency(ProfilePanelController).OpenProfilePanel(this.mainMenuController.mainContentCanvas, profilePanelPos);
-					this.rightClickMenuController.OpenRightClickMenu(
-						this.mainMenuController.mainContentCanvas,
-						Game.IsMobile()
-							? new Vector2(go!.transform.position.x, go!.transform.position.y)
-							: Mouse.position,
-						options,
-					);
-				};
-
-				CoreUI.SetupButton(go, {
-					noHoverSound: true,
-				});
-				CanvasAPI.OnClickEvent(go, () => {
-					if (Game.IsMobile()) {
-						OpenMenu();
-					} else {
-						Dependency<DirectMessageController>().OpenFriend(friend.userId);
-					}
-				});
-
-				CanvasAPI.OnPointerEvent(go, (direction, button) => {
-					if (button === PointerButton.RIGHT && direction === PointerDirection.UP) {
-						OpenMenu();
-					}
-				});
-
-				CanvasAPI.OnClickEvent(joinButton, () => {
-					Teleport();
-				});
 			}
 			go.transform.SetSiblingIndex(i);
 
-			const refs = go.GetComponent<GameObjectReferences>()!;
-			this.UpdateFriendStatusUI(friend, refs, {
+			const friendCard = go.GetAirshipComponent<FriendCard>()!;
+			friendCard.UpdateFriendStatus(friend, {
 				loadImage: init,
 			});
 			i++;
@@ -644,7 +597,7 @@ export class ProtectedFriendsController {
 				if (go) {
 					this.friendBinMap.get(renderedUid)?.Clean();
 					this.friendBinMap.delete(renderedUid);
-					GameObjectUtil.Destroy(go.gameObject);
+					Destroy(go);
 					removed.push(renderedUid);
 				}
 			}

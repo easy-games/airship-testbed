@@ -26773,6 +26773,8 @@ interface CoreLoadingScreen extends BundleLoadingScreen {
     gameImage: RawImage;
     editorGameImageColor: Color;
     bottomCard: RectTransform;
+    errorWrapper: GameObject;
+    errorText: TMP_Text;
     voiceChatCard: RectTransform;
     voiceChatToggle: InternalToggle;
     updatedByGame: boolean;
@@ -26781,7 +26783,10 @@ interface CoreLoadingScreen extends BundleLoadingScreen {
 
     ClickContinueButton(): void;
     Close(): void;
+    DisconnectBtn_OnClick(): void;
     OnReload(): void;
+    RetryBtn_OnClick(): void;
+    SetError(msg: string): void;
     SetProgress(text: string, percent: number): void;
     SetTotalDownloadSize(sizeBytes: number): void;
 
@@ -51845,8 +51850,8 @@ interface VoxelWorld extends MonoBehaviour {
     CreateSingleStarterBlock(): void;
     DamageVoxelAt(pos: Vector3, damage: number, priority: boolean): void;
     DeleteRenderedGameObjects(): void;
-    DirtyMesh(voxel: Vector3, priority: boolean): void;
-    DirtyNeighborMeshes(voxel: Vector3, priority: boolean): void;
+    DirtyMesh(voxel: Vector3, dirtyCollisions: boolean, priority: boolean): void;
+    DirtyNeighborMeshes(voxel: Vector3, dirtyCollision: boolean, priority: boolean): void;
     FillFlatGround(): void;
     FillRandomTerrain(): void;
     FillSingleBlock(): void;
@@ -52003,6 +52008,7 @@ interface Chunk {
     MarkKeysWithVoxelsDirty(): void;
     NeedsToCopyMeshToScene(): boolean;
     NeedsToGenerateMesh(): boolean;
+    SetCollisionDirty(dirty: boolean): void;
     SetGeometryDirty(dirty: boolean, priority: boolean): void;
     SetWorld(world: VoxelWorld): void;
     WaitForLoaded(): void;
@@ -52328,6 +52334,7 @@ interface RectMask2D extends UIBehaviour, ICanvasRaycastFilter, IClipper {
     
 interface AirshipSteamFriendInfo {
     playingAirship: boolean;
+    playingOtherGame: boolean;
     steamId: number;
     steamName: string;
 

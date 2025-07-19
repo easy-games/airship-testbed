@@ -493,6 +493,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8436927319889263354}
+  - component: {fileID: 6678656062570326313}
   - component: {fileID: 8766677089103054343}
   - component: {fileID: 5874821177967701477}
   - component: {fileID: 3590716997769257489}
@@ -501,7 +502,6 @@ GameObject:
   - component: {fileID: 61588793420208117}
   - component: {fileID: 2351454665502475817}
   - component: {fileID: 4497294125863309327}
-  - component: {fileID: 6678656062570326313}
   m_Layer: 0
   m_Name: Friend
   m_TagString: Untagged
@@ -533,6 +533,191 @@ RectTransform:
   m_AnchoredPosition: {x: 114.51437, y: -28.196991}
   m_SizeDelta: {x: 199.0287, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6678656062570326313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1944914621726832160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guid: bf5a3356-3715-4025-815b-82a73a7eb2bf
+  script: {fileID: -7352938463746943854, guid: e62f1a95537954889b2ecaf17f806844, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Friends/FriendCard.lua
+  forceContext: 0
+  metadata:
+    name: FriendCard
+    singleton: 0
+    decorators: []
+    properties:
+    - name: redirectScroll
+      type: object
+      objectType: AirshipRedirectScroll
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 4497294125863309327}
+      modified: 1
+    - name: bubbler
+      type: object
+      objectType: UIScrollRectEventBubbler
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 61588793420208117}
+      modified: 1
+    - name: btn
+      type: object
+      objectType: Button
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 8909231331826707651}
+      modified: 1
+    - name: joinBtn
+      type: object
+      objectType: Button
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2264528654715605867}
+      modified: 1
+    - name: usernameText
+      type: object
+      objectType: TMP_Text
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 5597700811387060038}
+      modified: 1
+    - name: statusText
+      type: object
+      objectType: TMP_Text
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 7721442337699911723}
+      modified: 1
+    - name: statusIndicator
+      type: object
+      objectType: Image
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 103533810191205546}
+      modified: 1
+    - name: profileImage
+      type: object
+      objectType: RawImage
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2327042405372721676}
+      modified: 1
+    - name: canvasGroup
+      type: object
+      objectType: CanvasGroup
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 3590716997769257489}
+      modified: 1
+    displayIcon: {fileID: 0}
+    displayName: 
 --- !u!222 &8766677089103054343
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -707,82 +892,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   redirectTarget: {fileID: 0}
   ignoreDrag: 1
---- !u!114 &6678656062570326313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1944914621726832160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scriptFile: {fileID: -7352938463746943854, guid: e62f1a95537954889b2ecaf17f806844, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Friends/FriendCard.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
-    name: FriendCard
-    singleton: 0
-    decorators: []
-    properties:
-    - name: friendId
-      type: string
-      objectType: 
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators:
-      - name: HideInInspector
-        parameters: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
-    - name: redirectScroll
-      type: object
-      objectType: AirshipRedirectScroll
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 4497294125863309327}
-      modified: 1
-    - name: bubbler
-      type: object
-      objectType: UIScrollRectEventBubbler
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 61588793420208117}
-      modified: 1
-    displayIcon: {fileID: 0}
-    displayName: 
-  contextOverwritten: 0
 --- !u!1 &2630833859914784004
 GameObject:
   m_ObjectHideFlags: 0
