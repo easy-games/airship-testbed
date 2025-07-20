@@ -569,7 +569,6 @@ export class ProtectedFriendsController {
 				) {
 					const t = friendsContent.transform.FindChild(`steam_guest:${renderedSteamId}`);
 					if (t) {
-						print("Destroying steamId " + renderedSteamId);
 						this.allFriendCards.remove(
 							this.allFriendCards.indexOf(t.gameObject.GetAirshipComponent<FriendCard>()!),
 						);
