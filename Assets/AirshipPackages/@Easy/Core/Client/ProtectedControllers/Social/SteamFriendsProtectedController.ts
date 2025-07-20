@@ -28,7 +28,7 @@ export class SteamFriendsProtectedController implements OnStart {
 		const steamFriends = SteamLuauAPI.GetSteamFriends();
 		const steamIds: string[] = [];
 		for (const friendInfo of steamFriends) {
-			const airshipUid = `steam:${friendInfo.steamId}`;
+			const airshipUid = `${friendInfo.steamId}:steam`;
 			steamIds.push(airshipUid);
 			this.steamFriends.set(airshipUid, friendInfo);
 		}
@@ -71,6 +71,7 @@ export class SteamFriendsProtectedController implements OnStart {
 				steamName: steamFriendInfo.steamName,
 				playingAirship: steamFriendInfo.playingAirship,
 				playingOtherGame: steamFriendInfo.playingOtherGame,
+				online: steamFriendInfo.online,
 			});
 		}
 		return result;

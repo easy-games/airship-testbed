@@ -9,6 +9,7 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import { AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
@@ -34,6 +35,8 @@ export default class FriendCard extends AirshipBehaviour {
 	@NonSerialized() public canvas?: Canvas;
 	@NonSerialized() public userId!: string;
 	@NonSerialized() public hasAirshipAccount: boolean;
+	@NonSerialized() public status: "online" | "in_game" | "offline" | "on_steam";
+	@NonSerialized() public username: string;
 
 	private rectTransform: RectTransform;
 
@@ -42,6 +45,7 @@ export default class FriendCard extends AirshipBehaviour {
 	public InitAsAirshipUser(userData: AirshipUserStatusData): void {
 		this.userId = userData.userId;
 		this.hasAirshipAccount = true;
+		this.username = userData.username;
 
 		const Teleport = () => {
 			if (userData.status !== "in_game") return;
@@ -166,6 +170,8 @@ export default class FriendCard extends AirshipBehaviour {
 			});
 		}
 
+		this.status = userData.status;
+
 		let displayName = userData.username;
 		if (displayName.size() > 16) {
 			displayName = displayName.sub(0, 15);
@@ -208,6 +214,45 @@ export default class FriendCard extends AirshipBehaviour {
 	public InitAsSteamFriendWithNoAirshipAccount(steamId: string): void {
 		this.userId = `steam:${steamId}`;
 		this.hasAirshipAccount = false;
+		this.joinBtn.gameObject.SetActive(false);
+		this.status = "on_steam";
+		this.username = steamId;
+
+		task.spawn(() => {
+			const texture = SteamLuauAPI.GetSteamProfilePictureYielding(steamId);
+			if (texture) {
+				this.profileImage.texture = texture;
+			}
+		});
+
+		const OpenMenu = () => {
+			const options: RightClickMenuButton[] = [
+				{
+					text: "Invite to Airship",
+					onClick: () => {
+						SteamLuauAPI.InviteUserToGame(steamId, "from_uid:" + Protected.User.localUser?.uid);
+					},
+				},
+			];
+			Dependency<RightClickMenuController>().OpenRightClickMenu(
+				Dependency<MainMenuController>().mainContentCanvas,
+				Game.IsMobile()
+					? new Vector2(this.gameObject.transform.position.x, this.gameObject.transform.position.y)
+					: Mouse.position,
+				options,
+			);
+		};
+
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnPointerEvent(this.gameObject, (direction, button) => {
+				if (
+					(button === PointerButton.RIGHT || button === PointerButton.LEFT) &&
+					direction === PointerDirection.UP
+				) {
+					OpenMenu();
+				}
+			}),
+		);
 	}
 
 	protected override Start(): void {

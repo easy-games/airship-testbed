@@ -52337,6 +52337,7 @@ interface AirshipSteamFriendInfo {
     playingOtherGame: boolean;
     steamId: number;
     steamName: string;
+    online: boolean;
 
 
 

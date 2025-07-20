@@ -1,4 +1,3 @@
-import { RightClickMenuController } from "@Easy/Core/Client/ProtectedControllers//UI/RightClickMenu/RightClickMenuController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import {
 	AirshipUpdateStatusDto,
@@ -26,7 +25,6 @@ import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
@@ -52,6 +50,7 @@ export class ProtectedFriendsController {
 	public friendStatuses: AirshipUserStatusData[] = [];
 	private renderedFriendUids = new Set<string>();
 	private renderedSteamFriendsWithNoAirshipAccountSteamIds = new Set<string>();
+	private allFriendCards: FriendCard[] = [];
 	private statusText = "";
 	private friendBinMap = new Map<string, Bin>();
 	public friendStatusChanged = new Signal<AirshipUserStatusData>();
@@ -78,7 +77,6 @@ export class ProtectedFriendsController {
 		private readonly authController: AuthController,
 		private readonly socketController: SocketController,
 		private readonly mainMenuController: MainMenuController,
-		private readonly rightClickMenuController: RightClickMenuController,
 	) {
 		contextbridge.callback("FriendsController:SendStatusUpdate", (from) => {
 			this.SendStatusUpdateYielding();
@@ -193,17 +191,17 @@ export class ProtectedFriendsController {
 			}
 		}
 
-		if (!Game.IsMobile()) {
-			task.spawn(() => {
-				SetInterval(
-					5,
-					() => {
-						this.UpdateSteamFriendsWithNoAirshipAccount();
-					},
-					true,
-				);
-			});
-		}
+		// if (!Game.IsMobile()) {
+		// 	task.spawn(() => {
+		// 		SetInterval(
+		// 			5,
+		// 			() => {
+		// 				this.UpdateSteamFriendsWithNoAirshipAccount();
+		// 			},
+		// 			true,
+		// 		);
+		// 	});
+		// }
 
 		this.authController.WaitForAuthed().then(() => {
 			// Game context will send status update when client receives server info.
@@ -470,19 +468,19 @@ export class ProtectedFriendsController {
 	}
 
 	public UpdateSteamFriendsWithNoAirshipAccount(): void {
-		let startingIndex = this.renderedFriendUids.size();
 		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
 
 		// Create
 		for (let [userId, steamFriend] of Dependency<SteamFriendsProtectedController>().steamFriends) {
 			// If they are in the rendered friends list then they have an airship account and we shouldn't render them here.
 			if (this.renderedFriendUids.has(userId)) continue;
+			if (!steamFriend.online) continue;
 
-			let steamId = userId.split("steam:")[1];
+			let steamId = userId.split(":steam")[0];
 			let go = friendsContent.transform.FindChild(`steam_guest:${steamId}`)?.gameObject;
 			let friendCard: FriendCard;
 			if (go === undefined) {
-				go = Object.Instantiate(
+				go = Instantiate(
 					Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/MainMenu/Friend.prefab"),
 					friendsContent.transform,
 				) as GameObject;
@@ -491,6 +489,7 @@ export class ProtectedFriendsController {
 				friendCard = go.GetAirshipComponent<FriendCard>()!;
 				friendCard.InitAsSteamFriendWithNoAirshipAccount(steamId);
 				friendCard.redirectScroll.redirectTarget = this.friendsScrollRect;
+				this.allFriendCards.push(friendCard);
 
 				this.renderedSteamFriendsWithNoAirshipAccountSteamIds.add(steamId);
 			} else {
@@ -500,39 +499,10 @@ export class ProtectedFriendsController {
 			friendCard.UpdateSteamFriendWithNoAirshipAccount(steamFriend);
 		}
 
-		// Remove
-		let removed = new Array<string>();
-		for (const renderedSteamId of this.renderedSteamFriendsWithNoAirshipAccountSteamIds) {
-			if (
-				this.renderedFriendUids.has(`steam:${renderedSteamId}`) ||
-				!Dependency<SteamFriendsProtectedController>().steamFriends.has(`steam:${renderedSteamId}`)
-			) {
-				const t = friendsContent.transform.FindChild(`steam_guest:${renderedSteamId}`);
-				if (t) {
-					print("Destroying steamId " + renderedSteamId);
-					Destroy(t.gameObject);
-					removed.push(renderedSteamId);
-				}
-			}
-		}
-		for (let steamId of removed) {
-			this.renderedSteamFriendsWithNoAirshipAccountSteamIds.delete(steamId);
-		}
+		this.RemoveBadCardsAndSort();
 	}
 
 	public UpdateFriendsList(): void {
-		let sorted = this.friendStatuses.sort((a, b) => {
-			let aOnline = a.status === "online" || a.status === "in_game";
-			let bOnline = b.status === "online" || b.status === "in_game";
-			if (aOnline && !bOnline) {
-				return true;
-			}
-			if (!aOnline && bOnline) {
-				return false;
-			}
-			return a.username < b.username;
-		});
-
 		const onlineCount = this.friendStatuses.filter((f) => f.status === "online").size();
 		const onlineCountText = this.mainMenuController.refs.GetValue("Social", "FriendsOnlineCounter") as TMP_Text;
 		onlineCountText.text = `(${onlineCount}/${this.friendStatuses.size()})`;
@@ -541,13 +511,6 @@ export class ProtectedFriendsController {
 
 		// uncomment to test with no friends.
 		// sorted = [];
-
-		// If no friends display no friends prefab
-		if (sorted.size() === 0) {
-			this.noFriendsCard.gameObject.SetActive(true);
-		} else {
-			this.noFriendsCard.gameObject.SetActive(false);
-		}
 
 		// Uncomment to simulate tons of fake friends
 		// for (let i = 0; i < 20; i++) {
@@ -561,13 +524,13 @@ export class ProtectedFriendsController {
 		// Add & update
 		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
 		let i = 0;
-		for (const friend of sorted) {
+		for (const friend of this.friendStatuses) {
 			const friendBin = new Bin();
 			this.friendBinMap.set(friend.userId, friendBin);
 			let go: GameObject | undefined = friendsContent.transform.FindChild(friend.userId)?.gameObject;
 			let init = false;
 			if (go === undefined) {
-				go = Object.Instantiate(
+				go = Instantiate(
 					Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/MainMenu/Friend.prefab"),
 					friendsContent.transform,
 				) as GameObject;
@@ -576,11 +539,12 @@ export class ProtectedFriendsController {
 				const friendCard = go.GetAirshipComponent<FriendCard>()!;
 				friendCard.InitAsAirshipUser(friend);
 				friendCard.redirectScroll.redirectTarget = this.friendsScrollRect;
+				this.allFriendCards.push(friendCard);
 
 				this.renderedFriendUids.add(friend.userId);
+
 				init = true;
 			}
-			go.transform.SetSiblingIndex(i);
 
 			const friendCard = go.GetAirshipComponent<FriendCard>()!;
 			friendCard.UpdateFriendStatus(friend, {
@@ -589,21 +553,89 @@ export class ProtectedFriendsController {
 			i++;
 		}
 
-		// Remove
-		let removed = new Array<string>();
-		for (const renderedUid of this.renderedFriendUids) {
-			if (this.friendStatuses.find((f) => f.userId === renderedUid) === undefined) {
-				const t = friendsContent.transform.FindChild(renderedUid);
-				if (t) {
-					this.friendBinMap.get(renderedUid)?.Clean();
-					this.friendBinMap.delete(renderedUid);
-					Destroy(t.gameObject);
-					removed.push(renderedUid);
+		this.RemoveBadCardsAndSort();
+	}
+
+	private RemoveBadCardsAndSort(): void {
+		const friendsContent = this.mainMenuController.refs.GetValue("Social", "FriendsContent");
+
+		// Remove steam guests
+		{
+			let removed = new Array<string>();
+			for (const renderedSteamId of this.renderedSteamFriendsWithNoAirshipAccountSteamIds) {
+				if (
+					this.renderedFriendUids.has(`${renderedSteamId}:steam`) ||
+					!Dependency<SteamFriendsProtectedController>().steamFriends.has(`${renderedSteamId}:steam`)
+				) {
+					const t = friendsContent.transform.FindChild(`steam_guest:${renderedSteamId}`);
+					if (t) {
+						print("Destroying steamId " + renderedSteamId);
+						this.allFriendCards.remove(
+							this.allFriendCards.indexOf(t.gameObject.GetAirshipComponent<FriendCard>()!),
+						);
+						Destroy(t.gameObject);
+						removed.push(renderedSteamId);
+					}
 				}
 			}
+			for (let steamId of removed) {
+				this.renderedSteamFriendsWithNoAirshipAccountSteamIds.delete(steamId);
+			}
 		}
-		for (let uid of removed) {
-			this.renderedFriendUids.delete(uid);
+
+		// Remove full airship accounts
+		{
+			let removed = new Array<string>();
+			for (const renderedUid of this.renderedFriendUids) {
+				if (this.friendStatuses.find((f) => f.userId === renderedUid) === undefined) {
+					const t = friendsContent.transform.FindChild(renderedUid);
+					if (t) {
+						this.friendBinMap.get(renderedUid)?.Clean();
+						this.friendBinMap.delete(renderedUid);
+						this.allFriendCards.remove(
+							this.allFriendCards.indexOf(t.gameObject.GetAirshipComponent<FriendCard>()!),
+						);
+						Destroy(t.gameObject);
+						removed.push(renderedUid);
+					}
+				}
+			}
+			for (let uid of removed) {
+				this.renderedFriendUids.delete(uid);
+			}
+		}
+
+		// Sort
+		let sorted = this.allFriendCards.sort((a, b) => {
+			const GetStatusOrder = (status: "online" | "offline" | "in_game" | "on_steam") => {
+				if (status === "in_game") {
+					return 4;
+				} else if (status === "online") {
+					return 3;
+				} else if (status === "on_steam") {
+					return 2;
+				} else {
+					return 1;
+				}
+			};
+			let aPrio = GetStatusOrder(a.status);
+			let bPrio = GetStatusOrder(b.status);
+
+			if (aPrio === bPrio) {
+				return a.username < b.username;
+			}
+
+			return aPrio > bPrio;
+		});
+		for (let i = 0; i < sorted.size(); i++) {
+			sorted[i].transform.SetSiblingIndex(i);
+		}
+
+		// If no friends display no friends prefab
+		if (sorted.size() === 0) {
+			this.noFriendsCard.gameObject.SetActive(true);
+		} else {
+			this.noFriendsCard.gameObject.SetActive(false);
 		}
 	}
 
