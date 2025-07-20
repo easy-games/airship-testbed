@@ -183,13 +183,13 @@ export class FixedCameraMode extends CameraMode {
 
 		if (crouching) {
 			this.crouchTweenBin.Add(
-				Tween.Number(TweenEasingFunction.Linear, 0.1, (val) => {
+				Tween.Number(TweenEasingFunction.Linear, 0.16, (val) => {
 					this.currentCrouchYOffset = val * this.crouchYOffset;
 				}),
 			);
 		} else {
 			this.crouchTweenBin.Add(
-				Tween.Number(TweenEasingFunction.Linear, 0.1, (val) => {
+				Tween.Number(TweenEasingFunction.Linear, 0.16, (val) => {
 					this.currentCrouchYOffset = (1 - val) * this.crouchYOffset;
 				}),
 			);
