@@ -490,6 +490,9 @@ export class ProtectedFriendsController {
 
 				friendCard = go.GetAirshipComponent<FriendCard>()!;
 				friendCard.InitAsSteamFriendWithNoAirshipAccount(steamId);
+				friendCard.redirectScroll.redirectTarget = this.friendsScrollRect;
+
+				this.renderedSteamFriendsWithNoAirshipAccountSteamIds.add(steamId);
 			} else {
 				friendCard = go.GetAirshipComponent<FriendCard>()!;
 			}
@@ -501,14 +504,13 @@ export class ProtectedFriendsController {
 		let removed = new Array<string>();
 		for (const renderedSteamId of this.renderedSteamFriendsWithNoAirshipAccountSteamIds) {
 			if (
-				this.friendStatuses.find((f) => f.userId === renderedSteamId) === undefined ||
-				this.renderedFriendUids.has(`steam:${renderedSteamId}`)
+				this.renderedFriendUids.has(`steam:${renderedSteamId}`) ||
+				!Dependency<SteamFriendsProtectedController>().steamFriends.has(`steam:${renderedSteamId}`)
 			) {
-				const go = friendsContent.transform.FindChild(`steam_guest:${renderedSteamId}`);
-				if (go) {
-					this.friendBinMap.get(renderedSteamId)?.Clean();
-					this.friendBinMap.delete(renderedSteamId);
-					Destroy(go);
+				const t = friendsContent.transform.FindChild(`steam_guest:${renderedSteamId}`);
+				if (t) {
+					print("Destroying steamId " + renderedSteamId);
+					Destroy(t.gameObject);
 					removed.push(renderedSteamId);
 				}
 			}
@@ -573,9 +575,7 @@ export class ProtectedFriendsController {
 
 				const friendCard = go.GetAirshipComponent<FriendCard>()!;
 				friendCard.InitAsAirshipUser(friend);
-
-				const redirect = go.GetComponent<AirshipRedirectScroll>()!;
-				redirect.redirectTarget = this.friendsScrollRect;
+				friendCard.redirectScroll.redirectTarget = this.friendsScrollRect;
 
 				this.renderedFriendUids.add(friend.userId);
 				init = true;
@@ -593,11 +593,11 @@ export class ProtectedFriendsController {
 		let removed = new Array<string>();
 		for (const renderedUid of this.renderedFriendUids) {
 			if (this.friendStatuses.find((f) => f.userId === renderedUid) === undefined) {
-				const go = friendsContent.transform.FindChild(renderedUid);
-				if (go) {
+				const t = friendsContent.transform.FindChild(renderedUid);
+				if (t) {
 					this.friendBinMap.get(renderedUid)?.Clean();
 					this.friendBinMap.delete(renderedUid);
-					Destroy(go);
+					Destroy(t.gameObject);
 					removed.push(renderedUid);
 				}
 			}
