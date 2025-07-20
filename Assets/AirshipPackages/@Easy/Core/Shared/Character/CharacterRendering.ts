@@ -12,7 +12,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 	@Tooltip("Will set everything under the rig to be on the StencilMask or LocalStencilMask layer")
 	public autoSetStencilLayer = true;
 	@Tooltip("How close you can be before the character is fully transparent")
-	public transparentDistance = 1;
+	public transparentDistance = 0.7;
 
 	private enableIfNotLocalCharacter = false;
 

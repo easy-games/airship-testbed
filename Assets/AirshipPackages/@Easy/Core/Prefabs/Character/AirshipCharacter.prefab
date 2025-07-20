@@ -661,7 +661,7 @@ MonoBehaviour:
         tags: []
       decorators: []
       nullable: 0
-      serializedValue: 1
+      serializedValue: 0.7
       serializedObject: {fileID: 0}
       modified: 1
     - name: useTransparentOnCameraClose

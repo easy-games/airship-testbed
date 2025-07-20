@@ -1224,7 +1224,7 @@ interface OcclusionCam extends MonoBehaviour {
 	adjustToHead: boolean;
 	adjustToHeadHeightThreshold: number;
 
-	BumpForOcclusion(targetPos: Vector3, characterPos: Vector3, mask: number): number;
+	BumpForOcclusion(targetPos: Vector3, lineOfSightCheckPos: Vector3, mask: number): number;
 	Init(camera: Camera): void;
 }
 interface OcclusionCamConstructor {

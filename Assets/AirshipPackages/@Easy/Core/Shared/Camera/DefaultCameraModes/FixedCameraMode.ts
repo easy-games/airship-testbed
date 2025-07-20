@@ -29,7 +29,11 @@ export class FixedCameraMode extends CameraMode {
 	private minRotX = math.rad(1);
 	private maxRotX = math.rad(179);
 
-	public useXOffsetInOcclusionCam = false;
+	public useXOffsetInOcclusionCam = true;
+	/** The minimum percent of x-offset you can have in occlusion cam
+	 * Not recommended to set too high as it determines LOS check point
+	 */
+	public minXOffsetPercentInOcclusionCam = 0.3;
 
 	/**
 	 * When set to `useXOffsetInOcclusionCam` is set to true, this will tween to `1`.
@@ -296,9 +300,6 @@ export class FixedCameraMode extends CameraMode {
 		if (this.shouldBumpForOcclusion && this.lastTargetPos && !Airship.Camera.IsFirstPerson()) {
 			const yOffset = this.yOffset + this.currentCrouchYOffset;
 			let targetPosition = this.lastTargetPos.add(Vector3.up.mul(yOffset));
-			const characterPos =
-				this.character?.transform.position.add(new Vector3(0, 1.65 + this.currentCrouchYOffset, 0)) ??
-				targetPosition;
 
 			{
 				let delta = Time.deltaTime * 10;
@@ -312,10 +313,28 @@ export class FixedCameraMode extends CameraMode {
 				}
 			}
 
+			// this is used only as a marker to determine if we have LOS of the character in BumpForOcclusion
+			let lineOfSightCheckPos;
+			// fallback to targetPosition if no character
+			if (!this.character?.transform) {
+				lineOfSightCheckPos = targetPosition;
+			} else {
+				// initially set character position to head level, adjusted for crouching
+				lineOfSightCheckPos = this.character?.transform.position.add(
+					new Vector3(0, 1.5 + this.currentCrouchYOffset, 0),
+				);
+
+				// move LOS check in the direction of x-offset (effectively towards crosshair)
+				if (lineOfSightCheckPos !== targetPosition) {
+					const xOffsetDir = targetPosition.WithY(0).sub(lineOfSightCheckPos.WithY(0)).normalized;
+					lineOfSightCheckPos = lineOfSightCheckPos.add(xOffsetDir.mul(this.minXOffsetPercentInOcclusionCam));
+				}
+			}
+
 			//Collide camera with enviornment and send signal with new camera distance
 			const distance = this.occlusionCam.BumpForOcclusion(
 				targetPosition,
-				characterPos,
+				lineOfSightCheckPos,
 				OcclusionCameraManager.GetMask(),
 			);
 			this.onTargetDistance.Fire(distance, this.occlusionCam.transform.position, targetPosition);
