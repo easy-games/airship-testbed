@@ -326,8 +326,28 @@ export class FixedCameraMode extends CameraMode {
 
 				// move LOS check in the direction of x-offset (effectively towards crosshair)
 				if (lineOfSightCheckPos !== targetPosition) {
-					const xOffsetDir = targetPosition.WithY(0).sub(lineOfSightCheckPos.WithY(0)).normalized;
-					lineOfSightCheckPos = lineOfSightCheckPos.add(xOffsetDir.mul(this.minXOffsetPercentInOcclusionCam));
+					const xOffsetDir = targetPosition
+						.WithY(0)
+						.sub(lineOfSightCheckPos.WithY(0))
+						.normalized.mul(this.minXOffsetPercentInOcclusionCam);
+
+					// ensure we aren't in a wall--lineOfSightCheckPos is used as the origin
+					// for the LOS raycast, and raycasts do not detect collisions for colliders
+					// on top of the origin
+					const [hit, hitPoint, hitNormal] = Physics.Raycast(
+						lineOfSightCheckPos,
+						xOffsetDir,
+						xOffsetDir.magnitude,
+						OcclusionCameraManager.GetMask(),
+						QueryTriggerInteraction.Ignore,
+					);
+
+					if (hit) {
+						// move off the occlusion a bit
+						lineOfSightCheckPos = hitPoint.add(hitNormal.mul(0.1));
+					} else {
+						lineOfSightCheckPos = lineOfSightCheckPos.add(xOffsetDir);
+					}
 				}
 			}
 
