@@ -1,9 +1,9 @@
+import { AirshipGame } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import HomePageGameComponent from "./HomePageGameComponent";
-import { AirshipGame } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
 
 export default class SortComponent extends AirshipBehaviour {
 	public titleText!: GameObject;
@@ -31,6 +31,11 @@ export default class SortComponent extends AirshipBehaviour {
 					if (Game.IsPortrait()) {
 						this.gridLayoutGroup.cellSize = new Vector2(size.x * 0.97, size.x * 0.97 * 0.56 + 54);
 						this.gridLayoutGroup.constraintCount = 1;
+						this.titleText.GetComponent<TMP_Text>()!.margin = new Vector4(8, 0, 0, 0);
+						this.gridLayoutGroup.padding.left = 8;
+						this.gridLayoutGroup.padding.right = 4;
+
+						//
 					} else {
 						this.gridLayoutGroup.cellSize = new Vector2(size.x * 0.28, size.x * 0.28 * 0.56 + 54);
 						this.gridLayoutGroup.constraintCount = 2;
@@ -49,9 +54,9 @@ export default class SortComponent extends AirshipBehaviour {
 		this.bin.Clean();
 	}
 
-	override Start(): void { }
+	override Start(): void {}
 
-	override OnDestroy(): void { }
+	override OnDestroy(): void {}
 
 	public Init(title: string): void {
 		this.SetTitle(title);

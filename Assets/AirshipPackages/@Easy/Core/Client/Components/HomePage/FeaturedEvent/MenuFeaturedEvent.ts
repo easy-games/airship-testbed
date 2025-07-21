@@ -26,6 +26,7 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 	public endCountdownText: TMP_Text;
 	public startCountdownText: TMP_Text;
 	public roundedCorners: ImageWithRoundedCorners;
+	public borderBottom: GameObject;
 
 	private startTime: number;
 	private endTime: number;
@@ -61,8 +62,11 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 
 		if (Game.IsMobile()) {
 			this.gameThumbnailImg.gameObject.SetActive(false);
-			this.roundedCorners.radius = 15;
+			this.roundedCorners.radius = 0;
 			this.roundedCorners.Validate();
+			this.borderBottom.SetActive(true);
+		} else {
+			this.borderBottom.SetActive(false);
 		}
 	}
 
