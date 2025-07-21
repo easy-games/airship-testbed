@@ -191,6 +191,7 @@ export class ProtectedFriendsController {
 			}
 		}
 
+		// Uncomment to re-enable steam guests in friends list
 		// if (!Game.IsMobile()) {
 		// 	task.spawn(() => {
 		// 		SetInterval(

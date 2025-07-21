@@ -34,13 +34,6 @@ export class SteamFriendsProtectedController implements OnStart {
 		}
 		this.onSteamFriendsChanged.Fire();
 		this.LoadSteamFriendsWithAirship(steamIds);
-
-		// print("Steam friends:");
-		// let i = 1;
-		// for (let [userId, info] of this.steamFriends) {
-		// 	print(`  ${i}. ${info.steamName} playingOtherGame: ${info.playingOtherGame}`);
-		// 	i++;
-		// }
 	}
 
 	private async LoadSteamFriendsWithAirship(steamIds: string[]) {
