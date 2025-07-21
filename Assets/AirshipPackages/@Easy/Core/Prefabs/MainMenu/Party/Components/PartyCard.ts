@@ -22,7 +22,7 @@ export default class PartyCard extends AirshipBehaviour {
 			this.SetFriendHoverState(false);
 
 			const draggedObject = data.pointerDrag;
-			const friendId = draggedObject.GetAirshipComponent<FriendCard>()?.friendId;
+			const friendId = draggedObject.GetAirshipComponent<FriendCard>()?.userId;
 			if (friendId) {
 				Dependency<ProtectedPartyController>().InviteToParty(friendId);
 			}

@@ -913,7 +913,9 @@ interface SteamLuauAPIConstructor {
 	OnNewLaunchParams(callback: (gameId: string, serverId: string, customData: string) => void): EngineEventConnection;
 	ProcessPendingJoinRequests(): void;
 	GetSteamFriends(): AirshipSteamFriendInfo[];
+	GetSteamProfilePictureYielding(steamId: string): Texture2D | undefined;
 	IsSteamInitialized(): boolean;
+	InviteUserToGame(steamId: string, connectString: string): boolean;
 }
 declare const SteamLuauAPI: SteamLuauAPIConstructor;
 
