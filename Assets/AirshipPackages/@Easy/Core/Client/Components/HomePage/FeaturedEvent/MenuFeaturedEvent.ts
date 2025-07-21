@@ -97,6 +97,16 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 			this.endCountdownText.gameObject.SetActive(true);
 			this.playerCountWrapper.SetActive(true);
 			this.playBtn.gameObject.SetActive(true);
+
+			let timeLeft = math.round(this.endTime - os.time());
+			let countdown = TimeUtil.FormatCountdown(timeLeft, {
+				seconds: true,
+				minutes: true,
+				hours: true,
+				days: true,
+				seperator: " : ",
+			});
+			this.endCountdownText.text = `Ends in ${countdown}`;
 		}
 	}
 
