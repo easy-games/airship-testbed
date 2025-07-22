@@ -26,6 +26,7 @@ interface SocketTransferData {
 	transferData?: unknown;
 	loadingScreenImageId?: string;
 }
+
 @Controller({})
 export class TransferController {
 	/** Fired when a transfer has been requested, just before the transfer will occur. */
@@ -51,6 +52,7 @@ export class TransferController {
 					CrossSceneState.ServerTransferData.loadingImageUrl = data.loadingScreenImageId
 						? `${AirshipUrl.CDN}/images/${data.loadingScreenImageId}`
 						: "";
+					CrossSceneState.ServerTransferData.lastTransferData = new BinaryBlob(data);
 				} catch (err) {}
 			};
 

@@ -42,6 +42,12 @@ export class Player {
 	public readonly orgRoleName: string | undefined;
 
 	/**
+	 * The transfer data provided with the transfer request that moved the player to this server. This is the `clientTransferData` field
+	 * on the client, and the `serverTransferData` field on the server.
+	 */
+	public readonly transferData: unknown | undefined;
+
+	/**
 	 * The player's current team.
 	 *
 	 * You can add players to teams by using `team.AddPlayer(player)`
@@ -118,6 +124,7 @@ export class Player {
 		public readonly username: string,
 
 		orgRoleName: string | undefined,
+		transferData: unknown | undefined,
 
 		/**
 		 * Image id used to fetch player's profile picture.

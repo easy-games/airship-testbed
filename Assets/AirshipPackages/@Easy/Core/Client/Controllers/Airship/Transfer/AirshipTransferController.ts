@@ -1,4 +1,7 @@
-import { TransferControllerBridgeTopics } from "@Easy/Core/Client/ProtectedControllers/Transfer/TransferController";
+import {
+	ClientBridgeApiTransferRequested,
+	TransferControllerBridgeTopics,
+} from "@Easy/Core/Client/ProtectedControllers/Transfer/TransferController";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -26,9 +29,12 @@ export class AirshipTransferController {
 
 		Platform.Client.Transfer = this;
 
-		contextbridge.callback(TransferControllerBridgeTopics.TransferRequested, (_, transfer) => {
-			this.onTransferRequested.Fire(transfer);
-		});
+		contextbridge.callback<ClientBridgeApiTransferRequested>(
+			TransferControllerBridgeTopics.TransferRequested,
+			(_, transfer) => {
+				this.onTransferRequested.Fire(transfer);
+			},
+		);
 	}
 
 	protected OnStart(): void {}

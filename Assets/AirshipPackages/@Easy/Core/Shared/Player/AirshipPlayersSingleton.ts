@@ -84,6 +84,7 @@ export class AirshipPlayersSingleton {
 				"loading",
 				"loading",
 				undefined,
+				undefined,
 				"",
 				undefined as unknown as PlayerInfo,
 			);
@@ -245,6 +246,7 @@ export class AirshipPlayersSingleton {
 					dto.userId,
 					dto.username,
 					dto.orgRoleName,
+					undefined,
 					dto.profileImageId,
 					playerInfo,
 				);

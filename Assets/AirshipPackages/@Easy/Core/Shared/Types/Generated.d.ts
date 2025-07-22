@@ -39244,6 +39244,7 @@ interface ServerTransferData {
     port: number;
     gameId: string;
     loadingImageUrl: string;
+    lastTransferData: BinaryBlob;
 
 
 
