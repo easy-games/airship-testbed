@@ -1,43 +1,81 @@
+import { AirshipGameServerConnectionInfo } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { MainMenuPartyController } from "../Social/MainMenuPartyController";
 import { SocketController } from "../Socket/SocketController";
-import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
-import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import { AirshipGameServerConnectionInfo } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
+export const enum TransferControllerBridgeTopics {
+	TransferRequested = "TransferController:TransferRequested",
+}
+
+export type ClientBridgeApiTransferRequested = (transfer: { gameId: string; serverId: string }) => void;
+
+interface SocketTransferData {
+	gameServer: AirshipGameServerConnectionInfo;
+	gameId: string;
+	gameVersion: number;
+	requestTime: number;
+	transferData?: unknown;
+	loadingScreenImageId?: string;
+}
 @Controller({})
 export class TransferController {
-	constructor(private readonly socketController: SocketController) { }
+	/** Fired when a transfer has been requested, just before the transfer will occur. */
+	onTransferRequested: Signal<SocketTransferData> = new Signal<SocketTransferData>().WithAllowYield(true);
+
+	constructor(private readonly socketController: SocketController) {}
 
 	protected OnStart(): void {
-		this.socketController.On<{
-			gameServer: AirshipGameServerConnectionInfo;
-			gameId: string;
-			gameVersion: number;
-			requestTime: number;
-			transferData?: unknown;
-			loadingScreenImageId?: string;
-		}>("game-coordinator/server-transfer", (data) => {
+		this.socketController.On<SocketTransferData>("game-coordinator/server-transfer", (data) => {
 			print("Received transfer event: " + inspect(data));
 			if (Game.serverId === data.gameServer.serverId) {
 				print("Recieved transfer event for server we are already connected to. Ignoring.");
 				return;
 			}
-			TransferManager.Instance.ConnectToServer(data.gameServer.ip, data.gameServer.port);
 
-			try {
-				// supporting old versions of player by try catching this
-				CrossSceneState.ServerTransferData.gameId = data.gameId;
-				CrossSceneState.ServerTransferData.loadingImageUrl = data.loadingScreenImageId
-					? `${AirshipUrl.CDN}/images/${data.loadingScreenImageId}`
-					: "";
-			} catch (err) { }
+			const Transfer = () => {
+				this.onTransferRequested.Fire(data);
+				TransferManager.Instance.ConnectToServer(data.gameServer.ip, data.gameServer.port);
+
+				try {
+					// supporting old versions of player by try catching this
+					CrossSceneState.ServerTransferData.gameId = data.gameId;
+					CrossSceneState.ServerTransferData.loadingImageUrl = data.loadingScreenImageId
+						? `${AirshipUrl.CDN}/images/${data.loadingScreenImageId}`
+						: "";
+				} catch (err) {}
+			};
+
+			let startedTransfer = false;
+			let intraGameTransfer = data.gameId === Game.gameId;
+
+			if (intraGameTransfer) {
+				task.spawn(() => {
+					contextbridge.invoke<ClientBridgeApiTransferRequested>(
+						TransferControllerBridgeTopics.TransferRequested,
+						LuauContext.Game,
+						{ gameId: data.gameId, serverId: data.gameServer.serverId },
+					);
+					if (startedTransfer) return;
+					startedTransfer = false;
+					Transfer();
+				});
+			}
+
+			// Give the game 10 seconds before forcing the transfer.
+			task.unscaledDelay(intraGameTransfer ? 10 : 0, () => {
+				if (startedTransfer) return;
+				startedTransfer = false;
+				Transfer();
+			});
 		});
 	}
 
