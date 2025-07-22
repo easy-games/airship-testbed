@@ -18,6 +18,8 @@ import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
 import { EmoteStartSignal } from "./Signal/EmoteStartSignal";
 
+const DEFAULT_EDITOR_OUTFIT = `{"gear":[{"float":0.7732163337895976,"class":{"gear":{"airAssets":["555f157a-963d-416e-a3a7-0eb99b39d4cf"],"subcategory":"Hands","category":"Clothing"},"classId":"14f57239-2264-465c-9346-fa6654a2d6f1"}},{"float":0.4225628661708667,"class":{"gear":{"airAssets":["1b08a2fc-069d-4f54-b8be-1a74f369d5d7"],"subcategory":"None","category":"FaceDecal"},"classId":"15fb9e9c-639c-4b94-af80-5d032ad84391"}},{"float":0.9225911954063355,"class":{"gear":{"airAssets":["555f157a-963d-416e-a3a7-0eb99b39d4cf"],"subcategory":"Torso","category":"Clothing"},"classId":"804f5da6-3d65-4532-b57c-8a068a3301fa"}},{"float":0.2799335498202948,"class":{"gear":{"airAssets":["555f157a-963d-416e-a3a7-0eb99b39d4cf"],"subcategory":"Feet","category":"Clothing"},"classId":"b84b86d3-b11c-4b6e-b245-f202f33f06da"}},{"float":0.977693118993749,"class":{"gear":{"airAssets":["555f157a-963d-416e-a3a7-0eb99b39d4cf"],"subcategory":"Legs","category":"Clothing"},"classId":"d26afd58-f8ef-41b9-b60b-48d6f3270c16"}},{"float":0.8701904267902374,"class":{"gear":{"airAssets":["555f157a-963d-416e-a3a7-0eb99b39d4cf"],"subcategory":"Head","category":"Clothing"},"classId":"ffbc21f2-f977-4452-bb98-43064890f0b8"}}],"skinColor":"#ECB98C"}`;
+
 /**
  * A character is a (typically human) object in the scene. It controls movement and default animation.
  * Typically a game would spawn a character for each player. If using the default character it would
@@ -478,9 +480,12 @@ export default class Character extends AirshipBehaviour {
 		}
 
 		this.outfitDto = outfitDto;
-		// print("Character.LoadOutfit " + inspect(outfitDto));
+		if (!outfitDto && Game.IsEditor()) {
+			outfitDto = json.decode(DEFAULT_EDITOR_OUTFIT);
+		}
 		if (Game.IsClient() && outfitDto && this.autoLoadAvatarOutfit) {
 			task.spawn(() => {
+				// print(`loading outfit for userId ${this.player?.userId}`, json.encode(outfitDto));
 				Airship.Avatar.LoadOutfit(this.accessoryBuilder, outfitDto, {
 					removeOldClothingAccessories: true,
 				});
