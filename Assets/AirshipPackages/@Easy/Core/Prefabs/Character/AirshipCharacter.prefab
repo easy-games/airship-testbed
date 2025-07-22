@@ -1006,7 +1006,7 @@ MonoBehaviour:
   upwardsGravityMultiplier: 1
   groundCollisionLayerMask:
     serializedVersion: 2
-    m_Bits: 2305
+    m_Bits: 257
   terminalVelocity: 50
   minimumVelocity: 7
   useMinimumVelocityInAir: 0
