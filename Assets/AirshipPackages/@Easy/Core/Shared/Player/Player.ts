@@ -3,6 +3,7 @@ import Character from "@Easy/Core/Shared/Character/Character";
 import { ChatMessageNetworkEvent, CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
+import { CoreLogger } from "../Logger/CoreLogger";
 import { Team } from "../Team/Team";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
@@ -237,7 +238,7 @@ export class Player {
 							this.selectedOutfit,
 						);
 					} else {
-						warn("Unable to load outfit for player: " + this.userId);
+						CoreLogger.Warn("Unable to load outfit for player: " + this.userId);
 					}
 				}
 			});
