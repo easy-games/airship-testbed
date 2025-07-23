@@ -67,9 +67,7 @@ export class TabListController {
 
 			if (this.dirty) {
 				this.dirty = false;
-				Profiler.BeginSample("TabList.FullUpdate");
 				this.FullUpdate();
-				Profiler.EndSample();
 			}
 		});
 
