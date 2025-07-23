@@ -85,6 +85,7 @@ export class AirshipPlayersSingleton {
 				"loading",
 				undefined,
 				"",
+				"",
 				undefined as unknown as PlayerInfo,
 			);
 			if (!Game.IsHosting()) {
@@ -246,6 +247,7 @@ export class AirshipPlayersSingleton {
 					dto.username,
 					dto.orgRoleName,
 					dto.profileImageId,
+					dto.transferPacket,
 					playerInfo,
 				);
 			}
@@ -472,14 +474,14 @@ export class AirshipPlayersSingleton {
 
 		// notify all clients of the joining player
 		if (Game.IsProtectedLuauContext()) {
-			CoreNetwork.ServerToClient.AddPlayer.server.FireExcept(player, player.Encode());
+			CoreNetwork.ServerToClient.AddPlayer.server.FireExcept(player, player.Encode(false));
 		}
 
 		// send list of all connected players to the joining player
 		if (Game.IsProtectedLuauContext()) {
 			const playerDtos: PlayerDto[] = table.create(this.players.size());
 			for (let p of this.players) {
-				playerDtos.push(p.Encode());
+				playerDtos.push(p.Encode(player.userId === p.userId));
 			}
 			CoreNetwork.ServerToClient.AllPlayers.server.FireClient(player, playerDtos);
 		}
@@ -505,6 +507,7 @@ export class AirshipPlayersSingleton {
 				dto.username,
 				dto.orgRoleName,
 				dto.profileImageId,
+				"",
 				playerInfo,
 			);
 		}

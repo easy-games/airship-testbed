@@ -5,6 +5,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
 import { CoreLogger } from "../Logger/CoreLogger";
 import { Team } from "../Team/Team";
+import { GameCoordinatorTransfers } from "../TypePackages/game-coordinator-types";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
 import { TaskUtil } from "../Util/TaskUtil";
@@ -18,6 +19,7 @@ export interface PlayerDto {
 	profileImageId: string;
 	orgRoleName: string | undefined;
 	teamId: string | undefined;
+	clientTransferData: unknown | undefined;
 }
 
 /**
@@ -50,6 +52,10 @@ export class Player {
 	 * Use {@link Airship.Teams} to get references to a team.
 	 */
 	public readonly team: Team | undefined;
+
+	public readonly serverTransferData: unknown | undefined;
+
+	public readonly clientTransferData: unknown | undefined;
 
 	/**
 	 * Fired on both client and server when player changes team.
@@ -125,6 +131,8 @@ export class Player {
 		 */
 		public profileImageId: string,
 
+		transferPacket: string,
+
 		private playerInfo: PlayerInfo,
 	) {
 		if (playerInfo !== undefined) {
@@ -134,6 +142,13 @@ export class Player {
 			this.orgRoleName = undefined;
 		} else {
 			this.orgRoleName = orgRoleName;
+		}
+
+		// Parse transfer data
+		if (transferPacket && transferPacket !== "") {
+			let data = json.decode(transferPacket) as GameCoordinatorTransfers.ServerTransferData;
+			this.clientTransferData = data.clientTransferData;
+			this.serverTransferData = data.serverTransferData;
 		}
 
 		const simulationManager = AirshipSimulationManager.Instance as AirshipSimulationManager &
@@ -316,7 +331,7 @@ export class Player {
 		return this.connectionId > 0 && this.connectionId < 50_000;
 	}
 
-	public Encode(): PlayerDto {
+	public Encode(includeSensitiveData: boolean): PlayerDto {
 		return {
 			netId: this.networkIdentity.netId,
 			connectionId: this.connectionId,
@@ -325,6 +340,7 @@ export class Player {
 			profileImageId: this.profileImageId,
 			orgRoleName: this.orgRoleName,
 			teamId: this.team?.id,
+			clientTransferData: includeSensitiveData ? this.clientTransferData : undefined,
 		};
 	}
 
