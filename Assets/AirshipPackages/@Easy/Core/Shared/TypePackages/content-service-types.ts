@@ -100,11 +100,19 @@ export namespace ContentServicePrisma {
 		iconImageId: string;
 		createdAt: string;
 	};
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	export const MemberStatus = {
+		INVITED: "INVITED",
+		ACTIVE: "ACTIVE",
+	} as const;
+	export type MemberStatus = (typeof MemberStatus)[keyof typeof MemberStatus];
 	export type Member = {
 		uid: string;
 		organizationId: string;
 		roleName: string;
 		createdAt: string;
+		joinedAt: string | undefined;
+		status: ContentServicePrisma.MemberStatus;
 	};
 	export type OrganizationRole = {
 		roleName: string;
@@ -134,6 +142,7 @@ export namespace ContentServicePrisma {
 		plays24h: number;
 		uniquePlays24h: number;
 		adminForceVisibility: ContentServicePrisma.GameVisibility | undefined;
+		adminHideUntilNextPublish: boolean;
 	};
 	export type Package = {
 		id: string;
@@ -691,7 +700,8 @@ export namespace ContentServiceGames {
 		};
 	};
 	export interface AdminUpdateStatusDto {
-		forceVisibility: ContentServicePrisma.GameVisibility | undefined;
+		forceVisibility?: ContentServicePrisma.GameVisibility | undefined;
+		hideUntilNextPublish?: boolean;
 	}
 	export type AdminSetGameStatusArgs = {
 		params: {
@@ -1079,6 +1089,11 @@ export namespace ContentServiceImages {
 }
 // ====+==== Memberships TYPES ====+====
 export namespace ContentServiceMemberships {
+	export type GetUserMembershipsArgs = {
+		query?: {
+			includeInactive?: boolean;
+		};
+	};
 	export type GetUserGameOwnershipArgs<T extends boolean> = {
 		query?: {
 			liveStats?: T;
@@ -1089,9 +1104,10 @@ export namespace ContentServiceMemberships {
 			userId: string;
 		};
 	};
-	export interface MemberWithOrg extends ContentServicePrisma.Member {
+	export interface WithOrg {
 		organization: ContentServicePrisma.Organization;
 	}
+	export type MemberWithOrg = ContentServicePrisma.Member & WithOrg;
 	export interface PermissionGroup {
 		[permissionKey: string]: PermissionEntry;
 	}
@@ -1109,9 +1125,10 @@ export namespace ContentServiceMemberships {
 		ContentServicePrisma.OrganizationRole,
 		{ permissionsData: OrganizationRolePermissionsData }
 	>;
-	export interface MemberWithOrgAndRole extends MemberWithOrg {
+	export interface WithRole {
 		role: PublicOrganizationRole;
 	}
+	export type MemberWithOrgAndRole = MemberWithOrg & WithRole;
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	export const GameLinkType = {
 		DISCORD: "DISCORD",
@@ -1157,14 +1174,14 @@ export namespace ContentServiceMemberships {
 	export interface WithLiveStats {
 		liveStats: { playerCount: number };
 	}
-	export interface WithOrg {
-		organization: ContentServicePrisma.Organization;
-	}
 	export type PublicGameWithLiveStatsAndOrg = PublicGame & WithLiveStats & WithOrg;
 	export type PublicGameWithOrg = PublicGame & WithOrg;
 
 	export interface ClientSpec {
-		getUserMemberships(options?: RequestOptions): Promise<MemberWithOrgAndRole[]>;
+		getUserMemberships(
+			args?: GetUserMembershipsArgs["query"],
+			options?: RequestOptions,
+		): Promise<MemberWithOrgAndRole[]>;
 		getUserGameOwnership<T extends boolean>(
 			args?: GetUserGameOwnershipArgs<T>["query"],
 			options?: RequestOptions,
@@ -1182,12 +1199,16 @@ export namespace ContentServiceMemberships {
 			this.makeRequest = makeRequest;
 		}
 
-		async getUserMemberships(options?: RequestOptions): Promise<MemberWithOrgAndRole[]> {
+		async getUserMemberships(
+			args?: GetUserMembershipsArgs["query"],
+			options?: RequestOptions,
+		): Promise<MemberWithOrgAndRole[]> {
 			return await this.makeRequest({
 				method: "GET",
 				routeId: "ContentService:Memberships:getUserMemberships",
 				path: `/memberships/organizations/self`,
 				retryKey: options?.retryKey ?? "ContentService:Memberships:getUserMemberships",
+				query: args,
 			});
 		}
 		async getUserGameOwnership<T extends boolean>(
@@ -1217,9 +1238,17 @@ export namespace ContentServiceMemberships {
 }
 // ====+==== Organizations TYPES ====+====
 export namespace ContentServiceOrganizations {
+	export type GetPublicOrganizationBySlugArgs = {
+		params: {
+			slug: string;
+		};
+	};
 	export type GetOrganizationBySlugArgs = {
 		params: {
 			slug: string;
+		};
+		query?: {
+			includeInactiveMembers?: boolean;
 		};
 	};
 	export type GetOrganizationByIdArgs = {
@@ -1261,6 +1290,14 @@ export namespace ContentServiceOrganizations {
 			uid: string;
 		};
 	};
+	export type RecognizeMemberInviteArgs = {
+		params: {
+			id: string;
+		};
+		query: {
+			acceptInvite: boolean;
+		};
+	};
 	export type GetSignedOrgImageArgs = {
 		params: {
 			id: string;
@@ -1270,6 +1307,61 @@ export namespace ContentServiceOrganizations {
 			contentLength: string;
 		};
 	};
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	export const GameLinkType = {
+		DISCORD: "DISCORD",
+	} as const;
+	export type GameLinkType = (typeof GameLinkType)[keyof typeof GameLinkType];
+	export interface GameLink {
+		type: GameLinkType;
+		url: string;
+	}
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	export const DeploymentPlatform = {
+		WINDOWS: "Windows",
+		MAC: "Mac",
+		LINUX: "Linux",
+		IOS: "iOS",
+		Android: "Android",
+	} as const;
+	export type DeploymentPlatform = (typeof DeploymentPlatform)[keyof typeof DeploymentPlatform];
+	export interface PublicGame {
+		id: string;
+		slug: string | undefined;
+		slugProperCase: string | undefined;
+		name: string;
+		description: string;
+		iconImageId: string;
+		organizationId: string;
+		createdAt: string;
+		visibility: ContentServicePrisma.GameVisibility;
+		lastVersionUpdate: string | undefined;
+		archivedAt: string | undefined;
+		loadingScreenImageId: string | undefined;
+		logoImageId: string | undefined;
+		videoId: string | undefined;
+		links: GameLink[] | undefined;
+		plays: number;
+		favorites: number;
+		plays24h: number;
+		uniquePlays24h: number;
+		platforms: DeploymentPlatform[];
+		liveStats?: { playerCount: number };
+		organization?: ContentServicePrisma.Organization;
+	}
+	export interface PublicOrganization {
+		name: string;
+		id: string;
+		slug: string;
+		slugProperCase: string;
+		description: string;
+		iconImageId: string;
+		createdAt: string;
+		games?: PublicGame[];
+	}
+	export interface WithPublicGames {
+		games: PublicGame[];
+	}
 	export interface AugmentedMember extends ContentServicePrisma.Member {
 		username?: string;
 		usernameLower?: string;
@@ -1291,8 +1383,12 @@ export namespace ContentServiceOrganizations {
 	}
 
 	export interface ClientSpec {
+		getPublicOrganizationBySlug(
+			args: GetPublicOrganizationBySlugArgs["params"],
+			options?: RequestOptions,
+		): Promise<{ organization: (PublicOrganization & WithPublicGames) | undefined }>;
 		getOrganizationBySlug(
-			args: GetOrganizationBySlugArgs["params"],
+			args: GetOrganizationBySlugArgs,
 			options?: RequestOptions,
 		): Promise<{ organization: OrganizationView }>;
 		getOrganizationById(
@@ -1309,6 +1405,10 @@ export namespace ContentServiceOrganizations {
 		): Promise<{ organization: ContentServicePrisma.Organization | undefined }>;
 		putMember(args: PutMemberArgs, options?: RequestOptions): Promise<AugmentedMember[]>;
 		deleteMember(args: DeleteMemberArgs["params"], options?: RequestOptions): Promise<AugmentedMember[]>;
+		recognizeMemberInvite(
+			args: RecognizeMemberInviteArgs,
+			options?: RequestOptions,
+		): Promise<ContentServicePrisma.Member>;
 		getSignedOrgImage(args: GetSignedOrgImageArgs, options?: RequestOptions): Promise<SignedImageUrl>;
 	}
 
@@ -1319,15 +1419,27 @@ export namespace ContentServiceOrganizations {
 			this.makeRequest = makeRequest;
 		}
 
+		async getPublicOrganizationBySlug(
+			args: GetPublicOrganizationBySlugArgs["params"],
+			options?: RequestOptions,
+		): Promise<{ organization: (PublicOrganization & WithPublicGames) | undefined }> {
+			return await this.makeRequest({
+				method: "GET",
+				routeId: "ContentService:Organizations:getPublicOrganizationBySlug",
+				path: `/organizations/slug/${encodeURIComponent(args.slug)}/public`,
+				retryKey: options?.retryKey ?? "ContentService:Organizations:getPublicOrganizationBySlug",
+			});
+		}
 		async getOrganizationBySlug(
-			args: GetOrganizationBySlugArgs["params"],
+			args: GetOrganizationBySlugArgs,
 			options?: RequestOptions,
 		): Promise<{ organization: OrganizationView }> {
 			return await this.makeRequest({
 				method: "GET",
 				routeId: "ContentService:Organizations:getOrganizationBySlug",
-				path: `/organizations/slug/${encodeURIComponent(args.slug)}`,
+				path: `/organizations/slug/${encodeURIComponent(args.params.slug)}`,
 				retryKey: options?.retryKey ?? "ContentService:Organizations:getOrganizationBySlug",
+				query: args.query,
 			});
 		}
 		async getOrganizationById(
@@ -1382,6 +1494,18 @@ export namespace ContentServiceOrganizations {
 					args.uid,
 				)}`,
 				retryKey: options?.retryKey ?? "ContentService:Organizations:deleteMember",
+			});
+		}
+		async recognizeMemberInvite(
+			args: RecognizeMemberInviteArgs,
+			options?: RequestOptions,
+		): Promise<ContentServicePrisma.Member> {
+			return await this.makeRequest({
+				method: "POST",
+				routeId: "ContentService:Organizations:recognizeMemberInvite",
+				path: `/organizations/organization-id/${encodeURIComponent(args.params.id)}/member-invite`,
+				retryKey: options?.retryKey ?? "ContentService:Organizations:recognizeMemberInvite",
+				query: args.query,
 			});
 		}
 		async getSignedOrgImage(args: GetSignedOrgImageArgs, options?: RequestOptions): Promise<SignedImageUrl> {
@@ -2647,6 +2771,9 @@ export namespace ContentServiceOrganizationRoles {
 		params: {
 			orgId: string;
 		};
+		query: {
+			includeInactiveMembers: any;
+		};
 	};
 	export interface OrganizationRolePermissionsData {
 		permissions: PermissionEntry;
@@ -2670,10 +2797,7 @@ export namespace ContentServiceOrganizationRoles {
 			args: DeleteRoleArgs["params"],
 			options?: RequestOptions,
 		): Promise<{ role: PublicOrganizationRole | undefined }>;
-		getRoles(
-			args: GetRolesArgs["params"],
-			options?: RequestOptions,
-		): Promise<{ roles: PublicOrganizationRoleWithMembers[] }>;
+		getRoles(args: GetRolesArgs, options?: RequestOptions): Promise<{ roles: PublicOrganizationRoleWithMembers[] }>;
 	}
 
 	export class Client implements ClientSpec {
@@ -2717,14 +2841,15 @@ export namespace ContentServiceOrganizationRoles {
 			});
 		}
 		async getRoles(
-			args: GetRolesArgs["params"],
+			args: GetRolesArgs,
 			options?: RequestOptions,
 		): Promise<{ roles: PublicOrganizationRoleWithMembers[] }> {
 			return await this.makeRequest({
 				method: "GET",
 				routeId: "ContentService:OrganizationRoles:getRoles",
-				path: `/organizations/roles/organization-id/${encodeURIComponent(args.orgId)}`,
+				path: `/organizations/roles/organization-id/${encodeURIComponent(args.params.orgId)}`,
 				retryKey: options?.retryKey ?? "ContentService:OrganizationRoles:getRoles",
+				query: args.query,
 			});
 		}
 	}
