@@ -71,6 +71,7 @@ interface PlayerInfoDto {
 	username: string;
 	profileImageId: string;
 	orgRoleName: string;
+	transferPacket: string;
 	gameObject: GameObject;
 }
 
