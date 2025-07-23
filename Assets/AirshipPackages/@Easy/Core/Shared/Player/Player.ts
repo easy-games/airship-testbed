@@ -53,8 +53,16 @@ export class Player {
 	 */
 	public readonly team: Team | undefined;
 
+	/**
+	 * The server only transfer data provided with the request that transfered the player to this server. This is not available
+	 * on the client.
+	 */
 	public readonly serverTransferData: unknown | undefined;
 
+	/**
+	 * The client transfer data provided with the request that transferred the player to this server. This is available on both
+	 * the client and the server, but is not available to non-local clients.
+	 */
 	public readonly clientTransferData: unknown | undefined;
 
 	/**
