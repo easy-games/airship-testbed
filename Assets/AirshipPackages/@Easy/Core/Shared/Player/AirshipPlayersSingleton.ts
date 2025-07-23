@@ -240,6 +240,12 @@ export class AirshipPlayersSingleton {
 			} else {
 				let playerInfo = dto.gameObject.GetComponent<PlayerInfo>()!;
 				// print("Making new player with connectionId: " + dto.connectionId);
+
+				let transferData = "";
+				try {
+					transferData = dto.transferPacket;
+				} catch (err) {}
+
 				player = new Player(
 					dto.gameObject.GetComponent<NetworkIdentity>()!,
 					dto.connectionId,
@@ -247,7 +253,7 @@ export class AirshipPlayersSingleton {
 					dto.username,
 					dto.orgRoleName,
 					dto.profileImageId,
-					dto.transferPacket,
+					transferData,
 					playerInfo,
 				);
 			}
