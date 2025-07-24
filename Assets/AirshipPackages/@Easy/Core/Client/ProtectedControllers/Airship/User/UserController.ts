@@ -34,7 +34,20 @@ const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordin
 export class ProtectedUserController {
 	public localUser: AirshipUser | undefined;
 
+	/** Users can be guests in editor */
+	public isGuest = false;
+
 	public onLocalUserUpdated = new Signal<AirshipUser>();
+	/**
+	 * Will fire with `user` being undefined if player is a guest.
+	 *
+	 * Users can be guests in editor.
+	 */
+	public onLocalUserOrGuestDetermined = new Signal<[user: AirshipUser | undefined]>();
+
+	/** True when we know if the player is a guest or not. */
+	public isGuestDetermined = false;
+
 	private localUserLoaded = false;
 
 	constructor(private readonly authController: AuthController) {
@@ -135,6 +148,12 @@ export class ProtectedUserController {
 		});
 	}
 
+	public MarkAsGuest(): void {
+		this.isGuest = true;
+		this.isGuestDetermined = true;
+		this.onLocalUserOrGuestDetermined.Fire(undefined);
+	}
+
 	public async FetchLocalUser(): Promise<void> {
 		try {
 			const { user } = await client.users.login();
@@ -147,26 +166,36 @@ export class ProtectedUserController {
 					print("users/self did not contain user. routing to login screen.");
 					Bridge.LoadScene("Login", true, LoadSceneMode.Single);
 				}
+				this.isGuest = true;
+				this.isGuestDetermined = true;
+				this.onLocalUserOrGuestDetermined.Fire(undefined);
 				return;
 			}
 
 			this.localUser = user;
 			this.localUserLoaded = true;
+			this.isGuestDetermined = true;
 
-			if (Game.coreContext === CoreContext.MAIN_MENU || true) {
-				const writeUser = Game.localPlayer as Player;
-				(writeUser.userId as string) = user.uid;
-				(writeUser.username as string) = user.username;
-				Game.localPlayerLoaded = true;
-				Game.onLocalPlayerLoaded.Fire();
-			}
+			const writeUser = Game.localPlayer as Player;
+			(writeUser.userId as string) = user.uid;
+			(writeUser.username as string) = user.username;
+			Game.localPlayerLoaded = true;
+			Game.onLocalPlayerLoaded.Fire();
 
 			this.onLocalUserUpdated.Fire(this.localUser);
+			this.onLocalUserOrGuestDetermined.Fire(this.localUser);
 		} catch {
 			task.unscaledDelay(1, () => {
 				this.FetchLocalUser();
 			});
 		}
+	}
+
+	public WaitForIsGuest(): boolean {
+		while (!this.isGuestDetermined) {
+			task.wait();
+		}
+		return this.isGuest;
 	}
 
 	public WaitForLocalUser(): AirshipUser {

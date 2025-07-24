@@ -1,6 +1,7 @@
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { FirebaseSignUpResponse, FirebaseTokenResponse } from "./API/FirebaseAPI";
@@ -31,6 +32,9 @@ export class AuthController {
 			let ignore = false;
 			if (Game.coreContext === CoreContext.GAME && Game.IsEditor()) {
 				ignore = true;
+				task.spawn(() => {
+					Protected.User.MarkAsGuest();
+				});
 			}
 			if (!ignore) {
 				print("Auto login failed. Routing to login.");

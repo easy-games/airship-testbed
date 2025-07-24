@@ -379,7 +379,7 @@ export class AirshipPlayersSingleton {
 
 	private async FetchEquippedOutfit(player: Player, ignoreCache: boolean): Promise<boolean> {
 		// disable to test networking:
-		// ignoreCache = true;
+		ignoreCache = true;
 
 		const SetOutfit = (outfitDto: AirshipOutfit | undefined) => {
 			player.selectedOutfit = outfitDto;
