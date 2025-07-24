@@ -187,6 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 6986c00a-2974-4c87-86e7-ecf15fd3ade1
   script: {fileID: -1031757675678672769, guid: 69275548b315d6d418c0233c65d6cfef, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Accessory/DynamicColor.lua
   forceContext: 0
@@ -554,6 +555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: f65ab480-c2a7-458f-93a2-4d05a00ac106
   script: {fileID: -1031757675678672769, guid: 69275548b315d6d418c0233c65d6cfef, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Accessory/DynamicColor.lua
   forceContext: 0

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3777506147344019521}
   - component: {fileID: 5422870283696876636}
-  - component: {fileID: 5571938084673566905}
   - component: {fileID: 7155063303260377299}
   m_Layer: 0
   m_Name: Belt Croptop 2
@@ -57,7 +56,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3709b18f999c6e64ca7dc3d135a4e298, type: 2}
+  - {fileID: 2100000, guid: f6bd3d586546f5448b0e800281fbc8f1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -113,21 +112,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000000014901161, y: -0.010717511, z: 1.1942465}
     m_Extent: {x: 0.36793607, y: 0.17286262, z: 0.18733627}
   m_DirtyAABB: 0
---- !u!114 &5571938084673566905
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 990486062653883498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - baseColor: {r: 1, g: 0, b: 0, a: 1}
-  addedByEditorScript: 0
 --- !u!114 &7155063303260377299
 MonoBehaviour:
   m_ObjectHideFlags: 0
