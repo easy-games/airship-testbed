@@ -1,6 +1,6 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
-import { Dependency, Modding, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
@@ -12,7 +12,6 @@ import Character from "./Character";
 import { CharacterDto } from "./CharacterDto";
 import { AirshipCharacterFootstepsSingleton } from "./Footstep/AirshipCharacterFootstepsSingleton";
 import { LocalCharacterSingleton } from "./LocalCharacter/LocalCharacterSingleton";
-import { NametagController } from "@Easy/Core/Client/Controllers/Entity/Nametag/NametagController";
 
 /**
  * Access using {@link Airship.Characters}. Characters singleton provides utilities for working with the {@link Character}

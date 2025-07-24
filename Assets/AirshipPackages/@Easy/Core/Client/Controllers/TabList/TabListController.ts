@@ -50,6 +50,8 @@ export class TabListController {
 	}
 
 	protected OnStart(): void {
+		Game.WaitForLocalPlayerLoaded();
+
 		this.FullUpdate();
 
 		Airship.Players.onPlayerJoined.Connect((player) => {
@@ -107,29 +109,31 @@ export class TabListController {
 
 		let teams = Airship.Teams.GetTeams();
 
-		let players = Airship.Players.GetPlayers().sort((a, b) => {
-			// `localPlayer` should always come first
-			if (a === Game.localPlayer) return true;
-			if (b === Game.localPlayer) return false;
+		let players = Airship.Players.GetPlayers()
+			.filter((p) => p.userId !== "loading")
+			.sort((a, b) => {
+				// `localPlayer` should always come first
+				if (a === Game.localPlayer) return true;
+				if (b === Game.localPlayer) return false;
 
-			if (a.team && b.team) {
-				const teamAIndex = teams.indexOf(a.team);
-				const teamBIndex = teams.indexOf(b.team);
-				return teamAIndex < teamBIndex;
-			}
+				if (a.team && b.team) {
+					const teamAIndex = teams.indexOf(a.team);
+					const teamBIndex = teams.indexOf(b.team);
+					return teamAIndex < teamBIndex;
+				}
 
-			// Players with teams should come first?
-			if (a.team && !b.team) {
-				return true;
-			} else if (b.team && !a.team) {
-				return false;
-			}
+				// Players with teams should come first?
+				if (a.team && !b.team) {
+					return true;
+				} else if (b.team && !a.team) {
+					return false;
+				}
 
-			const [playerACodepoint] = utf8.codepoint(a.username);
-			const [playerBCodepoint] = utf8.codepoint(b.username);
+				const [playerACodepoint] = utf8.codepoint(a.username);
+				const [playerBCodepoint] = utf8.codepoint(b.username);
 
-			return playerACodepoint < playerBCodepoint; // sort alphabetically if no teams
-		});
+				return playerACodepoint < playerBCodepoint; // sort alphabetically if no teams
+			});
 
 		for (let i = 0; i < this.maxSlots; i++) {
 			let player: Player | undefined;

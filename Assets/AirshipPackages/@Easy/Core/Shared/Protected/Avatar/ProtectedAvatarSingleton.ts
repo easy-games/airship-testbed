@@ -59,12 +59,15 @@ export class ProtectedAvatarSingleton {
 				isSelf = true;
 			}
 
-			print("check.1");
-			if (Protected.User.WaitForIsGuest()) {
-				print("is guest!");
+			if (Game.IsServer() && !Game.IsClient()) {
+				// we use connectionCounter as userIds editor dedicated mode.
+				if (!userId || userId.size() <= 2) {
+					return DEFAULT_EDITOR_OUTFIT;
+				}
+			}
+			if (Game.IsClient() && Protected.User.WaitForIsGuest()) {
 				return DEFAULT_EDITOR_OUTFIT;
 			}
-			print("not guest");
 
 			if (isSelf) {
 				const [success, outfit] = this.GetEquippedOutfit().await();
