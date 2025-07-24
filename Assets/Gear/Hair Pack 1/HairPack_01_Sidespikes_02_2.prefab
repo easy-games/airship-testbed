@@ -67,6 +67,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guid: 33563b8e-fefe-44b3-8897-25079fcfc268
   script: {fileID: -1031757675678672769, guid: 69275548b315d6d418c0233c65d6cfef, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/Character/Accessory/DynamicColor.lua
   forceContext: 0
