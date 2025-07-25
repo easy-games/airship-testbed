@@ -148,5 +148,5 @@ MonoBehaviour:
   - {fileID: 4300000, guid: ce95c308a50c94c80993c2419af5843a, type: 2}
   canMeshCombine: 1
   bodyMask: 50331648
-  serverClassId: 4bdb9441-c73a-4461-acff-5e2472e7be95
+  serverClassId: 
   serverClassIdStaging: 

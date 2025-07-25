@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
   m_Name: Cool Sneaks 2 Gear
   m_EditorClassIdentifier: 
-  classId: 4bdb9441-c73a-4461-acff-5e2472e7be95
+  classId: 92a88cd8-5338-44b7-a745-6f3feea7859f
   accessoryPrefabs:
   - {fileID: 8122943930244843942, guid: 4f4b3b35cecc0604ca1eff936f4577f4, type: 3}
   face: {fileID: 0}
