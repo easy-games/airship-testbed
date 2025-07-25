@@ -186,7 +186,6 @@ export class MessagingService {
 					if (delay) {
 						task.wait(delay);
 					}
-					print("Attempting to reconnect to messaging service...");
 					this.Connect();
 				});
 			}
@@ -239,7 +238,6 @@ export class MessagingService {
 
 		if (connected) {
 			for (const [_, { topic }] of this.subscriptionCounts) {
-				print(`Re-subscribing to topic: ${topic.topicName} (${topic.topicNamespace})`);
 				task.defer(() => {
 					const res = MessagingManager.SubscribeAsync(topic.scope, topic.topicNamespace, topic.topicName);
 					if (!res) {
