@@ -1,5 +1,6 @@
 import {
 	BridgeApiGetFriends,
+	BridgeApiGetRegionLatencies,
 	BridgeApiGetUserById,
 	BridgeApiGetUserByUsername,
 	BridgeApiGetUsersById,
@@ -11,6 +12,7 @@ import { Platform } from "@Easy/Core/Shared/Airship";
 import { AirshipUser } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 
 /**
  * Provides access to user information.
@@ -29,6 +31,27 @@ export class AirshipUserController {
 	}
 
 	protected OnStart(): void {}
+
+	/**
+	 * Gets the best regions for the local client. Only valid regions will be returned, meaning the ordered
+	 * array and values may be empty.
+	 *
+	 * @returns The "ordered" field is the regionIds ordered by lowest ping first. The "values" field is a map of regionId to
+	 * ping value.
+	 */
+	public async GetBestRegions(): Promise<{ ordered: string[]; values: { [regionId: string]: number } }> {
+		const regionLatencies = contextbridge.invoke<BridgeApiGetRegionLatencies>(
+			UserControllerBridgeTopics.GetRegionLatencies,
+			LuauContext.Protected,
+		);
+		const ordered = ObjectUtils.entries(regionLatencies)
+			.sort((a, b) => a[1] < b[1])
+			.map((entry) => entry[0] as string);
+		return {
+			ordered,
+			values: regionLatencies,
+		};
+	}
 
 	/**
 	 * Gets a single user by their username (case insensitive).

@@ -1,6 +1,6 @@
 import { AirshipUser } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
-import { Controller } from "@Easy/Core/Shared/Flamework";
+import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Protected } from "@Easy/Core/Shared/Protected";
@@ -10,6 +10,7 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { AuthController } from "../../Auth/AuthController";
 import { ProtectedFriendsController } from "../../Social/FriendsController";
+import { SocketController } from "../../Socket/SocketController";
 
 export const enum UserControllerBridgeTopics {
 	GetUserByUsername = "UserController:GetUserByUsername",
@@ -17,6 +18,7 @@ export const enum UserControllerBridgeTopics {
 	GetUsersById = "UserController:GetUsersById",
 	GetFriends = "UserController:GetFriends",
 	IsFriendsWith = "UserController:IsFriendsWith",
+	GetRegionLatencies = "UserController:GetRegionLatencies",
 }
 
 export type BridgeApiGetUserByUsername = (username: string) => AirshipUser | undefined;
@@ -27,6 +29,7 @@ export type BridgeApiGetUsersById = (
 ) => { map: Record<string, AirshipUser>; array: AirshipUser[] };
 export type BridgeApiGetFriends = () => AirshipUser[];
 export type BrigdeApiIsFriendsWith = (userId: string) => boolean;
+export type BridgeApiGetRegionLatencies = () => { [regionId: string]: number };
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
@@ -77,6 +80,11 @@ export class ProtectedUserController {
 
 		contextbridge.callback<BrigdeApiIsFriendsWith>(UserControllerBridgeTopics.IsFriendsWith, (_, userId) => {
 			return this.IsFriendsWith(userId).expect();
+		});
+
+		contextbridge.callback<BridgeApiGetRegionLatencies>(UserControllerBridgeTopics.GetRegionLatencies, (_) => {
+			const result = Dependency<SocketController>().GetRegionLatencies().await();
+			return result[0] ? result[1] ?? {} : {};
 		});
 	}
 

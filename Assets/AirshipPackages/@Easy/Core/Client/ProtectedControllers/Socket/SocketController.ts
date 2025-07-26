@@ -1,13 +1,13 @@
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { AuthController } from "../Auth/AuthController";
-import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
-import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
@@ -41,30 +41,8 @@ export class SocketController {
 			this.cancelSessionReportTask = SetInterval(
 				60 * 5,
 				async () => {
-					let serverMap;
-					try {
-						serverMap = await client.servers.getPingServers();
-					} catch {
-						return warn("Unable to retrieve ping servers from GC. Region selection may not be possible.");
-					}
-					const regionLatencies: { [regionId: string]: number } = {};
-					// Use the best of three tests.
-					for (let i = 0; i < 3; i++) {
-						for (const [regionId, serverUrl] of ObjectUtils.entries(serverMap)) {
-							try {
-								const ping = UdpPingTool.GetPing(serverUrl, 1000);
-								if (regionLatencies[regionId] === undefined || regionLatencies[regionId] > ping) {
-									regionLatencies[regionId] = ping;
-								}
-							} catch (err) {
-								warn(
-									`Unable to calculate latency for "${regionId}" (${serverUrl}). This region will not be reported.`,
-									err,
-								);
-							}
-						}
-						task.unscaledWait(0.25);
-					}
+					const regionLatencies = await this.GetRegionLatencies();
+					if (!regionLatencies) return;
 					await client.userSession.updateSession({ regionLatencies });
 				},
 				true,
@@ -115,5 +93,33 @@ export class SocketController {
 		this.doReconnect = true;
 		let connected = SocketManager.ConnectAsyncInternal();
 		this.onSocketConnectionChanged.Fire(connected);
+	}
+
+	public async GetRegionLatencies() {
+		let serverMap;
+		try {
+			serverMap = await client.servers.getPingServers();
+		} catch {
+			return warn("Unable to retrieve ping servers from GC. Region selection may not be possible.");
+		}
+		const regionLatencies: { [regionId: string]: number } = {};
+		// Use the best of three tests.
+		for (let i = 0; i < 3; i++) {
+			for (const [regionId, serverUrl] of ObjectUtils.entries(serverMap)) {
+				try {
+					const ping = UdpPingTool.GetPing(serverUrl, 1000);
+					if (regionLatencies[regionId] === undefined || regionLatencies[regionId] > ping) {
+						regionLatencies[regionId] = ping;
+					}
+				} catch (err) {
+					warn(
+						`Unable to calculate latency for "${regionId}" (${serverUrl}). This region will not be reported.`,
+						err,
+					);
+				}
+			}
+			task.unscaledWait(0.25);
+		}
+		return regionLatencies;
 	}
 }
