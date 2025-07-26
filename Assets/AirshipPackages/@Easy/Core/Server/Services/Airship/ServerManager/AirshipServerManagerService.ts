@@ -256,6 +256,10 @@ export class AirshipServerManagerService {
 		).regionIds;
 	}
 
+	/**
+	 * Get the region the current server is running in.
+	 * @returns The regionId of the region the server is currently running in.
+	 */
 	public GetCurrentRegion() {
 		return contextbridge.invoke<ServerBridgeApiGetCurrentRegion>(
 			ServerManagerServiceBridgeTopics.GetCurrentRegion,
