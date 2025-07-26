@@ -27,10 +27,13 @@ export class AirshipServerManagerController {
 	 * Gets the best regions for the local client. Only valid regions will be returned, meaning the ordered
 	 * array and values may be empty if the player could not reach the ping servers.
 	 *
-	 * @returns The "ordered" field is the regionIds ordered by lowest ping first. The "values" field is a map of regionId to
+	 * @returns The "orderedRegionIds" field is the regionIds ordered by lowest ping first. The "regionLatencies" field is a map of regionId to
 	 * ping value.
 	 */
-	public async GetBestRegions(): Promise<{ ordered: string[]; values: { [regionId: string]: number } }> {
+	public async GetBestRegions(): Promise<{
+		orderedRegionIds: string[];
+		regionLatencies: { [regionId: string]: number };
+	}> {
 		const regionLatencies = contextbridge.invoke<ClientBridgeApiGetRegionLatencies>(
 			ServerManagerControllerBridgeTopics.GetRegionLatencies,
 			LuauContext.Protected,
@@ -39,8 +42,8 @@ export class AirshipServerManagerController {
 			.sort((a, b) => a[1] < b[1])
 			.map((entry) => entry[0] as string);
 		return {
-			ordered,
-			values: regionLatencies,
+			orderedRegionIds: ordered,
+			regionLatencies: regionLatencies,
 		};
 	}
 
