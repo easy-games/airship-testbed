@@ -1,7 +1,7 @@
 import { AirshipMatchmakingController } from "../Client/Controllers/Airship/Matchmaking/MatchmakingController";
 import { AirshipPartyController } from "../Client/Controllers/Airship/Party/AirshipPartyController";
 import { AirshipPlatformInventoryController } from "../Client/Controllers/Airship/PlatformInventory/AirshipPlatformInventoryController";
-import { AirshipServerManagerController } from "../Client/Controllers/Airship/ServerList/AirshipServerListController";
+import { AirshipServerManagerController } from "../Client/Controllers/Airship/ServerManager/AirshipServerManagerController";
 import { AirshipTransferController } from "../Client/Controllers/Airship/Transfer/AirshipTransferController";
 import { AirshipUserController } from "../Client/Controllers/Airship/User/AirshipUserController";
 import { AirshipCacheStoreService } from "../Server/Services/Airship/CacheStore/AirshipCacheStoreService";
