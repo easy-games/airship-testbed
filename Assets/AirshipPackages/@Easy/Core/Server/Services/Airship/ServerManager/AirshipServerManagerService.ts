@@ -4,6 +4,7 @@ import {
 	ServerBridgeApiCreateServer,
 	ServerBridgeApiDelistServer,
 	ServerBridgeApiGetAllowedPlayers,
+	ServerBridgeApiGetCurrentRegion,
 	ServerBridgeApiGetGameConfig,
 	ServerBridgeApiGetRegions,
 	ServerBridgeApiGetServerList,
@@ -18,7 +19,11 @@ import {
 	ServerManagerServiceBridgeTopics,
 } from "@Easy/Core/Server/ProtectedServices/Airship/ServerManager/ProtectedServerManagerService";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { AirshipServerAccessMode, AirshipServer, AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
+import {
+	AirshipServer,
+	AirshipServerAccessMode,
+	AirshipServerConfig,
+} from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -33,7 +38,7 @@ export class AirshipServerManagerService {
 		Platform.Server.ServerManager = this;
 	}
 
-	protected OnStart(): void { }
+	protected OnStart(): void {}
 
 	/**
 	 * Creates a new server and returns a server id which can be used to transfer players to the new server.
@@ -249,5 +254,12 @@ export class AirshipServerManagerService {
 			ServerManagerServiceBridgeTopics.GetRegions,
 			LuauContext.Protected,
 		).regionIds;
+	}
+
+	public GetCurrentRegion() {
+		return contextbridge.invoke<ServerBridgeApiGetCurrentRegion>(
+			ServerManagerServiceBridgeTopics.GetCurrentRegion,
+			LuauContext.Protected,
+		);
 	}
 }

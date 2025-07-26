@@ -1,7 +1,7 @@
 import { AirshipMatchmakingController } from "../Client/Controllers/Airship/Matchmaking/MatchmakingController";
 import { AirshipPartyController } from "../Client/Controllers/Airship/Party/AirshipPartyController";
 import { AirshipPlatformInventoryController } from "../Client/Controllers/Airship/PlatformInventory/AirshipPlatformInventoryController";
-import { AirshipServerListController } from "../Client/Controllers/Airship/ServerList/AirshipServerListController";
+import { AirshipServerManagerController } from "../Client/Controllers/Airship/ServerList/AirshipServerListController";
 import { AirshipTransferController } from "../Client/Controllers/Airship/Transfer/AirshipTransferController";
 import { AirshipUserController } from "../Client/Controllers/Airship/User/AirshipUserController";
 import { AirshipCacheStoreService } from "../Server/Services/Airship/CacheStore/AirshipCacheStoreService";
@@ -132,9 +132,9 @@ export namespace Platform {
 		 */
 		export let User = undefined! as AirshipUserController;
 		/**
-		 * Provides access to a games server list.
+		 * Provides access to game server information.
 		 */
-		export let ServerList = undefined! as AirshipServerListController;
+		export let ServerManager = undefined! as AirshipServerManagerController;
 		/**
 		 * Provides information about the users matchmaking status.
 		 */
