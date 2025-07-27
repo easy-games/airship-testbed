@@ -96,7 +96,9 @@ export class SocketController {
 	}
 
 	public async GetRegionLatencies() {
-		let serverMap;
+		let serverMap: {
+			[regionId: string]: string;
+		} = {};
 		try {
 			serverMap = await client.servers.getPingServers();
 		} catch {
