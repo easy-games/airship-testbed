@@ -1,33 +1,44 @@
 import { AirshipServer, AirshipServerWithFriends } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
-import { Controller } from "@Easy/Core/Shared/Flamework";
+import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import { SocketController } from "../../Socket/SocketController";
 
-export const enum ServerListControllerBridgeTopics {
+export const enum ServerManagerControllerBridgeTopics {
 	GetServerList = "ServerListController:GetServerList",
 	GetFriendServers = "ServerListController:GetFriendServers",
+	GetRegionLatencies = "UserController:GetRegionLatencies",
 }
 
 export type ClientBridgeApiGetServerList = (page?: number) => { entries: AirshipServer[] };
 export type ClientBridgeApiGetFriendServers = () => { entries: AirshipServerWithFriends[] };
+export type ClientBridgeApiGetRegionLatencies = () => { [regionId: string]: number };
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 @Controller({})
-export class ProtectedServerListController {
+export class ProtectedServerManagerController {
 	constructor() {
 		if (!Game.IsClient()) return;
 
-		contextbridge.callback<ClientBridgeApiGetServerList>(ServerListControllerBridgeTopics.GetServerList, (_) => {
+		contextbridge.callback<ClientBridgeApiGetServerList>(ServerManagerControllerBridgeTopics.GetServerList, (_) => {
 			return this.GetServerList().expect();
 		});
 
 		contextbridge.callback<ClientBridgeApiGetFriendServers>(
-			ServerListControllerBridgeTopics.GetFriendServers,
+			ServerManagerControllerBridgeTopics.GetFriendServers,
 			(_) => {
 				return this.GetFriendServers().expect();
+			},
+		);
+
+		contextbridge.callback<ClientBridgeApiGetRegionLatencies>(
+			ServerManagerControllerBridgeTopics.GetRegionLatencies,
+			(_) => {
+				const result = Dependency<SocketController>().GetRegionLatencies().await();
+				return result[0] ? result[1] ?? {} : {};
 			},
 		);
 	}

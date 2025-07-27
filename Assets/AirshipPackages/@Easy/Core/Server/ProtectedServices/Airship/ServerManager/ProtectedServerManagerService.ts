@@ -1,10 +1,14 @@
+import {
+	AirshipServer,
+	AirshipServerAccessMode,
+	AirshipServerConfig,
+} from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { ShutdownService } from "../../Shutdown/ShutdownService";
 import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import { AirshipServerAccessMode, AirshipServer, AirshipServerConfig } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import { ShutdownService } from "../../Shutdown/ShutdownService";
 
 export const enum ServerManagerServiceBridgeTopics {
 	CreateServer = "ServerManagerService:CreateServer",
@@ -24,6 +28,7 @@ export const enum ServerManagerServiceBridgeTopics {
 	AddTag = "ServerManagerService:AddTag",
 	RemoveTag = "ServerManagerService:RemoveTag",
 	GetRegions = "ServerManagerService:GetRegions",
+	GetCurrentRegion = "ServerManagerService:GetCurrentRegion",
 }
 
 export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => AirshipServer;
@@ -45,6 +50,7 @@ export type ServerBridgeApiHasTag = (tag: string) => boolean;
 export type ServerBridgeApiAddTag = (tag: string) => boolean;
 export type ServerBridgeApiRemoveTag = (tag: string) => boolean;
 export type ServerBridgeApiGetRegions = () => { regionIds: string[] };
+export type ServerBridgeApiGetCurrentRegion = () => string;
 
 const ALLOWED_PLAYERS_LIST_KEY = "allowedPlayers";
 const TAGS_LIST_KEY = "tags";
@@ -144,6 +150,13 @@ export class ProtectedServerManagerService {
 		contextbridge.callback<ServerBridgeApiRemoveTag>(ServerManagerServiceBridgeTopics.RemoveTag, (_, tag) => {
 			return this.RemoveTag(tag).expect();
 		});
+
+		contextbridge.callback<ServerBridgeApiGetCurrentRegion>(
+			ServerManagerServiceBridgeTopics.GetCurrentRegion,
+			(_) => {
+				return this.GetCurrentRegion();
+			},
+		);
 	}
 
 	public async CreateServer(config?: AirshipServerConfig): Promise<ReturnType<ServerBridgeApiCreateServer>> {
@@ -241,5 +254,18 @@ export class ProtectedServerManagerService {
 
 	public async GetRegions() {
 		return await client.servers.getRegionIds();
+	}
+
+	public GetCurrentRegion(): string {
+		const serverBootstrap = GameObject.Find("ServerBootstrap").GetComponent<ServerBootstrap>()!;
+		const gs = serverBootstrap.GetGameServer();
+		try {
+			const regionString = gs?.ObjectMeta.Annotations.Get("Region");
+			if (!regionString) return "unknown";
+			return regionString;
+		} catch (err) {
+			warn("Error retrieving server region:", err);
+			return "unknown";
+		}
 	}
 }
