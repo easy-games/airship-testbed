@@ -66,7 +66,6 @@ export class OrbitCameraMode extends CameraMode {
 		this.SetOcclusionBumping(
 			this.config.shouldOcclusionBump ?? CameraConstants.DefaultFixedCameraConfig.shouldOcclusionBump,
 		);
-		Airship.Characters.localCharacterManager.SetMoveDirMode(MoveDirectionMode.Camera);
 
 		Airship.Input.CreateAction(OrbitArrowKey.Left, Binding.Key(Key.LeftArrow));
 		Airship.Input.CreateAction(OrbitArrowKey.Right, Binding.Key(Key.RightArrow));
@@ -123,6 +122,8 @@ export class OrbitCameraMode extends CameraMode {
 	private characterLogicBin = new Bin();
 
 	public override OnEnable(camera: Camera, rootTransform: Transform): void {
+		Airship.Characters.localCharacterManager.SetMoveDirMode(MoveDirectionMode.Camera);
+
 		// This enables our character specific behavior for the default Airship character.
 		// TODO: Maybe we move this out of here and add a signal that fires when the camera mode
 		// is changed?

@@ -83,7 +83,6 @@ export class FixedCameraMode extends CameraMode {
 		this.SetOcclusionBumping(
 			this.config.shouldOcclusionBump ?? CameraConstants.DefaultFixedCameraConfig.shouldOcclusionBump,
 		);
-		Airship.Characters.localCharacterManager.SetMoveDirMode(MoveDirectionMode.Character);
 	}
 
 	private SetupMobileControls() {
@@ -128,6 +127,7 @@ export class FixedCameraMode extends CameraMode {
 	}
 
 	OnEnable(camera: Camera, rootTransform: Transform) {
+		Airship.Characters.localCharacterManager.SetMoveDirMode(MoveDirectionMode.Character);
 		this.SetupMobileControls();
 
 		this.occlusionCam = rootTransform.GetComponent<OcclusionCam>()!;
