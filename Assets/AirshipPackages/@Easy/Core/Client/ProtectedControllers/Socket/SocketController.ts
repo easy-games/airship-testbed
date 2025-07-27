@@ -100,7 +100,8 @@ export class SocketController {
 		try {
 			serverMap = await client.servers.getPingServers();
 		} catch {
-			return warn("Unable to retrieve ping servers from GC. Region selection may not be possible.");
+			warn("Unable to retrieve ping servers from GC. Region selection may not be possible.");
+			return {}; // Return empty region latencies since we don't have servers to contact.
 		}
 		const regionLatencies: { [regionId: string]: number } = {};
 		// Use the best of three tests.
