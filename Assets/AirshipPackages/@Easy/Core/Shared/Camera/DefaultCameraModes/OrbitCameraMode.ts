@@ -1,6 +1,7 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { ControlScheme, Mouse, Preferred, Touchscreen } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { MoveDirectionMode } from "../../Character/LocalCharacter/MoveDirectionMode";
 import { Binding } from "../../Input/Binding";
 import ObjectUtils from "../../Util/ObjectUtils";
 import { OnUpdate } from "../../Util/Timer";
@@ -24,7 +25,7 @@ export class OrbitCameraMode extends CameraMode {
 	}
 
 	private config: OrbitCameraConfig;
-	public OnStopBin = new Bin();
+	public onDisableBin = new Bin();
 
 	private radius = 4;
 	private yOffset = 1.85;
@@ -46,8 +47,8 @@ export class OrbitCameraMode extends CameraMode {
 	private mouseSmoothingEnabled = true;
 	private smoothVector = new Vector2(0, 0);
 
-	private readonly preferred = this.OnStopBin.Add(new Preferred());
-	private readonly touchscreen = this.OnStopBin.Add(new Touchscreen());
+	private readonly preferred = this.onDisableBin.Add(new Preferred());
+	private readonly touchscreen = this.onDisableBin.Add(new Touchscreen());
 
 	constructor(target: GameObject, config?: OrbitCameraConfig) {
 		super(target);
@@ -65,6 +66,7 @@ export class OrbitCameraMode extends CameraMode {
 		this.SetOcclusionBumping(
 			this.config.shouldOcclusionBump ?? CameraConstants.DefaultFixedCameraConfig.shouldOcclusionBump,
 		);
+		Airship.Characters.localCharacterManager.SetMoveDirMode(MoveDirectionMode.Camera);
 
 		Airship.Input.CreateAction(OrbitArrowKey.Left, Binding.Key(Key.LeftArrow));
 		Airship.Input.CreateAction(OrbitArrowKey.Right, Binding.Key(Key.RightArrow));
@@ -118,43 +120,90 @@ export class OrbitCameraMode extends CameraMode {
 		return bin;
 	}
 
-	public OnEnabled(): void {
+	private characterLogicBin = new Bin();
+
+	public override OnEnable(camera: Camera, rootTransform: Transform): void {
 		// This enables our character specific behavior for the default Airship character.
 		// TODO: Maybe we move this out of here and add a signal that fires when the camera mode
 		// is changed?
-		let characterLogicBin: Bin | undefined;
 		if (this.character && this.character.IsLocalCharacter()) {
-			characterLogicBin = Airship.Camera.ManageOrbitCameraForLocalCharacter(
-				this,
-				this.character,
-				this.config.characterLocked ?? false,
+			this.characterLogicBin.Add(
+				Airship.Camera.ManageOrbitCameraForLocalCharacter(
+					this,
+					this.character,
+					this.config.characterLocked ?? false,
+				),
 			);
-			this.OnStopBin.Add(() => characterLogicBin!.Clean());
 		}
-		this.OnStopBin.Add(
+		this.onDisableBin.Add(
 			this.onTargetChanged.Connect((event) => {
-				if (characterLogicBin && !event.after.character?.IsLocalCharacter()) {
-					characterLogicBin.Clean();
-				}
+				this.characterLogicBin.Clean();
 				if (event.after.character?.IsLocalCharacter()) {
-					characterLogicBin = Airship.Camera.ManageOrbitCameraForLocalCharacter(
-						this,
-						event.after.character,
-						this.config.characterLocked ?? false,
+					this.characterLogicBin.Add(
+						Airship.Camera.ManageOrbitCameraForLocalCharacter(
+							this,
+							event.after.character,
+							this.config.characterLocked ?? false,
+						),
 					);
-					this.OnStopBin.Add(() => characterLogicBin!.Clean());
 				}
 			}),
 		);
 
-		this.OnStopBin.Add(this.BindArrowKeyAxis(OrbitArrowKey.Up));
-		this.OnStopBin.Add(this.BindArrowKeyAxis(OrbitArrowKey.Down));
-		this.OnStopBin.Add(this.BindArrowKeyAxis(OrbitArrowKey.Left));
-		this.OnStopBin.Add(this.BindArrowKeyAxis(OrbitArrowKey.Right));
+		this.onDisableBin.Add(this.BindArrowKeyAxis(OrbitArrowKey.Up));
+		this.onDisableBin.Add(this.BindArrowKeyAxis(OrbitArrowKey.Down));
+		this.onDisableBin.Add(this.BindArrowKeyAxis(OrbitArrowKey.Left));
+		this.onDisableBin.Add(this.BindArrowKeyAxis(OrbitArrowKey.Right));
+
+		this.SetupMobileControls();
+
+		this.occlusionCam = rootTransform.GetComponent<OcclusionCam>()!;
+		if (this.occlusionCam === undefined) {
+			this.occlusionCam = rootTransform.gameObject.AddComponent<OcclusionCam>();
+		}
+		this.occlusionCam.Init(camera);
+
+		this.onDisableBin.Add(this.preferred);
+		this.onDisableBin.Add(this.touchscreen);
+
+		this.onDisableBin.Add(
+			Airship.Input.preferredControls.ObserveControlScheme((scheme) => {
+				const controlSchemeBin = new Bin();
+				if (scheme === ControlScheme.MouseKeyboard) {
+					let rightClickUnlockerCleanup: (() => void) | undefined = Mouse.AddUnlocker();
+
+					controlSchemeBin.Add(
+						Mouse.onRightDown.Connect(() => {
+							if (rightClickUnlockerCleanup === undefined) return;
+							rightClickUnlockerCleanup();
+							rightClickUnlockerCleanup = undefined;
+						}),
+					);
+
+					controlSchemeBin.Add(
+						Mouse.onRightUp.Connect(() => {
+							if (rightClickUnlockerCleanup !== undefined) return;
+							rightClickUnlockerCleanup = Mouse.AddUnlocker();
+						}),
+					);
+
+					controlSchemeBin.Add(() => {
+						if (rightClickUnlockerCleanup === undefined) return;
+						rightClickUnlockerCleanup();
+						rightClickUnlockerCleanup = undefined;
+					});
+				} else if (scheme === ControlScheme.Touch) {
+					controlSchemeBin.Add(Mouse.AddUnlocker());
+				}
+				return () => {
+					controlSchemeBin.Clean();
+				};
+			}),
+		);
 	}
 
 	private SetupMobileControls() {
-		const touchscreen = this.OnStopBin.Add(new Touchscreen());
+		const touchscreen = this.onDisableBin.Add(new Touchscreen());
 		let touchStartPos = Vector3.zero;
 		let touchStartRotX = 0;
 		let touchStartRotY = 0;
@@ -192,63 +241,9 @@ export class OrbitCameraMode extends CameraMode {
 		});
 	}
 
-	OnStart(camera: Camera, rootTransform: Transform) {
-		this.SetupMobileControls();
-
-		this.occlusionCam = rootTransform.GetComponent<OcclusionCam>()!;
-		if (this.occlusionCam === undefined) {
-			this.occlusionCam = rootTransform.gameObject.AddComponent<OcclusionCam>();
-		}
-		this.occlusionCam.Init(camera);
-
-		this.OnStopBin.Add(this.preferred);
-		this.OnStopBin.Add(this.touchscreen);
-
-		// const mouseUnlocker = this.mouse.AddUnlocker();
-		// this.bin.Add(() => this.mouse.RemoveUnlocker(mouseUnlocker));
-
-		// if (!this.locked) {
-		// 	this.cameraCleanup.Add(Mouse.AddUnlocker());
-		// }
-
-		this.OnStopBin.Add(
-			Airship.Input.preferredControls.ObserveControlScheme((scheme) => {
-				const controlSchemeBin = new Bin();
-				if (scheme === ControlScheme.MouseKeyboard) {
-					let rightClickUnlockerCleanup: (() => void) | undefined = Mouse.AddUnlocker();
-
-					controlSchemeBin.Add(
-						Mouse.onRightDown.Connect(() => {
-							if (rightClickUnlockerCleanup === undefined) return;
-							rightClickUnlockerCleanup();
-							rightClickUnlockerCleanup = undefined;
-						}),
-					);
-
-					controlSchemeBin.Add(
-						Mouse.onRightUp.Connect(() => {
-							if (rightClickUnlockerCleanup !== undefined) return;
-							rightClickUnlockerCleanup = Mouse.AddUnlocker();
-						}),
-					);
-
-					controlSchemeBin.Add(() => {
-						if (rightClickUnlockerCleanup === undefined) return;
-						rightClickUnlockerCleanup();
-						rightClickUnlockerCleanup = undefined;
-					});
-				} else if (scheme === ControlScheme.Touch) {
-					controlSchemeBin.Add(Mouse.AddUnlocker());
-				}
-				return () => {
-					controlSchemeBin.Clean();
-				};
-			}),
-		);
-	}
-
-	OnStop() {
-		this.OnStopBin.Clean();
+	OnDisable() {
+		this.characterLogicBin.Clean();
+		this.onDisableBin.Clean();
 	}
 
 	OnUpdate(dt: number) {

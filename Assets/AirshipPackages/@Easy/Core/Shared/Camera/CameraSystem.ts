@@ -59,7 +59,7 @@ export class CameraSystem {
 	}
 
 	private OnEnabled() {
-		this.currentMode.OnEnabled();
+		// this.currentMode.OnEnable();
 
 		const stopOnUpdate = OnUpdate.ConnectWithPriority(SignalPriority.LOWEST, (dt) => {
 			this.currentMode.OnUpdate(dt);
@@ -98,9 +98,9 @@ export class CameraSystem {
 			}
 		});
 
-		this.currentMode.OnStart(CameraReferences.mainCamera!, CameraReferences.cameraHolder!);
+		this.currentMode.OnEnable(CameraReferences.mainCamera!, CameraReferences.cameraHolder!);
 		this.enabledBin.Add(() => {
-			this.currentMode.OnStop();
+			this.currentMode.OnDisable();
 		});
 
 		this.enabledBin.Add(stopOnUpdate);
@@ -109,7 +109,7 @@ export class CameraSystem {
 
 	private OnDisabled() {
 		this.enabledBin.Clean();
-		this.currentMode.OnStop();
+		this.currentMode.OnDisable();
 	}
 
 	/**
@@ -150,11 +150,11 @@ export class CameraSystem {
 		if (mode === this.currentMode) return;
 		this.modeCleared = false;
 
-		if (this.enabled) this.currentMode.OnStop();
+		if (this.enabled) this.currentMode.OnDisable();
 		this.currentMode = mode;
 		if (this.enabled) {
-			this.currentMode.OnEnabled();
-			this.currentMode.OnStart(CameraReferences.mainCamera!, CameraReferences.cameraHolder!);
+			this.currentMode.OnEnable(CameraReferences.mainCamera!, CameraReferences.cameraHolder!);
+			// this.currentMode.OnStart(CameraReferences.mainCamera!, CameraReferences.cameraHolder!);
 		}
 	}
 

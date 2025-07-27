@@ -2,6 +2,7 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import { ControlScheme, Mouse, Preferred, Touchscreen } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CameraMode, CameraTransform } from "..";
+import { MoveDirectionMode } from "../../Character/LocalCharacter/MoveDirectionMode";
 import { TweenEasingFunction } from "../../Tween/EasingFunctions";
 import { Tween } from "../../Tween/Tween";
 import ObjectUtils from "../../Util/ObjectUtils";
@@ -82,6 +83,7 @@ export class FixedCameraMode extends CameraMode {
 		this.SetOcclusionBumping(
 			this.config.shouldOcclusionBump ?? CameraConstants.DefaultFixedCameraConfig.shouldOcclusionBump,
 		);
+		Airship.Characters.localCharacterManager.SetMoveDirMode(MoveDirectionMode.Character);
 	}
 
 	private SetupMobileControls() {
@@ -125,7 +127,7 @@ export class FixedCameraMode extends CameraMode {
 		);
 	}
 
-	OnStart(camera: Camera, rootTransform: Transform) {
+	OnEnable(camera: Camera, rootTransform: Transform) {
 		this.SetupMobileControls();
 
 		this.occlusionCam = rootTransform.GetComponent<OcclusionCam>()!;
@@ -148,12 +150,7 @@ export class FixedCameraMode extends CameraMode {
 				}
 			}),
 		);
-	}
 
-	public OnEnabled(): void {
-		// This enables our character specific behavior for the default Airship character.
-		// TODO: Maybe we move this out of here and add a signal that fires when the camera mode
-		// is changed?
 		let characterLogicBin: Bin | undefined;
 		if (this.character && this.character.IsLocalCharacter() && !this.character.IsDestroyed()) {
 			characterLogicBin = Airship.Camera.ManageFixedCameraForLocalCharacter(this, this.character);
@@ -170,14 +167,6 @@ export class FixedCameraMode extends CameraMode {
 				}
 			}),
 		);
-
-		// this.OnStopBin.Add(
-		// 	Keyboard.OnKeyDown(Key.K, (e) => {
-		// 		if (e.uiProcessed) return;
-		// 		this.useXOffsetInOcclusionCam = !this.useXOffsetInOcclusionCam;
-		// 		Game.BroadcastMessage("Offset: " + this.useXOffsetInOcclusionCam);
-		// 	}),
-		// );
 	}
 
 	public SetCrouching(crouching: boolean): void {
@@ -204,7 +193,7 @@ export class FixedCameraMode extends CameraMode {
 		return this.crouching;
 	}
 
-	OnStop() {
+	OnDisable() {
 		this.OnStopBin.Clean();
 	}
 

@@ -7,7 +7,8 @@ import { Dependency } from "../Flamework";
 import { Game } from "../Game";
 import { InventoryUIVisibility } from "../Inventory/InventoryUIVisibility";
 import { CharacterCameraMode } from "./LocalCharacter/CharacterCameraMode";
-import { MoveDirectionMode } from "./LocalCharacter/MoveDirectionMode";
+
+let hasRun = false;
 
 /**
  * Use to configure basic properties of Airship character system.
@@ -23,9 +24,6 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	public customCharacterPrefab?: GameObject;
 	@Spacing(5)
 	public useDefaultMovement = true;
-
-	@Spacing(5)
-	public movementSpace = Space.Self;
 
 	public enableJumping = true;
 	public enableSprinting = true;
@@ -79,30 +77,31 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	}
 
 	public OnEnable() {
-		//Local Character Configs
 		if (Game.IsClient()) {
-			//Movement
-			//Control how client inputs are recieved by the movement system
-			Airship.Characters.localCharacterManager.SetMoveDirMode(
-				this.movementSpace === Space.World
-					? MoveDirectionMode.World
-					: this.characterCameraMode === CharacterCameraMode.Orbit
-					? MoveDirectionMode.Camera
-					: MoveDirectionMode.Character,
-			);
+			if (hasRun) {
+				error(
+					"Tried to run CharacterConfigSetup twice. You should only have one instance of CharacterConfigSetup in your scene. This script is running on gameobject " +
+						this.gameObject.name,
+				);
+			}
+			hasRun = true;
+
+			// Movement
+			// Control how client inputs are recieved by the movement system
 			Airship.Characters.localCharacterManager.SetDefaultMovementEnabled(this.useDefaultMovement);
 
-			//Camera
-			//Toggle the core camera system
+			// Camera
+			// Toggle the core camera system
 			Airship.Camera.SetEnabled(this.useAirshipCameraSystem);
-			//Change to a new camera mode
+
+			// Change to a new camera mode
 			Airship.Camera.characterCameraMode = this.characterCameraMode;
 
 			if (this.useAirshipCameraSystem) {
-				//Allow clients to toggle their view model
+				// Allow clients to toggle their view model
 				Airship.Camera.canToggleFirstPerson = this.allowFirstPersonToggle;
 				if (this.startInFirstPerson && this.characterCameraMode === CharacterCameraMode.Fixed) {
-					//Force first person view model
+					// Force first person view model
 					Airship.Camera.SetFirstPerson(this.startInFirstPerson);
 				}
 
@@ -132,21 +131,21 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 					activeCameraMode.UpdateProperties(CameraConstants.DefaultOrbitCameraConfig);
 				}
 
-				//Camera FOV
+				// amera FOV
 				Airship.Camera.SetSprintFOVEnabled(this.useSprintFOV);
 				Airship.Camera.SetSprintFOVMultiplier(this.sprintFOVMultiplier);
 			}
 
-			//UI visual toggles
+			// UI visual toggles
 			Airship.Chat.SetUIEnabled(this.showChat);
 			Airship.Inventory.SetUIVisibility(this.inventoryVisibility);
 		}
 
-		//Stop any input for some movement options we don't use
+		// Stop any input for some movement options we don't use
 		if (!this.enableJumping || !this.enableCrouching || !this.enableSprinting) {
-			//Listen to input event
+			// Listen to input event
 			Airship.Characters.localCharacterManager.onBeforeLocalEntityInput.Connect((event) => {
-				//Force the event off if we don't want that feature
+				// Force the event off if we don't want that feature
 				if (!this.enableJumping) {
 					event.jump = false;
 				}
