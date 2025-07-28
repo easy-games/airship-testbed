@@ -12,9 +12,9 @@ export class StaticCameraMode extends CameraMode {
 		this.transform = new CameraTransform(position, rotation);
 	}
 
-	OnStart(camera: Camera, rootTransform: Transform) {}
+	OnEnable(camera: Camera, rootTransform: Transform) {}
 
-	OnStop() {}
+	OnDisable() {}
 
 	OnUpdate(dt: number) {}
 

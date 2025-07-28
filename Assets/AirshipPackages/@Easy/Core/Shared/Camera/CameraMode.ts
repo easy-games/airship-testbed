@@ -98,15 +98,15 @@ export abstract class CameraMode {
 	}
 
 	/** Called when the camera mode is enabled. */
-	public OnEnabled(): void {}
+	abstract OnEnable(camera: Camera, rootTransform: Transform): void;
 
 	abstract GetFriendlyName(): string;
 
 	/** Called when the camera mode starts. */
-	abstract OnStart(camera: Camera, rootTransform: Transform): void;
+	// abstract OnStart(camera: Camera, rootTransform: Transform): void;
 
 	/** Called when the camera mode stops. */
-	abstract OnStop(): void;
+	abstract OnDisable(): void;
 
 	/** Called every frame. Useful for control logic. */
 	abstract OnUpdate(deltaTime: number): void;

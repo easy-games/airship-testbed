@@ -47,7 +47,7 @@ export class FlyCameraMode extends CameraMode {
 	private mouse!: Mouse;
 	private readonly keysDown = new Set<Key>();
 
-	OnStart(camera: Camera, rootTransform: Transform) {
+	OnEnable(camera: Camera, rootTransform: Transform) {
 		this.positionSpring = new Spring(rootTransform.position, 5);
 
 		this.rotationX = rootTransform.forward.x;
@@ -111,7 +111,7 @@ export class FlyCameraMode extends CameraMode {
 		});
 	}
 
-	OnStop() {
+	OnDisable() {
 		this.bin.Clean();
 	}
 

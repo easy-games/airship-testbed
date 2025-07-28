@@ -535,7 +535,6 @@ export class AirshipCameraSingleton {
 			const lookVectorSync = OnLateUpdate.ConnectWithPriority(SignalPriority.LOWEST, () => {
 				if (!character.movement) return;
 				if (character.movement.disableInput) return;
-				// print("AirshipCameraSingleton.SetLookVector Time: " + Time.time);
 				character.movement.SetLookVector(mode.cameraForwardVector);
 			});
 
