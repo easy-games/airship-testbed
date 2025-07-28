@@ -575,7 +575,7 @@ export class AirshipCameraSingleton {
 			}
 
 			//Every frame set the characters look vector to match the cameras
-			const lookVectorSync = OnLateUpdate.ConnectWithPriority(SignalPriority.LOW, () => {
+			const lookVectorSync = OnLateUpdate.Connect(() => {
 				if (!character.movement) return;
 				if (character.movement.disableInput) return;
 				if (characterLocked) {

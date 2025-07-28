@@ -131,7 +131,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 					activeCameraMode.UpdateProperties(CameraConstants.DefaultOrbitCameraConfig);
 				}
 
-				// amera FOV
+				// Camera FOV
 				Airship.Camera.SetSprintFOVEnabled(this.useSprintFOV);
 				Airship.Camera.SetSprintFOVMultiplier(this.sprintFOVMultiplier);
 			}
