@@ -545,7 +545,8 @@ export class DirectMessageController {
 
 	public SanitizeMessage(msg: string): string {
 		msg = Bridge.RemoveRichText(msg);
-		msg = string.gsub(msg, "\\n", "")[0];
+		msg = string.gsub(msg, "\\%d%d?%d?", "")[0]; // remove any \0 - \255 (ASCII)
+		msg = string.gsub(msg, "\\%a", "")[0]; // remove anything like \t, \a, \x etc.
 		return msg;
 	}
 }

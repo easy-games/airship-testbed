@@ -23,7 +23,7 @@ export class ProtectedChatService implements OnStart {
 	private StartupServerChatListener() {
 		CoreNetwork.ClientToServer.SendChatMessage.server.OnClientEvent((player, text) => {
 			if (text.size() > 500) return;
-			if (player.orgRoleName === undefined) {
+			if (player.orgRoleName === undefined || true) {
 				text = this.SanitizeText(text);
 			}
 
@@ -47,7 +47,8 @@ export class ProtectedChatService implements OnStart {
 
 	public SanitizeText(msg: string): string {
 		msg = Bridge.RemoveRichText(msg);
-		msg = string.gsub(msg, "\\n", "")[0];
+		msg = string.gsub(msg, "\\%d%d?%d?", "")[0]; // remove any \0 - \255 (ASCII)
+		msg = string.gsub(msg, "\\%a", "")[0]; // remove anything like \t, \a, \x etc.
 		return msg;
 	}
 }
