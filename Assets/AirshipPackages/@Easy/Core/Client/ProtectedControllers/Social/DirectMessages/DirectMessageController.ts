@@ -1,5 +1,6 @@
 import { SocketController } from "@Easy/Core/Client/ProtectedControllers//Socket/SocketController";
 import { Airship } from "@Easy/Core/Shared/Airship";
+import { AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
@@ -8,6 +9,8 @@ import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import DirectMessagesWindow from "@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow";
 import PartyChatButton from "@Easy/Core/Shared/MainMenu/Components/PartyChatButton";
 import { ClientChatSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton";
+import { GameCoordinatorChat, GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
@@ -21,9 +24,6 @@ import { MainMenuController } from "../../MainMenuController";
 import { ProtectedFriendsController } from "../FriendsController";
 import { MainMenuPartyController } from "../MainMenuPartyController";
 import { DirectMessage } from "./DirectMessage";
-import { GameCoordinatorChat, GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
-import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import { AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
@@ -72,12 +72,14 @@ export class DirectMessageController {
 		private readonly friendsController: ProtectedFriendsController,
 		private readonly socketController: SocketController,
 		private readonly partyController: MainMenuPartyController,
-	) { }
+	) {}
 
 	protected OnStart(): void {
 		this.Setup();
 
 		this.socketController.On<DirectMessage>("game-coordinator/direct-message", (data) => {
+			data.text = this.SanitizeMessage(data.text);
+
 			let messages = this.messagesMap.get(data.sender);
 			if (messages === undefined) {
 				messages = [];
@@ -121,6 +123,8 @@ export class DirectMessageController {
 		});
 
 		this.socketController.On<DirectMessage>("game-coordinator/party-message", (data) => {
+			data.text = this.SanitizeMessage(data.text);
+
 			const messages = MapUtil.GetOrCreate(this.messagesMap, "party", []);
 			messages.push(data);
 			this.onPartyMessageReceived.Fire(data);
@@ -270,7 +274,7 @@ export class DirectMessageController {
 
 		if (message === "") return;
 		const messageId = `DirectMessageController:${this.internalMessageId++}`;
-		const clientChat = Dependency<ClientChatSingleton>()
+		const clientChat = Dependency<ClientChatSingleton>();
 
 		this.inputField!.text = "";
 		let sentMessage: DirectMessage = {
@@ -288,21 +292,30 @@ export class DirectMessageController {
 			clientChat.RenderChatMessage(this.generateDMForDisplay(status.username, message), messageId);
 		}
 
-		let data: GameCoordinatorChat.SendMessageResponse = client.chat.sendDirectMessage({ target: uid, text: message }).expect();
+		let data: GameCoordinatorChat.SendMessageResponse = client.chat
+			.sendDirectMessage({ target: uid, text: message })
+			.expect();
 
 		if (data.messageSent) {
 			if (data.transformedMessage) {
 				if (Game.coreContext === CoreContext.GAME) {
-					clientChat.UpdateChatMessage(messageId, this.generateDMForDisplay(status.username, data.transformedMessage));
+					clientChat.UpdateChatMessage(
+						messageId,
+						this.generateDMForDisplay(status.username, data.transformedMessage),
+					);
 				}
 				messageObj.setMessageText(data.transformedMessage);
 				sentMessage.text = data.transformedMessage;
 			}
 		} else {
-			const errorHeader = ColorUtil.ColoredText(Theme.red, `Failed to send: `) +
-				ColorUtil.ColoredText(Theme.gray, `"${data.reason ?? "Unknown Error"}".`)
+			const errorHeader =
+				ColorUtil.ColoredText(Theme.red, `Failed to send: `) +
+				ColorUtil.ColoredText(Theme.gray, `"${data.reason ?? "Unknown Error"}".`);
 			if (Game.coreContext === CoreContext.GAME) {
-				clientChat.UpdateChatMessage(messageId, errorHeader + "\n" + this.generateDMForDisplay(status.username, message));
+				clientChat.UpdateChatMessage(
+					messageId,
+					errorHeader + "\n" + this.generateDMForDisplay(status.username, message),
+				);
 			}
 			sentMessage.text = sentMessage.text + "\n" + errorHeader;
 			messageObj.setMessageText(sentMessage.text);
@@ -372,6 +385,8 @@ export class DirectMessageController {
 		const text = messageRefs.GetValue("UI", "Text") as TMP_Text;
 
 		const setMessageText = (str: string) => {
+			str = this.SanitizeMessage(str);
+
 			if (isParty && !outgoing) {
 				const member = this.partyController.party?.members.find((u) => u.uid === dm.sender);
 				let username = member?.username ?? "Unknown";
@@ -526,5 +541,11 @@ export class DirectMessageController {
 		if (this.windowGo)
 			NativeTween.AnchoredPositionY(this.windowGo.transform, this.yPos, 0.1).SetUseUnscaledTime(true);
 		this.openedWindowTarget = undefined;
+	}
+
+	public SanitizeMessage(msg: string): string {
+		msg = Bridge.RemoveRichText(msg);
+		msg = string.gsub(msg, "\\n", "")[0];
+		return msg;
 	}
 }

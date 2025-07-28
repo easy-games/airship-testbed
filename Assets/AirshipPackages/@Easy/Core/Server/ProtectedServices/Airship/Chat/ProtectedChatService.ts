@@ -45,7 +45,7 @@ export class ProtectedChatService implements OnStart {
 		});
 	}
 
-	private SanitizeText(msg: string): string {
+	public SanitizeText(msg: string): string {
 		msg = Bridge.RemoveRichText(msg);
 		msg = string.gsub(msg, "\\n", "")[0];
 		return msg;
