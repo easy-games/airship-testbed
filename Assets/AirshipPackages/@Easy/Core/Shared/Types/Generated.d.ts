@@ -39194,6 +39194,7 @@ interface InternalHttpManagerConstructor {
     editorUserId: string;
     editorAuthToken: string;
     authToken: string;
+    authTokenSetTaskCompletionSource: TaskCompletionSource<boolean>;
 
 
 
@@ -39201,6 +39202,7 @@ interface InternalHttpManagerConstructor {
     DeleteAsync(url: string): HttpResponse;
     GetAsync(url: string): HttpResponse;
     GetAsyncWithHeaders(url: string, headers: string): HttpResponse;
+    OnLoad(): void;
     PatchAsync(url: string, data: string): HttpResponse;
     PostAsync(url: string, data: string): HttpResponse;
     PostAsync(url: string): HttpResponse;
@@ -42842,6 +42844,49 @@ interface TimeConstructor {
 
 }
 declare const Time: TimeConstructor;
+    
+interface FrameTimingManager {
+
+
+
+
+
+}
+    
+interface FrameTiming {
+    cpuFrameTime: number;
+    cpuMainThreadFrameTime: number;
+    cpuMainThreadPresentWaitTime: number;
+    cpuRenderThreadFrameTime: number;
+    gpuFrameTime: number;
+    frameStartTimestamp: number;
+    firstSubmitTimestamp: number;
+    cpuTimePresentCalled: number;
+    cpuTimeFrameComplete: number;
+    heightScale: number;
+    widthScale: number;
+    syncInterval: number;
+
+
+
+
+
+}
+    
+interface FrameTimingManagerConstructor {
+
+
+
+
+    CaptureFrameTimings(): void;
+    GetCpuTimerFrequency(): number;
+    GetGpuTimerFrequency(): number;
+    GetLatestTimings(numFrames: number, timings: Readonly<FrameTiming[]>): number;
+    GetVSyncsPerSecond(): number;
+    IsFeatureEnabled(): boolean;
+
+}
+declare const FrameTimingManager: FrameTimingManagerConstructor;
     
 interface BoxCollider2D extends Collider2D {
     /**
