@@ -149,7 +149,10 @@ export class AirshipCameraSingleton {
 								this.SetFirstPerson(true);
 							}
 						});
-						flyingBin.Add(Dependency<LocalCharacterSingleton>().input!.AddDisabler());
+						const characterInput = Dependency<LocalCharacterSingleton>().GetCharacterInput();
+						if (characterInput) {
+							flyingBin.Add(characterInput.AddDisabler());
+						}
 						if (Airship.Inventory.localInventory) {
 							// TODO: luke add back disablers
 							// flyingBin.Add(Airship.Inventory.localInventory.AddControlsDisabler());
