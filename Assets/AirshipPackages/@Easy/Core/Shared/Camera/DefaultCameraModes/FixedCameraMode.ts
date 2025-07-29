@@ -174,21 +174,22 @@ export class FixedCameraMode extends CameraMode {
 		this.crouching = crouching;
 		this.crouchTweenBin.Clean();
 
-		const crouchTweenBaseSpeed = 0.16;
+		const crouchTweenCrouchingBaseSpeed = 0.5;
+		const crouchTweenUncrouchingBaseSpeed = 0.5;
 		const percentStartCrouch = math.map(this.currentCrouchYOffset, 0, this.crouchYOffset, 0, 1);
 
 		if (crouching) {
-			const crouchTweenSpeed = crouchTweenBaseSpeed * (1 - percentStartCrouch);
+			const crouchTweenSpeed = crouchTweenCrouchingBaseSpeed * (1 - percentStartCrouch);
 			this.crouchTweenBin.Add(
-				Tween.Number(TweenEasingFunction.Linear, crouchTweenSpeed, (val) => {
+				Tween.Number(TweenEasingFunction.InOutQuad, crouchTweenSpeed, (val) => {
 					const mappedVal = math.map(val, 0, 1, percentStartCrouch, 1);
 					this.currentCrouchYOffset = mappedVal * this.crouchYOffset;
 				}),
 			);
 		} else {
-			const crouchTweenSpeed = crouchTweenBaseSpeed * percentStartCrouch;
+			const crouchTweenSpeed = crouchTweenUncrouchingBaseSpeed * percentStartCrouch;
 			this.crouchTweenBin.Add(
-				Tween.Number(TweenEasingFunction.Linear, crouchTweenSpeed, (val) => {
+				Tween.Number(TweenEasingFunction.InOutQuad, crouchTweenSpeed, (val) => {
 					const mappedVal = math.map(val, 0, 1, 1 - percentStartCrouch, 1);
 					this.currentCrouchYOffset = (1 - mappedVal) * this.crouchYOffset;
 				}),
