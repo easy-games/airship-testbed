@@ -6,7 +6,7 @@ import { Theme } from "@Easy/Core/Shared/Util/Theme";
 export class FlyCommand extends ChatCommand {
 	constructor() {
 		super("fly");
-		super.requiresPermission = true;
+		this.requiresPermission = true;
 	}
 	public Execute(player: Player, args: string[]): void {
 		if (!player.character?.movement) {
@@ -14,14 +14,12 @@ export class FlyCommand extends ChatCommand {
 			return;
 		}
 
-		if (player.character) {
-			const flying = !player.character.movement.IsFlying();
-			player.character.movement.SetDebugFlying(flying);
-			player.SendMessage(
-				flying
-					? ColorUtil.ColoredText(Theme.green, "Fly mode enabled.")
-					: ColorUtil.ColoredText(Theme.red, "Fly mode disabled."),
-			);
-		}
+		const flying = !player.character.movement.IsFlying();
+		player.character.movement.SetDebugFlying(flying);
+		player.SendMessage(
+			flying
+				? ColorUtil.ColoredText(Theme.green, "Fly mode enabled.")
+				: ColorUtil.ColoredText(Theme.red, "Fly mode disabled."),
+		);
 	}
 }

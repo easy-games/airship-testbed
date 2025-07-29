@@ -69,6 +69,9 @@ export class AirshipPlayersSingleton {
 			mutable.username = localPlayerInfo.username;
 			mutable.userId = localPlayerInfo.userId;
 			mutable.orgRoleName = localPlayerInfo.orgRoleName;
+			if (mutable.orgRoleName === "") {
+				mutable.orgRoleName = undefined;
+			}
 			mutable.SetVoiceChatAudioSource(localPlayerInfo.voiceChatAudioSource);
 			Game.localPlayerLoaded = true;
 			Game.onLocalPlayerLoaded.Fire();

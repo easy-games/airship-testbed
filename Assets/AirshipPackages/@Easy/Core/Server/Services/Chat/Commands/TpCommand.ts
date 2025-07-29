@@ -7,7 +7,7 @@ import { Theme } from "@Easy/Core/Shared/Util/Theme";
 export class TpCommand extends ChatCommand {
 	constructor() {
 		super("tp", [], "<player>");
-		super.requiresPermission = true;
+		this.requiresPermission = true;
 	}
 
 	public Execute(player: Player, args: string[]): void {

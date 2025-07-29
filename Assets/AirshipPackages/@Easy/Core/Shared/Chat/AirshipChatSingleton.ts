@@ -101,7 +101,7 @@ export class AirshipChatSingleton {
 				if (StringUtils.startsWith(text, "/")) {
 					const commandData = ChatUtil.ParseCommandData(text);
 
-					print(player.username + ": " + text);
+					// print(player.username + ": " + text);
 
 					if (commandData) {
 						const command = this.commands.get(commandData.label);
@@ -152,7 +152,7 @@ export class AirshipChatSingleton {
 								if (moderationResult.messageBlockedReasons.size() > 0) {
 									player.SendMessage(
 										"Your message was blocked for violating our community guidelines for the following reason(s): " +
-										moderationResult.messageBlockedReasons.join(", "),
+											moderationResult.messageBlockedReasons.join(", "),
 									);
 								} else {
 									player.SendMessage(
@@ -231,8 +231,8 @@ export class AirshipChatSingleton {
 		if (!Game.IsServer()) {
 			error(
 				"Error trying to call RegisterCommand " +
-				command.commandLabel +
-				": Can only register command on server.",
+					command.commandLabel +
+					": Can only register command on server.",
 			);
 		}
 

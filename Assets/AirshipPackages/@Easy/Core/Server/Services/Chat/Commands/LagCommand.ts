@@ -5,7 +5,7 @@ import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 export class LagCommand extends ChatCommand {
 	constructor() {
 		super("lag", [], `["off" | ping]`);
-		super.requiresPermission = true;
+		this.requiresPermission = true;
 	}
 
 	public Execute(player: Player, args: string[]): void {
