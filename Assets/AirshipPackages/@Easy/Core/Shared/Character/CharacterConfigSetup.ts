@@ -50,9 +50,9 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 
 	@Header("Character Camera Configuration")
 	@Header("Fixed Camera")
-	public fixedXOffset = 0.45;
+	public fixedXOffset = 0.75;
 	public fixedYOffset = 1.7;
-	public fixedZOffset = 3.5;
+	public fixedZOffset = 2.5;
 	public fixedMinRotX = 1;
 	public fixedMaxRotX = 179;
 	@Header("Orbit Camera")
