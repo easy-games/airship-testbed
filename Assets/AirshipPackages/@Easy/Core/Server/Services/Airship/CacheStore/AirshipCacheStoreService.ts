@@ -21,13 +21,27 @@ import { Game } from "@Easy/Core/Shared/Game";
  */
 @Service({})
 export class AirshipCacheStoreService {
+	// Used in editor where we can't make calls to the platform APIs. This is for basic Get/Set only.
+	private internalDB: Record<string, any> = {};
+	private expiryThreads: Record<string, thread> = {};
+
 	constructor() {
 		if (!Game.IsServer()) return;
 
 		Platform.Server.CacheStore = this;
 	}
 
-	protected OnStart(): void { }
+	protected OnStart(): void {}
+
+	private ExpireEditorKey(key: string, expireTimeSec: number) {
+		const currentDeleteThread = this.expiryThreads[key];
+		if (currentDeleteThread) {
+			task.cancel(currentDeleteThread);
+		}
+		this.expiryThreads[key] = task.delayDetached(expireTimeSec, () => {
+			delete this.internalDB[key];
+		});
+	}
 
 	/**
 	 * Gets the cached data for the provided key.
@@ -38,6 +52,13 @@ export class AirshipCacheStoreService {
 	 */
 	public async GetKey<T>(key: string, expireTimeSec?: number): Promise<T | undefined> {
 		this.CheckKey(key);
+
+		if (Game.IsEditor()) {
+			if (expireTimeSec) {
+				this.ExpireEditorKey(key, expireTimeSec);
+			}
+			return this.internalDB[key];
+		}
 
 		const result = contextbridge.invoke<ServerBridgeApiCacheGetKey<T>>(
 			CacheStoreServiceBridgeTopics.GetKey,
@@ -55,12 +76,18 @@ export class AirshipCacheStoreService {
 	 * @param expireTimeSec The duration this key should live after being set in seconds. The maximum duration is 24 hours.
 	 * @returns The data that was associated with the provided key.
 	 */
-	public async SetKey<T>(
-		key: string,
-		data: T,
-		expireTimeSec: number,
-	): Promise<T | undefined> {
+	public async SetKey<T>(key: string, data: T, expireTimeSec: number): Promise<T | undefined> {
 		this.CheckKey(key);
+
+		if (Game.IsEditor()) {
+			if (data === undefined) {
+				this.DeleteKey(key, false);
+				return data;
+			}
+			this.ExpireEditorKey(key, expireTimeSec);
+			this.internalDB[key] = data;
+			return data;
+		}
 
 		const result = contextbridge.invoke<ServerBridgeApiCacheSetKey<T>>(
 			CacheStoreServiceBridgeTopics.SetKey,
@@ -79,6 +106,17 @@ export class AirshipCacheStoreService {
 	public async DeleteKey<T = unknown>(key: string, returnValue: boolean = false): Promise<T | undefined> {
 		this.CheckKey(key);
 
+		if (Game.IsEditor()) {
+			const currentDeleteThread = this.expiryThreads[key];
+			if (currentDeleteThread) {
+				task.cancel(currentDeleteThread);
+			}
+			const currentData = this.internalDB[key];
+			delete this.internalDB[key];
+			if (returnValue) return currentData;
+			return undefined;
+		}
+
 		const result = contextbridge.invoke<ServerBridgeApiCacheDeleteKey<T>>(
 			CacheStoreServiceBridgeTopics.DeleteKey,
 			LuauContext.Protected,
@@ -96,6 +134,10 @@ export class AirshipCacheStoreService {
 	 */
 	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<number> {
 		this.CheckKey(key);
+		if (Game.IsEditor()) {
+			this.ExpireEditorKey(key, expireTimeSec);
+			return expireTimeSec;
+		}
 
 		return contextbridge.invoke<ServerBridgeApiCacheSetKeyTTL>(
 			CacheStoreServiceBridgeTopics.SetKeyTTL,
