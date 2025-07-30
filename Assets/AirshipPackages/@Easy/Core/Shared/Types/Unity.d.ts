@@ -1946,7 +1946,7 @@ interface GameObject extends Object {
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.AddComponent.html | GameObject.AddComponent}
 	 */
-	AddComponent<T>(): T;
+	AddComponent<T extends Component>(): T;
 	BroadcastMessage(methodName: string, options: SendMessageOptions): void;
 	/**
 	 * Calls the method named methodName on every MonoBehaviour in this GameObject or any of its children.
@@ -2075,7 +2075,7 @@ interface GameObject extends Object {
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponents.html | GameObject.GetComponents}
 	 */
-	GetComponents<T>(): T[];
+	GetComponents<T extends Component>(): T[];
 	/**
 	 * Gets references to all components of type T on the specified GameObject, and any child of the GameObject.
 	 * @param includeInactive Whether to include inactive child GameObjects in the search.
@@ -2101,7 +2101,7 @@ interface GameObject extends Object {
 	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.GetComponentsInParent.html | GameObject.GetComponentsInParent}
 	 */
-	GetComponentsInParent<T>(): T[];
+	GetComponentsInParent<T extends Component>(): T[];
 
 	GetAirshipComponentInChildren<T extends AirshipBehaviour>(includeInactive?: boolean): T | undefined;
 	GetAirshipComponentsInChildren<T extends AirshipBehaviour>(includeInactive?: boolean): T[];
