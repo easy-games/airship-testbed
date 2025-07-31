@@ -1,14 +1,14 @@
 import {
 	GameCoordinatorGroups,
 	GameCoordinatorMatchmaking,
-	GameCoordinatorUsers,
+	GameCoordinatorMatchmakingDebug
 } from "../../TypePackages/game-coordinator-types";
 
 export type AirshipJoinQueueDto = GameCoordinatorMatchmaking.JoinQueueDto;
 
 export type AirshipMatchmakingGroup = GameCoordinatorGroups.Group;
 
-export type AirshipMatchTeamGroupPlayer = GameCoordinatorMatchmaking.MatchmakingMatchTeamGroupPlayer;
-export type AirshipMatchTeamGroup = GameCoordinatorMatchmaking.MatchmakingMatchTeamGroup;
-export type AirshipMatchTeam = GameCoordinatorMatchmaking.MatchmakingMatchTeam;
-export type AirshipMatchConfig = GameCoordinatorMatchmaking.MatchmakingMatchConfig;
+export type AirshipMatchTeamGroupPlayer = GameCoordinatorMatchmakingDebug.MatchmakingMatchTeamGroupPlayer;
+export type AirshipMatchTeamGroup = GameCoordinatorMatchmakingDebug.MatchmakingMatchTeamGroup;
+export type AirshipMatchTeam = GameCoordinatorMatchmakingDebug.MatchmakingMatchTeam;
+export type AirshipMatchConfig = GameCoordinatorMatchmakingDebug.MatchmakingMatchConfig;
