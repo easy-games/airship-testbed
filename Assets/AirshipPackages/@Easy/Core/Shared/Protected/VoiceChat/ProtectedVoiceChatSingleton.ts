@@ -27,6 +27,14 @@ export class ProtectedVoiceChatSingleton implements OnStart {
 			// }
 			return this.connectionIdToSpeakingLevel.get(connectionId)?.speakingLevel ?? 0;
 		});
+
+		contextbridge.callback("VoiceChat:SetDeafened", (from, deafened: boolean) => {
+			this.SetDeafened(deafened);
+		});
+
+		contextbridge.callback("VoiceChat:IsDeafened", (from) => {
+			return this.IsDeafened();
+		});
 	}
 
 	public SetMuted(userId: string, muted: boolean): void {
