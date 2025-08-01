@@ -1,4 +1,3 @@
-import { Game } from "../Game";
 import { HttpCallback, HttpRetryInstance } from "../Http/HttpRetry";
 import { entries } from "../Util/ObjectUtils";
 // note (Corey Shupe):
@@ -54,12 +53,7 @@ function encodeQueryString(query: object) {
 
 const UNITY_MAKE_REQUEST_RETRY = HttpRetryInstance();
 
-export type UnityMakeRequestError = {
-	routeId: string;
-	message: string;
-	status: number;
-	responseMessage: () => string | undefined;
-};
+export type UnityMakeRequestError = { routeId: string, message: string; status: number; responseMessage: () => string | undefined };
 
 export function isUnityMakeRequestError(err: unknown): err is UnityMakeRequestError {
 	if (!err) return false;
@@ -133,7 +127,7 @@ export function UnityMakeRequest(baseUrl: string): MakeRequest {
 						// If we can't extract the error message text, do nothing
 					}
 					return responseMessage;
-				},
+				}
 			};
 		}
 
