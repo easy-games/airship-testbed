@@ -130,7 +130,7 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 			const UpdateDeafenBtnState = (deafened: boolean) => {
 				this.vcDeafenBackground.color = deafened
 					? ColorUtil.HexToColor("#842C2C")
-					: new Color(1, 1, 1, 20 / 255);
+					: new Color(1, 1, 1, 10 / 255);
 			};
 			this.bin.Add(
 				this.vcDeafenBtn.onClick.Connect(() => {
