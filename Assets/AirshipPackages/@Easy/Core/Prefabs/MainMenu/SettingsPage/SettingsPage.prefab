@@ -3381,8 +3381,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5851182451793476457}
   m_HandleRect: {fileID: 6796106799109526970}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.81007123
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4782,7 +4782,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enable Voice Chat
+  m_text: Enable Microphone
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 39fc97816df3344858585cf3cbaec56e, type: 2}
   m_sharedMaterial: {fileID: -1186578902683691609, guid: 39fc97816df3344858585cf3cbaec56e, type: 2}
@@ -13408,7 +13408,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 643.5, y: -990.898}
+  m_AnchoredPosition: {x: 643.5, y: -576.104}
   m_SizeDelta: {x: 1287, y: 239.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &642745066133410698
