@@ -238,8 +238,8 @@ interface CharacterMovement extends Component {
 	UpdateCharacterRotation(lookDirection: Vector3): void;
 	/**
 	 * Sets the head look direction independently of the body using "Look Vector Influence". Does _NOT_ limit the
-	 * amount of rotation from the body forward direction. If you look at something behind you, your neck will snap.
-	 * Use UpdateCharacterRotation for rotation that take the configured limits into account.
+	 * amount of rotation from the body forward direction. Use UpdateCharacterRotation for rotation that takes
+	 * the configured limits into account.
 	 *
 	 * This function is not networked.
 	 */
