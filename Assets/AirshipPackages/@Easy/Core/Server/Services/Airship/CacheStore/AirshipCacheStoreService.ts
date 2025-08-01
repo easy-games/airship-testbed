@@ -8,6 +8,7 @@ import {
 import { Platform } from "@Easy/Core/Shared/Airship";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import EditorCacheStore from "./EditorCacheStore";
 
 /**
  * The Cache Store provides simple key/value cache storage.
@@ -22,26 +23,18 @@ import { Game } from "@Easy/Core/Shared/Game";
 @Service({})
 export class AirshipCacheStoreService {
 	// Used in editor where we can't make calls to the platform APIs. This is for basic Get/Set only.
-	private internalDB: Record<string, any> = {};
-	private expiryThreads: Record<string, thread> = {};
+	private readonly editorCacheStore: EditorCacheStore;
 
 	constructor() {
 		if (!Game.IsServer()) return;
+		if (Game.IsEditor()) {
+			this.editorCacheStore = new EditorCacheStore();
+		}
 
 		Platform.Server.CacheStore = this;
 	}
 
 	protected OnStart(): void {}
-
-	private ExpireEditorKey(key: string, expireTimeSec: number) {
-		const currentDeleteThread = this.expiryThreads[key];
-		if (currentDeleteThread) {
-			task.cancel(currentDeleteThread);
-		}
-		this.expiryThreads[key] = task.delayDetached(expireTimeSec, () => {
-			delete this.internalDB[key];
-		});
-	}
 
 	/**
 	 * Gets the cached data for the provided key.
@@ -54,10 +47,7 @@ export class AirshipCacheStoreService {
 		this.CheckKey(key);
 
 		if (Game.IsEditor()) {
-			if (expireTimeSec) {
-				this.ExpireEditorKey(key, expireTimeSec);
-			}
-			return this.internalDB[key];
+			return this.editorCacheStore.GetKey<T>(key, expireTimeSec);
 		}
 
 		const result = contextbridge.invoke<ServerBridgeApiCacheGetKey<T>>(
@@ -80,13 +70,7 @@ export class AirshipCacheStoreService {
 		this.CheckKey(key);
 
 		if (Game.IsEditor()) {
-			if (data === undefined) {
-				this.DeleteKey(key, false);
-				return data;
-			}
-			this.ExpireEditorKey(key, expireTimeSec);
-			this.internalDB[key] = data;
-			return data;
+			return this.editorCacheStore.SetKey(key, data, expireTimeSec);
 		}
 
 		const result = contextbridge.invoke<ServerBridgeApiCacheSetKey<T>>(
@@ -107,14 +91,7 @@ export class AirshipCacheStoreService {
 		this.CheckKey(key);
 
 		if (Game.IsEditor()) {
-			const currentDeleteThread = this.expiryThreads[key];
-			if (currentDeleteThread) {
-				task.cancel(currentDeleteThread);
-			}
-			const currentData = this.internalDB[key];
-			delete this.internalDB[key];
-			if (returnValue) return currentData;
-			return undefined;
+			return this.editorCacheStore.DeleteKey<T>(key, returnValue);
 		}
 
 		const result = contextbridge.invoke<ServerBridgeApiCacheDeleteKey<T>>(
@@ -135,8 +112,7 @@ export class AirshipCacheStoreService {
 	public async SetKeyTTL(key: string, expireTimeSec: number): Promise<number> {
 		this.CheckKey(key);
 		if (Game.IsEditor()) {
-			this.ExpireEditorKey(key, expireTimeSec);
-			return expireTimeSec;
+			return this.editorCacheStore.SetKeyTTL(key, expireTimeSec);
 		}
 
 		return contextbridge.invoke<ServerBridgeApiCacheSetKeyTTL>(

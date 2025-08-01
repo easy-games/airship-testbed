@@ -14,7 +14,7 @@ import {
 } from "@Easy/Core/Shared/Airship/Types/AirshipLeaderboards";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { EditorLeaderboards } from "./EditorLeaderboards";
+import EditorLeaderboards from "./EditorLeaderboards";
 
 /**
  * This service provides access to leaderboard information as well as methods for updating existing leaderboards.
@@ -23,16 +23,15 @@ import { EditorLeaderboards } from "./EditorLeaderboards";
  */
 @Service({})
 export class AirshipLeaderboardService {
-	private editorLeaderboards: EditorLeaderboards;
+	private readonly editorLeaderboards: EditorLeaderboards;
 
 	constructor() {
 		if (!Game.IsServer()) return;
-
-		Platform.Server.Leaderboard = this;
-
 		if (Game.IsEditor()) {
 			this.editorLeaderboards = new EditorLeaderboards();
 		}
+
+		Platform.Server.Leaderboard = this;
 	}
 
 	protected OnStart(): void {}

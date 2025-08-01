@@ -18,8 +18,8 @@ interface Leaderboard {
 /**
  * An in-memory representation of data store leaderboards.
  */
-export class EditorLeaderboards {
-	private readonly leaderboards: { [id: string]: Leaderboard } = {};
+export default class EditorLeaderboards {
+	private readonly leaderboards: Map<string, Leaderboard> = new Map();
 
 	public constructor() {
 		if (!Game.IsEditor()) {
@@ -37,17 +37,17 @@ export class EditorLeaderboards {
 		id: string,
 		options: { sortOrder: "ASC" | "DESC"; operator: DataStoreServiceLeaderboards.OperatorIndexType },
 	) {
-		const currentLeaderboard = this.leaderboards[id];
+		const currentLeaderboard = this.leaderboards.get(id);
 
 		if (currentLeaderboard !== undefined) {
 			warn(`Leaderboard with id ${id} already exists. Replacing options instead of resetting user data.`);
 		}
 
-		this.leaderboards[id] = { ...options, userStats: currentLeaderboard?.userStats ?? {} };
+		this.leaderboards.set(id, { ...options, userStats: currentLeaderboard?.userStats ?? {} });
 	}
 
 	private CheckLeaderboardExists(id: string): Leaderboard {
-		const leaderboard = this.leaderboards[id];
+		const leaderboard = this.leaderboards.get(id);
 
 		if (!leaderboard) {
 			throw error(
@@ -115,8 +115,6 @@ export class EditorLeaderboards {
 		const leaderboard = this.CheckLeaderboardExists(id);
 
 		delete leaderboard.userStats[playerId];
-
-		this.leaderboards[id] = leaderboard;
 	}
 
 	public DeleteUserEntries(id: string, playerIds: string[]) {
@@ -125,16 +123,12 @@ export class EditorLeaderboards {
 		for (const playerId of playerIds) {
 			delete leaderboard.userStats[playerId];
 		}
-
-		this.leaderboards[id] = leaderboard;
 	}
 
 	public ResetLeaderboard(id: string) {
 		const leaderboard = this.CheckLeaderboardExists(id);
 
 		leaderboard.userStats = {};
-
-		this.leaderboards[id] = leaderboard;
 	}
 
 	private GetSortedRankings(leaderboard: Leaderboard): Array<[playerId: string, stat: number]> {
