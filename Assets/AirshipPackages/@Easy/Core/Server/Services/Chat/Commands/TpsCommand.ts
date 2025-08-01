@@ -5,7 +5,7 @@ import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 export class TpsCommand extends ChatCommand {
 	constructor() {
 		super("tps");
-		super.requiresPermission = true;
+		this.requiresPermission = true;
 
 		// if (!RunUtil.IsEditor() && RunUtil.IsServer()) {
 		// 	SetInterval(1, () => {

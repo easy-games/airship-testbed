@@ -8,7 +8,7 @@ import { Theme } from "@Easy/Core/Shared/Util/Theme";
 export class HealCommand extends ChatCommand {
 	constructor() {
 		super("heal");
-		super.requiresPermission = true;
+		this.requiresPermission = true;
 	}
 
 	public Execute(player: Player, args: string[]): void {

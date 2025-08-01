@@ -10,7 +10,10 @@ import { AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUs
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
-import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import {
+	GameCoordinatorClient,
+	GameCoordinatorUserStatus,
+} from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
@@ -74,22 +77,26 @@ export default class FriendCard extends AirshipBehaviour {
 					});
 				}
 
-				options.push(
-					{
+				if (
+					userData.partyMode === GameCoordinatorUserStatus.PartyMode.FRIENDS_ONLY ||
+					userData.partyMode === GameCoordinatorUserStatus.PartyMode.OPEN
+				) {
+					options.push({
 						text: "Join Party",
 						onClick: () => {
 							task.spawn(async () => {
 								await client.party.joinParty({ uid: userData.userId });
 							});
 						},
+					});
+				}
+
+				options.push({
+					text: "Invite to Party",
+					onClick: () => {
+						Dependency<ProtectedPartyController>().InviteToParty(userData.userId);
 					},
-					{
-						text: "Invite to Party",
-						onClick: () => {
-							Dependency<ProtectedPartyController>().InviteToParty(userData.userId);
-						},
-					},
-				);
+				});
 			}
 			if (!Game.IsMobile()) {
 				options.push({

@@ -65,7 +65,7 @@ export class ProtectedUserService {
 	}
 
 	public async GetUserById(userId: string): Promise<ReturnType<ServerBridgeApiGetUserById>> {
-		const result = await client.users.getByUid({ uid: userId });
+		const result = await client.users.getByUid({ params: { uid: userId } });
 		return result.user;
 	}
 

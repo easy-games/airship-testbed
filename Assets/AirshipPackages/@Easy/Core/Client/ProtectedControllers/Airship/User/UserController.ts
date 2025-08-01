@@ -99,7 +99,7 @@ export class ProtectedUserController {
 	 */
 	public async GetUserById(userId: string): Promise<ReturnType<BridgeApiGetUserById>> {
 		try {
-			const result = await client.users.getByUid({ uid: userId });
+			const result = await client.users.getByUid({ params: { uid: userId } });
 			return result.user;
 		} catch (err) {
 			if (isUnityMakeRequestError(err) && err.status === 404) {
