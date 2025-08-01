@@ -22,7 +22,6 @@ import EditorCacheStore from "./EditorCacheStore";
  */
 @Service({})
 export class AirshipCacheStoreService {
-	// Used in editor where we can't make calls to the platform APIs. This is for basic Get/Set only.
 	private readonly editorCacheStore: EditorCacheStore;
 
 	constructor() {
