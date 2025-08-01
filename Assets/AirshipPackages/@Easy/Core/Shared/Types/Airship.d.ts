@@ -1323,6 +1323,7 @@ interface AirshipUniVoiceNetwork extends NetworkBehaviour, IChatroomNetwork {
 	ToByteArray<T>(obj: T): Readonly<number[]>;
 	Weaved(): boolean;
 	SetConnectionMuted(connectionId: number, muted: boolean): void;
+	SetDeafened(deafened: boolean): void;
 }
 
 interface IChatroomNetwork {
