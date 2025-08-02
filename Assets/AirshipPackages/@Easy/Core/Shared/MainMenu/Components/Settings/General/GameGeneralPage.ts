@@ -1,9 +1,11 @@
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { MainMenuSingleton } from "../../../Singletons/MainMenuSingleton";
 import { SettingsPageSingleton } from "../../../Singletons/SettingsPageSingleton";
 import MainMenuPageComponent from "../../MainMenuPageComponent";
@@ -29,6 +31,12 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 	public gameTitle: TMP_Text;
 	public gameDesc: TMP_Text;
 	public gameImg: RawImage;
+
+	@Header("Voice Chat Deafen")
+	public vcDeafenBtn: Button;
+	public vcDeafenIcon: Image;
+	public vcDeafenText: TMP_Text;
+	public vcDeafenBackground: Image;
 
 	private bin = new Bin();
 	private subPageBin = new Bin();
@@ -116,6 +124,22 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 				AppManager.Close();
 			}),
 		);
+
+		// Voice Chat Deafen
+		if (this.vcDeafenBtn) {
+			const UpdateDeafenBtnState = (deafened: boolean) => {
+				this.vcDeafenBackground.color = deafened
+					? ColorUtil.HexToColor("#842C2C")
+					: new Color(1, 1, 1, 10 / 255);
+			};
+			this.bin.Add(
+				this.vcDeafenBtn.onClick.Connect(() => {
+					Protected.VoiceChat.SetDeafened(!Protected.VoiceChat.IsDeafened());
+					UpdateDeafenBtnState(Protected.VoiceChat.IsDeafened());
+				}),
+			);
+			UpdateDeafenBtnState(Protected.VoiceChat.IsDeafened());
+		}
 
 		task.spawn(() => {
 			if (!Game.gameData) {

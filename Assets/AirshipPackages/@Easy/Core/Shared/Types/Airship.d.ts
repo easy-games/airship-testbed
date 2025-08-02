@@ -223,6 +223,27 @@ interface CharacterMovement extends Component {
 	GetLocalSimulationTickFromCommandNumber(commandNumber: number): number;
 	/** If this character movement has final authority on character position and values. */
 	IsAuthority(): boolean;
+	/**
+	 * This function allows you to set the rotation of the character body and head when "rotateAutomatically" is turned off.
+	 * It will use the specified look direction and respect configured visual settings. This function should be called
+	 * in LateUpdate every frame with an updated look direction.
+	 *
+	 * Calling this only once will update the head and body rotation just enough to look in the specified direction.
+	 * It will not align the rotation exactly. If you want to align the rotation exactly. First set the airshipTransform
+	 * and graphicsHolder transforms to the desired look direction before calling this function. You can also use
+	 * UpdateHeadRotation to set a look direction for the head directly.
+	 *
+	 * This function is not networked.
+	 */
+	UpdateCharacterRotation(lookDirection: Vector3): void;
+	/**
+	 * Sets the head look direction independently of the body using "Look Vector Influence". Does _NOT_ limit the
+	 * amount of rotation from the body forward direction. Use UpdateCharacterRotation for rotation that takes
+	 * the configured limits into account.
+	 *
+	 * This function is not networked.
+	 */
+	UpdateHeadRotation(lookDirection: Vector3): void;
 
 	//Public
 	enabled: boolean;
@@ -247,6 +268,14 @@ interface CharacterMovement extends Component {
 	//isGrounded: boolean;
 	//isSprinting: boolean;
 	groundedRaycastHit: RaycastHit;
+	/** If true, the character graphics will rotate to match the look vector. */
+	rotateAutomatically: boolean;
+	/** If true, the character head rotates to match the look vector. rotateAutomatically must also be true. */
+	rotateHeadToLookVector: boolean;
+	/** Angle in degrees of allowed head movement before rotating the body. */
+	headRotationThreshold: number;
+	/** The amount of influence the look vector has on the head rotation. */
+	lookVectorInfluence: number;
 }
 
 interface AirshipSimulationManager extends MonoBehaviour {
@@ -1302,6 +1331,7 @@ interface AirshipUniVoiceNetwork extends NetworkBehaviour, IChatroomNetwork {
 	ToByteArray<T>(obj: T): Readonly<number[]>;
 	Weaved(): boolean;
 	SetConnectionMuted(connectionId: number, muted: boolean): void;
+	SetDeafened(deafened: boolean): void;
 }
 
 interface IChatroomNetwork {

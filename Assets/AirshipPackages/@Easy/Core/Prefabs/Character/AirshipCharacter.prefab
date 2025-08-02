@@ -960,6 +960,10 @@ MonoBehaviour:
   correctionMaxMagnitude: 10
   autoCalibrateSkiddingSpeed: 1
   smoothedRotationSpeed: 450
+  rotateAutomatically: 1
+  rotateHeadToLookVector: 1
+  lookVectorInfluence: 0.4
+  headRotationThreshold: 60
   playAnimationOnServer: 1
   startingLookVector: {x: 0, y: 0, z: 0}
   compareResult: 0
