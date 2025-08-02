@@ -116,6 +116,7 @@ export class AirshipServerManagerService {
 		return contextbridge.invoke<ServerBridgeApiGetServerList>(
 			ServerManagerServiceBridgeTopics.GetServerList,
 			LuauContext.Protected,
+			page,
 		);
 	}
 
