@@ -268,6 +268,14 @@ interface CharacterMovement extends Component {
 	//isGrounded: boolean;
 	//isSprinting: boolean;
 	groundedRaycastHit: RaycastHit;
+	/** If true, the character graphics will rotate to match the look vector. */
+	rotateAutomatically: boolean;
+	/** If true, the character head rotates to match the look vector. rotateAutomatically must also be true. */
+	rotateHeadToLookVector: boolean;
+	/** Angle in degrees of allowed head movement before rotating the body. */
+	headRotationThreshold: number;
+	/** The amount of influence the look vector has on the head rotation. */
+	lookVectorInfluence: number;
 }
 
 interface AirshipSimulationManager extends MonoBehaviour {
