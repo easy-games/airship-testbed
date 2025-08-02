@@ -1400,3 +1400,30 @@ interface MessagingManager {
 	};
 }
 declare const MessagingManager: MessagingManager;
+
+const enum FrameHealth {
+	Ok = 0,
+	Unhealthy = 1,
+}
+
+interface QualityReport {
+	/** Average GPU time over numFrames. */
+	gpuAvg: number;
+	/** Average CPU main thread time over numFrames. */
+    cpuMainAvg: number;
+	/** Average CPU render thread time over numFrames. */
+    cpuRenderAvg: number;
+
+	/** Number of frames recorded in quality report. This will be zero if unsupported on device. */
+	numFrames: number;
+}
+
+interface QualityManager {
+	/**
+	 * Quality check is fired 15 seconds after a client joins the game. If the report's
+	 * frame health is unhealthy you should reduce quality settings.
+	 */
+	OnQualityCheck(callback: (frameHealth: FrameHealth, report: QualityReport) => void): EngineEventConnection;
+}
+declare const QualityManager: QualityManager;
+
