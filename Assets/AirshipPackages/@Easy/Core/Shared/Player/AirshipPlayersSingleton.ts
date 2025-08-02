@@ -137,6 +137,10 @@ export class AirshipPlayersSingleton {
 					Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" disconnected."));
 				}
 			});
+
+			CoreNetwork.ClientToServer.GetServerInfo.server.SetCallback((player) => {
+				return [Game.gameId, Game.serverId, Game.organizationId];
+			});
 		}
 	}
 
@@ -161,35 +165,35 @@ export class AirshipPlayersSingleton {
 		});
 	}
 
-	/**
-	 * Only called in LuauContext.Game
-	 */
 	private InitClient(): void {
-		CoreNetwork.ServerToClient.ServerInfo.client.OnServerEvent((gameId, serverId, organizationId) => {
-			// this.localConnection = InstanceFinder.ClientManager.Connection;
-			// this.clientId = this.localConnection.ClientId;
-			Game.gameId = gameId;
-			Game.serverId = serverId;
-			Game.organizationId = organizationId;
+		if (Game.IsGameLuauContext()) {
+			task.spawn(() => {
+				const [gameId, serverId, orgId] = CoreNetwork.ClientToServer.GetServerInfo.client.FireServer();
+				// this.localConnection = InstanceFinder.ClientManager.Connection;
+				// this.clientId = this.localConnection.ClientId;
+				Game.gameId = gameId;
+				Game.serverId = serverId;
+				Game.organizationId = orgId;
 
-			// Temp
-			contextbridge.broadcast("ProtectedGetServerInfo_Temp", Game.gameId, Game.serverId, Game.organizationId);
+				// Temp
+				contextbridge.broadcast("ProtectedGetServerInfo_Temp", Game.gameId, Game.serverId, Game.organizationId);
 
-			const authenticated = contextbridge.invoke<() => boolean>(
-				"AuthController:IsAuthenticated",
-				LuauContext.Protected,
-			);
-			if (authenticated) {
-				contextbridge.invoke("FriendsController:SendStatusUpdate", LuauContext.Protected);
-			} else {
-				const disc = contextbridge.subscribe("AuthController:OnAuthenticated", (fromContext, args) => {
-					if (fromContext === LuauContext.Protected) {
-						contextbridge.invoke("FriendsController:SendStatusUpdate", LuauContext.Protected);
-						disc();
-					}
-				});
-			}
-		});
+				const authenticated = contextbridge.invoke<() => boolean>(
+					"AuthController:IsAuthenticated",
+					LuauContext.Protected,
+				);
+				if (authenticated) {
+					contextbridge.invoke("FriendsController:SendStatusUpdate", LuauContext.Protected);
+				} else {
+					const disc = contextbridge.subscribe("AuthController:OnAuthenticated", (fromContext, args) => {
+						if (fromContext === LuauContext.Protected) {
+							contextbridge.invoke("FriendsController:SendStatusUpdate", LuauContext.Protected);
+							disc();
+						}
+					});
+				}
+			});
+		}
 
 		// These remotes only come through in prot context
 		if (Game.IsProtectedLuauContext()) {
@@ -466,15 +470,6 @@ export class AirshipPlayersSingleton {
 					task.unscaledWait();
 				}
 			}
-		}
-
-		if (Game.IsProtectedLuauContext()) {
-			CoreNetwork.ServerToClient.ServerInfo.server.FireClient(
-				player,
-				Game.gameId,
-				Game.serverId,
-				Game.organizationId,
-			);
 		}
 
 		if (Game.IsHosting() || player !== Game.localPlayer) {

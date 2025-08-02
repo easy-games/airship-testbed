@@ -13,16 +13,16 @@ export interface SentChatMessage {
 	message: string;
 	senderPrefix?: string;
 	senderClientId?: number;
-};
+}
 
 export interface UpdateChatMessage {
-	type: "update",
+	type: "update";
 	internalMessageId: string;
 	message: string;
 }
 
 export interface RemoveChatMessage {
-	type: "remove",
+	type: "remove";
 	internalMessageId: string;
 }
 
@@ -31,6 +31,9 @@ export type ChatMessageNetworkEvent = SentChatMessage | UpdateChatMessage | Remo
 export const CoreNetwork = {
 	ClientToServer: {
 		Ready: new NetworkSignal("Ready"),
+		GetServerInfo: new NetworkFunction<[], [gameId: string, serverId: string, organizationId: string]>(
+			"ServerInfo",
+		),
 		Inventory: {
 			SwapSlots: new NetworkSignal<[fromInvId: number, fromSlot: number, toInvId: number, toSlot: number]>(
 				"Inventory",
@@ -53,7 +56,6 @@ export const CoreNetwork = {
 		ChangedOutfit: new NetworkSignal("ChangedOutfit"),
 	},
 	ServerToClient: {
-		ServerInfo: new NetworkSignal<[gameId: string, serverId: string, organizationId: string]>("ServerInfo"),
 		UpdateInventory: new NetworkSignal<InventoryDto>("UpdateInventory"),
 		/** Creates a new instance of an `ItemStack`. */
 		SetInventorySlot: new NetworkSignal<
@@ -65,9 +67,7 @@ export const CoreNetwork = {
 		),
 		CharacterModelChanged: new NetworkSignal<[characterModelId: number]>("CharacterModelChanged"),
 		/** Fired when a player sends a chat message with the raw chat message */
-		ChatMessage: new NetworkSignal<[ev: ChatMessageNetworkEvent]>(
-			"ChatMessage",
-		),
+		ChatMessage: new NetworkSignal<[ev: ChatMessageNetworkEvent]>("ChatMessage"),
 		SetAccessory: new NetworkSignal<[entityId: number, slot: AccessorySlot, accessoryPath: string]>("SetAccessory"),
 		RemoveAccessory: new NetworkSignal<[entityId: number, slot: AccessorySlot]>("RemoveAccessory"),
 		AddPlayer: new NetworkSignal<[player: PlayerDto]>("AddPlayer"),
