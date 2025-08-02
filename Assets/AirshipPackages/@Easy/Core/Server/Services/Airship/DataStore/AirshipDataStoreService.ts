@@ -10,6 +10,7 @@ import { Platform } from "@Easy/Core/Shared/Airship";
 import { AirshipDataStoreLockInfo, AirshipDataStoreLockMode } from "@Easy/Core/Shared/Airship/Types/AirshipDataStore";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import EditorDataStore from "./EditorDataStore";
 
 /**
  * The Data Store provides simple key/value persistent storage.
@@ -22,16 +23,18 @@ import { Game } from "@Easy/Core/Shared/Game";
  */
 @Service({})
 export class AirshipDataStoreService {
-	// Used in editor where we can't make calls to the platform APIs. This is for basic Get/Set only.
-	private internalDB: Record<string, any> = {};
+	private readonly editorDataStore: EditorDataStore;
 
 	constructor() {
 		if (!Game.IsServer()) return;
+		if (Game.IsEditor()) {
+			this.editorDataStore = new EditorDataStore();
+		}
 
 		Platform.Server.DataStore = this;
 	}
 
-	protected OnStart(): void { }
+	protected OnStart(): void {}
 
 	/**
 	 * Gets the data associated with the given key.
@@ -42,7 +45,7 @@ export class AirshipDataStoreService {
 		this.CheckKey(key);
 
 		if (Game.IsEditor()) {
-			return this.internalDB[key];
+			return this.editorDataStore.GetKey<T>(key);
 		}
 
 		const result = contextbridge.invoke<ServerBridgeApiDataGetKey<T>>(
@@ -63,8 +66,7 @@ export class AirshipDataStoreService {
 		this.CheckKey(key);
 
 		if (Game.IsEditor()) {
-			this.internalDB[key] = data;
-			return data;
+			return this.editorDataStore.SetKey(key, data);
 		}
 
 		const result = contextbridge.invoke<ServerBridgeApiDataSetKey<T>>(
@@ -103,8 +105,7 @@ export class AirshipDataStoreService {
 		this.CheckKey(key);
 
 		if (Game.IsEditor()) {
-			warn("[Data Store] GetAndSet() is unavailable in editor.");
-			return undefined as unknown as T;
+			return await this.editorDataStore.GetAndSetKey(key, callback);
 		}
 
 		const currentData = contextbridge.invoke<ServerBridgeApiDataGetKey<T>>(
@@ -139,9 +140,7 @@ export class AirshipDataStoreService {
 		this.CheckKey(key);
 
 		if (Game.IsEditor()) {
-			const data = this.internalDB[key];
-			delete this.internalDB[key];
-			return data;
+			return this.editorDataStore.DeleteKey<T>(key);
 		}
 
 		const result = contextbridge.invoke<ServerBridgeApiDataDeleteKey<T>>(
@@ -170,6 +169,10 @@ export class AirshipDataStoreService {
 		callback: (record: T) => Promise<boolean> | boolean,
 	): Promise<T | undefined> {
 		this.CheckKey(key);
+
+		if (Game.IsEditor()) {
+			return this.editorDataStore.GetAndDeleteKey(key, callback);
+		}
 
 		if (Game.IsEditor()) {
 			warn("[Data Store] GetAndDelete is unavailable in editor.");
@@ -224,8 +227,7 @@ export class AirshipDataStoreService {
 		this.CheckKey(key);
 
 		if (Game.IsEditor()) {
-			warn("[Data Store] LockKey() is unavailable in editor.");
-			return true;
+			return this.editorDataStore.LockKeyOrStealSafely(key, mode);
 		}
 
 		const gotLock = contextbridge.invoke<ServerBridgeApiDataSetLock>(
@@ -277,12 +279,15 @@ export class AirshipDataStoreService {
 	 * @param stealFromOwnerId Steals the lock from this ownerId if the key is already locked.
 	 * @returns True if the key was successfully locked to this server. False otherwise.
 	 */
-	public async LockKey(key: string, mode: AirshipDataStoreLockMode = "READ_WRITE", stealFromOwnerId?: string): Promise<boolean> {
+	public async LockKey(
+		key: string,
+		mode: AirshipDataStoreLockMode = "READ_WRITE",
+		stealFromOwnerId?: string,
+	): Promise<boolean> {
 		this.CheckKey(key);
 
 		if (Game.IsEditor()) {
-			warn("[Data Store] LockKey() is unavailable in editor.");
-			return true;
+			return this.editorDataStore.LockKey(key, mode);
 		}
 
 		return contextbridge.invoke<ServerBridgeApiDataSetLock>(
@@ -306,8 +311,7 @@ export class AirshipDataStoreService {
 		this.CheckKey(key);
 
 		if (Game.IsEditor()) {
-			warn("[Data Store] UnlockKey() is unavailable in editor.");
-			return true;
+			return this.editorDataStore.UnlockKey(key);
 		}
 
 		return contextbridge.invoke<ServerBridgeApiDataSetLock>(
@@ -329,8 +333,7 @@ export class AirshipDataStoreService {
 		this.CheckKey(key);
 
 		if (Game.IsEditor()) {
-			warn("[Data Store] GetLockDataForKey() is unavailable in editor.");
-			return { locked: false };
+			return this.editorDataStore.GetLockDataForKey(key);
 		}
 
 		return contextbridge.invoke<ServerBridgeApiDataGetLockData>(

@@ -29,6 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CameraTest.unity
     guid: e9d121344df1d4c2984b42511b101410
+  - enabled: 1
+    path: Assets/Scenes/InEditorDataStoreTest.unity
+    guid: 714c5eb5525d04a4ba047d84aaaacc90
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: db23642ed970b40389a45925eb39009c, type: 2}
   m_UseUCBPForAssetBundles: 0
