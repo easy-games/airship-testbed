@@ -2,8 +2,8 @@ import { TabListController } from "@Easy/Core/Client/Controllers/TabList/TabList
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { Game } from "../Game";
 import { AirshipMatchmakingGroup } from "../Airship/Types/Matchmaking";
+import { Game } from "../Game";
 
 @Singleton({})
 export class AirshipMenuSingleton implements OnStart {
@@ -21,7 +21,7 @@ export class AirshipMenuSingleton implements OnStart {
 		});
 	}
 
-	public OnStart(): void { }
+	public OnStart(): void {}
 
 	/**
 	 * Adds a special "Leave Match" button.
@@ -43,5 +43,12 @@ export class AirshipMenuSingleton implements OnStart {
 		if (!enabled) {
 			Dependency<TabListController>().Hide(true, true);
 		}
+	}
+
+	/**
+	 * Opens the Airship escape menu.
+	 */
+	public OpenMenu(): void {
+		contextbridge.invoke("MainMenu:OpenFromGame", LuauContext.Protected);
 	}
 }

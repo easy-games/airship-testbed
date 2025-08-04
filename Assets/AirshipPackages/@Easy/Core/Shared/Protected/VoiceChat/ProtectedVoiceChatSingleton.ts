@@ -14,6 +14,7 @@ export class ProtectedVoiceChatSingleton implements OnStart {
 	public uniVoiceNetwork: AirshipUniVoiceNetwork;
 
 	private mutedUserIds = new Set<string>();
+	private deafened = false;
 
 	constructor() {
 		Protected.VoiceChat = this;
@@ -25,6 +26,14 @@ export class ProtectedVoiceChatSingleton implements OnStart {
 			// 	return math.random();
 			// }
 			return this.connectionIdToSpeakingLevel.get(connectionId)?.speakingLevel ?? 0;
+		});
+
+		contextbridge.callback("VoiceChat:SetDeafened", (from, deafened: boolean) => {
+			this.SetDeafened(deafened);
+		});
+
+		contextbridge.callback("VoiceChat:IsDeafened", (from) => {
+			return this.IsDeafened();
 		});
 	}
 
@@ -39,6 +48,18 @@ export class ProtectedVoiceChatSingleton implements OnStart {
 		if (player) {
 			this.uniVoiceNetwork.SetConnectionMuted(player.connectionId, muted);
 		}
+	}
+
+	public SetDeafened(deafen: boolean): void {
+		this.deafened = deafen;
+		// backwards compat
+		try {
+			this.uniVoiceNetwork.SetDeafened(deafen);
+		} catch (err) {}
+	}
+
+	public IsDeafened(): boolean {
+		return this.deafened;
 	}
 
 	public IsMuted(userId: string): boolean {

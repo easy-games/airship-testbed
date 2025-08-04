@@ -197,6 +197,7 @@ export class AirshipInputSingleton {
 			{ name: CoreAction.Inventory, binding: Binding.Key(Key.E) },
 			{ name: CoreAction.Interact, binding: Binding.Key(Key.F) },
 			{ name: CoreAction.PushToTalk, binding: Binding.Key(Key.V) },
+			{ name: CoreAction.Emote, binding: Binding.Key(Key.B) },
 		]);
 
 		if (Game.IsProtectedLuauContext()) {
@@ -1164,7 +1165,7 @@ export class AirshipInputSingleton {
 		for (const [name, data] of ObjectUtils.entries(keybinds)) {
 			const binding = this.CreateBindingFromSerializedAction(data);
 			const matchingAction = this.GetActions(name)[0];
-			if (!matchingAction || !matchingAction.isCore) return;
+			if (!matchingAction || !matchingAction.isCore) continue;
 			matchingAction.UpdateBinding(binding);
 			this.BroadcastProtectedKeybindUpdate(matchingAction);
 		}

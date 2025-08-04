@@ -75,9 +75,10 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 		if (this.startTime === undefined) return;
 
 		let preEvent = os.time() < this.startTime;
+		let postEvent = os.time() > this.endTime;
 		let gamePublic = eventCache?.visibility === ContentServicePrisma.GameVisibility.PUBLIC;
 
-		if (preEvent || !gamePublic) {
+		if (preEvent) {
 			this.startCountdownText.gameObject.SetActive(true);
 			this.endCountdownText.gameObject.SetActive(false);
 			this.playerCountWrapper.SetActive(false);
@@ -96,7 +97,14 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 			} else {
 				this.startCountdownText.text = `Starting soon...`;
 			}
-		} else {
+		} else if (postEvent) {
+			this.startCountdownText.gameObject.SetActive(true);
+			this.endCountdownText.gameObject.SetActive(false);
+			this.playerCountWrapper.SetActive(false);
+			this.playBtn.gameObject.SetActive(false);
+
+			this.startCountdownText.text = `Event has ended.`;
+		} else if (gamePublic) {
 			this.startCountdownText.gameObject.SetActive(false);
 			this.endCountdownText.gameObject.SetActive(true);
 			this.playerCountWrapper.SetActive(true);

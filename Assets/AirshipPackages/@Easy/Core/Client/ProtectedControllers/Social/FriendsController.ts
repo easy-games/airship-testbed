@@ -102,8 +102,7 @@ export class ProtectedFriendsController {
 		this.pendingSocialNotifications.push(pendingNotif);
 
 		task.spawn(() => {
-			const saveRaw = json.encode(this.pendingSocialNotifications);
-			StateManager.SetString("main-menu:social-notifications", saveRaw);
+			this.CachePendingNotificationsYielding();
 		});
 
 		this.socialNotificationBin.Clean();
@@ -118,6 +117,9 @@ export class ProtectedFriendsController {
 			if (index > -1) {
 				this.pendingSocialNotifications.remove(index);
 			}
+			task.spawn(() => {
+				this.CachePendingNotificationsYielding();
+			});
 
 			const callback = this.socialNotificationHandlers.get(socialNotificationType);
 			if (callback === undefined) {
@@ -133,6 +135,11 @@ export class ProtectedFriendsController {
 				this.socialNotification.userImage.texture = texture;
 			}
 		});
+	}
+
+	private CachePendingNotificationsYielding(): void {
+		const saveRaw = json.encode(this.pendingSocialNotifications);
+		StateManager.SetString("main-menu:social-notifications", saveRaw);
 	}
 
 	public ClearSocialNotification(): void {

@@ -14,8 +14,6 @@ export default class InternalEmoteMenu extends AirshipBehaviour {
 	public radialMenu: InternalRadialUI;
 
 	override Start(): void {
-		Airship.Input.CreateAction(CoreAction.Emote, Binding.Key(Key.B));
-
 		task.delay(0.1, () => {
 			this.radialMenu.SetItems([
 				InternalEmoteDefinitions[EmoteId.CutThroat],

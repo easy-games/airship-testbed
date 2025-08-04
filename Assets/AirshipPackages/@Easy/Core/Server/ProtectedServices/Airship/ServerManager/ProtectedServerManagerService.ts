@@ -89,9 +89,12 @@ export class ProtectedServerManagerService {
 			return this.DelistServer().expect();
 		});
 
-		contextbridge.callback<ServerBridgeApiGetServerList>(ServerManagerServiceBridgeTopics.GetServerList, (_) => {
-			return this.GetServerList().expect();
-		});
+		contextbridge.callback<ServerBridgeApiGetServerList>(
+			ServerManagerServiceBridgeTopics.GetServerList,
+			(_, page) => {
+				return this.GetServerList(page).expect();
+			},
+		);
 
 		contextbridge.callback<ServerBridgeApiSetAccessMode>(
 			ServerManagerServiceBridgeTopics.SetAccessMode,
