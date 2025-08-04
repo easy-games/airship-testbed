@@ -73,6 +73,8 @@ export class ProtectedFriendsController {
 		(username: string, userId: string, result: boolean, extraData: unknown) => void
 	>();
 
+	public statusUpdateContinuationThread: thread | undefined;
+
 	constructor(
 		private readonly authController: AuthController,
 		private readonly socketController: SocketController,
@@ -367,6 +369,10 @@ export class ProtectedFriendsController {
 	}
 
 	public SendStatusUpdateYielding(): void {
+		if (this.statusUpdateContinuationThread !== undefined) {
+			task.cancel(this.statusUpdateContinuationThread);
+		}
+
 		Game.WaitForLocalPlayerLoaded();
 
 		if (Game.IsEditor() && !Game.IsInternal()) {
@@ -383,7 +389,13 @@ export class ProtectedFriendsController {
 			},
 		};
 		// CoreLogger.Log("send status update: " + json.encode(status));
-		client.userStatus.updateUserStatus(status).expect();
+		const result = client.userStatus.updateUserStatus(status).expect();
+		if (result.refreshIn !== undefined) {
+			this.statusUpdateContinuationThread = task.delay(result.refreshIn, () => {
+				this.statusUpdateContinuationThread = undefined;
+				this.SendStatusUpdateYielding();
+			});
+		}
 	}
 
 	public FetchFriends(): void {

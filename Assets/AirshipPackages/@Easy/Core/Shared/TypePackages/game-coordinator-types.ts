@@ -1580,9 +1580,13 @@ export namespace GameCoordinatorUserStatus {
         serverId?: string;
     }
     export type UserStatusData = UserOfflineStatus | UserOnlineStatus | UserInGameStatus;
+    export type UserStatusDataWithRefreshHint = UserStatusData & { refreshIn: number };
 
     export interface ClientSpec {
-        updateUserStatus(args: UpdateUserStatusArgs["data"], options?: RequestOptions): Promise<UserStatusData>;
+        updateUserStatus(
+            args: UpdateUserStatusArgs["data"],
+            options?: RequestOptions,
+        ): Promise<UserStatusDataWithRefreshHint>;
         refreshFriends(options?: RequestOptions): Promise<void>;
     }
 
@@ -1593,7 +1597,10 @@ export namespace GameCoordinatorUserStatus {
             this.makeRequest = makeRequest;
         }
 
-        async updateUserStatus(args: UpdateUserStatusArgs["data"], options?: RequestOptions): Promise<UserStatusData> {
+        async updateUserStatus(
+            args: UpdateUserStatusArgs["data"],
+            options?: RequestOptions,
+        ): Promise<UserStatusDataWithRefreshHint> {
             return await this.makeRequest({
                 method: "PUT",
                 routeId: "GameCoordinator:UserStatus:updateUserStatus",
@@ -1660,6 +1667,14 @@ export namespace GameCoordinatorUsers {
     export type AdminBanUserArgs = {
         data: AdminBanUserDto;
     };
+    export interface AdminEditUserDto {
+        uid: string;
+        username?: string;
+        statusText?: string | undefined;
+    }
+    export type AdminEditUserArgs = {
+        data: AdminEditUserDto;
+    };
     // eslint-disable-next-line @typescript-eslint/naming-convention
     export const Role = {
         USER: "user",
@@ -1704,6 +1719,10 @@ export namespace GameCoordinatorUsers {
             args: AdminBanUserArgs["data"],
             options?: RequestOptions,
         ): Promise<{ uid: string; username: string | undefined; banned: boolean }>;
+        adminEditUser(
+            args: AdminEditUserArgs["data"],
+            options?: RequestOptions,
+        ): Promise<{ user: GameCoordinatorPrisma.EasyUser }>;
     }
 
     export class Client implements ClientSpec {
@@ -1807,6 +1826,18 @@ export namespace GameCoordinatorUsers {
                 routeId: "GameCoordinator:Users:adminBanUser",
                 path: `/users/admin/ban`,
                 retryKey: options?.retryKey ?? "GameCoordinator:Users:adminBanUser",
+                body: args,
+            });
+        }
+        async adminEditUser(
+            args: AdminEditUserArgs["data"],
+            options?: RequestOptions,
+        ): Promise<{ user: GameCoordinatorPrisma.EasyUser }> {
+            return await this.makeRequest({
+                method: "PATCH",
+                routeId: "GameCoordinator:Users:adminEditUser",
+                path: `/users/admin/edit`,
+                retryKey: options?.retryKey ?? "GameCoordinator:Users:adminEditUser",
                 body: args,
             });
         }
