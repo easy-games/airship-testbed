@@ -369,14 +369,16 @@ export class ProtectedFriendsController {
 	}
 
 	public SendStatusUpdateYielding(): void {
-		if (this.statusUpdateContinuationThread !== undefined) {
-			task.cancel(this.statusUpdateContinuationThread);
-		}
-
 		Game.WaitForLocalPlayerLoaded();
 
 		if (Game.IsEditor() && !Game.IsInternal()) {
 			return;
+		}
+
+		if (this.statusUpdateContinuationThread !== undefined) {
+			print("Cancelling continuation thread");
+			task.cancel(this.statusUpdateContinuationThread);
+			this.statusUpdateContinuationThread = undefined;
 		}
 
 		const status: AirshipUpdateStatusDto = {
@@ -390,8 +392,11 @@ export class ProtectedFriendsController {
 		};
 		// CoreLogger.Log("send status update: " + json.encode(status));
 		const result = client.userStatus.updateUserStatus(status).expect();
+		print("Got result: " + json.encode(result));
 		if (result.refreshIn !== undefined) {
-			this.statusUpdateContinuationThread = task.delay(result.refreshIn, () => {
+			print("Refreshing status in: " + result.refreshIn);
+			this.statusUpdateContinuationThread = task.delay(30, () => {
+				print("Refreshing user status.");
 				this.statusUpdateContinuationThread = undefined;
 				this.SendStatusUpdateYielding();
 			});
