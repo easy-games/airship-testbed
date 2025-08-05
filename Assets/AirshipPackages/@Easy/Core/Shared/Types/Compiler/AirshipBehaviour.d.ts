@@ -231,7 +231,7 @@ declare const ColorUsage: AirshipBehaviourFieldDecorator<[hdr: boolean, showAlph
 /**
  * Require a component to be attached to the same GameObject.
  */
-declare const RequireComponent: AirshipBehaviourClassDecorator<[component: typeof Component | AirshipBehaviour]>;
+declare const RequireComponent: <T>() => AirshipDecorator<(target: typeof AirshipBehaviour) => void>;
 
 declare const AirshipComponentMenu: AirshipBehaviourClassDecorator<[path: string]>;
 declare const AirshipComponentIcon: AirshipBehaviourClassDecorator<[assetPath: string]>;
