@@ -77,7 +77,7 @@ export default class CharacterRendering extends AirshipBehaviour {
 			let headTransform = this.character.rig.head;
 			if (!headTransform) {
 				warn(
-					"Unable to find transform for character. Add a transform to the character rigs head to use CharacterRendering transparency or delete CharacterRendering from your character.",
+					"[CharacterRendering]: Missing head transform on character rig. Add a head transform to character rig or delete CharacterRendering from your character.",
 				);
 				Destroy(this);
 				return;
