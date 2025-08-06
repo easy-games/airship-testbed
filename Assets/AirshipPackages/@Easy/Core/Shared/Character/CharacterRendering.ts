@@ -76,9 +76,9 @@ export default class CharacterRendering extends AirshipBehaviour {
 		if ((this.character.IsInitialized() && this.character?.IsLocalCharacter()) || this.enableIfNotLocalCharacter) {
 			let headTransform = this.character.rig.head;
 			if (!headTransform) {
-				warn(
-					"Unable to find transform for character. Please add a transform to the character rigs head to use CharacterRendering transparency",
-				);
+				// warn(
+				// 	"Unable to find transform for character. Please add a transform to the character rigs head to use CharacterRendering transparency",
+				// );
 				Destroy(this);
 				return;
 			}
