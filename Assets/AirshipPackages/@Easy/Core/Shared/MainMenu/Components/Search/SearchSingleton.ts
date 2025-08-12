@@ -3,7 +3,7 @@ import DateParser from "@Easy/Core/Shared/DateParser";
 import { Controller, Service } from "@Easy/Core/Shared/Flamework/flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ContentServiceClient, ContentServiceGames } from "@Easy/Core/Shared/TypePackages/content-service-types";
-import { UnityMakeRequest, UnityMakeRequestError } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+import { isUnityMakeRequestError, UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { ProtectedUtil } from "@Easy/Core/Shared/Util/ProtectedUtil";
@@ -60,7 +60,7 @@ export default class SearchSingleton {
 				this.myGamesIds.add(g.id);
 			}
 		} catch (err: unknown) {
-			if (UnityMakeRequestError.IsInstance(err) && 400 <= err.status && err.status < 500) {
+			if (isUnityMakeRequestError(err) && 400 <= err.status && err.status < 500) {
 				return;
 			}
 
@@ -83,9 +83,8 @@ export default class SearchSingleton {
 				this.AddGames([...data.recentlyUpdated, ...data.popular]);
 			});
 		} catch (err) {
-			if (UnityMakeRequestError.IsInstance(err)) {
-				const errorMessage = UnityMakeRequestError.DisplayText(err) ?? "An unknown error occurred";
-				warn(`Failed to decode popular games: ${errorMessage}`);
+			if (isUnityMakeRequestError(err)) {
+				warn("Failed to decode popular games: " + (err.responseMessage() ?? "An unknown error occurred"));
 			}
 
 			task.delay(1, () => {
