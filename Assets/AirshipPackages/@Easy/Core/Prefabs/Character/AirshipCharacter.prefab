@@ -1045,12 +1045,12 @@ MonoBehaviour:
   animationEvents: {fileID: 6059025528528977290}
   minAirborneTime: 0.25
   particleMaxDistance: 25
-  directionalBlendLerpMod: 15
-  skiddingSpeed: 7.5
+  speedBlendTransitionSpeed: 4
+  skiddingSpeed: 8.5
   idleRectionLength: 15
-  animWalkSpeed: 4.4444447
+  animWalkSpeed: 4.666667
   animRunSpeed: 6.6666665
-  animCrouchSpeed: 2.1233335
+  animCrouchSpeed: 2.123333
 --- !u!1001 &3492179243954559087
 PrefabInstance:
   m_ObjectHideFlags: 0
