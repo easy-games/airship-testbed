@@ -1,3 +1,4 @@
+import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ControlScheme, Preferred } from "@Easy/Core/Shared/UserInput";
@@ -38,6 +39,11 @@ export default class AirshipOverlayManager extends AirshipBehaviour {
 		mainMenu.onHideMobileEscapeButtonChanged.Connect((hide) => {
 			if (!Game.IsMobile()) return;
 			this.escapeButton.gameObject.SetActive(!hide);
+		});
+
+		Dependency<MainMenuController>().onToggled.Connect((opened) => {
+			if (!Game.IsMobile()) return;
+			this.chatButton.gameObject.SetActive(!opened);
 		});
 	}
 

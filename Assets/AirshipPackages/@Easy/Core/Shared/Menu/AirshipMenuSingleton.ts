@@ -1,13 +1,17 @@
 import { TabListController } from "@Easy/Core/Client/Controllers/TabList/TabListController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Dependency, OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
-import { Signal } from "@Easy/Core/Shared/Util/Signal";
-import { AirshipMatchmakingGroup } from "../Airship/Types/Matchmaking";
 import { Game } from "../Game";
+import { Signal } from "../Util/Signal";
 
 @Singleton({})
 export class AirshipMenuSingleton implements OnStart {
-	public readonly onGroupChange: Signal<AirshipMatchmakingGroup> = new Signal();
+	/**
+	 * Fired when the local player opens and closes the Main Menu (escape key).
+	 *
+	 * You can also use {@link IsMenuOpen()} to check if opened.
+	 */
+	public readonly onMenuToggled = new Signal<[opened: boolean]>();
 
 	private leaveMatchBtnCallback: (() => void) | undefined;
 
@@ -22,6 +26,18 @@ export class AirshipMenuSingleton implements OnStart {
 	}
 
 	public OnStart(): void {}
+
+	/**
+	 * Used to check if the Airship Escape Menu is opened.
+	 *
+	 * @returns True if the Airship Escape Menu is open.
+	 */
+	public static IsMenuOpen(): boolean {
+		if (Game.IsGameLuauContext()) {
+			return contextbridge.invoke("Game:IsMenuOpen", LuauContext.Protected);
+		}
+		return false;
+	}
 
 	/**
 	 * Adds a special "Leave Match" button.

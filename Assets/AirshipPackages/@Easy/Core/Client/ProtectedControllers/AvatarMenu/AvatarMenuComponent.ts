@@ -493,8 +493,15 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private AddItemButton(clothingDto: AirshipGearItem, onClickCallback: () => void) {
 		//let newButton = PoolManager.SpawnObject(this.itemButtonTemplate, this.mainContentHolder);
 		const newButton = Object.Instantiate(this.itemButtonTemplate!, this.mainContentHolder!);
+		const redirectScroll = newButton.GetComponent<AirshipRedirectScroll>();
 		this.itemButtonBin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(newButton, () => {
+				//Make sure we aren't scrolling
+				if (redirectScroll?.isDragging) {
+					return;
+				}
+
+				//Fire the buttons call to action
 				task.spawn(() => {
 					onClickCallback();
 				});

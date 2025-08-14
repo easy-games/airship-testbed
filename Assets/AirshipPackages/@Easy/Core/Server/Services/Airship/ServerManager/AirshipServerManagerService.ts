@@ -26,19 +26,32 @@ import {
 } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 /**
  * Allows access to and modification of the game server list.
  */
 @Service({})
 export class AirshipServerManagerService {
+	/**
+	 * Fired when the server begins shutting down.
+	 *
+	 * You can yield for up to 30 minutes to perform shutdown logic.
+	 * You can also yield to ensure an in-progress match is completed.
+	 */
+	public onShutdown = new Signal().WithAllowYield(true);
+
 	constructor() {
 		if (!Game.IsServer()) return;
 
 		Platform.Server.ServerManager = this;
 	}
 
-	protected OnStart(): void {}
+	protected OnStart(): void {
+		contextbridge.callback("ServerShutdown", (from) => {
+			this.onShutdown.Fire();
+		});
+	}
 
 	/**
 	 * Creates a new server and returns a server id which can be used to transfer players to the new server.

@@ -50,7 +50,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: edd104cb-b700-47e8-83c9-024e8eb5604f
-  hash: 2d2c40f1ea295469e9af386971e1b808
   script: {fileID: -5374682861176321385, guid: d47d161ec37da694184ffeb6dd7bbea3, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/MicIndicator.lua
   forceContext: 0
@@ -182,7 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.25485048, g: 0.40121812, b: 0.6509434, a: 0.7529412}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.9019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -211,7 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec18a89aa0caf4669ae44f413c827581, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 10
+  radius: 5
   image: {fileID: 7364803093370303956}
 --- !u!114 &3148614413205817047
 MonoBehaviour:
@@ -226,7 +225,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: 4e01b257-6da1-4adf-be6a-605587792389
-  hash: 6c7ccb9d04568b1f4fcaba2db33a3365
   script: {fileID: 247699700030261788, guid: 6155702a7b8e9f445b9ce853cd33d000, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua
   forceContext: 0
@@ -396,7 +394,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: c2099bf4-859c-4ae8-a73f-17af2d5d856b
-  hash: ce718305014ba0af193569aa91c211a0
   script: {fileID: 1680349167810770225, guid: 7cf094551c5c8384d98ad7d110e87bc0, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileChatToggleButton.lua
   forceContext: 0
@@ -424,7 +421,7 @@ MonoBehaviour:
         - type: string
           serializedValue: '"Variables"'
       nullable: 0
-      serializedValue: '{"r":0.2549019753932953,"g":0.4000000059604645,"b":0.6509804129600525,"a":0.7529411911964417}'
+      serializedValue: '{"r":0.3366411328315735,"g":0.5070777535438538,"b":0.801886796951294,"a":0.9019607901573181}'
       serializedObject: {fileID: 0}
       modified: 1
     - name: disabledColor
@@ -442,7 +439,7 @@ MonoBehaviour:
         tags: []
       decorators: []
       nullable: 0
-      serializedValue: '{"r":0.0,"g":0.0,"b":0.0,"a":0.7529411911964417}'
+      serializedValue: '{"r":0.0,"g":0.0,"b":0.0,"a":0.9019607901573181}'
       serializedObject: {fileID: 0}
       modified: 1
     - name: bgImage
@@ -1065,7 +1062,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: df3aacb3-2463-4855-b3d5-481f7aeec983
-  hash: 3784e31054a0d889cfc67be3a5cc0f53
   script: {fileID: 3015346204361807020, guid: 373b9afc2f33f584ca3e01c1ab016214, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Overlay/AirshipOverlayManager.lua
   forceContext: 0
@@ -1234,7 +1230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.7529412}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.9019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -1263,7 +1259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec18a89aa0caf4669ae44f413c827581, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 10
+  radius: 5
   image: {fileID: 2334693357248109831}
 --- !u!114 &5357714595913634351
 MonoBehaviour:
@@ -1278,7 +1274,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: c4428657-3b75-4415-926c-956bacf1bb14
-  hash: 6c7ccb9d04568b1f4fcaba2db33a3365
   script: {fileID: 247699700030261788, guid: 6155702a7b8e9f445b9ce853cd33d000, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipButton.lua
   forceContext: 0
@@ -1448,7 +1443,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: f184bb1a-6904-425d-bd37-463ecf12e1d0
-  hash: 1688bd52be391997fdfaa05d77bfc853
   script: {fileID: -2757413630953409776, guid: 61c16a076aafe98478bf9973d2c092c0, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MobileEscapeButton.lua
   forceContext: 0
@@ -1542,7 +1536,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 96348075dd60c45fca1607b877f6f95b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 949b7916975d34d869c673370d212270, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

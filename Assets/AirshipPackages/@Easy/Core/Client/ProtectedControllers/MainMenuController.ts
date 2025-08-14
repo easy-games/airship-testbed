@@ -47,6 +47,9 @@ export class MainMenuController {
 
 	private gameCursorLocked = false;
 
+	/** Works from protected context. */
+	public onToggled = new Signal<[opened: boolean]>();
+
 	public activeTransferToast: TransferToast | undefined;
 	private mainMenu: MainMenuComponent;
 
@@ -174,6 +177,8 @@ export class MainMenuController {
 		// }
 		this.RouteToPage(MainMenuPageType.Game, true, true);
 
+		this.onToggled.Fire(true);
+
 		//CloudImage.PrintCache();
 	}
 
@@ -195,6 +200,7 @@ export class MainMenuController {
 				this.mainContentCanvas.enabled = false;
 			}
 		});
+		this.onToggled.Fire(false);
 	}
 
 	public IsOpen(): boolean {

@@ -1,3 +1,4 @@
+import { Airship } from "./Airship";
 import type { AirshipGameWithOrg } from "./Airship/Types/AirshipGame";
 import { CoreContext } from "./CoreClientContext";
 import { CoreNetwork } from "./CoreNetwork";
@@ -29,6 +30,8 @@ export class Game {
 	 * Fired when the local player opens the Main Menu (escape key).
 	 *
 	 * You can also use {@link IsMenuOpen()} to check if opened.
+	 *
+	 * @deprecated use `Airship.Menu.onMenuOpened` instead
 	 */
 	public static readonly onMenuOpened = new Signal<[opened: boolean]>();
 
@@ -85,6 +88,8 @@ export class Game {
 	 * Used to check if the Airship Escape Menu is opened.
 	 *
 	 * @returns True if the Airship Escape Menu is open.
+	 *
+	 * @deprecated Use `Airship.Menu.IsMenuOpen()` instead.
 	 */
 	public static IsMenuOpen(): boolean {
 		if (Game.IsGameLuauContext()) {
@@ -175,12 +180,26 @@ export class Game {
 	 */
 	public static GetScaleFactor(): number {
 		let dpi = Screen.dpi;
+		let width = Screen.width;
 
 		if (Game.IsMobile()) {
 			if (Game.deviceType === AirshipDeviceType.Tablet) {
 				return dpi / 180;
 			}
-			return math.max(2.5555, dpi / 180);
+
+			// Screen width, height:
+			// iPhone 12: 1170, 2532
+			// iPhone 7: 750, 1334
+
+			// print("screen size: " + Screen.width + ", " + Screen.height);
+
+			// Special handling for newer iphones.
+			// This feels very very bad. We should get rid of this.
+			if (Game.IsPortrait() && Game.platform === AirshipPlatform.iOS && width > 750) {
+				return math.max(2.5555, dpi / 180);
+			}
+
+			return dpi / 180;
 		} else if (dpi >= 255) {
 			return 1.75;
 		} else {
@@ -215,6 +234,7 @@ export class Game {
 
 if (Game.IsGameLuauContext()) {
 	contextbridge.subscribe("Game:MenuToggled", (from, opened: boolean) => {
+		Airship.Menu.onMenuToggled.Fire(opened);
 		Game.onMenuOpened.Fire(opened);
 	});
 }
