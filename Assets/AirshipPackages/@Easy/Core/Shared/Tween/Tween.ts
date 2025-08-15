@@ -92,7 +92,11 @@ export class Tween<T> implements LuauTween<T> {
 				const v = lerpFunction(easingFunction(elapsedTime, 0, 1, duration, undefined!, undefined!));
 				callback(v);
 			} else {
-				callback(endValue);
+				const [success, err] = pcall(callback, endValue);
+				if (!success) {
+					warn("[LuauTween] Error on final callback - ", err);
+				}
+
 				this.OnCompleted.Fire();
 				this.Pause();
 			}
