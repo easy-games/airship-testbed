@@ -368,7 +368,7 @@ export class ProtectedFriendsController {
 		return this.statusText;
 	}
 
-	private CreateNewSendStatusThread(delay: number) {
+	private CreateNewStatusUpdateContinuationThread(delay: number) {
 		this.statusUpdateContinuationThread = task.delay(delay, () => {
 			this.statusUpdateContinuationThread = undefined;
 			this.SendStatusUpdateYielding();
@@ -402,11 +402,11 @@ export class ProtectedFriendsController {
 			const result = client.userStatus.updateUserStatus(status).expect();
 
 			if (result.refreshIn !== undefined) {
-				this.CreateNewSendStatusThread(10);
+				this.CreateNewStatusUpdateContinuationThread(result.refreshIn);
 			}
 		} catch (err) {
 			CoreLogger.Error("Failed to refresh status. Trying again in 1 minute.");
-			this.CreateNewSendStatusThread(60);
+			this.CreateNewStatusUpdateContinuationThread(60);
 			return;
 		}
 	}
