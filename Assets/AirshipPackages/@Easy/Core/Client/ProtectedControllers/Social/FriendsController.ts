@@ -368,6 +368,13 @@ export class ProtectedFriendsController {
 		return this.statusText;
 	}
 
+	private CreateNewSendStatusThread(delay: number) {
+		this.statusUpdateContinuationThread = task.delay(delay, () => {
+			this.statusUpdateContinuationThread = undefined;
+			this.SendStatusUpdateYielding();
+		});
+	}
+
 	public SendStatusUpdateYielding(): void {
 		Game.WaitForLocalPlayerLoaded();
 
@@ -376,7 +383,6 @@ export class ProtectedFriendsController {
 		}
 
 		if (this.statusUpdateContinuationThread !== undefined) {
-			print("Cancelling continuation thread");
 			task.cancel(this.statusUpdateContinuationThread);
 			this.statusUpdateContinuationThread = undefined;
 		}
@@ -390,16 +396,18 @@ export class ProtectedFriendsController {
 				customGameTitle: Game.gameData?.name,
 			},
 		};
-		// CoreLogger.Log("send status update: " + json.encode(status));
-		const result = client.userStatus.updateUserStatus(status).expect();
-		print("Got result: " + json.encode(result));
-		if (result.refreshIn !== undefined) {
-			print("Refreshing status in: " + result.refreshIn);
-			this.statusUpdateContinuationThread = task.delay(30, () => {
-				print("Refreshing user status.");
-				this.statusUpdateContinuationThread = undefined;
-				this.SendStatusUpdateYielding();
-			});
+
+		try {
+			// CoreLogger.Log("send status update: " + json.encode(status));
+			const result = client.userStatus.updateUserStatus(status).expect();
+
+			if (result.refreshIn !== undefined) {
+				this.CreateNewSendStatusThread(10);
+			}
+		} catch (err) {
+			CoreLogger.Error("Failed to refresh status. Trying again in 1 minute.");
+			this.CreateNewSendStatusThread(60);
+			return;
 		}
 	}
 
