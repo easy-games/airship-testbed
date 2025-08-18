@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
+  m_Name: Pigtails Gear
+  m_EditorClassIdentifier: 
+  classId: 53c99969-ccaa-464a-9bcb-bb604f91c701
+  accessoryPrefabs:
+  - {fileID: 3669255742219690182, guid: 939cd03f83531dc4799724b0cc19e376, type: 3}
+  face: {fileID: 0}

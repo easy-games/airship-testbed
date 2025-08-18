@@ -10,7 +10,7 @@ import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 import AirshipButton from "../AirshipButton";
 import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
-import { isUnityMakeRequestError, UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+import { UnityMakeRequest, UnityMakeRequestError } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
@@ -123,8 +123,9 @@ export default class SendFriendRequestModal extends AirshipBehaviour {
 			this.responseText.color = ColorUtil.HexToColor("#3BE267");
 			this.inputOutlineGO.SetActive(true);
 		} catch (err) {
-			if (isUnityMakeRequestError(err)) {
-				this.responseText.text = err.responseMessage() ?? "Failed to send friend request. Please try again later.";
+			if (UnityMakeRequestError.IsInstance(err)) {
+				this.responseText.text =
+					UnityMakeRequestError.DisplayText(err) ?? "Failed to send friend request. Please try again later.";
 			} else {
 				this.responseText.text = "Failed to send friend request. Please try again later.";
 			}

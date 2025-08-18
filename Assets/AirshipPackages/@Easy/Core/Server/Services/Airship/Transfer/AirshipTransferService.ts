@@ -13,10 +13,11 @@ import {
 	AirshipServerTransferConfig,
 	AirshipTransferResult,
 } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
-import { Service } from "@Easy/Core/Shared/Flamework";
+import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
-import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
+import { AirshipServerManagerService } from "../ServerManager/AirshipServerManagerService";
 
 /**
  * The transfer service allows you to move players between servers and create new servers.
@@ -24,13 +25,9 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 @Service({})
 export class AirshipTransferService {
 	/**
-	 * Fired when the server begins shutting down.
-	 *
-	 * You can yield for up to 30 minutes to perform shutdown logic.
-	 * You can also yield to ensure an in-progress match is completed.
+	 * @deprecated Use `Platform.Server.ServerManager.onShutdown` instead.
 	 */
 	public onShutdown = new Signal().WithAllowYield(true);
-
 	/**
 	 * If true, players are automatically transfered into a new server when the server shuts down.
 	 *
@@ -45,11 +42,10 @@ export class AirshipTransferService {
 	}
 
 	protected OnStart(): void {
-		contextbridge.callback("ServerShutdown", (from) => {
+		Dependency<AirshipServerManagerService>().onShutdown.ConnectWithPriority(SignalPriority.HIGH, () => {
 			this.onShutdown.Fire();
 
 			if (this.transferPlayersOnShutdown) {
-				// todo: if this fails, try transferring everyone individually
 				const players = Airship.Players.GetPlayers();
 				if (players.size() === 0) {
 					return;

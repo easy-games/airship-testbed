@@ -766,6 +766,9 @@ interface CharacterAnimationHelper extends Component {
 	animationEvents?: AnimationEventListener;
 	isSkidding: boolean;
 	skiddingSpeed: number;
+	animWalkSpeed: number;
+	animRunSpeed: number;
+	animCrouchSpeed: number;
 	SetForceLookForward(forceLookForward: boolean): void;
 	SetFirstPerson(firstPerson: boolean): void;
 	SetRootMovementLayer(itemInHand: boolean): void;
@@ -1410,9 +1413,9 @@ interface QualityReport {
 	/** Average GPU time over numFrames. */
 	gpuAvg: number;
 	/** Average CPU main thread time over numFrames. */
-    cpuMainAvg: number;
+	cpuMainAvg: number;
 	/** Average CPU render thread time over numFrames. */
-    cpuRenderAvg: number;
+	cpuRenderAvg: number;
 
 	/** Number of frames recorded in quality report. This will be zero if unsupported on device. */
 	numFrames: number;
@@ -1426,4 +1429,3 @@ interface QualityManager {
 	OnQualityCheck(callback: (frameHealth: FrameHealth, report: QualityReport) => void): EngineEventConnection;
 }
 declare const QualityManager: QualityManager;
-

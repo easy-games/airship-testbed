@@ -74,7 +74,15 @@ export default class CharacterRendering extends AirshipBehaviour {
 		this.cameraBin.Clean();
 
 		if ((this.character.IsInitialized() && this.character?.IsLocalCharacter()) || this.enableIfNotLocalCharacter) {
-			const headTransform = this.character.rig.head;
+			let headTransform = this.character.rig.head;
+			if (!headTransform) {
+				warn(
+					"[CharacterRendering]: Missing head transform on character rig. Add a head transform to character rig or delete CharacterRendering from your character.",
+				);
+				Destroy(this);
+				return;
+			}
+
 			//Camera
 			this.bin.Add(
 				Airship.Camera.onCameraModeChanged.Connect((mode) => {

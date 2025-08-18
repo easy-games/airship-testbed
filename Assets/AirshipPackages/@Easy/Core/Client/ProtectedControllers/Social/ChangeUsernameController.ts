@@ -13,7 +13,7 @@ import { OnFixedUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { ProtectedUserController } from "../Airship/User/UserController";
 import { AuthController } from "../Auth/AuthController";
 import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
-import { isUnityMakeRequestError, UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+import { UnityMakeRequest, UnityMakeRequestError } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
@@ -91,7 +91,7 @@ export class ChangeUsernameController {
 			this.submitButton.SetActive(false);
 			this.submitButtonDisabled.SetActive(true);
 		} catch (err) {
-			if (isUnityMakeRequestError(err) && err.status === 409) {
+			if (UnityMakeRequestError.IsInstance(err) && err.status === 409) {
 				this.SetResponseText("error", `The username "${text}" is taken.`);
 				return;
 			}
@@ -109,7 +109,7 @@ export class ChangeUsernameController {
 		this.submitButtonDisabled.SetActive(status !== "success");
 	}
 
-	protected OnStart(): void { }
+	protected OnStart(): void {}
 
 	private CheckUsername(): void {
 		let username = this.inputField.text;

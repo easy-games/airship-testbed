@@ -1,54 +1,44 @@
+import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { HttpRetryInstance } from "@Easy/Core/Shared/Http/HttpRetry";
+import { ModerationServiceClient, ModerationServiceModeration } from "@Easy/Core/Shared/TypePackages/moderation-service-types";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-export interface BaseModerationResponse {
-	messageBlocked: boolean;
-	transformedMessage?: string;
+
+export const enum ModerationServiceBridgeTopics {
+	ModerateText = "ModerationService:ModerateText",
 }
 
-export interface BlockedModerationResponse extends BaseModerationResponse {
-	messageBlocked: true;
-	messageBlockedReasons: Array<string>;
-}
+export type ServerBridgeApiModerateText = (text: string) => ModerationServiceModeration.ModerateTextResponse;
 
-export interface UnblockedModerationResponse extends BaseModerationResponse {
-	messageBlocked: false;
-}
+const client = new ModerationServiceClient(UnityMakeRequest(AirshipUrl.ModerationService));
 
-export type ModerateChatMessageResponse = BlockedModerationResponse | UnblockedModerationResponse;
-
+@Service({})
 export class ProtectedModerationService {
-	private readonly httpRetry = HttpRetryInstance();
-
 	constructor() {
 		if (!Game.IsServer()) return;
+
+
+		contextbridge.callback<ServerBridgeApiModerateText>(ModerationServiceBridgeTopics.ModerateText, (_, text: string) => {
+			return this.ModerateText(text).expect();
+		});
 	}
 
 	public async ModerateChatMessage(
 		conversationId: string,
 		senderId: string,
 		message: string,
-	): Promise<ModerateChatMessageResponse> {
-		// todo update this when we export types from the moderation service
-		const result = await this.httpRetry(
-			() =>
-				InternalHttpManager.PostAsync(
-					`${AirshipUrl.ModerationService}/moderation/chat`,
-					json.encode({
-						conversationMethod: "GAME_SERVER_CHAT",
-						conversationId,
-						senderId,
-						message,
-					}),
-				),
-			"ModerateChatMessage",
-		);
+	): Promise<ModerationServiceModeration.ModerationResponse> {
+		return await client.moderation.moderateChat({
+			conversationId,
+			conversationMethod: ModerationServiceModeration.PlatformCommunicationMethods.GameServerChat,
+			senderId,
+			message,
+		});
+	}
 
-		if (!result.success || result.statusCode > 299) {
-			warn(`Unable to moderate chat message. Status Code: ${result.statusCode}.\n`, result.error);
-			throw result.error;
-		}
-
-		return json.decode<ModerateChatMessageResponse>(result.data);
+	public async ModerateText(text: string): Promise<ModerationServiceModeration.ModerateTextResponse> {
+		return await client.moderation.moderateText({
+			text,
+		});
 	}
 }

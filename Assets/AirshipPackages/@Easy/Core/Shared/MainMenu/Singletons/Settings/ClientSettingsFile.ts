@@ -2,6 +2,7 @@ import { CoreAction } from "@Easy/Core/Shared/Input/AirshipCoreAction";
 import { SerializableAction } from "@Easy/Core/Shared/Input/InputAction";
 
 export interface ClientSettingsFile {
+	sprintToggleEnabled: boolean;
 	mouseSensitivity: number;
 	mouseSmoothing: number;
 	touchSensitivity: number;

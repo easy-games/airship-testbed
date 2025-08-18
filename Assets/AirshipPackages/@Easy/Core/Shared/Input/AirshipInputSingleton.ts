@@ -22,7 +22,6 @@ import { MobileButtonConfig } from "./Mobile/MobileButton";
 import MobileControlsCanvas from "./Mobile/MobileControlsCanvas";
 import TouchJoystick from "./Mobile/TouchJoystick";
 import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
-import { SetInterval } from "../Util/Timer";
 
 export enum InputActionDirection {
 	/**
@@ -104,6 +103,8 @@ export class AirshipInputSingleton {
 	private gameSensitivityMultiplier = 1;
 
 	public preferredControls = new PreferredControls();
+
+	public isSprintToggleSprinting = false;
 
 	constructor() {
 		Airship.Input = this;
@@ -209,6 +210,13 @@ export class AirshipInputSingleton {
 				this.DeserializeCoreKeybinds(overrides);
 			});
 		}
+
+		Airship.Input.OnDown(CoreAction.Sprint).Connect((event) => {
+			if (event.uiProcessed) return;
+			if (!this.IsSprintToggleEnabled()) return;
+
+			this.isSprintToggleSprinting = !this.isSprintToggleSprinting;
+		});
 	}
 
 	/**
@@ -1218,6 +1226,15 @@ export class AirshipInputSingleton {
 		const isKeybind = (action.mouseButton as number) === -1;
 		if (isKeybind) return Binding.Key(action.primaryKey, action.modifierKey);
 		return Binding.MouseButton(action.mouseButton, action.modifierKey);
+	}
+
+	/**
+	 * Returns sprint toggle based on player's setting.
+	 *
+	 * @returns sprint toggle based on player's setting.
+	 */
+	public IsSprintToggleEnabled(): boolean {
+		return contextbridge.invoke<() => boolean>("ClientSettings:IsSprintToggleEnabled", LuauContext.Protected);
 	}
 
 	/**

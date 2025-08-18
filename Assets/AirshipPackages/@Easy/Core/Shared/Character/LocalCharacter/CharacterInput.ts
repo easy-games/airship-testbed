@@ -49,6 +49,11 @@ export class CharacterInput {
 
 	public IsSprinting(): boolean {
 		if (this.IsSprintBlocked()) return false;
+
+		if (Airship.Input.IsSprintToggleEnabled()) {
+			return Airship.Input.isSprintToggleSprinting;
+		}
+
 		return Airship.Input.IsDown("Sprint");
 	}
 

@@ -14,10 +14,8 @@ export default class MobileEscapeButton extends AirshipBehaviour {
 				const mainMenuController = Dependency<MainMenuController>();
 				if (mainMenuController.IsOpen()) {
 					mainMenuController.CloseFromGame();
-					this.chatButton.SetActive(true);
 				} else {
 					mainMenuController.OpenFromGameInProtectedContext();
-					this.chatButton.SetActive(false);
 				}
 			}),
 		);

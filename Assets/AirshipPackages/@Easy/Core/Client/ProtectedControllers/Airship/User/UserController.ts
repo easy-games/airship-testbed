@@ -5,7 +5,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
-import { isUnityMakeRequestError, UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+import { UnityMakeRequest, UnityMakeRequestError } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { AuthController } from "../../Auth/AuthController";
@@ -102,7 +102,7 @@ export class ProtectedUserController {
 			const result = await client.users.getByUid({ params: { uid: userId } });
 			return result.user;
 		} catch (err) {
-			if (isUnityMakeRequestError(err) && err.status === 404) {
+			if (UnityMakeRequestError.IsInstance(err) && err.status === 404) {
 				return undefined;
 			}
 			throw err;

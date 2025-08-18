@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
+  m_Name: LongBobFringe Gear
+  m_EditorClassIdentifier: 
+  classId: 12dad594-29dd-421f-8b68-666f284523cf
+  accessoryPrefabs:
+  - {fileID: 2359861514636872385, guid: 3d073742653e6724b9b23094a3cb1d57, type: 3}
+  face: {fileID: 0}

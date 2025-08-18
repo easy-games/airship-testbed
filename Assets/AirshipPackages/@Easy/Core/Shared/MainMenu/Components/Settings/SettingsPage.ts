@@ -27,6 +27,9 @@ export default class SettingsPage extends AirshipBehaviour {
 	public mobileCloseButtonWrapper: RectTransform;
 	public gamePageSettingsContainer: Transform;
 
+	@Header("Toggles")
+	public sprintToggle: SettingsToggle;
+
 	@Header("Sliders")
 	public mouseSensitivitySlider!: SettingsSlider;
 	public mouseSmoothingSlider!: SettingsSlider;
@@ -168,6 +171,11 @@ export default class SettingsPage extends AirshipBehaviour {
 
 	protected Start(): void {
 		const settings = Protected.Settings;
+
+		this.sprintToggle.Init("Toggle Sprint", settings.IsSprintToggleEnabled());
+		this.sprintToggle.toggle.onValueChanged.Connect((val) => {
+			settings.SetSprintToggleEnabled(val);
+		});
 
 		this.mouseSensitivitySlider.Init("Mouse Sensitivity", settings.GetMouseSensitivity(), 0.01, 2);
 		this.mouseSensitivitySlider.onChange.Connect((val) => {

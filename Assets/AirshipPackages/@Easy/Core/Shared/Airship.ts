@@ -9,6 +9,7 @@ import { AirshipDataStoreService } from "../Server/Services/Airship/DataStore/Ai
 import { AirshipLeaderboardService } from "../Server/Services/Airship/Leaderboard/AirshipLeaderboardService";
 import { AirshipMatchmakingService } from "../Server/Services/Airship/Matchmaking/MatchmakingService";
 import { AirshipMessagingService } from "../Server/Services/Airship/Messaging/AirshipMessagingService";
+import { AirshipModerationService } from "../Server/Services/Airship/Moderation/AirshipModerationService";
 import { AirshipPartyService } from "../Server/Services/Airship/Party/AirshipPartyService";
 import { AirshipPlatformInventoryService } from "../Server/Services/Airship/PlatformInventory/AirshipPlatformInventoryService";
 import { AirshipServerManagerService } from "../Server/Services/Airship/ServerManager/AirshipServerManagerService";
@@ -112,6 +113,10 @@ export namespace Platform {
 		 * Provides Publish/Subscribe functionality for communicating across different game servers
 		 */
 		export let Messaging = undefined! as AirshipMessagingService;
+		/**
+		 * Provides moderation and safety features for the Airship platform.
+		 */
+		export let Moderation = undefined! as AirshipModerationService;
 	}
 
 	/**

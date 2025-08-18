@@ -53,12 +53,71 @@ function encodeQueryString(query: object) {
 
 const UNITY_MAKE_REQUEST_RETRY = HttpRetryInstance();
 
-export type UnityMakeRequestError = { routeId: string, message: string; status: number; responseMessage: () => string | undefined };
+export type UnityMakeRequestError = {
+	routeId: string;
+	message: string;
+	status: number;
+};
 
-export function isUnityMakeRequestError(err: unknown): err is UnityMakeRequestError {
+/**
+ * Static helper functions which can be applied for a UnityMakeRequestError type.
+ */
+interface UnityMakeRequestErrorStaticFunctions {
+	/**
+	 * Checks if a thrown error fits the object shape of a known error.
+	 *
+	 * This provides type narrowing for the UnityMakeRequestError type.
+	 *
+	 * @param err The thrown object to check.
+	 * @returns True if the thrown object follows the shape of the UnityMakeRequestError type, false otherwise.
+	 */
+	IsInstance: (err: unknown) => err is UnityMakeRequestError;
+	/**
+	 * Creates a friendly display text from the provided error based on conventional api responses.
+	 *
+	 * @param error The error to create the display text from.
+	 * @returns The decoded error message or first validation error, otherwise it will return undefined.
+	 */
+	DisplayText: (error: UnityMakeRequestError) => string | undefined;
+}
+
+/**
+ * A helper object to operate on UnityMakeRequest errors.
+ */
+export const UnityMakeRequestError: UnityMakeRequestErrorStaticFunctions = {
+	IsInstance: (err) => IsUnityMakeRequestError(err),
+	DisplayText: (err) => UnityMakeRequestErrorDisplayText(err),
+};
+
+function IsUnityMakeRequestError(err: unknown): err is UnityMakeRequestError {
 	if (!err) return false;
 	const typedErr = err as Partial<UnityMakeRequestError>;
 	return typedErr.message !== undefined && typedErr.status !== undefined;
+}
+
+function UnityMakeRequestErrorDisplayText(err: UnityMakeRequestError): string | undefined {
+	let responseMessage: string | undefined;
+	try {
+		// Attempt to extract the message property from the response object.
+		// It is an array if the error is from our backend validation framework
+		const errObj = json.decode<{ message: unknown }>(err.message);
+		if (errObj.message) {
+			if (typeIs(errObj.message, "string")) {
+				responseMessage = errObj.message;
+			} else if (isArrayLike(errObj.message) && typeIs(errObj.message[0], "string")) {
+				responseMessage = errObj.message[0];
+			} else if (typeIs(errObj.message, "table")) {
+				responseMessage = json.encode(errObj.message);
+			} else {
+				responseMessage = tostring(errObj.message);
+			}
+		} else {
+			return;
+		}
+	} catch {
+		return;
+	}
+	return responseMessage;
 }
 
 export function UnityMakeRequest(baseUrl: string): MakeRequest {
@@ -101,33 +160,10 @@ export function UnityMakeRequest(baseUrl: string): MakeRequest {
 		const response = await UNITY_MAKE_REQUEST_RETRY(executor, { retryKey: request.retryKey });
 
 		if (!response.success || response.statusCode > 299) {
-			warn(
-				`Unable to complete request ${request.routeId}.\n Status Code:  ${response.statusCode}.\n `,
-				response.error,
-			);
-
 			throw {
 				routeId: request.routeId,
 				message: response.error,
 				status: response.statusCode,
-				responseMessage: () => {
-					let responseMessage: string | undefined;
-					try {
-						// Attempt to extract the message property from the response object.
-						// It is an array if the error is from our backend validation framework
-						const errObj = json.decode<{ message?: string | string[] }>(response.error);
-						if (errObj.message) {
-							if (typeIs(errObj.message, "string")) {
-								responseMessage = errObj.message;
-							} else if (typeIs(errObj.message[0], "string")) {
-								responseMessage = errObj.message[0];
-							}
-						}
-					} catch {
-						// If we can't extract the error message text, do nothing
-					}
-					return responseMessage;
-				}
 			};
 		}
 

@@ -785,6 +785,18 @@ declare namespace buffer {
 	 * This assumes the given buffer was previously compressed using `buffer.compress()`.
 	 */
 	function decompress(b: buffer): buffer;
+
+	/** Returns the Base64 string encoding of the buffer. */
+	function tobase64(b: buffer): string;
+
+	/** Decodes the Base64 string into a new buffer. */
+	function frombase64(encoded: string): buffer;
+
+	/** Returns the Z85 string encoding of the buffer. */
+	function toz85(b: buffer): string;
+
+	/** Decodes the Z85 string into a new buffer. */
+	function fromz85(encoded: string): buffer;
 }
 
 /**

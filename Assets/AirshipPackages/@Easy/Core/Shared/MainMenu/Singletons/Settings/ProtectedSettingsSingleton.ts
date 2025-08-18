@@ -13,6 +13,7 @@ import { SetInterval } from "../../../Util/Timer";
 import { InternalGameSetting, InternalGameSettingType, InternalSliderGameSetting } from "./InternalGameSetting";
 
 const defaultData: ClientSettingsFile = {
+	sprintToggleEnabled: false,
 	mouseSensitivity: 2,
 	mouseSmoothing: 0,
 	touchSensitivity: 0.5,
@@ -65,6 +66,10 @@ export class ProtectedSettingsSingleton {
 		Protected.Settings = this;
 
 		this.data = defaultData;
+
+		contextbridge.callback<() => boolean>("ClientSettings:IsSprintToggleEnabled", () => {
+			return this.IsSprintToggleEnabled();
+		});
 
 		contextbridge.callback<() => number>("ClientSettings:GetMouseSensitivity", () => {
 			return this.GetMouseSensitivity();
@@ -397,12 +402,21 @@ export class ProtectedSettingsSingleton {
 		}
 	}
 
+	public IsSprintToggleEnabled(): boolean {
+		return this.data.sprintToggleEnabled;
+	}
+
 	public GetMouseSensitivity(): number {
 		return this.data.mouseSensitivity;
 	}
 
 	public GetMouseSmoothing(): number {
 		return this.data.mouseSmoothing;
+	}
+
+	public SetSprintToggleEnabled(value: boolean): void {
+		this.data.sprintToggleEnabled = value;
+		this.unsavedChanges = true;
 	}
 
 	public SetMouseSensitivity(value: number): void {

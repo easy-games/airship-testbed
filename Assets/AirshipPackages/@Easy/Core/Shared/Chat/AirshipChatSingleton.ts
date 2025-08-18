@@ -1,5 +1,4 @@
 import {
-	ModerateChatMessageResponse,
 	ProtectedModerationService,
 } from "@Easy/Core/Server/ProtectedServices/Airship/Moderation/ModerationService";
 import { AddInventoryCommand } from "@Easy/Core/Server/Services/Chat/Commands/AddInventoryCommand";
@@ -30,6 +29,7 @@ import { ChatColor } from "../Util/ChatColor";
 import { ChatUtil } from "../Util/ChatUtil";
 import ObjectUtils from "../Util/ObjectUtils";
 import { Signal } from "../Util/Signal";
+import { ModerationServiceModeration } from "../TypePackages/moderation-service-types";
 
 class ChatMessageEvent extends Cancellable {
 	/**
@@ -143,7 +143,7 @@ export class AirshipChatSingleton {
 				if (!Game.IsEditor()) {
 					this.moderationService
 						.ModerateChatMessage("public_chat", player.userId, result.message)
-						.then((moderationResult: ModerateChatMessageResponse) => {
+						.then((moderationResult: ModerationServiceModeration.ModerationResponse) => {
 							if (moderationResult.messageBlocked) {
 								CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients({
 									type: "remove",
@@ -152,7 +152,7 @@ export class AirshipChatSingleton {
 								if (moderationResult.messageBlockedReasons.size() > 0) {
 									player.SendMessage(
 										"Your message was blocked for violating our community guidelines for the following reason(s): " +
-											moderationResult.messageBlockedReasons.join(", "),
+										moderationResult.messageBlockedReasons.join(", "),
 									);
 								} else {
 									player.SendMessage(
@@ -231,8 +231,8 @@ export class AirshipChatSingleton {
 		if (!Game.IsServer()) {
 			error(
 				"Error trying to call RegisterCommand " +
-					command.commandLabel +
-					": Can only register command on server.",
+				command.commandLabel +
+				": Can only register command on server.",
 			);
 		}
 
