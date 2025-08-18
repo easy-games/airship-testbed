@@ -368,13 +368,20 @@ export class ProtectedFriendsController {
 		return this.statusText;
 	}
 
-	private CreateNewStatusUpdateContinuationThread(delay: number) {
-		// check again to ensure the last set continuation thread sets the delay
-		// alongside async boundaries
-		if (this.statusUpdateContinuationThread !== undefined) {
+	private CancelActiveStatusUpdateContinuationThread() {
+		if (
+			this.statusUpdateContinuationThread !== undefined &&
+			coroutine.status(this.statusUpdateContinuationThread) !== "dead"
+		) {
 			task.cancel(this.statusUpdateContinuationThread);
 			this.statusUpdateContinuationThread = undefined;
 		}
+	}
+
+	private CreateNewStatusUpdateContinuationThread(delay: number) {
+		// check again to ensure the last set continuation thread sets the delay
+		// alongside async boundaries
+		this.CancelActiveStatusUpdateContinuationThread();
 		this.statusUpdateContinuationThread = task.delay(delay, () => {
 			this.statusUpdateContinuationThread = undefined;
 			this.SendStatusUpdateYielding();
@@ -388,10 +395,7 @@ export class ProtectedFriendsController {
 			return;
 		}
 
-		if (this.statusUpdateContinuationThread !== undefined) {
-			task.cancel(this.statusUpdateContinuationThread);
-			this.statusUpdateContinuationThread = undefined;
-		}
+		this.CancelActiveStatusUpdateContinuationThread();
 
 		const status: AirshipUpdateStatusDto = {
 			status: Game.coreContext === CoreContext.GAME ? "in_game" : "online",
