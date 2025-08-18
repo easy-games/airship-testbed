@@ -369,6 +369,12 @@ export class ProtectedFriendsController {
 	}
 
 	private CreateNewStatusUpdateContinuationThread(delay: number) {
+		// check again to ensure the last set continuation thread sets the delay
+		// alongside async boundaries
+		if (this.statusUpdateContinuationThread !== undefined) {
+			task.cancel(this.statusUpdateContinuationThread);
+			this.statusUpdateContinuationThread = undefined;
+		}
 		this.statusUpdateContinuationThread = task.delay(delay, () => {
 			this.statusUpdateContinuationThread = undefined;
 			this.SendStatusUpdateYielding();
