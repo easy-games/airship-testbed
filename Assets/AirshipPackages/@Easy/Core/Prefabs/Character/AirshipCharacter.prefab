@@ -1026,7 +1026,6 @@ MonoBehaviour:
   maxStepUpHeight: 0.3
   stepUpRampDistance: 0.75
   detectSlopes: 1
-  slopeForce: 0
   maxSlopeDelta: 0.3
 --- !u!114 &3239827073778428190
 MonoBehaviour:
