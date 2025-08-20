@@ -1,5 +1,4 @@
 import { Airship } from "../Airship";
-import { CameraReferences } from "../Camera/CameraReferences";
 import { CoreRefs } from "../CoreRefs";
 import AirshipCharacterViewmodel from "./AirshipCharacterViewmodel";
 
@@ -15,7 +14,7 @@ export class Viewmodel {
 	}
 
 	public InstantiateFromPrefab(prefab: GameObject): void {
-		let parent = CameraReferences.viewmodelCamera?.transform;
+		let parent = Airship.Camera.cameraRig?.viewmodelCamera?.transform;
 		if (!parent) {
 			print("Missing viewmodel camera.");
 			parent = Camera.main.transform;

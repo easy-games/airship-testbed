@@ -4,7 +4,6 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { OnLateUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Airship } from "../Airship";
-import { CameraReferences } from "./CameraReferences";
 
 export class FirstPersonCameraSystem {
 	/**
@@ -45,7 +44,7 @@ export class FirstPersonCameraSystem {
 		if (!this.inFirstPerson) {
 			return;
 		}
-		if (!CameraReferences.viewmodelCamera || !Airship.Characters.viewmodel) return;
+		if (!Airship.Camera?.cameraRig?.viewmodelCamera || !Airship.Characters.viewmodel) return;
 		this.currentTime += Time.deltaTime;
 
 		Airship.Characters.onViewModelUpdate.Fire(Airship.Characters.viewmodel.viewmodelTransform);
@@ -53,8 +52,8 @@ export class FirstPersonCameraSystem {
 
 	public OnFirstPersonChanged(isFirstPerson: boolean) {
 		this.inFirstPerson = isFirstPerson;
-		if (!CameraReferences.viewmodelCamera) return;
-		CameraReferences.viewmodelCamera.gameObject.SetActive(isFirstPerson);
+		if (!Airship.Camera?.cameraRig?.viewmodelCamera) return;
+		Airship.Camera?.cameraRig.viewmodelCamera.gameObject.SetActive(isFirstPerson);
 		// Game.localPlayer.character?.animationHelper?.SetFirstPerson(isFirstPerson);
 		Game.localPlayer.character?.animation?.SetFirstPerson(isFirstPerson);
 
