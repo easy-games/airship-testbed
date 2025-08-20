@@ -251,16 +251,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 2083954211131876583, guid: d3900584501ded7489325db581fa5648, type: 3}
-  m_fileFullPath: Assets/Code/AirshipPlatformDemo/MovementModifications/OneWayPlatform.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: e0329f40-43aa-4f75-9a35-56261168369a
+  script: {fileID: 2083954211131876583, guid: d3900584501ded7489325db581fa5648, type: 3}
+  scriptPath: Assets/Code/AirshipPlatformDemo/MovementModifications/OneWayPlatform.lua
+  forceContext: 0
+  metadata:
     name: OneWayPlatform
     singleton: 0
     decorators: []
@@ -303,7 +298,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!65 &464714070302999030
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -382,16 +382,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -4604823693461947784, guid: 69836586b2102f54c980c3fdbc3fa1f0, type: 3}
-  m_fileFullPath: Assets/Code/AirshipPlatformDemo/MovementModifications/MovingPlatform.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: 79a39e94-379c-4292-92f9-f2dc8f9b9545
+  script: {fileID: -4604823693461947784, guid: 69836586b2102f54c980c3fdbc3fa1f0, type: 3}
+  scriptPath: Assets/Code/AirshipPlatformDemo/MovementModifications/MovingPlatform.lua
+  forceContext: 0
+  metadata:
     name: MovingPlatformController
     singleton: 0
     decorators: []
@@ -530,7 +525,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!54 &4108653012110323913
 Rigidbody:
   m_ObjectHideFlags: 0

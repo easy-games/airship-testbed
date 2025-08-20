@@ -36,6 +36,14 @@ PrefabInstance:
       propertyPath: groundCollisionLayerMask.m_Bits
       value: 4294836481
       objectReference: {fileID: 0}
+    - target: {fileID: 3239827073778428190, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: directionalBlendLerpMod
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7270479773071441371, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: gravitySnapDistance
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8440015110078338219, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: _assetId
       value: 4175352491

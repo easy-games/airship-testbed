@@ -347,16 +347,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -1395346797326882881, guid: a82008896ce7c804a9e06e3e2edd2804, type: 3}
-  m_fileFullPath: Assets/Code/AirshipPlatformDemo/MovementModifications/CharacterForceTrigger.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: b47aeab5-eed5-434a-aa31-d6666d36f595
+  script: {fileID: -1395346797326882881, guid: a82008896ce7c804a9e06e3e2edd2804, type: 3}
+  scriptPath: Assets/Code/AirshipPlatformDemo/MovementModifications/CharacterForceTrigger.lua
+  forceContext: 0
+  metadata:
     name: CharacterForceTrigger
     singleton: 0
     decorators: []
@@ -417,7 +412,6 @@ MonoBehaviour:
       modified: 0
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!65 &2585634045470622771
 BoxCollider:
   m_ObjectHideFlags: 0

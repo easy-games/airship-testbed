@@ -4983,16 +4983,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: 2633685010534107183, guid: e939fe72bcc69db4498bbd1c6ef0732e, type: 3}
-  m_fileFullPath: Assets/Code/AirshipPlatformDemo/MovementModifications/CharacterTeleporter.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: 61e39284-4ae7-4153-9ca4-9903866be414
+  script: {fileID: 2633685010534107183, guid: e939fe72bcc69db4498bbd1c6ef0732e, type: 3}
+  scriptPath: Assets/Code/AirshipPlatformDemo/MovementModifications/CharacterTeleporter.lua
+  forceContext: 0
+  metadata:
     name: CharacterTeleporter
     singleton: 0
     decorators: []
@@ -5017,7 +5012,6 @@ MonoBehaviour:
       modified: 0
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!135 &5274041621811801741
 SphereCollider:
   m_ObjectHideFlags: 0

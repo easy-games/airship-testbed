@@ -1025,9 +1025,7 @@ MonoBehaviour:
   assistedLedgeJump: 1
   maxStepUpHeight: 0.3
   stepUpRampDistance: 0.75
-  detectSlopes: 0
-  slopeForce: 45
-  minSlopeDelta: 0.1
+  detectSlopes: 1
   maxSlopeDelta: 0.3
 --- !u!114 &3239827073778428190
 MonoBehaviour:
@@ -1046,12 +1044,12 @@ MonoBehaviour:
   animationEvents: {fileID: 6059025528528977290}
   minAirborneTime: 0.25
   particleMaxDistance: 25
-  directionalBlendLerpMod: 15
-  skiddingSpeed: 7.5
+  speedBlendTransitionSpeed: 4
+  skiddingSpeed: 8.5
   idleRectionLength: 15
-  animWalkSpeed: 4.4444447
+  animWalkSpeed: 4.666667
   animRunSpeed: 6.6666665
-  animCrouchSpeed: 2.1233335
+  animCrouchSpeed: 2.123333
 --- !u!1001 &3492179243954559087
 PrefabInstance:
   m_ObjectHideFlags: 0
