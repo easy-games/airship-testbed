@@ -4039,6 +4039,16 @@ declare const enum LoadingStatus {
     Loading = 1,
     Loaded = 2,
 }
+declare const enum Flips {
+    Flip_0Deg = 0,
+    Flip_90Deg = 1,
+    Flip_180Deg = 2,
+    Flip_270Deg = 3,
+    Flip_0DegVertical = 4,
+    Flip_90DegVertical = 5,
+    Flip_180DegVertical = 6,
+    Flip_270DegVertical = 7,
+}
 declare const enum CrouchEdgeDetection {
     None = 0,
     UseMeshNormals = 1,
@@ -31355,6 +31365,7 @@ interface GameConfig extends ScriptableObject {
     defaultSolverVelocityIterations: number;
     queriesHitBackfaces: boolean;
     queriesHitTriggers: boolean;
+    fixedDeltaTime: number;
     supportsMobile: boolean;
     compileURPShaders: boolean;
 
@@ -37684,7 +37695,7 @@ interface TexturePacker {
 
     Dispose(): void;
     GetUVs(sourceTexture: Texture2D): Rect;
-    PackTextures(textures: CSDictionary<number, TextureSet>, desiredPadding: number, width: number, height: number, numMips: number, normalizedSize: number): void;
+    PackTextures(textures: CSDictionary<number, TextureSet>, desiredPadding: number, width: number, height: number, numMips: number, normalizedSize: number, packNormals: boolean): void;
 
 
 }
@@ -52132,6 +52143,7 @@ interface VoxelWorldConstructor {
     GetVoxelFlippedBits(voxel: number): number;
     HashCoordinates(x: number, y: number, z: number): number;
     SetVoxelFlippedBits(voxel: number, flippedBits: number): number;
+    SetVoxelFlippedRotation(voxel: number, flip: Flips): number;
     SetVoxelSolidBit(voxel: number, solid: boolean): number;
     Sign(input: Vector3): Vector3;
     VoxelDataToBlockId(block: number): number;
@@ -52308,8 +52320,6 @@ interface CharacterMovementSettings extends MonoBehaviour {
     maxStepUpHeight: number;
     stepUpRampDistance: number;
     detectSlopes: boolean;
-    slopeForce: number;
-    minSlopeDelta: number;
     maxSlopeDelta: number;
 
 
