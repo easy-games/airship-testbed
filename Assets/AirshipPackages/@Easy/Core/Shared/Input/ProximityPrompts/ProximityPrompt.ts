@@ -68,13 +68,22 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	private canvasDistanceCondition?: CanvasDistanceCondition;
 
 	private shownBin = new Bin();
+	private destroyBin = new Bin();
 	private bin = new Bin();
 	private shown = false;
 	/** Position on enable */
 	private initialPosition: Vector3;
 
 	protected Awake(): void {
-		if (this.canvasDistanceCondition) this.canvasDistanceCondition.maxDistance = this.maxRange + 10;
+		if (this.canvasDistanceCondition) {
+			this.canvasDistanceCondition.maxDistance = this.maxRange + 10;
+		}
+
+		this.destroyBin.Add(
+			Airship.Input.ObserveKeybind(this.actionName, (action) => {
+				this.keybindTextLabel.text = action.binding.GetDisplayName() ?? "";
+			}),
+		);
 	}
 
 	override OnEnable(): void {
@@ -155,7 +164,6 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	public SetMaxRange(val: number): void {
 		(this.maxRange as number) = val;
 		if (this.canvasDistanceCondition) this.canvasDistanceCondition.maxDistance = val + 10;
-
 	}
 
 	/**
@@ -270,5 +278,9 @@ export default class ProximityPrompt extends AirshipBehaviour {
 
 	public IsShown(): boolean {
 		return this.shown;
+	}
+
+	protected OnDestroy(): void {
+		this.destroyBin.Clean();
 	}
 }
