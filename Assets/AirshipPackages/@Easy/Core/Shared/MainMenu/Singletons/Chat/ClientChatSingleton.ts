@@ -31,7 +31,12 @@ class ChatMessageElement {
 	public shown = true;
 	private hideBin = new Bin();
 
-	constructor(public readonly gameObject: GameObject, public time: number, public readonly messageId?: string, public readonly nameWithPrefix?: string) {
+	constructor(
+		public readonly gameObject: GameObject,
+		public time: number,
+		public readonly messageId?: string,
+		public readonly nameWithPrefix?: string,
+	) {
 		this.canvasGroup = gameObject.GetComponent<CanvasGroup>()!;
 	}
 
@@ -101,7 +106,7 @@ export class ClientChatSingleton {
 			Dependency<MainMenuSingleton>().ObserveScreenSize((st, size) => {
 				if (Game.IsMobile()) {
 					const scaler = this.canvas.GetComponent<CanvasScaler>()!;
-					scaler.uiScaleMode = ScaleMode.ConstantPixelSize;
+					scaler.uiScaleMode = ScaleMode.ScaleWithScreenSize;
 					scaler.scaleFactor = Game.GetScaleFactor();
 					const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
 
@@ -109,7 +114,7 @@ export class ClientChatSingleton {
 						wrapperRect.anchorMin = new Vector2(0, 0);
 						wrapperRect.anchorMax = new Vector2(0, 1);
 						wrapperRect.pivot = new Vector2(0, 1);
-						wrapperRect.offsetMin = new Vector2(wrapperRect.offsetMin.x, 216);
+						wrapperRect.offsetMin = new Vector2(wrapperRect.offsetMin.x, 600);
 					} else {
 						wrapperRect.anchorMax = new Vector2(0, 1);
 						wrapperRect.anchorMin = new Vector2(0, 0.55);
@@ -171,7 +176,12 @@ export class ClientChatSingleton {
 		return this.selected;
 	}
 
-	public AddMessage(rawText: string, messageId: string | undefined, nameWithPrefix: string | undefined, senderClientId: number | undefined): void {
+	public AddMessage(
+		rawText: string,
+		messageId: string | undefined,
+		nameWithPrefix: string | undefined,
+		senderClientId: number | undefined,
+	): void {
 		let sender: ProtectedPlayer | undefined;
 		if (senderClientId !== undefined) {
 			sender = Protected.ProtectedPlayers.FindByConnectionId(senderClientId);
@@ -188,18 +198,15 @@ export class ClientChatSingleton {
 		const isMainMenu = Game.coreContext === CoreContext.MAIN_MENU;
 		if (isMainMenu) return;
 
-		contextbridge.subscribe(
-			"Chat:ProcessLocalMessage",
-			(context: LuauContext, msg: ChatMessageNetworkEvent) => {
-				if (msg.type === "sent") {
-					this.AddMessage(msg.message, msg.internalMessageId, msg.senderPrefix, msg.senderClientId);
-				} else if (msg.type === "update") {
-					this.UpdateChatMessage(msg.internalMessageId, msg.message);
-				} else if (msg.type === "remove") {
-					this.ClearChatMessage(msg.internalMessageId);
-				}
-			},
-		);
+		contextbridge.subscribe("Chat:ProcessLocalMessage", (context: LuauContext, msg: ChatMessageNetworkEvent) => {
+			if (msg.type === "sent") {
+				this.AddMessage(msg.message, msg.internalMessageId, msg.senderPrefix, msg.senderClientId);
+			} else if (msg.type === "update") {
+				this.UpdateChatMessage(msg.internalMessageId, msg.message);
+			} else if (msg.type === "remove") {
+				this.ClearChatMessage(msg.internalMessageId);
+			}
+		});
 
 		// TODO: Does this ever run? It seems to be on the client that the subscription in AirshipChatSingleton is what sends events here
 		// TODO: It does so through the contextbridge Chat:ProcessLocalMessage event
@@ -433,7 +440,12 @@ export class ClientChatSingleton {
 		}
 	}
 
-	public RenderChatMessage(message: string, messageId?: string, sender?: ProtectedPlayer, nameWithPrefix?: string): void {
+	public RenderChatMessage(
+		message: string,
+		messageId?: string,
+		sender?: ProtectedPlayer,
+		nameWithPrefix?: string,
+	): void {
 		if (nameWithPrefix) {
 			message = ChatColor.White(nameWithPrefix) + ChatColor.White(message);
 		}
@@ -527,7 +539,6 @@ export class ClientChatSingleton {
 			}
 		}
 	}
-
 
 	public ClearChatMessages(): void {
 		try {
