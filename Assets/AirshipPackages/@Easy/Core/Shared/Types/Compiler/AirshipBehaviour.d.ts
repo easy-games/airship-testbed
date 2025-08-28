@@ -173,6 +173,15 @@ type AirshipDecorator<T> = T & {
 type AirshipBehaviourFieldDecorator<T extends ReadonlyArray<unknown>> = (
 	...args: T
 ) => AirshipDecorator<(target: AirshipBehaviour, property: string) => void>;
+
+type AirshipBehaviourMethodDecorator<T extends ReadonlyArray<unknown>> = (...args: T) => AirshipDecorator<
+	(
+		target: AirshipBehaviour | typeof AirshipBehaviour, // static or non-static
+		property: string,
+		descriptor: TypedPropertyDescriptor<(this: AirshipBehaviour | typeof AirshipBehaviour) => void>,
+	) => void
+>;
+
 type AirshipBehaviourClassDecorator<T extends ReadonlyArray<unknown>> = (
 	...args: T
 ) => AirshipDecorator<(target: typeof AirshipBehaviour) => void>;
