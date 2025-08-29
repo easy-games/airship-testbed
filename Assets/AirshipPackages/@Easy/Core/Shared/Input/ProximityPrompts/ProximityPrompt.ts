@@ -81,7 +81,9 @@ export default class ProximityPrompt extends AirshipBehaviour {
 
 		this.destroyBin.Add(
 			Airship.Input.ObserveKeybind(this.actionName, (action) => {
-				this.keybindTextLabel.text = action.binding.GetDisplayName() ?? "";
+				if (this.shown) {
+					this.keybindTextLabel.text = action.binding.GetDisplayName() ?? "";
+				}
 			}),
 		);
 	}
