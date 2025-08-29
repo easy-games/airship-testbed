@@ -36882,191 +36882,6 @@ interface ChatroomAgentConstructor {
 declare const ChatroomAgent: ChatroomAgentConstructor;
     
     
-interface Texture2DArray extends Texture {
-    /**
-     * Number of elements in a texture array (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray-depth.html | Texture2DArray.depth}
-     */
-    readonly depth: number;
-    /**
-     * Texture format (Read Only).
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray-format.html | Texture2DArray.format}
-     */
-    readonly format: TextureFormat;
-    /**
-     * The name of the texture mipmap limit group that this texture is associated with. (Read Only)
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray-mipmapLimitGroup.html | Texture2DArray.mipmapLimitGroup}
-     */
-    readonly mipmapLimitGroup: string;
-    /**
-     * The number of high resolution mipmap levels from the texture that Unity doesn't upload to the GPU. (Read Only)
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray-activeMipmapLimit.html | Texture2DArray.activeMipmapLimit}
-     */
-    readonly activeMipmapLimit: number;
-    readonly isReadable: boolean;
-    /**
-     * This property causes a texture to ignore all texture mipmap limit settings.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray-ignoreMipmapLimit.html | Texture2DArray.ignoreMipmapLimit}
-     */
-    ignoreMipmapLimit: boolean;
-
-
-
-    /**
-     * Copies changes you've made in a CPU texture to the GPU.
-     * @param updateMipmaps When the value is true, Unity recalculates mipmap levels, using mipmap level 0 as the source. The default value is true.
-     * @param makeNoLongerReadable When the value is true, Unity deletes the texture in CPU memory after it uploads it to the GPU, and sets Texture.isReadable|isReadable to false. The default value is false.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.Apply.html | Texture2DArray.Apply}
-     */
-    Apply(updateMipmaps: boolean, makeNoLongerReadable: boolean): void;
-    Apply(updateMipmaps: boolean): void;
-    Apply(): void;
-    /**
-     * Copies pixel data from another texture on the CPU.
-     * @param src The source texture.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.CopyPixels.html | Texture2DArray.CopyPixels}
-     */
-    CopyPixels(src: Texture): void;
-    /**
-     * Copies pixel data from another texture on the CPU.
-     * @param src The source texture.
-     * @param srcElement The element in the source texture to copy from. For example, the CubemapFace in a Cubemap or the slice in a texture array. Set the value to 0 if src is a 2D texture.
-     * @param srcMip The mipmap level to copy from. The range is 0 through the source texture's Texture.mipmapCount. The default value is 0.
-     * @param dstElement The slice index to copy to in this texture array.
-     * @param dstMip The mipmap level to write to. The range is 0 through this texture's Texture.mipmapCount. The default value is 0.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.CopyPixels.html | Texture2DArray.CopyPixels}
-     */
-    CopyPixels(src: Texture, srcElement: number, srcMip: number, dstElement: number, dstMip: number): void;
-    /**
-     * Copies pixel data from another texture on the CPU.
-     * @param src The source texture.
-     * @param srcElement The element in the source texture to copy from. For example, the CubemapFace in a Cubemap or the slice in a texture array. Set the value to 0 if src is a 2D texture.
-     * @param srcMip The mipmap level to copy from. The range is 0 through the source texture's Texture.mipmapCount. The default value is 0.
-     * @param srcX The starting x coordinate of src to copy from. 0 is the left of the texture.
-     * @param srcY The starting y coordinate of src to copy from. 0 is the bottom of the texture.
-     * @param srcWidth The width of src to copy.
-     * @param srcHeight The height of src to copy.
-     * @param dstElement The slice index to copy to in this texture array.
-     * @param dstMip The mipmap level to write to. The range is 0 through this texture's Texture.mipmapCount. The default value is 0.
-     * @param dstX The x coordinate of this texture to copy to.
-     * @param dstY The y coordinate to this texture to copy to.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.CopyPixels.html | Texture2DArray.CopyPixels}
-     */
-    CopyPixels(src: Texture, srcElement: number, srcMip: number, srcX: number, srcY: number, srcWidth: number, srcHeight: number, dstElement: number, dstMip: number, dstX: number, dstY: number): void;
-    /**
-     * Gets the raw data from a texture.
-     * @param mipLevel The mipmap level to read from. The range is 0 through the texture's Texture.mipmapCount. The default value is 0.
-     * @param element The array slice to read from.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.GetPixelData.html | Texture2DArray.GetPixelData}
-     */
-    GetPixelData<T>(mipLevel: number, element: number): Readonly<T[]>;
-    /**
-     * Gets the pixel color data for a mipmap level of a slice as Color structs.
-     * @param arrayElement The array slice to read pixel data from.
-     * @param miplevel The mipmap level to get. The range is 0 through the texture's Texture.mipmapCount. The default value is 0.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.GetPixels.html | Texture2DArray.GetPixels}
-     */
-    GetPixels(arrayElement: number, miplevel: number): Readonly<Color[]>;
-    /**
-     * Gets the pixel color data for a mipmap level of a slice as Color structs.
-     * @param arrayElement The array slice to read pixel data from.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.GetPixels.html | Texture2DArray.GetPixels}
-     */
-    GetPixels(arrayElement: number): Readonly<Color[]>;
-    /**
-     * Gets the pixel color data for a mipmap level of a slice as Color32 structs.
-     * @param arrayElement The array slice to read pixel data from.
-     * @param miplevel The mipmap level to get. The range is 0 through the texture's Texture.mipmapCount. The default value is 0.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.GetPixels32.html | Texture2DArray.GetPixels32}
-     */
-    GetPixels32(arrayElement: number, miplevel: number): Readonly<Color32[]>;
-    /**
-     * Gets the pixel color data for a mipmap level of a slice as Color32 structs.
-     * @param arrayElement The array slice to read pixel data from.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.GetPixels32.html | Texture2DArray.GetPixels32}
-     */
-    GetPixels32(arrayElement: number): Readonly<Color32[]>;
-    SetPixelData<T>(data: Readonly<T[]>, mipLevel: number, element: number, sourceDataStartIndex: number): void;
-    SetPixelData<T>(data: Readonly<T[]>, mipLevel: number, element: number, sourceDataStartIndex: number): void;
-    /**
-     * Sets the pixel colors of an entire mipmap level of a slice.
-     * @param colors The array of pixel colours to use. This is a 2D image flattened to a 1D array.
-     * @param arrayElement The array slice to write to.
-     * @param miplevel The mipmap level to write colors to. The range is 0 through the texture's Texture.mipmapCount. The default value is 0.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.SetPixels.html | Texture2DArray.SetPixels}
-     */
-    SetPixels(colors: Readonly<Color[]>, arrayElement: number, miplevel: number): void;
-    /**
-     * Sets the pixel colors of an entire mipmap level of a slice.
-     * @param colors The array of pixel colours to use. This is a 2D image flattened to a 1D array.
-     * @param arrayElement The array slice to write to.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.SetPixels.html | Texture2DArray.SetPixels}
-     */
-    SetPixels(colors: Readonly<Color[]>, arrayElement: number): void;
-    /**
-     * Sets the pixel colors of an entire mipmap level of a slice.
-     * @param colors The array of pixel colours to use. This is a 2D image flattened to a 1D array.
-     * @param arrayElement The array slice to write colors to.
-     * @param miplevel The mipmap level to write colors to. The range is 0 through the texture's Texture.mipmapCount. The default value is 0.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.SetPixels32.html | Texture2DArray.SetPixels32}
-     */
-    SetPixels32(colors: Readonly<Color32[]>, arrayElement: number, miplevel: number): void;
-    /**
-     * Sets the pixel colors of an entire mipmap level of a slice.
-     * @param colors The array of pixel colours to use. This is a 2D image flattened to a 1D array.
-     * @param arrayElement The array slice to write colors to.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.SetPixels32.html | Texture2DArray.SetPixels32}
-     */
-    SetPixels32(colors: Readonly<Color32[]>, arrayElement: number): void;
-
-
-}
-    
-interface Texture2DArrayConstructor {
-    /**
-     * Read Only. This property is used as a parameter in some overloads of the CommandBuffer.Blit, Graphics.Blit, CommandBuffer.SetRenderTarget, and Graphics.SetRenderTarget methods to indicate that all texture array slices are bound. The value of this property is -1.
-     * 
-     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray-allSlices.html | Texture2DArray.allSlices}
-     */
-    readonly allSlices: number;
-
-
-    new(width: number, height: number, depth: number, format: DefaultFormat, flags: TextureCreationFlags): Texture2DArray;
-    new(width: number, height: number, depth: number, format: DefaultFormat, flags: TextureCreationFlags, mipCount: number): Texture2DArray;
-    new(width: number, height: number, depth: number, format: DefaultFormat, flags: TextureCreationFlags, mipCount: number, mipmapLimitDescriptor: MipmapLimitDescriptor): Texture2DArray;
-    new(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags): Texture2DArray;
-    new(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags, mipCount: number): Texture2DArray;
-    new(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags, mipCount: number, mipmapLimitDescriptor: MipmapLimitDescriptor): Texture2DArray;
-    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number, linear: boolean, createUninitialized: boolean, mipmapLimitDescriptor: MipmapLimitDescriptor): Texture2DArray;
-    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number, linear: boolean, createUninitialized: boolean): Texture2DArray;
-    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number, linear: boolean): Texture2DArray;
-    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean, linear: boolean, createUninitialized: boolean): Texture2DArray;
-    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean, linear: boolean): Texture2DArray;
-    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean): Texture2DArray;
-
-
-
-}
-declare const Texture2DArray: Texture2DArrayConstructor;
-    
 interface float3 {
     x: number;
     y: number;
@@ -37709,8 +37524,6 @@ interface BridgeConstructor {
     MakeColorArray(size: number): Readonly<Color[]>;
     MakeDefaultRenderTexture(width: number, height: number): RenderTexture;
     MakeDefaultSprite(texture: Texture2D): Sprite;
-    MakeDefaultTexture2D(width: number, height: number): Texture2D;
-    MakeDefaultTexture2DArray(width: number, height: number, depth: number): Texture2DArray;
     MakeFloat3(v: Vector3): float3;
     MakeFloatArray(size: number): Readonly<number[]>;
     MakeIntArray(size: number): Readonly<number[]>;
@@ -37718,8 +37531,6 @@ interface BridgeConstructor {
     MakeMesh(): Mesh;
     MakeSprite(texture2D: Texture2D): Sprite;
     MakeSprite(texture: Texture2D, rect: Rect, pivot: Vector2, pixelsPerUnit: number): Sprite;
-    MakeTexture2D(width: number, height: number, format: TextureFormat, mipChain: boolean, linear: boolean): Texture2D;
-    MakeTexture2DArray(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags, mipCount: number): Texture2DArray;
     MakeVector3Array(size: number): Readonly<Vector3[]>;
     MoveGameObjectToScene(gameObject: GameObject, scene: Scene): void;
     OpenDevConsole(): void;
@@ -43076,6 +42887,191 @@ interface FrameTimingManagerConstructor {
 
 }
 declare const FrameTimingManager: FrameTimingManagerConstructor;
+    
+interface Texture2DArray extends Texture {
+    /**
+     * Number of elements in a texture array (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray-depth.html | Texture2DArray.depth}
+     */
+    readonly depth: number;
+    /**
+     * Texture format (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray-format.html | Texture2DArray.format}
+     */
+    readonly format: TextureFormat;
+    /**
+     * The name of the texture mipmap limit group that this texture is associated with. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray-mipmapLimitGroup.html | Texture2DArray.mipmapLimitGroup}
+     */
+    readonly mipmapLimitGroup: string;
+    /**
+     * The number of high resolution mipmap levels from the texture that Unity doesn't upload to the GPU. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray-activeMipmapLimit.html | Texture2DArray.activeMipmapLimit}
+     */
+    readonly activeMipmapLimit: number;
+    readonly isReadable: boolean;
+    /**
+     * This property causes a texture to ignore all texture mipmap limit settings.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray-ignoreMipmapLimit.html | Texture2DArray.ignoreMipmapLimit}
+     */
+    ignoreMipmapLimit: boolean;
+
+
+
+    /**
+     * Copies changes you've made in a CPU texture to the GPU.
+     * @param updateMipmaps When the value is true, Unity recalculates mipmap levels, using mipmap level 0 as the source. The default value is true.
+     * @param makeNoLongerReadable When the value is true, Unity deletes the texture in CPU memory after it uploads it to the GPU, and sets Texture.isReadable|isReadable to false. The default value is false.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.Apply.html | Texture2DArray.Apply}
+     */
+    Apply(updateMipmaps: boolean, makeNoLongerReadable: boolean): void;
+    Apply(updateMipmaps: boolean): void;
+    Apply(): void;
+    /**
+     * Copies pixel data from another texture on the CPU.
+     * @param src The source texture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.CopyPixels.html | Texture2DArray.CopyPixels}
+     */
+    CopyPixels(src: Texture): void;
+    /**
+     * Copies pixel data from another texture on the CPU.
+     * @param src The source texture.
+     * @param srcElement The element in the source texture to copy from. For example, the CubemapFace in a Cubemap or the slice in a texture array. Set the value to 0 if src is a 2D texture.
+     * @param srcMip The mipmap level to copy from. The range is 0 through the source texture's Texture.mipmapCount. The default value is 0.
+     * @param dstElement The slice index to copy to in this texture array.
+     * @param dstMip The mipmap level to write to. The range is 0 through this texture's Texture.mipmapCount. The default value is 0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.CopyPixels.html | Texture2DArray.CopyPixels}
+     */
+    CopyPixels(src: Texture, srcElement: number, srcMip: number, dstElement: number, dstMip: number): void;
+    /**
+     * Copies pixel data from another texture on the CPU.
+     * @param src The source texture.
+     * @param srcElement The element in the source texture to copy from. For example, the CubemapFace in a Cubemap or the slice in a texture array. Set the value to 0 if src is a 2D texture.
+     * @param srcMip The mipmap level to copy from. The range is 0 through the source texture's Texture.mipmapCount. The default value is 0.
+     * @param srcX The starting x coordinate of src to copy from. 0 is the left of the texture.
+     * @param srcY The starting y coordinate of src to copy from. 0 is the bottom of the texture.
+     * @param srcWidth The width of src to copy.
+     * @param srcHeight The height of src to copy.
+     * @param dstElement The slice index to copy to in this texture array.
+     * @param dstMip The mipmap level to write to. The range is 0 through this texture's Texture.mipmapCount. The default value is 0.
+     * @param dstX The x coordinate of this texture to copy to.
+     * @param dstY The y coordinate to this texture to copy to.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.CopyPixels.html | Texture2DArray.CopyPixels}
+     */
+    CopyPixels(src: Texture, srcElement: number, srcMip: number, srcX: number, srcY: number, srcWidth: number, srcHeight: number, dstElement: number, dstMip: number, dstX: number, dstY: number): void;
+    /**
+     * Gets the raw data from a texture.
+     * @param mipLevel The mipmap level to read from. The range is 0 through the texture's Texture.mipmapCount. The default value is 0.
+     * @param element The array slice to read from.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.GetPixelData.html | Texture2DArray.GetPixelData}
+     */
+    GetPixelData<T>(mipLevel: number, element: number): Readonly<T[]>;
+    /**
+     * Gets the pixel color data for a mipmap level of a slice as Color structs.
+     * @param arrayElement The array slice to read pixel data from.
+     * @param miplevel The mipmap level to get. The range is 0 through the texture's Texture.mipmapCount. The default value is 0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.GetPixels.html | Texture2DArray.GetPixels}
+     */
+    GetPixels(arrayElement: number, miplevel: number): Readonly<Color[]>;
+    /**
+     * Gets the pixel color data for a mipmap level of a slice as Color structs.
+     * @param arrayElement The array slice to read pixel data from.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.GetPixels.html | Texture2DArray.GetPixels}
+     */
+    GetPixels(arrayElement: number): Readonly<Color[]>;
+    /**
+     * Gets the pixel color data for a mipmap level of a slice as Color32 structs.
+     * @param arrayElement The array slice to read pixel data from.
+     * @param miplevel The mipmap level to get. The range is 0 through the texture's Texture.mipmapCount. The default value is 0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.GetPixels32.html | Texture2DArray.GetPixels32}
+     */
+    GetPixels32(arrayElement: number, miplevel: number): Readonly<Color32[]>;
+    /**
+     * Gets the pixel color data for a mipmap level of a slice as Color32 structs.
+     * @param arrayElement The array slice to read pixel data from.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.GetPixels32.html | Texture2DArray.GetPixels32}
+     */
+    GetPixels32(arrayElement: number): Readonly<Color32[]>;
+    SetPixelData<T>(data: Readonly<T[]>, mipLevel: number, element: number, sourceDataStartIndex: number): void;
+    SetPixelData<T>(data: Readonly<T[]>, mipLevel: number, element: number, sourceDataStartIndex: number): void;
+    /**
+     * Sets the pixel colors of an entire mipmap level of a slice.
+     * @param colors The array of pixel colours to use. This is a 2D image flattened to a 1D array.
+     * @param arrayElement The array slice to write to.
+     * @param miplevel The mipmap level to write colors to. The range is 0 through the texture's Texture.mipmapCount. The default value is 0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.SetPixels.html | Texture2DArray.SetPixels}
+     */
+    SetPixels(colors: Readonly<Color[]>, arrayElement: number, miplevel: number): void;
+    /**
+     * Sets the pixel colors of an entire mipmap level of a slice.
+     * @param colors The array of pixel colours to use. This is a 2D image flattened to a 1D array.
+     * @param arrayElement The array slice to write to.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.SetPixels.html | Texture2DArray.SetPixels}
+     */
+    SetPixels(colors: Readonly<Color[]>, arrayElement: number): void;
+    /**
+     * Sets the pixel colors of an entire mipmap level of a slice.
+     * @param colors The array of pixel colours to use. This is a 2D image flattened to a 1D array.
+     * @param arrayElement The array slice to write colors to.
+     * @param miplevel The mipmap level to write colors to. The range is 0 through the texture's Texture.mipmapCount. The default value is 0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.SetPixels32.html | Texture2DArray.SetPixels32}
+     */
+    SetPixels32(colors: Readonly<Color32[]>, arrayElement: number, miplevel: number): void;
+    /**
+     * Sets the pixel colors of an entire mipmap level of a slice.
+     * @param colors The array of pixel colours to use. This is a 2D image flattened to a 1D array.
+     * @param arrayElement The array slice to write colors to.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray.SetPixels32.html | Texture2DArray.SetPixels32}
+     */
+    SetPixels32(colors: Readonly<Color32[]>, arrayElement: number): void;
+
+
+}
+    
+interface Texture2DArrayConstructor {
+    /**
+     * Read Only. This property is used as a parameter in some overloads of the CommandBuffer.Blit, Graphics.Blit, CommandBuffer.SetRenderTarget, and Graphics.SetRenderTarget methods to indicate that all texture array slices are bound. The value of this property is -1.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Texture2DArray-allSlices.html | Texture2DArray.allSlices}
+     */
+    readonly allSlices: number;
+
+
+    new(width: number, height: number, depth: number, format: DefaultFormat, flags: TextureCreationFlags): Texture2DArray;
+    new(width: number, height: number, depth: number, format: DefaultFormat, flags: TextureCreationFlags, mipCount: number): Texture2DArray;
+    new(width: number, height: number, depth: number, format: DefaultFormat, flags: TextureCreationFlags, mipCount: number, mipmapLimitDescriptor: MipmapLimitDescriptor): Texture2DArray;
+    new(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags): Texture2DArray;
+    new(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags, mipCount: number): Texture2DArray;
+    new(width: number, height: number, depth: number, format: GraphicsFormat, flags: TextureCreationFlags, mipCount: number, mipmapLimitDescriptor: MipmapLimitDescriptor): Texture2DArray;
+    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number, linear: boolean, createUninitialized: boolean, mipmapLimitDescriptor: MipmapLimitDescriptor): Texture2DArray;
+    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number, linear: boolean, createUninitialized: boolean): Texture2DArray;
+    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipCount: number, linear: boolean): Texture2DArray;
+    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean, linear: boolean, createUninitialized: boolean): Texture2DArray;
+    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean, linear: boolean): Texture2DArray;
+    new(width: number, height: number, depth: number, textureFormat: TextureFormat, mipChain: boolean): Texture2DArray;
+
+
+
+}
+declare const Texture2DArray: Texture2DArrayConstructor;
     
 interface BoxCollider2D extends Collider2D {
     /**
