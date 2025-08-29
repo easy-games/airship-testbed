@@ -178,7 +178,7 @@ type AirshipBehaviourMethodDecorator<T extends ReadonlyArray<unknown>> = (...arg
 	(
 		target: AirshipBehaviour | typeof AirshipBehaviour, // static or non-static
 		property: string,
-		descriptor: TypedPropertyDescriptor<(this: AirshipBehaviour | typeof AirshipBehaviour) => void>,
+		descriptor: TypedPropertyDescriptor<(this: AirshipBehaviour | typeof AirshipBehaviour, ...args: any[]) => void>,
 	) => void
 >;
 
