@@ -3,6 +3,7 @@ import { SerializableAction } from "@Easy/Core/Shared/Input/InputAction";
 
 export interface ClientSettingsFile {
 	sprintToggleEnabled: boolean;
+	chatMuteEnabled: boolean;
 	mouseSensitivity: number;
 	mouseSmoothing: number;
 	touchSensitivity: number;

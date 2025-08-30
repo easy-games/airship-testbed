@@ -1240,6 +1240,15 @@ export class AirshipInputSingleton {
 	}
 
 	/**
+	 * Returns chat mute toggle based on player's setting.
+	 *
+	 * @returns chat mute toggle based on player's setting.
+	 */
+	public IsChatMuteEnabled(): boolean {
+		return contextbridge.invoke<() => boolean>("ClientSettings:IsChatMuteEnabled", LuauContext.Protected);
+	};
+
+	/**
 	 * Returns mouse sensitivity based on player's setting & game's sensitivity multiplier.
 	 *
 	 * @returns Mouse sensitivity based on player's setting & game's sensitivity multiplier.

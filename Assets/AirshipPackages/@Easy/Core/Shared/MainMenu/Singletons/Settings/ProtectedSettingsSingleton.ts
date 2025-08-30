@@ -14,6 +14,7 @@ import { InternalGameSetting, InternalGameSettingType, InternalSliderGameSetting
 
 const defaultData: ClientSettingsFile = {
 	sprintToggleEnabled: false,
+	chatMuteEnabled: false,
 	mouseSensitivity: 2,
 	mouseSmoothing: 0,
 	touchSensitivity: 0.5,
@@ -69,6 +70,10 @@ export class ProtectedSettingsSingleton {
 
 		contextbridge.callback<() => boolean>("ClientSettings:IsSprintToggleEnabled", () => {
 			return this.IsSprintToggleEnabled();
+		});
+
+		contextbridge.callback<() => boolean>("ClientSettings:IsChatMuteEnabled", () => {
+			return this.IsChatMuteEnabled();
 		});
 
 		contextbridge.callback<() => number>("ClientSettings:GetMouseSensitivity", () => {
@@ -408,6 +413,10 @@ export class ProtectedSettingsSingleton {
 		return this.data.sprintToggleEnabled;
 	}
 
+	public IsChatMuteEnabled(): boolean {
+		return this.data.chatMuteEnabled;
+	};
+
 	public GetMouseSensitivity(): number {
 		return this.data.mouseSensitivity;
 	}
@@ -420,6 +429,11 @@ export class ProtectedSettingsSingleton {
 		this.data.sprintToggleEnabled = value;
 		this.unsavedChanges = true;
 	}
+
+	public SetChatMuteEnabled(value: boolean): void {
+		this.data.chatMuteEnabled = value;
+		this.unsavedChanges = true;
+	};
 
 	public SetMouseSensitivity(value: number): void {
 		this.data.mouseSensitivity = value;

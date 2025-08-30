@@ -29,6 +29,7 @@ export default class SettingsPage extends AirshipBehaviour {
 
 	@Header("Toggles")
 	public sprintToggle: SettingsToggle;
+	public chatMuteToggle: SettingsToggle;
 
 	@Header("Sliders")
 	public mouseSensitivitySlider!: SettingsSlider;
@@ -175,6 +176,11 @@ export default class SettingsPage extends AirshipBehaviour {
 		this.sprintToggle.Init("Toggle Sprint", settings.IsSprintToggleEnabled());
 		this.sprintToggle.toggle.onValueChanged.Connect((val) => {
 			settings.SetSprintToggleEnabled(val);
+		});
+
+		this.chatMuteToggle.Init("Mute Game Chat", settings.IsChatMuteEnabled());
+		this.chatMuteToggle.toggle.onValueChanged.Connect((val) => {
+			settings.SetChatMuteEnabled(val);
 		});
 
 		this.mouseSensitivitySlider.Init("Mouse Sensitivity", settings.GetMouseSensitivity(), 0.01, 2, 0.01);

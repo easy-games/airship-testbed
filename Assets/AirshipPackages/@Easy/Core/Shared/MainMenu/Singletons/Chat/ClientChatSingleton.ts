@@ -29,16 +29,21 @@ class ChatMessageElement {
 	public canvasGroup: CanvasGroup;
 	public shownAt = os.clock();
 	public shown = true;
+	public sender: ProtectedPlayer | undefined;
 	private hideBin = new Bin();
 
 	constructor(public readonly gameObject: GameObject, public time: number, public readonly messageId?: string, public readonly nameWithPrefix?: string) {
 		this.canvasGroup = gameObject.GetComponent<CanvasGroup>()!;
 	}
 
-	public Hide(): void {
+	public Hide(instant: boolean = false): void {
 		if (!this.shown) return;
+		let fadeTime = 0.2;
+
+		if (instant) { fadeTime = 0 };
+
 		this.shown = false;
-		const t = NativeTween.CanvasGroupAlpha(this.canvasGroup, 0, 0.2)?.SetUseUnscaledTime(true);
+		const t = NativeTween.CanvasGroupAlpha(this.canvasGroup, 0, fadeTime)?.SetUseUnscaledTime(true);
 		this.hideBin.Add(() => {
 			if (!t.IsDestroyed()) {
 				t.Cancel();
@@ -381,13 +386,22 @@ export class ClientChatSingleton {
 		if (Game.IsMobile()) return;
 		if (this.IsChatFocused()) {
 			for (const element of this.chatMessageElements) {
+				element.gameObject.SetActive(true);
 				element.Show();
 			}
 		} else {
 			for (const element of this.chatMessageElements) {
+				const latestMessage = this.chatMessageElements[this.chatMessageElements.size() - 1];
+
+				// This makes it so the last message shown is the client's 
+				if (Protected.Settings.IsChatMuteEnabled() && element !== latestMessage && !element.sender?.IsLocalPlayer()) {
+					element.Hide(true);
+					continue;
+				};
+
 				if (os.clock() - element.time > 10) {
 					element.Hide();
-				}
+				};
 			}
 		}
 	}
@@ -467,7 +481,13 @@ export class ClientChatSingleton {
 			}
 
 			const element = new ChatMessageElement(chatMessageGO, os.clock(), messageId, nameWithPrefix);
+			element.sender = sender;
 			this.chatMessageElements.push(element);
+
+			if (Protected.Settings.IsChatMuteEnabled() && !sender?.IsLocalPlayer()) {
+				element.Hide(true);
+				return;
+			};
 
 			// if (Time.time > this.lastChatMessageRenderedTime && this.canvas.gameObject.activeInHierarchy) {
 			// 	AudioManager.PlayGlobal(CoreSound.chatMessageReceived, {
