@@ -686,13 +686,13 @@ export class AirshipInputSingleton {
 	 * @param name An action name.
 	 */
 	public SetDown(name: string): void {
-		if (this.actionDownState.has(name)) return;
-		const lowerName = name.lower();
-		this.actionDownState.add(lowerName);
-		const signals = this.actionDownSignals.get(lowerName);
+		const internalName = name.lower();
+		if (this.actionDownState.has(internalName)) return;
+		this.actionDownState.add(internalName);
+		const signals = this.actionDownSignals.get(internalName);
 		if (!signals) return;
 		for (const signal of signals) {
-			signal.Fire(new InputActionEvent(lowerName, false));
+			signal.Fire(new InputActionEvent(internalName, false));
 		}
 	}
 
