@@ -30,6 +30,7 @@ const defaultData: ClientSettingsFile = {
 	vsync: false,
 	shadowLevel: 0,
 	antiAliasing: 0,
+	voiceToggleEnabled: false
 };
 
 interface SavedGameSettings {
@@ -69,6 +70,10 @@ export class ProtectedSettingsSingleton {
 
 		contextbridge.callback<() => boolean>("ClientSettings:IsSprintToggleEnabled", () => {
 			return this.IsSprintToggleEnabled();
+		});
+
+		contextbridge.callback<() => boolean>("ClientSettings:IsVoiceToggleEnabled", () => {
+			return this.IsVoiceToggleEnabled();
 		});
 
 		contextbridge.callback<() => number>("ClientSettings:GetMouseSensitivity", () => {
@@ -408,6 +413,10 @@ export class ProtectedSettingsSingleton {
 		return this.data.sprintToggleEnabled;
 	}
 
+	public IsVoiceToggleEnabled(): boolean {
+		return this.data.voiceToggleEnabled;
+	}
+
 	public GetMouseSensitivity(): number {
 		return this.data.mouseSensitivity;
 	}
@@ -418,6 +427,11 @@ export class ProtectedSettingsSingleton {
 
 	public SetSprintToggleEnabled(value: boolean): void {
 		this.data.sprintToggleEnabled = value;
+		this.unsavedChanges = true;
+	}
+
+	public SetVoiceToggleEnabled(value: boolean): void {
+		this.data.voiceToggleEnabled = value;
 		this.unsavedChanges = true;
 	}
 

@@ -14,6 +14,7 @@ export interface ClientSettingsFile {
 	statusText: string;
 	micDeviceName: string | undefined;
 	microphoneEnabled: boolean;
+	voiceToggleEnabled: boolean;
 	vsync: boolean;
 	shadowLevel: number;
 	antiAliasing: number;

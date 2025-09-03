@@ -50,11 +50,20 @@ export default class MicIndicator extends AirshipBehaviour {
 						);
 					}
 					return;
-				}
-				this.agent!.MuteSelf = false;
+				};
+
+				if (!Protected.Settings.data.voiceToggleEnabled) {
+					// If the user wants Push-To-Talk
+					this.agent!.MuteSelf = false;
+				} else {
+					// The user wants the mic to toggle
+					this.agent!.MuteSelf = !this.agent!.MuteSelf;
+				};
 			});
 			Airship.Input.OnUp("PushToTalk").Connect((event) => {
-				this.agent!.MuteSelf = true;
+				if (!Protected.Settings.data.voiceToggleEnabled) {
+					this.agent!.MuteSelf = true;
+				};
 			});
 		});
 	}
