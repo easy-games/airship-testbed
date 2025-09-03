@@ -11,6 +11,7 @@ import { SettingsPageSingleton } from "../../../Singletons/SettingsPageSingleton
 import MainMenuPageComponent from "../../MainMenuPageComponent";
 import { SettingsTab } from "../SettingsPageName";
 import EscapeMenuButton from "./EscapeMenuButton";
+import { ProtectedUtil } from "@Easy/Core/Shared/Util/ProtectedUtil";
 
 export default class GameGeneralPage extends MainMenuPageComponent {
 	public settingsBtn: Button;
@@ -51,6 +52,18 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 			this.leaveMatchBtn.gameObject.SetActive(true);
 			this.leaveMatchSpacer.gameObject.SetActive(true);
 			this.disconnectBtn.text.text = "Quit to Main Menu";
+		}
+
+		const notchHeight = ProtectedUtil.GetNotchHeight();
+
+		/**
+		 * On android we need to force the notch inset if applicable
+		 */
+		if (Game.IsLandscape()) {
+			task.defer(() => {
+				const rectTransform = this.transform as RectTransform;
+				rectTransform.anchoredPosition = new Vector2(notchHeight, rectTransform.anchoredPosition.y);
+			});
 		}
 	}
 

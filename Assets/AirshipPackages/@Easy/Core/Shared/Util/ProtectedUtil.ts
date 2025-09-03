@@ -25,8 +25,15 @@ export class ProtectedUtil {
 			}
 		} else {
 			notchHeight = Screen.height - safeArea.yMax;
+
+			/**
+			 * Android, yet again.
+			 */
+			if (Game.platform === AirshipPlatform.Android) {
+				notchHeight = Screen.safeArea.x / 2;
+			}
 		}
-		// print(`notch height: ${notchHeight}`);
+
 		return notchHeight;
 	}
 
