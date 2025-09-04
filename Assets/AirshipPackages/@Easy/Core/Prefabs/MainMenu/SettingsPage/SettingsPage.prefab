@@ -4217,6 +4217,69 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2409167605398963962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2879747811666054421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guid: 7ea7c976-c2b7-4489-804c-49be506a2e20
+  script: {fileID: 7178643272457972308, guid: 7d2f258d598fec34ebd2c16b81c4e448, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipScreenSafeArea.lua
+  forceContext: 0
+  metadata:
+    name: AirshipScreenSafeArea
+    singleton: 0
+    decorators:
+    - name: RequireComponent
+      parameters:
+      - type: object
+        serializedValue: '"RectTransform"'
+    properties:
+    - name: safeArea
+      type: object
+      objectType: RectTransform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 3325142649434242684}
+      modified: 1
+    - name: orientation
+      type: IntEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipScreenSafeArea@SafeAreaOrientation
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 2
+      serializedObject: {fileID: 0}
+      modified: 1
+    displayIcon: {fileID: 0}
+    displayName: 
 --- !u!1 &2884115357784651075
 GameObject:
   m_ObjectHideFlags: 0
