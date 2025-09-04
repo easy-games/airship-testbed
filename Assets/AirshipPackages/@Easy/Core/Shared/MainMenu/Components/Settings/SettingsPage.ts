@@ -14,7 +14,8 @@ import SettingsSlider from "./Controls/SettingsSlider";
 import SettingsToggle from "./Controls/SettingsToggle";
 import { SettingsTab } from "./SettingsPageName";
 import SettingsSidebar from "./SettingsSidebar";
-import AirshipToggle from "../AirshipToggle";
+
+const MOBILE_NAV_HEIGHT = 60;
 
 export default class SettingsPage extends AirshipBehaviour {
 	public sidebar!: SettingsSidebar;
@@ -102,11 +103,14 @@ export default class SettingsPage extends AirshipBehaviour {
 					// this.scrollView.offsetMin = new Vector2(5, 0);
 					// this.scrollView.anchoredPosition = new Vector2(0, -96);
 
-					this.scrollView.offsetMax = new Vector2(0, -notchHeight - 40);
+					this.scrollView.offsetMax = new Vector2(0, -notchHeight - MOBILE_NAV_HEIGHT);
 					this.scrollView.offsetMin = new Vector2(0, 0);
 
 					this.mobileHeader.gameObject.SetActive(true);
-					this.mobileHeader.sizeDelta = new Vector2(this.mobileHeader.sizeDelta.x, notchHeight + 60);
+					this.mobileHeader.sizeDelta = new Vector2(
+						this.mobileHeader.sizeDelta.x,
+						notchHeight + MOBILE_NAV_HEIGHT,
+					);
 
 					this.desktopCloseButtonWrapper.gameObject.SetActive(false);
 					this.rightSection.anchorMin = new Vector2(0, 0);
@@ -147,7 +151,13 @@ export default class SettingsPage extends AirshipBehaviour {
 					const setting = gameSetting as InternalSliderGameSetting;
 					const go = Object.Instantiate(this.sliderPrefab, this.gamePageSettingsContainer);
 					const settingsSlider = go.GetAirshipComponent<SettingsSlider>()!;
-					settingsSlider.Init(gameSetting.name, setting.value as number, setting.min, setting.max, setting.increment);
+					settingsSlider.Init(
+						gameSetting.name,
+						setting.value as number,
+						setting.min,
+						setting.max,
+						setting.increment,
+					);
 					this.bin.Add(
 						settingsSlider.onChange.Connect((val) => {
 							Protected.Settings.SetGameSetting(setting.name, val);
@@ -188,10 +198,10 @@ export default class SettingsPage extends AirshipBehaviour {
 				if (!voiceChat.agent) {
 					voiceChat = Bridge.GetAirshipVoiceChatNetwork();
 					task.unscaledWait();
-				};
+				}
 
 				voiceChat.agent.MuteSelf = true;
-			};
+			}
 		});
 
 		this.mouseSensitivitySlider.Init("Mouse Sensitivity", settings.GetMouseSensitivity(), 0.01, 2, 0.01);
