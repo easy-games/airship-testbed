@@ -5,7 +5,6 @@ import { Spring } from "@Easy/Core/Shared/Util/Spring";
 import { OnLateUpdate, OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Airship } from "../Airship";
 import { CameraMode } from "./CameraMode";
-import { CameraReferences } from "./CameraReferences";
 import { CameraTransform } from "./CameraTransform";
 import { CharacterCameraType } from "./CharacterCameraType";
 import { StaticCameraMode } from "./DefaultCameraModes/StaticCameraMode";
@@ -32,12 +31,16 @@ export class CameraSystem {
 	private readonly enabledBin = new Bin();
 
 	public GetActiveCamera(): Camera {
-		return CameraReferences.mainCamera!;
+		return Airship.Camera.cameraRig!.mainCamera!;
+	}
+
+	public GetCameraHolder(): Transform {
+		return Airship.Camera.cameraRig!.transform;
 	}
 
 	constructor() {
 		// Register FOV state
-		let goal = CameraReferences.mainCamera!.fieldOfView;
+		let goal = this.GetActiveCamera().fieldOfView;
 		for (const cameraType of ObjectUtils.values(CharacterCameraType)) {
 			this.fovStateMap.set(cameraType, {
 				fovSpring: new Spring(new Vector3(goal, 0, 0), 3.5),
@@ -47,8 +50,8 @@ export class CameraSystem {
 			});
 		}
 		this.currentMode = new StaticCameraMode(
-			CameraReferences.mainCamera!.transform.position,
-			CameraReferences.mainCamera!.transform.rotation,
+			this.GetActiveCamera().transform.position,
+			this.GetActiveCamera().transform.rotation,
 		);
 
 		if (this.enabled) {
@@ -98,7 +101,7 @@ export class CameraSystem {
 			}
 		});
 
-		this.currentMode.OnEnable(CameraReferences.mainCamera!, CameraReferences.cameraHolder!);
+		this.currentMode.OnEnable(this.GetActiveCamera(), this.GetCameraHolder());
 		this.enabledBin.Add(() => {
 			this.currentMode.OnDisable();
 		});
@@ -153,8 +156,8 @@ export class CameraSystem {
 		if (this.enabled) this.currentMode.OnDisable();
 		this.currentMode = mode;
 		if (this.enabled) {
-			this.currentMode.OnEnable(CameraReferences.mainCamera!, CameraReferences.cameraHolder!);
-			// this.currentMode.OnStart(CameraReferences.mainCamera!, CameraReferences.cameraHolder!);
+			this.currentMode.OnEnable(this.GetActiveCamera(), this.GetCameraHolder());
+			// this.currentMode.OnStart(this.GetActiveCamera(), this.GetCameraHolder());
 		}
 	}
 
@@ -165,9 +168,7 @@ export class CameraSystem {
 		if (this.onClearCallback) {
 			this.SetMode(this.onClearCallback());
 		} else {
-			this.SetMode(
-				new StaticCameraMode(CameraReferences.cameraHolder!.position, CameraReferences.cameraHolder!.rotation),
-			);
+			this.SetMode(new StaticCameraMode(this.GetCameraHolder().position, this.GetCameraHolder().rotation));
 			this.modeCleared = true;
 		}
 	}
@@ -233,11 +234,11 @@ export class CameraSystem {
 		let relevantCameras: Camera[] = [];
 		switch (cameraType) {
 			case CharacterCameraType.VIEW_MODEL:
-				relevantCameras = [CameraReferences.viewmodelCamera!];
+				relevantCameras = [Airship.Camera.cameraRig!.viewmodelCamera!];
 				break;
 			case CharacterCameraType.FIRST_PERSON:
 			case CharacterCameraType.THIRD_PERSON:
-				relevantCameras = [CameraReferences.mainCamera!];
+				relevantCameras = [this.GetActiveCamera()];
 				break;
 		}
 		return relevantCameras;

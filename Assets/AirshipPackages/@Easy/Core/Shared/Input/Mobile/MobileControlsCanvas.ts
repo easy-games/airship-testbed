@@ -2,16 +2,13 @@ import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Airship } from "../../Airship";
 import { Game } from "../../Game";
 import { ColorUtil } from "../../Util/ColorUtil";
-import { CoreIcon } from "../UI/CoreIcon";
-import TouchJoystick from "./TouchJoystick";
-import { CoreMobileButton } from "./MobileButton";
 import { CoreAction } from "../AirshipCoreAction";
+import { CoreIcon } from "../UI/CoreIcon";
+import { CoreMobileButton } from "./MobileButton";
+import TouchJoystick from "./TouchJoystick";
 
 export default class MobileControlsCanvas extends AirshipBehaviour {
 	public movementJoystick: TouchJoystick;
-
-	private sprintGO: GameObject;
-	private sprintImg: Image;
 
 	private crouchGO: GameObject;
 	private crouchImg: Image;
@@ -19,8 +16,10 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 	private activeColor = ColorUtil.HexToColor("4B7853", 0.81);
 	private inactiveColor = new Color(0, 0, 0, 0.61);
 
-	private sprintToggle = false;
 	private crouchToggle = false;
+
+	// If the joystick is moved under 60% of the range, the player will walk.
+	private readonly sprintThreshold = 0.6;
 
 	private bin = new Bin();
 
@@ -35,28 +34,10 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 				icon: CoreIcon.CrouchPose,
 			});
 			this.crouchImg = this.crouchGO.GetComponent<Image>()!;
-
-			this.sprintGO = Airship.Input.CreateMobileButton(CoreMobileButton.SprintToggle, new Vector2(-140, 520), {
-				icon: CoreIcon.SprintPose,
-			});
-			this.sprintImg = this.sprintGO.GetComponent<Image>()!;
 		}
 		this.bin.Add(
 			Airship.Input.OnDown(CoreMobileButton.CrouchToggle).Connect((event) => {
 				this.crouchToggle = !this.crouchToggle;
-				if (this.crouchToggle && this.sprintToggle) {
-					this.sprintToggle = false;
-				}
-
-				this.UpdateButtonState();
-			}),
-		);
-		this.bin.Add(
-			Airship.Input.OnDown(CoreMobileButton.SprintToggle).Connect((event) => {
-				this.sprintToggle = !this.sprintToggle;
-				if (this.sprintToggle && this.crouchToggle) {
-					this.crouchToggle = false;
-				}
 				this.UpdateButtonState();
 			}),
 		);
@@ -83,12 +64,6 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 	public UpdateButtonState(): void {
 		if (!Game.IsMobile()) return;
 
-		if (this.sprintToggle) {
-			Airship.Input.SetDown(CoreAction.Sprint);
-		} else {
-			Airship.Input.SetUp(CoreAction.Sprint);
-		}
-
 		if (this.crouchToggle) {
 			Airship.Input.SetDown(CoreAction.Crouch);
 		} else {
@@ -100,13 +75,6 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 			this.crouchImg.color = this.activeColor;
 		} else {
 			this.crouchImg.color = this.inactiveColor;
-		}
-
-		// Sprint
-		if (this.sprintToggle) {
-			this.sprintImg.color = this.activeColor;
-		} else {
-			this.sprintImg.color = this.inactiveColor;
 		}
 	}
 
@@ -129,6 +97,16 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 	protected Update(dt: number): void {
 		if (Game.IsMobile()) {
 			const input = this.movementJoystick.input;
+			const inputMagnitude = input.magnitude;
+
+			const shouldSprint = inputMagnitude >= this.sprintThreshold;
+
+			if (shouldSprint) {
+				Airship.Input.SetDown(CoreAction.Sprint);
+			} else {
+				Airship.Input.SetUp(CoreAction.Sprint);
+			}
+
 			Airship.Characters.localCharacterManager.input?.SetQueuedMoveDirection(new Vector3(input.x, 0, input.y));
 		}
 	}

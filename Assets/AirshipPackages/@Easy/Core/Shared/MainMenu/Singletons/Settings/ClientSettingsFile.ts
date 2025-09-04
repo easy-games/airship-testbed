@@ -14,9 +14,11 @@ export interface ClientSettingsFile {
 	statusText: string;
 	micDeviceName: string | undefined;
 	microphoneEnabled: boolean;
+	voiceToggleEnabled: boolean;
 	vsync: boolean;
 	shadowLevel: number;
 	antiAliasing: number;
+	limitFps: number;
 	coreKeybindOverrides: { [key in CoreAction]?: SerializableAction } | undefined;
 	gameKeybindOverrides: { [key: string]: { [key: string]: SerializableAction } };
 }

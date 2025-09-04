@@ -11,7 +11,6 @@ import { Bin } from "../Util/Bin";
 import { Signal, SignalPriority } from "../Util/Signal";
 import { OnLateUpdate, OnUpdate } from "../Util/Timer";
 import { CameraConstants } from "./CameraConstants";
-import { CameraReferences } from "./CameraReferences";
 import CameraRig from "./CameraRig";
 import { CameraSystem } from "./CameraSystem";
 import { CharacterCameraType } from "./CharacterCameraType";
@@ -83,9 +82,6 @@ export class AirshipCameraSingleton {
 	 * @internal
 	 */
 	public StartNewCameraSystem(cameraRig: CameraRig): CameraSystem {
-		CameraReferences.cameraHolder = cameraRig.transform;
-		CameraReferences.mainCamera = cameraRig.mainCamera;
-		CameraReferences.viewmodelCamera = cameraRig.viewmodelCamera;
 		this.cameraRig = cameraRig;
 
 		this.cameraSystem = new CameraSystem();
@@ -99,10 +95,6 @@ export class AirshipCameraSingleton {
 	 * This will cause the CameraRig to stop being controlled in any way.
 	 */
 	public StopCameraSystem() {
-		CameraReferences.cameraHolder = undefined;
-		CameraReferences.mainCamera = undefined;
-		CameraReferences.viewmodelCamera = undefined;
-
 		this.cameraSystem?.SetEnabled(false);
 		this.cameraSystem = undefined;
 	}

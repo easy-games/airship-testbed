@@ -148,7 +148,7 @@ export class LocalCharacterSingleton {
 		// );
 		// if (sprintOverlaytemplate) {
 		// 	let sprintOverlayGameObject = GameObjectUtil.Instantiate(sprintOverlaytemplate);
-		// 	sprintOverlayGameObject.transform.SetParent(CameraReferences.Instance().mainCamera.transform, false);
+		// 	sprintOverlayGameObject.transform.SetParent(Airship.Camera.cameraRig.Instance().mainCamera.transform, false);
 		// 	this.sprintOverlayEmission = sprintOverlayGameObject
 		// 		.GetComponentsInChildren<ParticleSystem>()
 		// 		?.GetValue(0).emission;

@@ -1,4 +1,5 @@
 import { Airship } from "../../Airship";
+import { Player } from "../../Player/Player";
 import { Cancellable } from "../../Util/Cancellable";
 import Inventory from "../Inventory";
 import { ItemStack } from "../ItemStack";
@@ -15,6 +16,10 @@ export class InventoryMovingToSlotEvent extends Cancellable {
 	public allowMerging = true;
 
 	public constructor(
+		/**
+		 * Which Player made this move
+		 */
+		public readonly initiatingPlayer: Player | undefined,
 		/**
 		 * The inventory of the source ItemStack
 		 */
@@ -37,10 +42,10 @@ export class InventoryMovingToSlotEvent extends Cancellable {
 		amount?: number,
 	) {
 		super();
-	
+
 		const fromStack = fromInventory.GetItem(fromSlot);
 		amount ??= fromStack?.amount ?? 0;
-		
+
 		this.amount = amount;
 		this.fromItem = fromStack;
 	}

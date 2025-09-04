@@ -6,6 +6,7 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 	@Header("References")
 	public content!: RectTransform;
 	public voiceChatToggle!: AirshipToggle;
+	public muteToggle!: AirshipToggle;
 
 	override OnEnable(): void {
 		this.content.gameObject.ClearChildren();
@@ -55,6 +56,10 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 					clientSettings.MarkAsDirty();
 				}
 			});
+		});
+
+		this.muteToggle.onValueChanged.Connect((val) => {
+			clientSettings.SetVoiceToggleEnabled(val);
 		});
 	}
 

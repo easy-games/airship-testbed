@@ -273,7 +273,7 @@ export class AirshipInventorySingleton {
 				}
 
 				const event = this.onMovingToSlot.Fire(
-					new InventoryMovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount),
+					new InventoryMovingToSlotEvent(player, fromInv, fromSlot, toInv, toSlot, amount),
 				);
 				if (event.IsCancelled()) return;
 				amount = event.amount;
@@ -658,7 +658,7 @@ export class AirshipInventorySingleton {
 		}
 
 		const event = this.onMovingToSlot.Fire(
-			new InventoryMovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount),
+			new InventoryMovingToSlotEvent(Game.localPlayer, fromInv, fromSlot, toInv, toSlot, amount),
 		);
 		if (event.IsCancelled() || event.amount < 1) return;
 
