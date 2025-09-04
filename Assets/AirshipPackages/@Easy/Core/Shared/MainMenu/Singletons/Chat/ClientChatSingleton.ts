@@ -115,6 +115,7 @@ export class ClientChatSingleton {
 						wrapperRect.anchorMax = new Vector2(0, 1);
 						wrapperRect.pivot = new Vector2(0, 1);
 						wrapperRect.offsetMin = new Vector2(wrapperRect.offsetMin.x, 600);
+						wrapperRect.sizeDelta = new Vector2(600, wrapperRect.sizeDelta.y);
 					} else {
 						wrapperRect.anchorMax = new Vector2(0, 1);
 						wrapperRect.anchorMin = new Vector2(0, 0.55);
