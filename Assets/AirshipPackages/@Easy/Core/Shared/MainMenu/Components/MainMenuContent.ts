@@ -89,6 +89,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 		const isNonTableMobileInGame = Dependency<MainMenuSingleton>().IsInGameNonTabletMobile();
 
 		const notchHeight = ProtectedUtil.GetNotchHeight();
+		const navigationHeight = ProtectedUtil.GetNavigationHeight(); // some devices have a "soft navigation"
 
 		if (Game.IsPortrait()) {
 			this.canvasScalar.matchWidthOrHeight = 1;
@@ -100,7 +101,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.socialMenu.offsetMax = new Vector2(0, 0);
 			this.socialMenu.gameObject.SetActive(true);
 
-			this.contentWrapper.sizeDelta = new Vector2(screenSize.x, screenSize.y);
+			this.contentWrapper.sizeDelta = new Vector2(screenSize.x, screenSize.y - navigationHeight);
 			this.contentWrapper.anchorMin = new Vector2(0.5, 1);
 			this.contentWrapper.anchorMax = new Vector2(0.5, 1);
 			this.contentWrapper.pivot = new Vector2(0.5, 1);
