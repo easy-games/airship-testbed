@@ -82,7 +82,7 @@ export default class DemoManager extends AirshipBehaviour {
 			// image: "Assets/Resources/ItemRenders/wood_sword.png",
 		});
 		Airship.Characters.ObserveCharacters((c) => {
-			c.inventory.AddItem(new ItemStack("WoodSword"));
+			c.inventory?.AddItem(new ItemStack("WoodSword"));
 		});
 
 		this.HideAccessoriesWhileEmoting();

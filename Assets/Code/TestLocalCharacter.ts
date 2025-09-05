@@ -1,15 +1,22 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Binding } from "@Easy/Core/Shared/Input/Binding";
 import PredictedCommandManager, {
 	CommandInstanceIdentifier,
 } from "@Easy/Core/Shared/Network/PredictedCommands/PredictedCommandManager";
 import { TestPredictedCommand } from "@Easy/Core/Shared/Network/PredictedCommands/Test";
-import inspect from "@Easy/Core/Shared/Util/Inspect";
 
 export default class TestLocalCharacter extends AirshipSingleton {
+	// Constants
 	private CMD_IDENTIFIER = "cmd";
-	private cmd: CommandInstanceIdentifier;
-	private canUseAt = 0;
+	private CMD_COOLDOWN_SEC = 3;
+	private CMD_ACTION_NAME = "Ability";
+
+	// Cooldown tracking
+	private canUseAt = new Map<number, number>();
+
+	// Client only local command tracking
+	private localCommand: CommandInstanceIdentifier | undefined;
 
 	override Start(): void {
 		PredictedCommandManager.Get().RegisterCommands({
@@ -18,25 +25,40 @@ export default class TestLocalCharacter extends AirshipSingleton {
 			},
 		});
 
-		Airship.Input.CreateAction("t", Binding.Key(Key.Q));
-
 		PredictedCommandManager.Get().onValidateCommand.Connect((event) => {
-			if (event.commandId === this.CMD_IDENTIFIER && this.canUseAt > Time.time) {
+			if (event.commandId !== this.CMD_IDENTIFIER) return;
+			const nextUseTime = this.canUseAt.get(event.character.id) ?? 0;
+			if (nextUseTime > Time.time) {
 				event.SetCancelled(true);
 				return;
 			}
-			this.canUseAt = Time.time + 3;
 		});
 
-		PredictedCommandManager.Get().onCommandEnded.Connect((commandId) => {
-			print("Ended " + inspect(commandId));
+		PredictedCommandManager.Get().onCommandEnded.Connect((command, result) => {
+			const finalState = result as [progress: number, completed: boolean];
+			if (finalState && finalState[1] === true) {
+				this.canUseAt.set(command.characterId, Time.time + this.CMD_COOLDOWN_SEC);
+			}
 		});
-	}
 
-	protected Update(dt: number): void {
-		// if (Airship.Input.IsDown("t") && !PredictedCommandManager.Get().IsCommandInstanceActive(this.cmd, true)) {
-		// 	this.cmd = PredictedCommandManager.Get().RunCommand(this.CMD_IDENTIFIER);
-		// }
+		Airship.Characters.ObserveCharacters((character) => {
+			return () => {
+				this.canUseAt.delete(character.id);
+			};
+		});
+
+		if (Game.IsClient()) {
+			Airship.Input.CreateAction(this.CMD_ACTION_NAME, Binding.Key(Key.Q));
+			Airship.Input.OnDown(this.CMD_ACTION_NAME).Connect(() => {
+				if (
+					this.localCommand &&
+					PredictedCommandManager.Get().IsCommandInstanceActive(this.localCommand, true, true)
+				) {
+					return;
+				}
+				this.localCommand = PredictedCommandManager.Get().RunCommand(this.CMD_IDENTIFIER);
+			});
+		}
 	}
 
 	override OnDestroy(): void {}

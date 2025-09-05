@@ -814,8 +814,13 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	 * @param commandInstance
 	 * @param character
 	 * @param includeQueued Include commands that are queued to run, but not yet active. Queued commands may not actually run if they are found to be invalid.
+	 * @param includeUnconfirmed Include commands that have ended locally, but have not been confirmed to have ended by the server.
 	 */
-	public IsCommandInstanceActive(commandInstance: CommandInstanceIdentifier, includeQueued = false): boolean {
+	public IsCommandInstanceActive(
+		commandInstance: CommandInstanceIdentifier,
+		includeQueued = false,
+		includeUnconfirmedEnd = false,
+	): boolean {
 		if (!commandInstance) return false;
 
 		if (
@@ -826,6 +831,8 @@ export default class PredictedCommandManager extends AirshipSingleton {
 		) {
 			return true;
 		}
+
+		if (includeUnconfirmedEnd && this.unconfirmedFinalState.get(commandInstance.stringify())) return true;
 
 		const cmd = this.GetActiveCommandByIdentifier(commandInstance);
 		return !!cmd;
@@ -838,8 +845,14 @@ export default class PredictedCommandManager extends AirshipSingleton {
 	 * @param commandId The command
 	 * @param character
 	 * @param includeQueued Include commands that are queued to run, but not yet active. Queued commands may not actually run if they are found to be invalid.
+	 * @param includeUnconfirmed Include commands that have ended locally, but have not been confirmed to have ended by the server.
 	 */
-	public IsCommandIdActive(commandId: string, character?: Character, includeQueued = false) {
+	public IsCommandIdActive(
+		commandId: string,
+		character?: Character,
+		includeQueued = false,
+		includeUnconfirmedEnd = false,
+	) {
 		if (!character && Game.IsServer() && !Game.IsHosting()) {
 			warn(
 				"No character instance provided when calling IsCommandIdActive on the server. The character parameter is required on the server. This will always return false.",
@@ -854,6 +867,15 @@ export default class PredictedCommandManager extends AirshipSingleton {
 
 		if (includeQueued && this.queuedCommands.some((cmd) => cmd.commandId === commandId)) {
 			return true;
+		}
+
+		if (includeUnconfirmedEnd) {
+			for (const [key, value] of this.unconfirmedFinalState) {
+				const cmd = CommandInstanceIdentifier.fromString(key);
+				if (cmd.characterId !== usedCharacter.id) continue;
+				if (cmd.commandId !== commandId) continue;
+				return true;
+			}
 		}
 
 		const commands = this.activeCommands.get(usedCharacter.id);

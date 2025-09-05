@@ -155,7 +155,7 @@ export class AirshipInventorySingleton {
 
 			Game.localPlayer.ObserveCharacter((character) => {
 				if (character) {
-					if (this.localInventory !== character.inventory) {
+					if (this.localInventory !== character.inventory && character.inventory) {
 						this.SetLocalInventory(character.inventory);
 					}
 				}
@@ -251,7 +251,7 @@ export class AirshipInventorySingleton {
 		});
 
 		CoreNetwork.ClientToServer.Inventory.SwapSlots.server.OnClientEvent(
-			(player, fromInvId, fromSlot, toInvId, toSlot) => {},
+			(player, fromInvId, fromSlot, toInvId, toSlot) => { },
 		);
 
 		CoreNetwork.ClientToServer.Inventory.MoveToSlot.server.OnClientEvent(
@@ -834,8 +834,8 @@ export class AirshipInventorySingleton {
 		if (val === undefined) {
 			error(
 				'ItemType "' +
-					itemType +
-					'" was missing an ItemDefinition. Please register the ItemType with Airship.Inventory.RegisterItem()',
+				itemType +
+				'" was missing an ItemDefinition. Please register the ItemType with Airship.Inventory.RegisterItem()',
 			);
 		}
 		return val;

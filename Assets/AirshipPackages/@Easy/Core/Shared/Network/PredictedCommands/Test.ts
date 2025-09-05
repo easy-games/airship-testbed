@@ -1,17 +1,20 @@
 import { Keyboard } from "../../UserInput";
-import { Bin } from "../../Util/Bin";
 import PredictedCustomCommand from "./PredictedCustomCommand";
 
-export class TestPredictedCommand extends PredictedCustomCommand<{ charging: boolean }, { progress: number }> {
+type InputCommand = [charging: boolean];
+
+type StateData = [progress: number, completed: boolean];
+
+export class TestPredictedCommand extends PredictedCustomCommand<InputCommand, StateData> {
 	// references
 	public vfx: any;
 
 	// state
 	private progress = 0;
+	private completed = false;
 
 	// constants
-	private CHARGE_PER_TICK = 1;
-	private bin = new Bin();
+	private CHARGE_TIME_SEC = 1;
 
 	Create(): void {
 		this.character.movement.movementSettings.speed *= 0.1;
@@ -19,59 +22,39 @@ export class TestPredictedCommand extends PredictedCustomCommand<{ charging: boo
 
 	Destroy(): void {
 		this.character.movement.movementSettings.speed /= 0.1;
-		this.bin.Clean();
 	}
 
-	GetCommand(): false | { charging: boolean } {
+	GetCommand(): false | InputCommand {
 		if (this.progress >= 100) return false;
 
 		if (Keyboard.IsKeyDown(Key.Q)) {
-			return { charging: true };
+			return [true];
 		}
 		return false;
 	}
 
-	override OnTick(
-		input: Readonly<{ charging: boolean }> | undefined,
-		replay: boolean,
-		fullCommand: CharacterInputData,
-	) {
-		if (!input) return false;
+	override OnTick(input: Readonly<InputCommand> | undefined, replay: boolean, fullInput: CharacterInputData) {
+		this.progress++;
 
-		this.progress = this.progress + this.CHARGE_PER_TICK;
-		print("R:" + replay + " Progress: " + this.progress);
-		if (this.progress >= 10) {
-			print("firing!");
-			const look = this.character.movement.GetLookVector();
-			// this.character.movement.AddImpulse(look.normalized.mul(20));
-			print("setting movement to disabled: " + this.character.movement.disableInput);
-			this.character.movement.SetMovementEnabled(this.character.movement.disableInput);
-			print("movement input is now: " + this.character.movement.disableInput);
+		if (this.progress >= this.CHARGE_TIME_SEC / Time.fixedDeltaTime) {
+			this.character.movement.AddImpulse(Vector3.up.normalized.mul(20));
+			this.completed = true;
 			return false;
 		}
 	}
 
-	OnCaptureSnapshot(): { progress: number } {
-		return {
-			progress: this.progress,
-		};
+	OnCaptureSnapshot(): StateData {
+		return [this.progress, this.completed];
 	}
 
-	ResetToSnapshot(state: Readonly<{ progress: number }>): void {
-		this.progress = state.progress;
-		print("reset to " + this.progress);
+	ResetToSnapshot(state: Readonly<StateData>): void {
+		this.progress = state[0];
+		this.completed = state[1];
 	}
 
-	CompareSnapshots(a: Readonly<{ progress: number }>, b: Readonly<{ progress: number }>): boolean {
-		if (a.progress !== b.progress) return false;
+	CompareSnapshots(a: Readonly<StateData>, b: Readonly<StateData>): boolean {
+		if (a[0] !== b[0]) return false;
+		if (a[1] !== b[1]) return false;
 		return true;
-	}
-
-	OnObserverUpdate(
-		lastState: Readonly<{ progress: number }>,
-		nextState: Readonly<{ progress: number }>,
-		delta: number,
-	): void {
-		// this.vfx.UpdateProgress(math.lerpClamped(lastState.progress, nextState.progress, delta));
 	}
 }

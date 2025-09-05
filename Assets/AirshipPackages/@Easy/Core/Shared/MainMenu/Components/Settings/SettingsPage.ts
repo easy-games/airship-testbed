@@ -10,6 +10,7 @@ import {
 	InternalGameSettingType,
 	InternalSliderGameSetting,
 } from "../../Singletons/Settings/InternalGameSetting";
+import SettingsButtonGroup from "./Controls/SettingsButtonGroup";
 import SettingsSlider from "./Controls/SettingsSlider";
 import SettingsToggle from "./Controls/SettingsToggle";
 import { SettingsTab } from "./SettingsPageName";
@@ -38,6 +39,9 @@ export default class SettingsPage extends AirshipBehaviour {
 	public mouseSmoothingSlider!: SettingsSlider;
 	public touchSensitibitySlider!: SettingsSlider;
 	public volumeSlider!: SettingsSlider;
+
+	@Header("Video Settings")
+	public limitFpsButtonGroup!: SettingsButtonGroup;
 
 	@Header("Prefabs")
 	public sliderPrefab: GameObject;
@@ -135,6 +139,57 @@ export default class SettingsPage extends AirshipBehaviour {
 						child.gameObject.SetActive(true);
 					}
 				}
+			}),
+		);
+
+		// Limit FPS
+		if (Game.IsMobile()) {
+			this.limitFpsButtonGroup.Init("Limit FPS", Protected.Settings.data.limitFps, [
+				{
+					text: "30",
+					value: 30,
+				},
+				{
+					text: "60",
+					value: 60,
+				},
+				{
+					text: "120",
+					value: 120,
+				},
+				{
+					text: "No Limit",
+					value: -1,
+				},
+			]);
+		} else {
+			this.limitFpsButtonGroup.Init("Limit FPS", Protected.Settings.data.limitFps, [
+				{
+					text: "30",
+					value: 30,
+				},
+				{
+					text: "60",
+					value: 60,
+				},
+				{
+					text: "144",
+					value: 144,
+				},
+				{
+					text: "240",
+					value: 240,
+				},
+				{
+					text: "No Limit",
+					value: -1,
+				},
+			]);
+		}
+		this.bin.Add(
+			this.limitFpsButtonGroup.onChanged.Connect((val) => {
+				Protected.Settings.SetLimitFPS(val as number);
+				Protected.Settings.MarkAsDirty();
 			}),
 		);
 

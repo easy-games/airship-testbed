@@ -73,7 +73,7 @@ export default class Character extends AirshipBehaviour {
 	// Inventory and related
 	@Header("Inventory")
 	@NonSerialized()
-	public inventory: Inventory;
+	public inventory: Inventory | undefined;
 	@NonSerialized() public heldItem?: ItemStack;
 	@NonSerialized() public heldSlot = 0;
 	@NonSerialized() public readonly onHeldSlotChanged = new Signal<number>();
@@ -810,7 +810,7 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public GetHeldItem(): ItemStack | undefined {
-		return this.inventory.GetItem(this.heldSlot);
+		return this.inventory?.GetItem(this.heldSlot);
 	}
 
 	public GetHeldSlot(): number {

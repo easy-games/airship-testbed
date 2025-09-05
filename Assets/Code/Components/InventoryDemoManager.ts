@@ -14,9 +14,9 @@ export default class InventoryDemoManager extends AirshipSingleton {
 			image: "Assets/AirshipPackages/@Easy/Core/Prefabs/EmoteImages/HandsUp.png",
 		});
 		Airship.Characters.ObserveCharacters((c) => {
-			c.inventory.AddItem(new ItemStack(DemoItemType.WoodSword));
+			c.inventory?.AddItem(new ItemStack(DemoItemType.WoodSword));
 		});
 	}
 
-	override OnDestroy(): void {}
+	override OnDestroy(): void { }
 }
