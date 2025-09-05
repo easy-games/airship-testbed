@@ -68,25 +68,10 @@ ShaderVariantCollection:
       variants:
       - keywords: _OUTPUT_DEPTH
         passType: 0
-  - first: {fileID: 4800000, guid: ec9fec698a3456d4fb18cf8bacb7a2bc, type: 3}
+  - first: {fileID: 4800000, guid: 93446b5c5339d4f00b85c159e1159b7c, type: 3}
     second:
       variants:
       - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: e7857e9d0c934dc4f83f270f8447b006, type: 3}
-    second:
-      variants:
-      - keywords: _HDR_GRADING
-        passType: 0
-  - first: {fileID: 4800000, guid: e6e9a19c3678ded42a3bc431ebef7dbd, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: f056d8bd2a1c7e44e9729144b4c70395, type: 3}
-    second:
-      variants:
-      - keywords: _DBUFFER_MRT3
         passType: 0
   - first: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
     second:
@@ -95,44 +80,36 @@ ShaderVariantCollection:
         passType: 8
       - keywords: 
         passType: 13
-      - keywords: PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _ENVIRONMENTREFLECTIONS_OFF
-          _MAIN_LIGHT_SHADOWS_CASCADE _SHADOWS_SOFT
+      - keywords: EVALUATE_SH_VERTEX PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS_VERTEX _ENVIRONMENTREFLECTIONS_OFF
+          _MAIN_LIGHT_SHADOWS_CASCADE
         passType: 13
-      - keywords: PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS_CASCADE
-          _METALLICSPECGLOSSMAP _NORMALMAP _OCCLUSIONMAP _SHADOWS_SOFT
+      - keywords: EVALUATE_SH_VERTEX PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS_VERTEX _MAIN_LIGHT_SHADOWS_CASCADE
         passType: 13
-      - keywords: PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS_CASCADE
-          _METALLICSPECGLOSSMAP _NORMALMAP _SHADOWS_SOFT
+      - keywords: EVALUATE_SH_VERTEX PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS_VERTEX _MAIN_LIGHT_SHADOWS_CASCADE
+          _METALLICSPECGLOSSMAP _NORMALMAP
         passType: 13
-      - keywords: PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS_CASCADE
-          _NORMALMAP _OCCLUSIONMAP _SHADOWS_SOFT
+      - keywords: EVALUATE_SH_VERTEX PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS_VERTEX _MAIN_LIGHT_SHADOWS_CASCADE
+          _METALLICSPECGLOSSMAP _NORMALMAP _OCCLUSIONMAP
         passType: 13
-      - keywords: PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS_CASCADE
-          _NORMALMAP _SHADOWS_SOFT
+      - keywords: EVALUATE_SH_VERTEX PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS_VERTEX _MAIN_LIGHT_SHADOWS_CASCADE
+          _NORMALMAP
         passType: 13
-      - keywords: PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS_CASCADE
-          _SHADOWS_SOFT
+      - keywords: EVALUATE_SH_VERTEX PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS_VERTEX _MAIN_LIGHT_SHADOWS_CASCADE
+          _NORMALMAP _OCCLUSIONMAP
         passType: 13
-      - keywords: _NORMALMAP
-        passType: 13
-  - first: {fileID: 4800000, guid: 36e335017ad71d54fbb10842863188ae, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
   - first: {fileID: 4800000, guid: b7839dad95683814aa64166edc107ae2, type: 3}
     second:
       variants:
-      - keywords: PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _ALPHAPREMULTIPLY_ON _COLORADDSUBDIFF_ON
-          _MAIN_LIGHT_SHADOWS_CASCADE _RECEIVE_SHADOWS_OFF _SHADOWS_SOFT _SURFACE_TYPE_TRANSPARENT
+      - keywords: EVALUATE_SH_VERTEX PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS_VERTEX _ALPHAPREMULTIPLY_ON
+          _COLORADDSUBDIFF_ON _MAIN_LIGHT_SHADOWS_CASCADE _RECEIVE_SHADOWS_OFF _SURFACE_TYPE_TRANSPARENT
         passType: 13
-      - keywords: PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _ALPHAPREMULTIPLY_ON _MAIN_LIGHT_SHADOWS_CASCADE
-          _RECEIVE_SHADOWS_OFF _SHADOWS_SOFT _SURFACE_TYPE_TRANSPARENT
+      - keywords: EVALUATE_SH_VERTEX PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS_VERTEX _ALPHAPREMULTIPLY_ON
+          _MAIN_LIGHT_SHADOWS_CASCADE _RECEIVE_SHADOWS_OFF _SURFACE_TYPE_TRANSPARENT
         passType: 13
   - first: {fileID: 4800000, guid: 650dd9526735d5b46b79224bc6e94025, type: 3}
     second:
       variants:
-      - keywords: _ALPHATEST_ON _DBUFFER_MRT3 _SURFACE_TYPE_TRANSPARENT
+      - keywords: _ALPHATEST_ON _SURFACE_TYPE_TRANSPARENT
         passType: 0
   - first: {fileID: -6465566751694194690, guid: 00f5c0f514115344b837245f162be5fa, type: 3}
     second:
@@ -141,8 +118,7 @@ ShaderVariantCollection:
         passType: 8
       - keywords: 
         passType: 13
-      - keywords: PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS_CASCADE
-          _SHADOWS_SOFT
+      - keywords: EVALUATE_SH_VERTEX PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS_VERTEX _MAIN_LIGHT_SHADOWS_CASCADE
         passType: 13
   - first: {fileID: -6465566751694194690, guid: 43171bbc0e1a4ba40921d44169384b3e, type: 3}
     second:
@@ -151,6 +127,5 @@ ShaderVariantCollection:
         passType: 8
       - keywords: 
         passType: 13
-      - keywords: PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS _DBUFFER_MRT3 _MAIN_LIGHT_SHADOWS_CASCADE
-          _SHADOWS_SOFT
+      - keywords: EVALUATE_SH_VERTEX PROBE_VOLUMES_L1 _ADDITIONAL_LIGHTS_VERTEX _MAIN_LIGHT_SHADOWS_CASCADE
         passType: 13

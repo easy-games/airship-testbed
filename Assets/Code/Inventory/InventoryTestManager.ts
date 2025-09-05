@@ -18,7 +18,7 @@ export default class InventoryTestManager extends AirshipSingleton {
 				if (this.passiveSpawnIron) {
 					const ironPassiveThread = task.spawn(() => {
 						while (task.wait(this.passiveIronSpawnCooldown)) {
-							player.character?.inventory.AddItem(new ItemStack("Iron", 1));
+							player.character?.inventory?.AddItem(new ItemStack("Iron", 1));
 						}
 					});
 
@@ -61,5 +61,5 @@ export default class InventoryTestManager extends AirshipSingleton {
 		});
 	}
 
-	override OnDestroy(): void {}
+	override OnDestroy(): void { }
 }

@@ -1,4 +1,4 @@
-import { CameraReferences } from "@Easy/Core/Shared/Camera/CameraReferences";
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -53,7 +53,7 @@ export class ProximityPromptController {
 				if (Game.localPlayer.character?.IsDead()) {
 					for (const prompt of this.shownPrompts) {
 						if (prompt.hideWhenDead) {
-							(prompt as unknown as { Hide(): void; }).Hide();
+							(prompt as unknown as { Hide(): void }).Hide();
 							this.shownPrompts.delete(prompt);
 						}
 					}
@@ -62,13 +62,14 @@ export class ProximityPromptController {
 				const localCharacterPosition = Game.localPlayer.character?.gameObject.transform.position;
 				if (!localCharacterPosition) continue;
 
-				const mainCamera = CameraReferences.mainCamera;
+				//Grab Airship camera or just Unity's flagged main camera
+				const mainCamera = Airship.Camera.cameraRig?.mainCamera ?? Camera.main;
 
 				let possiblePrompts = new Map<string, ProximityPrompt[]>();
 				for (let prompt of this.allPrompts) {
 					// If the player is dead and prompt is set to hide when dead, skip getting new prompts
 					if (Game.localPlayer.character?.IsDead() && prompt.hideWhenDead) continue;
-					
+
 					if (promptActionMap.has(prompt.actionName)) {
 						promptActionMap.get(prompt.actionName)!.push(prompt);
 					} else {
@@ -85,7 +86,7 @@ export class ProximityPromptController {
 						print("[Proximity Prompt]: " + prompt.gameObject.name + " distance: " + distToPrompt);
 					}
 				}
-				
+
 				const newlyVisiblePrompts = new Set<ProximityPrompt>();
 				for (const [actionName, promptList] of possiblePrompts) {
 					const sortedPrompts = promptList.sort((a, b) => distanceMap.get(a)! < distanceMap.get(b)!);
@@ -99,7 +100,7 @@ export class ProximityPromptController {
 							}
 							foundVisiblePrompt = true;
 							toDisplayPrompt = prompt;
-							break
+							break;
 						}
 
 						if (!foundVisiblePrompt) continue; // No prompts visible with this action

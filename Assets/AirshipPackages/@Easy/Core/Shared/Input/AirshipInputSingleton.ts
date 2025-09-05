@@ -1240,6 +1240,15 @@ export class AirshipInputSingleton {
 	}
 
 	/**
+	 * Returns mute toggle based on player's setting.
+	 *
+	 * @returns mute toggle based on player's setting.
+	 */
+	public IsVoiceToggleEnabled(): boolean {
+		return contextbridge.invoke<() => boolean>("ClientSettings:IsVoiceToggleEnabled", LuauContext.Protected);
+	}
+
+	/**
 	 * Returns mouse sensitivity based on player's setting & game's sensitivity multiplier.
 	 *
 	 * @returns Mouse sensitivity based on player's setting & game's sensitivity multiplier.

@@ -60,7 +60,7 @@ function calculateDelay(attempts: number): number {
 
 @Service({})
 export class MessagingService {
-	private subscriptionCounts = new Map<string, { topic: TopicDescription, count: number }>();
+	private subscriptionCounts = new Map<string, { topic: TopicDescription; count: number }>();
 	private onEvent = new Signal<[topic: TopicDescription, data: string]>();
 	private airshipGameEvents = new Signal<[data: any]>();
 	private airshipServerEvents = new Signal<[data: any]>();
@@ -73,38 +73,31 @@ export class MessagingService {
 
 	constructor() {
 		if (!Game.IsServer()) return;
-		contextbridge.callback<ServerBridgeApiSubscribe>(
-			MessagingServiceBridgeTopics.Subscribe,
-			(_, topicName) => {
-				this.addSubscription({
-					scope: Scope.Game,
-					topicNamespace: "custom",
-					topicName: topicName,
-				});
+		contextbridge.callback<ServerBridgeApiSubscribe>(MessagingServiceBridgeTopics.Subscribe, (_, topicName) => {
+			this.addSubscription({
+				scope: Scope.Game,
+				topicNamespace: "custom",
+				topicName: topicName,
 			});
+		});
 
-		contextbridge.callback<ServerBridgeApiUnsubscribe>(
-			MessagingServiceBridgeTopics.Unsubscribe,
-			(_, topicName) => {
-				this.removeSubscription({
-					scope: Scope.Game,
-					topicNamespace: "custom",
-					topicName: topicName,
-				});
+		contextbridge.callback<ServerBridgeApiUnsubscribe>(MessagingServiceBridgeTopics.Unsubscribe, (_, topicName) => {
+			this.removeSubscription({
+				scope: Scope.Game,
+				topicNamespace: "custom",
+				topicName: topicName,
 			});
+		});
 
-		contextbridge.callback<ServerBridgeApiPublish>(
-			MessagingServiceBridgeTopics.Publish,
-			(_, topic, data) => {
-				const wasSuccessful = MessagingManager.PublishAsync(Scope.Game, "custom", topic, data);
-				if (wasSuccessful) {
-					this.customMessagesSent++;
-				}
-				return {
-					success: wasSuccessful,
-				};
-			},
-		);
+		contextbridge.callback<ServerBridgeApiPublish>(MessagingServiceBridgeTopics.Publish, (_, topic, data) => {
+			const wasSuccessful = MessagingManager.PublishAsync(Scope.Game, "custom", topic, data);
+			if (wasSuccessful) {
+				this.customMessagesSent++;
+			}
+			return {
+				success: wasSuccessful,
+			};
+		});
 	}
 
 	private getSubscriptionKey(topic: TopicDescription): string {
@@ -135,49 +128,57 @@ export class MessagingService {
 		}
 	}
 
-
 	protected OnStart(): void {
-		this.Subscribe({
-			scope: Scope.Game,
-			topicNamespace: "airship",
-			topicName: "multiplex",
-		}, (data) => {
-			this.airshipGameEvents.Fire(json.decode(data));
-		});
+		this.Subscribe(
+			{
+				scope: Scope.Game,
+				topicNamespace: "airship",
+				topicName: "multiplex",
+			},
+			(data) => {
+				this.airshipGameEvents.Fire(json.decode(data));
+			},
+		);
 
-		this.Subscribe({
-			scope: Scope.Server,
-			topicNamespace: "airship",
-			topicName: "multiplex",
-		}, (data) => {
-			this.airshipServerEvents.Fire(json.decode(data));
-		});
+		this.Subscribe(
+			{
+				scope: Scope.Server,
+				topicNamespace: "airship",
+				topicName: "multiplex",
+			},
+			(data) => {
+				this.airshipServerEvents.Fire(json.decode(data));
+			},
+		);
 
 		MessagingManager.Instance.OnEvent((topic, data) => {
 			this.onEvent.Fire(topic, data);
 			if (topic.scope === Scope.Game && topic.topicNamespace === "custom") {
 				this.customMessagesReceived++;
 				// cannot broadcast from within a subscribed function
-				task.defer(() => contextbridge.broadcast(MessagingServiceBridgeTopics.IncomingMessage, {
-					// Cannot broadcast unity object
-					topic: {
-						scope: topic.scope,
-						topicNamespace: topic.topicNamespace,
-						topicName: topic.topicName,
-					} satisfies TopicDescription, data
-				}));
+				task.defer(() =>
+					contextbridge.broadcast(MessagingServiceBridgeTopics.IncomingMessage, {
+						// Cannot broadcast unity object
+						topic: {
+							scope: topic.scope,
+							topicNamespace: topic.topicNamespace,
+							topicName: topic.topicName,
+						} satisfies TopicDescription,
+						data,
+					}),
+				);
 			}
 		});
 
 		MessagingManager.Instance.OnDisconnected((reason) => {
 			reason = reason || "Unknown reason";
-			if ((time() - this.lastReconnectAttempt) < 5) {
+			if (time() - this.lastReconnectAttempt < 5) {
 				this.unsuccessfulReconnectAttempts++;
 			} else {
 				this.unsuccessfulReconnectAttempts = 0;
 			}
 			const delay = calculateDelay(this.unsuccessfulReconnectAttempts);
-			const delayMsg = (this.doReconnect && delay) ? "Retrying in " + math.floor(delay) + " seconds." : "";
+			const delayMsg = this.doReconnect && delay ? "Retrying in " + math.floor(delay) + " seconds." : "";
 			warn(`Disconnected from messaging. ${delayMsg}` + reason);
 			this.onSocketConnectionChanged.Fire(false);
 
@@ -191,10 +192,13 @@ export class MessagingService {
 			}
 		});
 
-		SetInterval(30, () => {
-			AgonesCore.Agones.SetAnnotation("MessagingCustomSent", `${this.customMessagesSent}`);
-			AgonesCore.Agones.SetAnnotation("MessagingCustomReceived", `${this.customMessagesReceived}`);
-		});
+		// Disabled in editor since agones is not running.
+		if (!Game.IsEditor()) {
+			SetInterval(30, () => {
+				AgonesCore.Agones.SetAnnotation("MessagingCustomSent", `${this.customMessagesSent}`);
+				AgonesCore.Agones.SetAnnotation("MessagingCustomReceived", `${this.customMessagesReceived}`);
+			});
+		}
 
 		task.defer(() => {
 			this.Connect();
@@ -203,7 +207,11 @@ export class MessagingService {
 
 	public Subscribe(topic: TopicDescription, callback: (data: string) => void): { unsubscribe: () => void } {
 		const unsubscribe = this.onEvent.Connect((evTopic, d) => {
-			if (topic.scope === evTopic.scope && topic.topicNamespace === evTopic.topicNamespace && topic.topicName === evTopic.topicName) {
+			if (
+				topic.scope === evTopic.scope &&
+				topic.topicNamespace === evTopic.topicNamespace &&
+				topic.topicName === evTopic.topicName
+			) {
 				callback(d);
 			}
 		});
@@ -215,7 +223,7 @@ export class MessagingService {
 				unsubscribe();
 				this.removeSubscription(topic);
 			},
-		}
+		};
 	}
 
 	public async Publish(topic: TopicDescription, data: string): Promise<boolean> {

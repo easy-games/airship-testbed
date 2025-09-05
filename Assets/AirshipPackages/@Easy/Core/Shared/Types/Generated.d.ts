@@ -3093,12 +3093,6 @@ declare const enum Key {
     OEM5 = 110,
     IMESelected = 111,
 }
-declare const enum EngineRunMode {
-    EDITOR = 0,
-    PLAY = 1,
-    BOTH = 2,
-    NONE = -1,
-}
 declare const enum AccessorySlot {
     Root = 0,
     Head = 1,
@@ -4055,6 +4049,22 @@ declare const enum AccessoryAddMode {
     ReplaceAll = 0,
     Replace = 1,
     AddIfNone = 2,
+}
+declare const enum EngineRunMode {
+    EDITOR = 0,
+    PLAY = 1,
+    BOTH = 2,
+    NONE = -1,
+}
+declare const enum EasyAxis {
+    X = 0,
+    Y = 1,
+    Z = 2,
+    None = -1,
+}
+declare const enum DestroyMode {
+    DESTROY = 0,
+    DEACTIVATE = 1,
 }
 
     
@@ -39769,67 +39779,6 @@ interface DevConsoleConstructor {
 }
 declare const DevConsole: DevConsoleConstructor;
     
-interface EasyShake extends MonoBehaviour {
-    shakeDuration: number;
-    shakeOnEnable: boolean;
-    destroyComponentOnEnd: boolean;
-    movementLerpMod: number;
-    movementsPerSecond: number;
-    minimizeShakeOverTime: boolean;
-    maxPositionOffset: Vector3;
-    maxRotationOffsetAngles: Vector3;
-
-
-
-    GetRandomVector3(maxRange: Vector3): Vector3;
-    SetStartingPosRot(localPosition: Vector3, localRotation: Quaternion): void;
-    Shake(duration: number): void;
-    ShakeForever(): void;
-    StopShake(): void;
-
-
-}
-    
-interface EasyShakeConstructor {
-
-
-    new(): EasyShake;
-
-
-
-}
-declare const EasyShake: EasyShakeConstructor;
-    
-interface EasyMotion extends MonoBehaviour {
-    refreshMode: EngineRunMode;
-    transformSpace: Space;
-    translate: boolean;
-    translationSpeed: Vector3;
-    rotate: boolean;
-    angularRotationSpeed: Vector3;
-    scale: boolean;
-    scaleSpeed: Vector3;
-    sineMotion: boolean;
-    sineMod: number;
-    sineOffset: number;
-    randomizeOffset: boolean;
-
-
-
-
-
-}
-    
-interface EasyMotionConstructor {
-
-
-    new(): EasyMotion;
-
-
-
-}
-declare const EasyMotion: EasyMotionConstructor;
-    
 interface CloudImage extends MonoBehaviour {
     url: string;
     image: Image;
@@ -52561,6 +52510,160 @@ interface RectMask2D extends UIBehaviour, ICanvasRaycastFilter, IClipper {
 
 
 }
+    
+interface EasyShake extends MonoBehaviour {
+    shakeDuration: number;
+    shakeOnEnable: boolean;
+    destroyComponentOnEnd: boolean;
+    movementLerpMod: number;
+    movementsPerSecond: number;
+    minimizeShakeOverTime: boolean;
+    maxPositionOffset: Vector3;
+    maxRotationOffsetAngles: Vector3;
+
+
+
+    GetRandomVector3(maxRange: Vector3): Vector3;
+    SetStartingPosRot(localPosition: Vector3, localRotation: Quaternion): void;
+    Shake(duration: number): void;
+    ShakeForever(): void;
+    StopShake(): void;
+
+
+}
+    
+interface EasyShakeConstructor {
+
+
+    new(): EasyShake;
+
+
+
+}
+declare const EasyShake: EasyShakeConstructor;
+    
+interface EasyMotion extends MonoBehaviour {
+    refreshMode: EngineRunMode;
+    transformSpace: Space;
+    translate: boolean;
+    translationSpeed: Vector3;
+    rotate: boolean;
+    angularRotationSpeed: Vector3;
+    scale: boolean;
+    scaleSpeed: Vector3;
+    sineMotion: boolean;
+    sineMod: number;
+    sineOffset: number;
+    randomizeOffset: boolean;
+
+
+
+
+
+}
+    
+interface EasyMotionConstructor {
+
+
+    new(): EasyMotion;
+
+
+
+}
+declare const EasyMotion: EasyMotionConstructor;
+    
+interface EasyLookAt extends MonoBehaviour {
+    refreshMode: EngineRunMode;
+    lookTarget: Transform;
+    scaleToTarget: boolean;
+    invertAxis: boolean;
+    forwardAxis: EasyAxis;
+    lockAxis: EasyAxis;
+
+
+
+
+
+}
+    
+interface EasyLookAtConstructor {
+
+
+    new(): EasyLookAt;
+
+
+
+}
+declare const EasyLookAt: EasyLookAtConstructor;
+    
+interface EasyDestroy extends MonoBehaviour {
+    timeUntilDeathInSeconds: number;
+    destroyMode: DestroyMode;
+
+
+
+
+
+}
+    
+interface EasyDestroyConstructor {
+
+
+    new(): EasyDestroy;
+
+
+
+}
+declare const EasyDestroy: EasyDestroyConstructor;
+    
+interface EasyGridAlign extends MonoBehaviour {
+    rebuildMode: EngineRunMode;
+    contentHolder: Transform;
+    centerGrid: boolean;
+    numberOfGridElements: Vector3;
+    localGridElementSize: Vector3;
+    randomLocalPositionOffset: Vector3;
+    randomLocalEulerOffset: Vector3;
+
+
+
+    LateUpdate(): void;
+    Rebuild(): void;
+
+
+}
+    
+interface EasyGridAlignConstructor {
+
+
+    new(): EasyGridAlign;
+
+
+
+}
+declare const EasyGridAlign: EasyGridAlignConstructor;
+    
+interface EasyTransformAnchor extends MonoBehaviour {
+    anchor: Transform;
+    matchPosition: boolean;
+    matchRotation: boolean;
+    matchScale: boolean;
+
+
+
+
+
+}
+    
+interface EasyTransformAnchorConstructor {
+
+
+    new(): EasyTransformAnchor;
+
+
+
+}
+declare const EasyTransformAnchor: EasyTransformAnchorConstructor;
     
 interface AirshipSteamFriendInfo {
     playingAirship: boolean;

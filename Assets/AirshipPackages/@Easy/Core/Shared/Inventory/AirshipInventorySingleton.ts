@@ -155,7 +155,7 @@ export class AirshipInventorySingleton {
 
 			Game.localPlayer.ObserveCharacter((character) => {
 				if (character) {
-					if (this.localInventory !== character.inventory) {
+					if (this.localInventory !== character.inventory && character.inventory) {
 						this.SetLocalInventory(character.inventory);
 					}
 				}
@@ -251,7 +251,7 @@ export class AirshipInventorySingleton {
 		});
 
 		CoreNetwork.ClientToServer.Inventory.SwapSlots.server.OnClientEvent(
-			(player, fromInvId, fromSlot, toInvId, toSlot) => {},
+			(player, fromInvId, fromSlot, toInvId, toSlot) => { },
 		);
 
 		CoreNetwork.ClientToServer.Inventory.MoveToSlot.server.OnClientEvent(
@@ -273,7 +273,7 @@ export class AirshipInventorySingleton {
 				}
 
 				const event = this.onMovingToSlot.Fire(
-					new InventoryMovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount),
+					new InventoryMovingToSlotEvent(player, fromInv, fromSlot, toInv, toSlot, amount),
 				);
 				if (event.IsCancelled()) return;
 				amount = event.amount;
@@ -658,7 +658,7 @@ export class AirshipInventorySingleton {
 		}
 
 		const event = this.onMovingToSlot.Fire(
-			new InventoryMovingToSlotEvent(fromInv, fromSlot, toInv, toSlot, amount),
+			new InventoryMovingToSlotEvent(Game.localPlayer, fromInv, fromSlot, toInv, toSlot, amount),
 		);
 		if (event.IsCancelled() || event.amount < 1) return;
 
@@ -834,8 +834,8 @@ export class AirshipInventorySingleton {
 		if (val === undefined) {
 			error(
 				'ItemType "' +
-					itemType +
-					'" was missing an ItemDefinition. Please register the ItemType with Airship.Inventory.RegisterItem()',
+				itemType +
+				'" was missing an ItemDefinition. Please register the ItemType with Airship.Inventory.RegisterItem()',
 			);
 		}
 		return val;

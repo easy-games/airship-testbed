@@ -207,30 +207,33 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 			const invBin = new Bin();
 			const slotBinMap = new Map<number, Bin>();
-			invBin.Add(
-				character.inventory.onSlotChanged.Connect((slot, itemStack) => {
-					slotBinMap.get(slot)?.Clean();
-					if (slot < this.hotbarSlots) {
-						const slotBin = new Bin();
-						slotBinMap.set(slot, slotBin);
+			if (character.inventory) {
+				invBin.Add(
+					character.inventory.onSlotChanged.Connect((slot, itemStack) => {
+						slotBinMap.get(slot)?.Clean();
+						if (slot < this.hotbarSlots) {
+							const slotBin = new Bin();
+							slotBinMap.set(slot, slotBin);
 
-						this.UpdateHotbarSlot(slot, character.GetHeldSlot(), itemStack);
+							this.UpdateHotbarSlot(slot, character.GetHeldSlot(), itemStack);
 
-						if (itemStack) {
-							slotBin.Add(
-								itemStack.amountChanged.Connect((e) => {
-									this.UpdateHotbarSlot(slot, character.GetHeldSlot(), itemStack);
-								}),
-							);
-							slotBin.Add(
-								itemStack.itemTypeChanged.Connect((e) => {
-									this.UpdateHotbarSlot(slot, character.GetHeldSlot(), itemStack);
-								}),
-							);
+							if (itemStack) {
+								slotBin.Add(
+									itemStack.amountChanged.Connect((e) => {
+										this.UpdateHotbarSlot(slot, character.GetHeldSlot(), itemStack);
+									}),
+								);
+								slotBin.Add(
+									itemStack.itemTypeChanged.Connect((e) => {
+										this.UpdateHotbarSlot(slot, character.GetHeldSlot(), itemStack);
+									}),
+								);
+							}
 						}
-					}
-				}),
-			);
+					}),
+				);
+			}
+
 
 			invBin.Add(() => {
 				for (const pair of slotBinMap) {
@@ -242,7 +245,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			invBin.Add(
 				character.onHeldSlotChanged.Connect((slot) => {
 					for (let i = 0; i < this.hotbarSlots; i++) {
-						const itemStack = character.inventory.GetItem(i);
+						const itemStack = character.inventory?.GetItem(i);
 
 						this.UpdateHotbarSlot(i, slot, itemStack);
 					}
@@ -251,7 +254,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			);
 
 			for (let i = 0; i < this.hotbarSlots; i++) {
-				const itemStack = character.inventory.GetItem(i);
+				const itemStack = character.inventory?.GetItem(i);
 				this.UpdateHotbarSlot(i, character.GetHeldSlot(), itemStack, init, true);
 			}
 			this.prevHeldSlot = character.GetHeldSlot();
@@ -450,7 +453,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			if (!stack) return;
 			const freeSlot = Keyboard.IsKeyDown(Key.LeftShift)
 				? this.externalInventory.FindMergeableSlotWithItemType(stack.itemType) ??
-				  this.externalInventory.GetFirstOpenSlot()
+				this.externalInventory.GetFirstOpenSlot()
 				: this.externalInventory.GetFirstOpenSlot();
 			if (freeSlot === -1) return;
 

@@ -694,6 +694,9 @@ interface Quaternion {
 
 	/** Z component of the quaternion. */
 	z: number;
+
+	/** Converts a quaternion to angle-axis representation. */
+	ToAngleAxis(): LuaTuple<[angle: number, axis: Vector3]>;
 }
 
 interface QuaternionConstructor {
@@ -714,6 +717,12 @@ interface QuaternionConstructor {
 	 * the X axis, and `y` degrees around the Y axis; applied in that order.
 	 */
 	Euler: (x: number, y: number, z: number) => Quaternion;
+
+	/**
+	 * Constructs a quaternion that rotates `vec.z` degrees around the Z axis, `vec.x` degrees around
+	 * the X axis, and `vec.y` degrees around the Y axis; applied in that order.
+	 */
+	Euler: (vec: Vector3) => Quaternion;
 
 	/** Creates a rotation which rotates from `fromDirection` to `toDirection`. */
 	FromToRotation: (fromDirection: Vector3, toDirection: Vector3) => Quaternion;
