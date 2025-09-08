@@ -75,6 +75,11 @@ interface ReadonlyMap<K, V> extends Iterable<[K, V]> {
 	 * Returns an array of the values in this map
 	 */
 	values(this: ReadonlyMap<K, V>): Array<V>;
+
+	/**
+	 * Returns a shallow copy of this map
+	 */
+	clone(this: ReadonlyMap<K, V>): Map<K, V>;
 }
 
 interface ReadonlyMapConstructor {
