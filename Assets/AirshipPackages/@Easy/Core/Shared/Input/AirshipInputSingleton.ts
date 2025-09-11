@@ -598,9 +598,7 @@ export class AirshipInputSingleton {
 	 * Get the mobile touch joystick (static or dynamic based on settings)
 	 */
 	public GetMobileTouchJoystick(): TouchJoystick | DynamicJoystick | undefined {
-		const isDynamicJoystickEnabled = this.IsMobileDynamicJoystickEnabled();
-
-		if (isDynamicJoystickEnabled) {
+		if (this.IsMobileDynamicJoystickEnabled()) {
 			return this.mobileControlsContainer.GetAirshipComponentInChildren<DynamicJoystick>(true);
 		} else {
 			return this.mobileControlsContainer.GetAirshipComponentInChildren<TouchJoystick>(true);
