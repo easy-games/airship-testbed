@@ -81,8 +81,9 @@ export default class DynamicJoystick extends AirshipBehaviour {
 			const touch = Input.GetTouch(i);
 			// Get the latest touch which is the one that began
 			if (touch.phase === TouchPhase.Began) {
-				const touchPosition = new Vector2(touch.position.x, touch.position.y);
-				return touchPosition;
+				if (CanvasAPI.IsPointerOverTarget(this.dragTarget.gameObject)) {
+					return new Vector2(touch.position.x, touch.position.y);
+				}
 			}
 		}
 
