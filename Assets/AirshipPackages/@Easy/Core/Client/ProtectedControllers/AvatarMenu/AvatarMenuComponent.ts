@@ -318,12 +318,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		if (this.IsPhoneMode()) {
-			if (index === 0) {
-				// Skin color
-				this.grid.cellSize = new Vector2(120, 120);
-			} else {
-				this.grid.cellSize = new Vector2(120, 150);
-			}
+			const scaleFactor = Game.GetScaleFactor();
+			const scaledWidth = Screen.width / scaleFactor;
+
+			const isSkinColor = index === 0;
+			const cellSize = this.CalculateCellSize(scaledWidth, isSkinColor);
+			this.grid.cellSize = cellSize;
 		}
 
 		let i = 0;
@@ -824,6 +824,28 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		);
 
 		this.SetDirty(false);
+	}
+
+	private CalculateCellSize(screenWidth: number, isSkinColor: boolean): Vector2 {
+		// These numbers are based on the avatar mobile page prefab values
+		const padding = 30;
+		const spacing = 8;
+		const defaultWidth = 120;
+		const defaultHeight = isSkinColor ? 120 : 150;
+		const minColumns = 3;
+
+		const availableWidth = screenWidth - padding;
+		// Use a minumum of 3 columns, but allow more on larger screens
+		const columnsWithDefaultSize = math.floor((availableWidth + spacing) / (defaultWidth + spacing));
+		const targetColumns = math.max(minColumns, columnsWithDefaultSize);
+
+		// Calculate Width and height based on number of columns
+		const cellWidth = (availableWidth - spacing * (targetColumns - 1)) / targetColumns;
+		const finalCellWidth = math.floor(cellWidth);
+		const aspectRatio = defaultHeight / defaultWidth;
+		const finalCellHeight = math.floor(finalCellWidth * aspectRatio);
+
+		return new Vector2(finalCellWidth, finalCellHeight);
 	}
 
 	private Revert() {
