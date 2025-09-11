@@ -1,5 +1,5 @@
 import { Bin } from "../../Util/Bin";
-import { CanvasAPI, PointerButton, PointerDirection } from "../../Util/CanvasAPI";
+import { CanvasAPI } from "../../Util/CanvasAPI";
 
 export default class TouchJoystick extends AirshipBehaviour {
 	@SerializeField() private dragTarget: RectTransform;
@@ -39,21 +39,10 @@ export default class TouchJoystick extends AirshipBehaviour {
 
 	override Start(): void {
 		this.bin.AddEngineEventConnection(
-			CanvasAPI.OnPointerEvent(this.dragTarget.gameObject, (direction, button) => {
-				if (direction === PointerDirection.DOWN && button === PointerButton.LEFT) {
-					NativeTween.GraphicAlpha(this.handleOuterImage, 0.6, 0.2).SetUseUnscaledTime(true);
-					NativeTween.GraphicAlpha(this.handleInnerImage, 0.6, 0.2).SetUseUnscaledTime(true);
-					NativeTween.GraphicAlpha(this.handleOuterOutline, 0.4, 0.2).SetUseUnscaledTime(true);
-				}
-				if (direction === PointerDirection.UP && button === PointerButton.LEFT) {
-					NativeTween.GraphicAlpha(this.handleOuterImage, 0.2, 0.2).SetUseUnscaledTime(true);
-					NativeTween.GraphicAlpha(this.handleInnerImage, 0.2, 0.2).SetUseUnscaledTime(true);
-					NativeTween.GraphicAlpha(this.handleOuterOutline, 0.2, 0.2).SetUseUnscaledTime(true);
-				}
-			}),
-		);
-		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnBeginDragEvent(this.dragTarget.gameObject, (data) => {
+				NativeTween.GraphicAlpha(this.handleOuterImage, 0.6, 0.2).SetUseUnscaledTime(true);
+				NativeTween.GraphicAlpha(this.handleInnerImage, 0.6, 0.2).SetUseUnscaledTime(true);
+				NativeTween.GraphicAlpha(this.handleOuterOutline, 0.4, 0.2).SetUseUnscaledTime(true);
 				this.tweenBin.Clean();
 				this.dragging = true;
 				this.HandleDrag(data.position, "begin");
@@ -68,6 +57,9 @@ export default class TouchJoystick extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnEndDragEvent(this.dragTarget.gameObject, (data) => {
+				NativeTween.GraphicAlpha(this.handleOuterImage, 0.2, 0.2).SetUseUnscaledTime(true);
+				NativeTween.GraphicAlpha(this.handleInnerImage, 0.2, 0.2).SetUseUnscaledTime(true);
+				NativeTween.GraphicAlpha(this.handleOuterOutline, 0.2, 0.2).SetUseUnscaledTime(true);
 				this.input = Vector2.zero;
 				this.dragging = false;
 
