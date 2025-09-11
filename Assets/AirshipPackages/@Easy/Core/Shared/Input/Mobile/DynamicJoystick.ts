@@ -77,10 +77,16 @@ export default class DynamicJoystick extends AirshipBehaviour {
 	}
 
 	private GetCurrentTouchPosition(): Vector2 | undefined {
-		if (Input.touchCount > 0) {
-			const touch = Input.GetTouch(0);
-			return new Vector2(touch.position.x, touch.position.y);
+		for (let i = 0; i < Input.touchCount; i++) {
+			const touch = Input.GetTouch(i);
+			// Get the latest touch which is the one that began
+			if (touch.phase === TouchPhase.Began) {
+				const touchPosition = new Vector2(touch.position.x, touch.position.y);
+				return touchPosition;
+			}
 		}
+
+		return new Vector2(Input.mousePosition.x, Input.mousePosition.y);
 	}
 
 	private HandleDrag(dragPosition: Vector2) {
