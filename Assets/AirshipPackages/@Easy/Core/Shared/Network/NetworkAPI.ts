@@ -19,6 +19,8 @@ interface CallbackItem {
 	callback: Callback;
 }
 
+declare const unpack: (data: unknown, min: number, max: number) => unknown[];
+
 const MAX_QUEUE = 10000;
 
 const callbacksByIdServer = new Map<string, Array<CallbackItem>>();
@@ -54,7 +56,12 @@ export function InitNet() {
 					return;
 				}
 				for (const callback of callbacks) {
-					task.spawn(callback.callback, player, ...data);
+					let maxIndex = 1
+					for (const [k, _] of pairs(data)) {
+						if (k > maxIndex) maxIndex = k;
+					}
+
+					task.spawn(callback.callback, player, unpack(data, 1, maxIndex));
 				}
 			});
 		});
@@ -72,7 +79,12 @@ export function InitNet() {
 				return;
 			}
 			for (const callback of callbacks) {
-				task.spawn(callback.callback, ...data);
+				let maxIndex = 1
+				for (const [k, _] of pairs(data)) {
+					if (k > maxIndex) maxIndex = k;
+				}
+
+				task.spawn(callback.callback, unpack(data, 1, maxIndex));
 			}
 		});
 	}
