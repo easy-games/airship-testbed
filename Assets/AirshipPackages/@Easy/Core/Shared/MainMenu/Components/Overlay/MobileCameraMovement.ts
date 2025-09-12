@@ -17,7 +17,7 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 	private image: Image;
 
 	protected Awake(): void {
-		this.image = this.gameObject.GetComponent<Image>()!;	
+		this.image = this.gameObject.GetComponent<Image>()!;
 	}
 
 	protected override OnEnable(): void {
@@ -39,31 +39,12 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnDragEvent(this.gameObject, (data) => {
-				const camSystem = Dependency<AirshipCameraSingleton>().cameraSystem;
-				if (!camSystem) return;
-				const camMode = camSystem.GetMode();
-
-				// print("Dragging. pointerId=" + data.pointerId + ", position=" + data.position);
-				if (this.touchPointerId !== data.pointerId) return;
-
-				const deltaPosSinceStart = data.position.sub(this.touchStartPos);
-				const touchSensitivity = contextbridge.invoke<() => number>(
-					"ClientSettings:GetTouchSensitivity",
-					LuauContext.Protected,
-				);
-				camMode.rotationY = (this.touchStartRotY - deltaPosSinceStart.x * SENS_SCALAR * touchSensitivity) % TAU;
-				camMode.rotationX = math.clamp(
-					this.touchStartRotX + deltaPosSinceStart.y * SENS_SCALAR * touchSensitivity,
-					MIN_ROT_X,
-					MAX_ROT_X,
-				);
+				this.DragEvent(data);
 			}),
 		);
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnEndDragEvent(this.gameObject, (data) => {
-				if (this.touchPointerId === data.pointerId) {
-					this.touchPointerId = -1;
-				}
+				this.EndDragEvent(data);
 			}),
 		);
 	}
@@ -75,5 +56,44 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 
 	public SetActive(active: boolean) {
 		this.gameObject.SetActive(active);
+	}
+
+	public BeginDragEvent(data: PointerEventData) {
+		const camSystem = Dependency<AirshipCameraSingleton>().cameraSystem;
+		if (!camSystem) return;
+		const camMode = camSystem.GetMode();
+
+		// print("Begin drag. pointerId=" + data.pointerId + ", position=" + data.position);
+		this.touchPointerId = data.pointerId;
+		this.touchStartPos = data.position;
+		this.touchStartRotX = camMode.rotationX;
+		this.touchStartRotY = camMode.rotationY;
+	}
+
+	public DragEvent(data: PointerEventData) {
+		const camSystem = Dependency<AirshipCameraSingleton>().cameraSystem;
+		if (!camSystem) return;
+		const camMode = camSystem.GetMode();
+
+		// print("Dragging. pointerId=" + data.pointerId + ", position=" + data.position);
+		if (this.touchPointerId !== data.pointerId) return;
+
+		const deltaPosSinceStart = data.position.sub(this.touchStartPos);
+		const touchSensitivity = contextbridge.invoke<() => number>(
+			"ClientSettings:GetTouchSensitivity",
+			LuauContext.Protected,
+		);
+		camMode.rotationY = (this.touchStartRotY - deltaPosSinceStart.x * SENS_SCALAR * touchSensitivity) % TAU;
+		camMode.rotationX = math.clamp(
+			this.touchStartRotX + deltaPosSinceStart.y * SENS_SCALAR * touchSensitivity,
+			MIN_ROT_X,
+			MAX_ROT_X,
+		);
+	}
+
+	public EndDragEvent(data: PointerEventData) {
+		if (this.touchPointerId === data.pointerId) {
+			this.touchPointerId = -1;
+		}
 	}
 }

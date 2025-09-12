@@ -1,3 +1,5 @@
+import { Airship } from "../../Airship";
+import MobileCameraMovement from "../../MainMenu/Components/Overlay/MobileCameraMovement";
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";
 
@@ -20,9 +22,11 @@ export default class TouchJoystick extends AirshipBehaviour {
 	 * True if currently being dragged.
 	 */
 	private dragging = false;
+	private joystickTouchId = -1;
 
 	private rectTransform!: RectTransform;
 	private canvas!: Canvas;
+	private mobileCameraMovement: MobileCameraMovement | undefined;
 
 	private bin = new Bin();
 	private tweenBin = new Bin();
@@ -32,6 +36,8 @@ export default class TouchJoystick extends AirshipBehaviour {
 		this.handleInnerImage = this.handleInner.GetComponent<Image>()!;
 		this.rectTransform = this.gameObject.GetComponent<RectTransform>()!;
 		this.canvas = this.gameObject.GetComponentInParent<Canvas>()!;
+		this.mobileCameraMovement = Airship.Input.GetMobileCameraMovement();
+
 		if (this.canvas === undefined) {
 			error("TouchJoystick must be placed inside of a canvas.");
 		}
@@ -40,31 +46,44 @@ export default class TouchJoystick extends AirshipBehaviour {
 	override Start(): void {
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnBeginDragEvent(this.dragTarget.gameObject, (data) => {
-				NativeTween.GraphicAlpha(this.handleOuterImage, 0.6, 0.2).SetUseUnscaledTime(true);
-				NativeTween.GraphicAlpha(this.handleInnerImage, 0.6, 0.2).SetUseUnscaledTime(true);
-				NativeTween.GraphicAlpha(this.handleOuterOutline, 0.4, 0.2).SetUseUnscaledTime(true);
-				this.tweenBin.Clean();
-				this.dragging = true;
-				this.HandleDrag(data.position, "begin");
+				if (!this.dragging) {
+					this.joystickTouchId = data.pointerId;
+					NativeTween.GraphicAlpha(this.handleOuterImage, 0.6, 0.2).SetUseUnscaledTime(true);
+					NativeTween.GraphicAlpha(this.handleInnerImage, 0.6, 0.2).SetUseUnscaledTime(true);
+					NativeTween.GraphicAlpha(this.handleOuterOutline, 0.4, 0.2).SetUseUnscaledTime(true);
+					this.tweenBin.Clean();
+					this.dragging = true;
+					this.HandleDrag(data.position, "begin");
+				} else {
+					this.mobileCameraMovement?.BeginDragEvent(data);
+				}
 			}),
 		);
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnDragEvent(this.dragTarget.gameObject, (data) => {
-				if (!this.dragging) return;
-				this.HandleDrag(data.position, "move");
+				if (this.dragging && this.joystickTouchId === data.pointerId) {
+					this.HandleDrag(data.position, "move");
+				} else {
+					this.mobileCameraMovement?.DragEvent(data);
+				}
 			}),
 		);
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnEndDragEvent(this.dragTarget.gameObject, (data) => {
-				NativeTween.GraphicAlpha(this.handleOuterImage, 0.2, 0.2).SetUseUnscaledTime(true);
-				NativeTween.GraphicAlpha(this.handleInnerImage, 0.2, 0.2).SetUseUnscaledTime(true);
-				NativeTween.GraphicAlpha(this.handleOuterOutline, 0.2, 0.2).SetUseUnscaledTime(true);
-				this.input = Vector2.zero;
-				this.dragging = false;
+				this.mobileCameraMovement?.EndDragEvent(data);
 
-				// todo: adjust speed by distance
-				NativeTween.AnchoredPosition(this.handleInner, Vector2.zero, 0.1).SetUseUnscaledTime(true);
+				if (this.joystickTouchId === data.pointerId) {
+					NativeTween.GraphicAlpha(this.handleOuterImage, 0.2, 0.2).SetUseUnscaledTime(true);
+					NativeTween.GraphicAlpha(this.handleInnerImage, 0.2, 0.2).SetUseUnscaledTime(true);
+					NativeTween.GraphicAlpha(this.handleOuterOutline, 0.2, 0.2).SetUseUnscaledTime(true);
+					this.input = Vector2.zero;
+					this.dragging = false;
+					this.joystickTouchId = -1;
+
+					// todo: adjust speed by distance
+					NativeTween.AnchoredPosition(this.handleInner, Vector2.zero, 0.1).SetUseUnscaledTime(true);
+				}
 			}),
 		);
 	}
