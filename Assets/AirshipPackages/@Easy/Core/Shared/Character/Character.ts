@@ -680,6 +680,8 @@ export default class Character extends AirshipBehaviour {
 		this.maxHealth = maxHealth;
 		this.onMaxHealthChanged.Fire(this.maxHealth, oldMaxHealth);
 
+		if (this.health > maxHealth) this.SetHealth(maxHealth, false, true);
+
 		// If we're a dedicated server network max health to clients
 		if (Game.IsServer() && !Game.IsClient()) {
 			CoreNetwork.ServerToClient.Character.SetMaxHealth.server.FireAllClients(this.id, this.maxHealth);
