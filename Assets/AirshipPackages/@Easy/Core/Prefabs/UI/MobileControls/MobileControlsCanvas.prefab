@@ -50,7 +50,6 @@ GameObject:
   - component: {fileID: 5231142010838910841}
   - component: {fileID: 8010347601195754013}
   - component: {fileID: 294958722685006519}
-  - component: {fileID: 7977411251819943117}
   m_Layer: 8
   m_Name: MobileControlsCanvas
   m_TagString: Untagged
@@ -99,7 +98,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &5231142010838910841
 MonoBehaviour:
@@ -201,23 +200,6 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
---- !u!114 &7977411251819943117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7090916502956745191}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 96
 --- !u!1001 &7288923468899530084
 PrefabInstance:
   m_ObjectHideFlags: 0
