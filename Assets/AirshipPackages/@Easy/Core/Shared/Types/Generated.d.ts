@@ -4066,7 +4066,7 @@ declare const enum DestroyMode {
     DESTROY = 0,
     DEACTIVATE = 1,
 }
-declare const enum HapticFeedbackType {
+declare const enum VibrationFeedbackType {
     Light = 0,
     Medium = 1,
     Heavy = 2,
@@ -52540,7 +52540,7 @@ interface VibrationManagerConstructor {
     new(): VibrationManager;
 
 
-    Play(hapticFeedbackType: HapticFeedbackType): void;
+    Play(vibrationFeedbackType: VibrationFeedbackType): void;
 
 }
 declare const VibrationManager: VibrationManagerConstructor;
