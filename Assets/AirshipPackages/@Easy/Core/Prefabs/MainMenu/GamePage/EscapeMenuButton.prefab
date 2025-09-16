@@ -506,9 +506,9 @@ MonoBehaviour:
         - type: string
           serializedValue: '"Variables"'
       nullable: 0
-      serializedValue: 1
+      serializedValue: 0
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: underlineOnHover
       type: boolean
       objectType: 

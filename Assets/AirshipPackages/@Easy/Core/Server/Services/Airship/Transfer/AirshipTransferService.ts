@@ -50,6 +50,7 @@ export class AirshipTransferService {
 				if (players.size() === 0) {
 					return;
 				} else {
+					print(`${players.size()} players online on shutdown. Attempting to transfer.`);
 					const res = this.TransferGroupToGame(Airship.Players.GetPlayers(), Game.gameId).expect();
 					if (!res.transfersRequested) {
 						for (let player of Airship.Players.GetPlayers()) {
@@ -65,6 +66,7 @@ export class AirshipTransferService {
 						if (players.size() === 0) {
 							break;
 						}
+						print(`Waiting for transfers. ${players.size()} still online.`);
 					}
 				}
 			}

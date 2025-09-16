@@ -181,17 +181,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.DestroyItemButtons();
 	}
 
-	private RefreshAvatar() {
-		let avatarView = this.mainMenu?.avatarView;
-		if (avatarView) {
-			// if (this.avatarCenterRect) {
-			// 	avatarView.AlignCamera(this.avatarCenterRect.position, this.avatarCameraOffset);
-			// }
-		} else {
-			// error("no 3D avatar to render in avatar editor");
-		}
-	}
-
 	private downloadedAccessories = false;
 
 	override OpenPage(params?: unknown): void {
@@ -240,11 +229,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		let rawImage = this.avatarRenderHolder?.GetComponent<RawImage>();
 		if (rawImage) {
 			rawImage.texture = mainMenuSingleton.avatarEditorRenderTexture;
-			this.RefreshAvatar();
 			this.bin.Add(
 				mainMenuSingleton.onAvatarEditorRenderTextureUpdated.Connect((texture) => {
 					rawImage.texture = texture;
-					this.RefreshAvatar();
 				}),
 			);
 		}
@@ -288,7 +275,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 		this.mainMenu?.avatarView?.ShowAvatar();
 		this.mainMenu?.ToggleGameBG(false);
-		this.RefreshAvatar();
 
 		this.SelectMainNav(0);
 		this.SelectSubNav(0);
@@ -318,12 +304,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		if (this.IsPhoneMode()) {
-			if (index === 0) {
-				// Skin color
-				this.grid.cellSize = new Vector2(120, 120);
-			} else {
-				this.grid.cellSize = new Vector2(120, 150);
-			}
+			const scaleFactor = Game.GetScaleFactor();
+			const scaledWidth = Screen.width / scaleFactor;
+
+			const isSkinColor = index === 0;
+			const cellSize = this.CalculateCellSize(scaledWidth, isSkinColor);
+			this.grid.cellSize = cellSize;
 		}
 
 		let i = 0;
@@ -824,6 +810,28 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		);
 
 		this.SetDirty(false);
+	}
+
+	private CalculateCellSize(screenWidth: number, isSkinColor: boolean): Vector2 {
+		// These numbers are based on the avatar mobile page prefab values
+		const padding = 30;
+		const spacing = 8;
+		const defaultWidth = 120;
+		const defaultHeight = isSkinColor ? 120 : 150;
+		const minColumns = 3;
+
+		const availableWidth = screenWidth - padding;
+		// Use a minumum of 3 columns, but allow more on larger screens
+		const columnsWithDefaultSize = math.floor((availableWidth + spacing) / (defaultWidth + spacing));
+		const targetColumns = math.max(minColumns, columnsWithDefaultSize);
+
+		// Calculate Width and height based on number of columns
+		const cellWidth = (availableWidth - spacing * (targetColumns - 1)) / targetColumns;
+		const finalCellWidth = math.floor(cellWidth);
+		const aspectRatio = defaultHeight / defaultWidth;
+		const finalCellHeight = math.floor(finalCellWidth * aspectRatio);
+
+		return new Vector2(finalCellWidth, finalCellHeight);
 	}
 
 	private Revert() {

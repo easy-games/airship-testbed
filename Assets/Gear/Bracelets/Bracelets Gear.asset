@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   classId: 5e8ce793-0ca7-4e6b-9470-4ce938176a53
   accessoryPrefabs:
-  - {fileID: 1597345647278989063, guid: 7034e8889c189e640ba0a4489039d3cc, type: 3}
+  - {fileID: 3741616224412442864, guid: 7034e8889c189e640ba0a4489039d3cc, type: 3}
   face: {fileID: 0}

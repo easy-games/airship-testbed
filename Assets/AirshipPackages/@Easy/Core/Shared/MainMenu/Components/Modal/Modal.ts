@@ -7,7 +7,7 @@ export default class Modal extends AirshipBehaviour {
 		const rect = this.transform as RectTransform;
 		rect.localScale = Vector3.one.mul(0.4);
 
-		if (Game.IsMobile()) {
+		if (Game.IsMobile() && Game.deviceType === AirshipDeviceType.Phone) {
 			NativeTween.LocalScale(rect, Vector3.one.mul(2), 0.12).SetUseUnscaledTime(true);
 		} else {
 			NativeTween.LocalScale(rect, Vector3.one, 0.12).SetUseUnscaledTime(true);

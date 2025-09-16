@@ -18,6 +18,7 @@ const defaultData: ClientSettingsFile = {
 	mouseSensitivity: 2,
 	mouseSmoothing: 0,
 	touchSensitivity: 0.5,
+	mobileDynamicJoystick: true,
 	globalVolume: 1,
 	ambientVolume: 0.1,
 	musicVolume: 0.11,
@@ -88,6 +89,10 @@ export class ProtectedSettingsSingleton {
 
 		contextbridge.callback<() => number>("ClientSettings:GetTouchSensitivity", () => {
 			return this.GetTouchSensitivity();
+		});
+
+		contextbridge.callback<() => boolean>("ClientSettings:IsMobileDynamicJoystick", () => {
+			return this.IsMobileDynamicJoystickEnabled();
 		});
 
 		contextbridge.callback(
@@ -291,6 +296,7 @@ export class ProtectedSettingsSingleton {
 		task.spawn(() => {
 			this.settingsLoaded = true;
 			this.onSettingsLoaded.Fire(this.data);
+			contextbridge.broadcast("Settings:Loaded");
 		});
 
 		SetInterval(0.5, () => {
@@ -350,10 +356,16 @@ export class ProtectedSettingsSingleton {
 
 	public SetLimitFPS(limit: number): void {
 		this.data.limitFps = limit;
-		if (Game.IsMobile() && Game.coreContext === CoreContext.MAIN_MENU) {
+		if (Game.coreContext === CoreContext.MAIN_MENU) {
 			return;
 		}
-		Application.targetFrameRate = limit;
+		// iOS and Android needs to be set to 120 because -1 will let the OS pick and it won't be 120.
+		// todo: use screen refresh rate instead of hard coded 120
+		if (limit === -1 && (Game.platform === AirshipPlatform.iOS || Game.platform === AirshipPlatform.Android)) {
+			Application.targetFrameRate = 120;
+		} else {
+			Application.targetFrameRate = limit;
+		}
 	}
 
 	public SetAntiAliasing(level: number): void {
@@ -439,6 +451,16 @@ export class ProtectedSettingsSingleton {
 
 	public GetMouseSmoothing(): number {
 		return this.data.mouseSmoothing;
+	}
+
+	public IsMobileDynamicJoystickEnabled(): boolean {
+		return this.data.mobileDynamicJoystick;
+	}
+
+	public SetMobileDynamicJoystick(value: boolean): void {
+		this.data.mobileDynamicJoystick = value;
+		this.unsavedChanges = true;
+		contextbridge.broadcast("Settings:Toggle:MobileDynamicJoystick:OnChanged", value);
 	}
 
 	public SetSprintToggleEnabled(value: boolean): void {

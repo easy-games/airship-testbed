@@ -1,6 +1,8 @@
-import { Service } from "@Easy/Core/Shared/Flamework";
+import { AirshipServerAccessMode } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
+import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
+import { ProtectedServerManagerService } from "../Airship/ServerManager/ProtectedServerManagerService";
 
 @Service({})
 export class ShutdownService {
@@ -54,20 +56,24 @@ export class ShutdownService {
 				if (this.playerConnected) {
 					if (this.timeWithNoPlayers >= ShutdownService.shutdownTimeAllPlayersLeft) {
 						print("Server will shutdown due to excessive time with all players having left.");
-						this.Shutdown();
+						this.Shutdown(true);
 					}
 				} else {
 					if (this.timeWithNoPlayers >= ShutdownService.shutdownTimeNobodyConnected) {
 						print("Server will shutdown due to excessive time with nobody ever connecting.");
-						this.Shutdown();
+						this.Shutdown(true);
 					}
 				}
 			}
 		});
 	}
 
-	public Shutdown(): void {
-		this.FireOnShutdown();
+	public Shutdown(blockJoins = false): void {
+		if (this.fireOnShutdownStarted) return; // No need to recall shutdown once it's been called once.
+		if (Game.IsServer() && !Game.IsEditor() && blockJoins) {
+			Dependency<ProtectedServerManagerService>().SetAccessMode(AirshipServerAccessMode.CLOSED).await();
+		}
+		this.serverBootstrap.InvokeOnProcessExit();
 	}
 
 	private FireOnShutdown(): void {
@@ -81,12 +87,14 @@ export class ShutdownService {
 			if (done) return;
 			done = true;
 
+			print("Confirming shutdown from TS.");
 			this.serverBootstrap.Shutdown();
 		};
 
 		const extraDelaySec = 30;
 		// We allow up to 30 minutes for servers to finish up matches / handle shutdown messages. Set a timer for 30 minutes + 30 seconds to shutdown the server if it isn't already
 		task.unscaledDelay(30 * 60 + extraDelaySec, () => {
+			print("contextbridge shutdown callback took too long to complete. Shutting down now.");
 			Done();
 		});
 		task.spawn(() => {

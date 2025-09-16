@@ -71,9 +71,12 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public onEmoteEnd = new Signal<[]>();
 
 	// Inventory and related
+	/**
+	 * Can be undefined if the Inventory component is removed from Character prefab.
+	 */
 	@Header("Inventory")
 	@NonSerialized()
-	public inventory: Inventory | undefined;
+	public inventory: Inventory;
 	@NonSerialized() public heldItem?: ItemStack;
 	@NonSerialized() public heldSlot = 0;
 	@NonSerialized() public readonly onHeldSlotChanged = new Signal<number>();

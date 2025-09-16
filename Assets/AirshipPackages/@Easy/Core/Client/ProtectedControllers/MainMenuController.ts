@@ -81,7 +81,7 @@ export class MainMenuController {
 
 		//Mobile specific pages
 		const st = Dependency<MainMenuSingleton>().sizeType;
-		if (Game.IsMobile() && (st === "sm" || st === "md")) {
+		if (Game.IsMobile() && Game.deviceType === AirshipDeviceType.Phone) {
 			this.pageMap.set(
 				MainMenuPageType.AvatarMobile,
 				this.refs.GetValue("Pages", "AvatarMobile").GetAirshipComponent<AvatarMenuComponent>()!,

@@ -78,6 +78,10 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		this.dragging = false;
 	}
 
+	public IsMobileMode(): boolean {
+		return Game.IsMobile() && Game.deviceType === AirshipDeviceType.Phone;
+	}
+
 	public override Start(): void {
 		this.mainMenuSingleton = Dependency<MainMenuSingleton>();
 		// let backdrop = this.backdropHolder?.GetAirshipComponent<AvatarBackdropComponent>();
@@ -91,7 +95,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 	}
 
 	protected Update(dt: number): void {
-		if (Game.IsMobile()) {
+		if (this.IsMobileMode()) {
 			this.currentZoomOffset = this.mobileZoomOffset;
 			// return;
 		} else {
@@ -104,7 +108,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 
 		let dir = this.avatarCamera.transform.position.sub(this.cameraPivot.position).normalized;
 		this.avatarCamera.transform.position = this.cameraPivot.position.add(dir.mul(this.currentZoomOffset));
-		if (Game.IsMobile()) {
+		if (this.IsMobileMode()) {
 			this.avatarCamera.transform.position = this.avatarCamera.transform.position.WithX(0);
 		}
 		// this.avatarCamera.transform.LookAt(this.cameraPivot.position);
@@ -117,7 +121,7 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 		}
 		this.bin.Add(
 			OnUpdate.Connect((dt) => {
-				if (Game.IsMobile()) return;
+				if (this.IsMobileMode()) return;
 				if (this.dragging) {
 					const mouseX = Input.GetAxis("Mouse X");
 					let vel = mouseX * this.dragSpeedMod * Time.deltaTime;

@@ -92,9 +92,11 @@ export class AirshipServerManagerService {
 
 	/**
 	 * Shuts down the current server. All players will be transferred off of the server before shutting down.
+	 * @param blockJoins If true, the server access mode will be set to "CLOSED" before shutting down. This stops
+	 * new players from joining while any shutdown logic runs.
 	 */
-	public ShutdownServer() {
-		contextbridge.invoke(ServerManagerServiceBridgeTopics.ShutdownServer, LuauContext.Protected);
+	public ShutdownServer(blockJoins?: boolean) {
+		contextbridge.invoke(ServerManagerServiceBridgeTopics.ShutdownServer, LuauContext.Protected, blockJoins);
 	}
 
 	/**

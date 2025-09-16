@@ -1133,7 +1133,9 @@ export default class PredictedCommandManager extends AirshipSingleton {
 					// We reached a tick where this command is no longer running. Complete it.
 					if (!commandData && activeCommand.created) {
 						const confirmedFinalState = this.confirmedFinalState.get(commandIdentifier.stringify());
-						if (confirmedFinalState) this.onCommandEnded.Fire(commandIdentifier, confirmedFinalState);
+						if (confirmedFinalState) {
+							this.onCommandEnded.Fire(commandIdentifier, confirmedFinalState.snapshot[1]);
+						}
 						this.SetHighestCompletedInstance(commandIdentifier);
 						activeCommand.bin.Clean();
 						return;

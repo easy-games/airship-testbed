@@ -85,7 +85,7 @@ interface UnityMakeRequestErrorStaticFunctions {
  * A helper object to operate on UnityMakeRequest errors.
  */
 export const UnityMakeRequestError: UnityMakeRequestErrorStaticFunctions = {
-	IsInstance: (err) => IsUnityMakeRequestError(err),
+	IsInstance: (err): err is UnityMakeRequestError => IsUnityMakeRequestError(err),
 	DisplayText: (err) => UnityMakeRequestErrorDisplayText(err),
 };
 

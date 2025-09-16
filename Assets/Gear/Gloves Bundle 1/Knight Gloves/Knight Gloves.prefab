@@ -1,0 +1,166 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &630294920826259446
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2655252484902987930}
+  - component: {fileID: 7881153030681684486}
+  m_Layer: 0
+  m_Name: Knight Gloves Mesh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2655252484902987930
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630294920826259446}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5568664588136517681}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &7881153030681684486
+SkinnedMeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630294920826259446}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 3
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 6687949faaa8b4144ad5496a459bae48, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 7678003788660954121, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  m_Bones:
+  - {fileID: -8325565291410837864, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: -4233100123692532865, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: -4273978030091015793, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: 7120656953333301619, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: 6176189687953316783, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: -339705360242548376, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: 601306416772167835, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: -3631099492764457726, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: -4885570935461921421, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: 1462560604186079980, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: 6455773441774953989, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: -2657566601114912748, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: 5179670083854942762, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: 634084870131235056, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: 5261884473522370513, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: 598703702546212818, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: -2559955826825992238, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: -4068275932499049831, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: -7983105868645331808, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: 3596835998558396597, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: -5144542477915615447, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: -4274134612036321359, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  - {fileID: -2928248770196447086, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: -8325565291410837864, guid: d88f304a12bea9b4e919c208d4f90c9d, type: 3}
+  m_AABB:
+    m_Center: {x: -0.00000008940697, y: -0.05448234, z: 0.90169835}
+    m_Extent: {x: 0.69071186, y: 0.17748296, z: 0.21086645}
+  m_DirtyAABB: 0
+--- !u!1 &4581611017252579698
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5568664588136517681}
+  - component: {fileID: 5581524593768717730}
+  m_Layer: 0
+  m_Name: Knight Gloves
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5568664588136517681
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4581611017252579698}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2655252484902987930}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5581524593768717730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4581611017252579698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  accessorySlot: 16
+  visibilityMode: 2
+  skinnedToCharacter: 0
+  meshLods: []
+  canMeshCombine: 0
+  bodyMask: 0
+  serverClassId: 
+  serverClassIdStaging: 

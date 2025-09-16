@@ -35,7 +35,7 @@ export type ServerBridgeApiCreateServer = (config?: AirshipServerConfig) => Airs
 export type ServerBridgeApiGetServers = (serverIds: string[]) => {
 	[serverId: string]: AirshipServer | undefined;
 };
-export type ServerBridgeApiShutdownServer = () => void;
+export type ServerBridgeApiShutdownServer = (blockJoins?: boolean) => void;
 export type ServerBridgeApiListServer = (config?: { name?: string; description?: string }) => boolean;
 export type ServerBridgeApiDelistServer = () => boolean;
 export type ServerBridgeApiGetServerList = (page?: number) => { entries: AirshipServer[] };
@@ -76,10 +76,13 @@ export class ProtectedServerManagerService {
 			},
 		);
 
-		contextbridge.callback<ServerBridgeApiShutdownServer>(ServerManagerServiceBridgeTopics.ShutdownServer, () => {
-			Dependency<ShutdownService>().Shutdown();
-			return { success: true, data: undefined };
-		});
+		contextbridge.callback<ServerBridgeApiShutdownServer>(
+			ServerManagerServiceBridgeTopics.ShutdownServer,
+			(_, blockJoins) => {
+				Dependency<ShutdownService>().Shutdown(blockJoins);
+				return { success: true, data: undefined };
+			},
+		);
 
 		contextbridge.callback<ServerBridgeApiListServer>(ServerManagerServiceBridgeTopics.ListServer, (_, config) => {
 			return this.ListServer(config).expect();

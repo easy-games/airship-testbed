@@ -5404,3 +5404,102 @@ interface WheelCollider extends Collider {
 	 */
 	ResetSprungMasses(): void;
 }
+
+interface Rect {
+	/** The X coordinate of the rectangle. */
+	x: number;
+
+	/** The Y coordinate of the rectangle. */
+	y: number;
+
+	/** The X and Y position of the rectangle. */
+	position: Vector2;
+
+	/** The position of the center of the rectangle. */
+	center: Vector2;
+
+	/** The position of the minimum corner of the rectangle. */
+	min: Vector2;
+
+	/** The position of the maximum corner of the rectangle. */
+	max: Vector2;
+
+	/** The width of the rectangle, measured from the X position. */
+	width: number;
+
+	/** The height of the rectangle, measured from the Y position. */
+	height: number;
+
+	/** The width and height of the rectangle. */
+	size: Vector2;
+
+	/** The minimum X coordinate of the rectangle. */
+	xMin: number;
+
+	/** The minimum Y coordinate of the rectangle. */
+	yMin: number;
+
+	/** The maximum X coordinate of the rectangle. */
+	xMax: number;
+
+	/** The maximum Y coordinate of the rectangle. */
+	yMax: number;
+
+	/**
+	 * Returns true if the x and y components of point is a point inside this rectangle. If allowInverse is present and true, the width and height of the Rect are allowed to take negative values (ie, the min value is greater than the max), and the test will still work.
+	 * @param point Point to test.
+	 */
+	Contains(point: Vector2): boolean;
+
+	/**
+	 * Returns true if the x and y components of point is a point inside this rectangle. If allowInverse is present and true, the width and height of the Rect are allowed to take negative values (ie, the min value is greater than the max), and the test will still work.
+	 * @param point Point to test.
+	 */
+	Contains(point: Vector3): boolean;
+	/**
+	 * Returns true if the x and y components of point is a point inside this rectangle. If allowInverse is present and true, the width and height of the Rect are allowed to take negative values (ie, the min value is greater than the max), and the test will still work.
+	 * @param point Point to test.
+	 * @param allowInverse Does the test allow the Rect's width and height to be negative?
+	 */
+	Contains(point: Vector3, allowInverse: boolean): boolean;
+
+	/**
+	 * Returns true if the other rectangle overlaps this one.
+	 * @param other Other rectangle to test overlapping with.
+	 */
+	Overlaps(other: Rect): boolean;
+
+	/**
+	 * Returns true if the other rectangle overlaps this one. If allowInverse is present and true, the widths and heights of the Rects are allowed to take negative values (ie, the min value is greater than the max), and the test will still work.
+	 * @param other Other rectangle to test overlapping with.
+	 * @param allowInverse Does the test allow the widths and heights of the Rects to be negative?
+	 */
+	Overlaps(other: Rect, allowInverse: boolean): boolean;
+
+	/**
+	 * Set components of an existing Rect.
+	 * @param x Rect X position.
+	 * @param y Rect Y position.
+	 * @param width Rect width.
+	 * @param height Rect height.
+	 */
+	Set(x: number, y: number, width: number, height: number): void;
+}
+
+interface RectConstructor {
+	/** Shorthand for writing `new Rect(0,0,0,0)`. */
+	readonly zero: Rect;
+
+	new (x: number, y: number, width: number, height: number): Rect;
+	new (position: Vector2, size: Vector2): Rect;
+
+	/** Creates a rectangle from min/max coordinate values. */
+	MinMaxRect(xmin: number, ymin: number, xmax: number, ymax: number): Rect;
+
+	/** Returns a point inside a rectangle, given normalized coordinates. */
+	NormalizedToPoint(rectangle: Rect, normalizedRectCoordinates: Vector2): Vector2;
+
+	/** Returns the normalized coordinates corresponding to the point. */
+	PointToNormalized(rectangle: Rect, point: Vector2): Vector2;
+}
+declare const Rect: RectConstructor;

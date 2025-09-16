@@ -9,7 +9,6 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import { AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { Protected } from "@Easy/Core/Shared/Protected";
 import {
 	GameCoordinatorClient,
 	GameCoordinatorUserStatus,
@@ -66,6 +65,7 @@ export default class FriendCard extends AirshipBehaviour {
 		};
 
 		const OpenMenu = () => {
+			this.btn.Select();
 			const options: RightClickMenuButton[] = [];
 			if (userData.status !== "offline") {
 				if (Game.IsMobile() && userData.status === "in_game" && userData.gameId && userData.serverId) {
@@ -124,6 +124,7 @@ export default class FriendCard extends AirshipBehaviour {
 					? new Vector2(this.gameObject.transform.position.x, this.gameObject.transform.position.y)
 					: Mouse.position,
 				options,
+				Game.IsMobile() ? this.gameObject : undefined,
 			);
 		};
 
@@ -131,20 +132,19 @@ export default class FriendCard extends AirshipBehaviour {
 			noHoverSound: true,
 		});
 
-		this.bin.Add(
-			this.btn.onClick.Connect(() => {
-				if (Game.IsMobile()) {
-					OpenMenu();
-				} else {
-					Dependency<DirectMessageController>().OpenFriend(userData.userId);
-				}
-			}),
-		);
-
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnPointerEvent(this.gameObject, (direction, button) => {
-				if (button === PointerButton.RIGHT && direction === PointerDirection.UP) {
-					OpenMenu();
+				if (this.redirectScroll.isDragging) return;
+				if (direction === PointerDirection.UP) {
+					if (button === PointerButton.LEFT) {
+						if (Game.IsMobile()) {
+							OpenMenu();
+						} else {
+							Dependency<DirectMessageController>().OpenFriend(userData.userId);
+						}
+					} else if (button === PointerButton.RIGHT) {
+						OpenMenu();
+					}
 				}
 			}),
 		);
@@ -231,35 +231,6 @@ export default class FriendCard extends AirshipBehaviour {
 				this.profileImage.texture = texture;
 			}
 		});
-
-		const OpenMenu = () => {
-			const options: RightClickMenuButton[] = [
-				{
-					text: "Invite to Airship",
-					onClick: () => {
-						SteamLuauAPI.InviteUserToGame(steamId, "from_uid:" + Protected.User.localUser?.uid);
-					},
-				},
-			];
-			Dependency<RightClickMenuController>().OpenRightClickMenu(
-				Dependency<MainMenuController>().mainContentCanvas,
-				Game.IsMobile()
-					? new Vector2(this.gameObject.transform.position.x, this.gameObject.transform.position.y)
-					: Mouse.position,
-				options,
-			);
-		};
-
-		this.bin.AddEngineEventConnection(
-			CanvasAPI.OnPointerEvent(this.gameObject, (direction, button) => {
-				if (
-					(button === PointerButton.RIGHT || button === PointerButton.LEFT) &&
-					direction === PointerDirection.UP
-				) {
-					OpenMenu();
-				}
-			}),
-		);
 	}
 
 	protected override Start(): void {

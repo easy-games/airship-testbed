@@ -19,10 +19,14 @@ export class RightClickMenuController {
 
 	protected OnStart(): void {}
 
-	public OpenRightClickMenu(canvas: Canvas, position: Vector2, buttons: RightClickMenuButton[]): () => void {
+	public OpenRightClickMenu(
+		canvas: Canvas,
+		position: Vector2,
+		buttons: RightClickMenuButton[],
+		parent?: GameObject,
+	): () => void {
 		if (this.opened) {
 			this.currentBin.Clean();
-			return () => {};
 		}
 		this.opened = true;
 		this.currentBin.Add(() => {
@@ -34,6 +38,9 @@ export class RightClickMenuController {
 			Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/RightClickMenu/RightClickMenu.prefab"),
 			canvas.transform,
 		);
+		if (parent) {
+			parentGo.transform.SetParent(parent.transform);
+		}
 		const bgGo = parentGo.transform.GetChild(0).gameObject;
 		const menuGo = parentGo.transform.GetChild(1).gameObject;
 		menuGo.ClearChildren();

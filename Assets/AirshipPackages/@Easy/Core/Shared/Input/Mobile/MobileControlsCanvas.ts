@@ -4,11 +4,14 @@ import { Game } from "../../Game";
 import { ColorUtil } from "../../Util/ColorUtil";
 import { CoreAction } from "../AirshipCoreAction";
 import { CoreIcon } from "../UI/CoreIcon";
+import DynamicJoystick from "./DynamicJoystick";
 import { CoreMobileButton } from "./MobileButton";
 import TouchJoystick from "./TouchJoystick";
 
 export default class MobileControlsCanvas extends AirshipBehaviour {
-	public movementJoystick: TouchJoystick;
+	public staticJoystick: TouchJoystick;
+	public dynamicJoystick: DynamicJoystick;
+	private isJoystickDynamic = true;
 
 	private crouchGO: GameObject;
 	private crouchImg: Image;
@@ -26,15 +29,33 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 	protected Start(): void {}
 
 	public Init(): void {
-		if (Game.IsMobile()) {
-			Airship.Input.CreateMobileButton(CoreMobileButton.Jump, new Vector2(-220, 180), {
-				icon: CoreIcon.JumpPose,
-			});
-			this.crouchGO = Airship.Input.CreateMobileButton(CoreMobileButton.CrouchToggle, new Vector2(-140, 340), {
-				icon: CoreIcon.CrouchPose,
-			});
-			this.crouchImg = this.crouchGO.GetComponent<Image>()!;
-		}
+		if (!Game.IsMobile()) return;
+
+		Airship.Input.CreateMobileButton(CoreMobileButton.Jump, new Vector2(-220, 180), {
+			icon: CoreIcon.JumpPose,
+		});
+		this.crouchGO = Airship.Input.CreateMobileButton(CoreMobileButton.CrouchToggle, new Vector2(-140, 340), {
+			icon: CoreIcon.CrouchPose,
+		});
+		this.crouchImg = this.crouchGO.GetComponent<Image>()!;
+
+		// Listen for mobile static joystick setting changes
+		this.bin.Add(
+			contextbridge.subscribe("Settings:Loaded", () => {
+				this.isJoystickDynamic = Airship.Input.IsMobileDynamicJoystickEnabled();
+				this.UpdateJoystickVisibility(this.isJoystickDynamic);
+			}),
+		);
+
+		this.bin.Add(
+			contextbridge.subscribe(
+				"Settings:Toggle:MobileDynamicJoystick:OnChanged",
+				(from: LuauContext, value: boolean) => {
+					this.UpdateJoystickVisibility(value);
+				},
+			),
+		);
+
 		this.bin.Add(
 			Airship.Input.OnDown(CoreMobileButton.CrouchToggle).Connect((event) => {
 				this.crouchToggle = !this.crouchToggle;
@@ -43,7 +64,6 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 		);
 		this.bin.Add(
 			Game.localPlayer.ObserveCharacter((character) => {
-				if (!Game.IsMobile()) return;
 				if (character === undefined) {
 					this.HideCharacterControls();
 					return;
@@ -62,8 +82,6 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 	}
 
 	public UpdateButtonState(): void {
-		if (!Game.IsMobile()) return;
-
 		if (this.crouchToggle) {
 			Airship.Input.SetDown(CoreAction.Crouch);
 		} else {
@@ -79,7 +97,11 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 	}
 
 	public ShowCharacterControls(): void {
-		this.movementJoystick.gameObject.SetActive(true);
+		if (this.isJoystickDynamic) {
+			this.dynamicJoystick.gameObject.SetActive(true);
+		} else {
+			this.staticJoystick.gameObject.SetActive(true);
+		}
 
 		for (const [, button] of pairs(CoreMobileButton)) {
 			Airship.Input.ShowMobileButtons(button);
@@ -87,16 +109,34 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 	}
 
 	public HideCharacterControls(): void {
-		this.movementJoystick.gameObject.SetActive(false);
+		this.staticJoystick.gameObject.SetActive(false);
+		this.dynamicJoystick.gameObject.SetActive(false);
 
 		for (const [, button] of pairs(CoreMobileButton)) {
 			Airship.Input.HideMobileButtons(button);
 		}
 	}
 
+	public UpdateJoystickVisibility(isDynamicJoystickEnabled: boolean): void {
+		this.isJoystickDynamic = isDynamicJoystickEnabled;
+		this.staticJoystick.gameObject.SetActive(false);
+		this.dynamicJoystick.gameObject.SetActive(false);
+
+		if (isDynamicJoystickEnabled) {
+			this.dynamicJoystick.gameObject.SetActive(true);
+		} else {
+			this.staticJoystick.gameObject.SetActive(true);
+		}
+	}
+
 	protected Update(dt: number): void {
 		if (Game.IsMobile()) {
-			const input = this.movementJoystick.input;
+			let input: Vector2;
+			if (this.isJoystickDynamic) {
+				input = this.dynamicJoystick.input;
+			} else {
+				input = this.staticJoystick.input;
+			}
 			const inputMagnitude = input.magnitude;
 
 			const shouldSprint = inputMagnitude >= this.sprintThreshold;

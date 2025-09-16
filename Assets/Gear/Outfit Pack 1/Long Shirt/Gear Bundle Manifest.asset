@@ -15,4 +15,5 @@ MonoBehaviour:
   gearList:
   - {fileID: 11400000, guid: e0792d69699e3f74882a45c0cf61f261, type: 2}
   - {fileID: 11400000, guid: 1a3cebba3375a09438ef6d7a0e5511e7, type: 2}
+  - {fileID: 11400000, guid: fa9f7a969489071429fa3d3bbdcc21d6, type: 2}
   airId: 0f51f7b3-674f-40c3-937b-983a64f5560d

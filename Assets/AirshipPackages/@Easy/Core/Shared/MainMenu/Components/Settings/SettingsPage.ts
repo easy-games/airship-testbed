@@ -33,6 +33,7 @@ export default class SettingsPage extends AirshipBehaviour {
 	@Header("Toggles")
 	public sprintToggle: SettingsToggle;
 	public voiceToggle: SettingsToggle;
+	public mobileDynamicJoystickToggle: SettingsToggle;
 
 	@Header("Sliders")
 	public mouseSensitivitySlider!: SettingsSlider;
@@ -239,11 +240,6 @@ export default class SettingsPage extends AirshipBehaviour {
 	protected Start(): void {
 		const settings = Protected.Settings;
 
-		this.sprintToggle.Init("Toggle Sprint", settings.IsSprintToggleEnabled());
-		this.sprintToggle.toggle.onValueChanged.Connect((val) => {
-			settings.SetSprintToggleEnabled(val);
-		});
-
 		let voiceChat = Bridge.GetAirshipVoiceChatNetwork();
 		this.voiceToggle.Init("Toggle Mute", settings.IsVoiceToggleEnabled());
 		this.voiceToggle.toggle.onValueChanged.Connect((val) => {
@@ -259,23 +255,39 @@ export default class SettingsPage extends AirshipBehaviour {
 			}
 		});
 
-		this.mouseSensitivitySlider.Init("Mouse Sensitivity", settings.GetMouseSensitivity(), 0.01, 2, 0.01);
-		this.mouseSensitivitySlider.onChange.Connect((val) => {
-			settings.SetMouseSensitivity(val);
-		});
+		if (!Game.IsMobile()) {
+			this.sprintToggle.Init("Toggle Sprint", settings.IsSprintToggleEnabled());
+			this.sprintToggle.toggle.onValueChanged.Connect((val) => {
+				settings.SetSprintToggleEnabled(val);
+			});
 
-		this.mouseSmoothingSlider.Init("Mouse Smoothing", settings.GetMouseSmoothing(), 0, 2, 0.01);
-		this.mouseSmoothingSlider.onChange.Connect((val) => {
-			settings.SetMouseSmoothing(val);
-		});
+			this.mouseSensitivitySlider.Init("Mouse Sensitivity", settings.GetMouseSensitivity(), 0.01, 2, 0.01);
+			this.mouseSensitivitySlider.onChange.Connect((val) => {
+				settings.SetMouseSensitivity(val);
+			});
+
+			this.mouseSmoothingSlider.Init("Mouse Smoothing", settings.GetMouseSmoothing(), 0, 2, 0.01);
+			this.mouseSmoothingSlider.onChange.Connect((val) => {
+				settings.SetMouseSmoothing(val);
+			});
+		} else {
+			this.mouseSensitivitySlider.gameObject.SetActive(false);
+			this.mouseSmoothingSlider.gameObject.SetActive(false);
+			this.sprintToggle.gameObject.SetActive(false);
+		}
 
 		if (Game.IsMobile()) {
 			this.touchSensitibitySlider.Init("Touch Sensitivity", settings.GetTouchSensitivity(), 0.01, 2, 0.01);
 			this.touchSensitibitySlider.onChange.Connect((val) => {
 				settings.SetTouchSensitivity(val);
 			});
+			this.mobileDynamicJoystickToggle.Init("Dynamic Joystick", settings.IsMobileDynamicJoystickEnabled());
+			this.mobileDynamicJoystickToggle.toggle.onValueChanged.Connect((val) => {
+				settings.SetMobileDynamicJoystick(val);
+			});
 		} else {
 			this.touchSensitibitySlider.gameObject.SetActive(false);
+			this.mobileDynamicJoystickToggle.gameObject.SetActive(false);
 		}
 
 		this.volumeSlider.Init("Global Volume", settings.GetGlobalVolume(), 0, 2, 0.01);
