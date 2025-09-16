@@ -23,22 +23,30 @@ export default class PlayerList extends AirshipBehaviour {
 			const protectedParty = Dependency<ProtectedPartyController>();
 			protectedParty.GetParty();
 
-			if (this.gameObject.activeInHierarchy) {
-				this.bin.Add(
-					protectedPlayers.onPlayerJoined.Connect((player) => {
-						this.CreatePlayerEntry(player);
-					}),
-				);
-				this.bin.Add(
-					protectedPlayers.onPlayerDisconnected.Connect((player) => {
-						const entry = this.playerEntryMap.get(player.userId);
-						if (entry) {
-							Destroy(entry.gameObject);
-						}
-					}),
-				);
-				for (let player of protectedPlayers.players) {
+			this.bin.Add(
+				protectedPlayers.onPlayerJoined.Connect((player) => {
 					this.CreatePlayerEntry(player);
+				}),
+			);
+			this.bin.Add(
+				protectedPlayers.onPlayerDisconnected.Connect((player) => {
+					const entry = this.playerEntryMap.get(player.userId);
+					if (entry) {
+						Destroy(entry.gameObject);
+						this.playerEntryMap.delete(player.userId);
+					}
+				}),
+			);
+			for (let player of protectedPlayers.players) {
+				this.CreatePlayerEntry(player);
+			}
+
+			// Clean up disconnected players on refresh
+			const currentPlayerIds = new Set(protectedPlayers.players.map((p) => p.userId));
+			for (const [userId, entry] of this.playerEntryMap) {
+				if (!currentPlayerIds.has(userId)) {
+					Destroy(entry.gameObject);
+					this.playerEntryMap.delete(userId);
 				}
 			}
 		});
