@@ -89,9 +89,9 @@ export default class PlayerEntry extends AirshipBehaviour {
 					const isPlayerInParty =
 						partyData.members.find((member) => member.uid === player.userId) !== undefined;
 					const shouldShowButton = !player.IsLocalPlayer() && !isPlayerInParty;
-					this.addToPartyBtn.gameObject.SetActive(shouldShowButton);
+
 					if (shouldShowButton) {
-						this.addToPartyOverlay.SetActive(false);
+						this.addToPartyBtn.gameObject.SetActive(true);
 						this.partyInviteBin.Clean();
 						this.partyInviteBin.AddEngineEventConnection(
 							CanvasAPI.OnClickEvent(this.addToPartyBtn.gameObject, () => {
@@ -103,6 +103,9 @@ export default class PlayerEntry extends AirshipBehaviour {
 								});
 							}),
 						);
+					} else {
+						this.addToPartyBtn.gameObject.SetActive(false);
+						this.addToPartyOverlay.SetActive(false);
 					}
 				}),
 			);
