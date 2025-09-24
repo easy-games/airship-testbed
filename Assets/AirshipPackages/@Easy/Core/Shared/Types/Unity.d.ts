@@ -5502,3 +5502,8 @@ interface RectConstructor {
 	PointToNormalized(rectangle: Rect, point: Vector2): Vector2;
 }
 declare const Rect: RectConstructor;
+
+declare const enum SleepTimeout {
+	NeverSleep = -1,
+	SystemSetting = -2, 
+}
