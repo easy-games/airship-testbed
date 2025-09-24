@@ -104,7 +104,14 @@ export class MainMenuSingleton {
 		return bin;
 	}
 
-	public async ShowConfirmModal(title: string, message: string): Promise<boolean> {
+	/**
+	 * Displays a confirm modal
+	 * 
+	 * @param title Short title displayed at top of modal
+	 * @param message Longer text explaining the consequences of the modal
+	 * @param confirmButtonText Text displayed on confirm button
+	 */
+	public async ShowConfirmModal(title: string, message: string, confirmButtonText = "Confirm"): Promise<boolean> {
 		const go = Object.Instantiate(
 			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/Modals/AirshipConfirmModal.prefab"),
 			Dependency<MainMenuController>().mainContentCanvas.transform,
@@ -112,6 +119,7 @@ export class MainMenuSingleton {
 		const confirmModal = go.GetAirshipComponent<ConfirmModal>()!;
 		confirmModal.title.text = title;
 		confirmModal.message.text = message;
+		confirmModal.confirmText.text = confirmButtonText;
 
 		AppManager.OpenModal(go, {
 			sortingOrderOffset: 100,

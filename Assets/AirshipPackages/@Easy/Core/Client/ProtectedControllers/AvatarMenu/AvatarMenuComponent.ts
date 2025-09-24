@@ -242,7 +242,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				Dependency<MainMenuController>().onBeforePageChange.Connect((event) => {
 					if (this.dirty && event.oldPage === MainMenuPageType.Avatar) {
 						const [success, res] = Dependency<MainMenuSingleton>()
-							.ShowConfirmModal(this.discardTitle, this.discardMessage)
+							.ShowConfirmModal(this.discardTitle, this.discardMessage, "Discard")
 							.await();
 						print(`[${success}, ${res}]`);
 						if (success && !res) {

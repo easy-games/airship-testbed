@@ -5,6 +5,7 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 export default class ConfirmModal extends AirshipBehaviour {
 	public title: TMP_Text;
 	public message: TMP_Text;
+	public confirmText: TMP_Text;
 
 	public confirmButton: Button;
 	public onResult = new Signal<boolean>();
