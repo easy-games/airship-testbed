@@ -44,7 +44,7 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 		);
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnEndDragEvent(this.gameObject, (data) => {
-				this.EndDragEvent(data);
+				this.EndDragEvent(data.pointerId);
 			}),
 		);
 	}
@@ -91,8 +91,8 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 		);
 	}
 
-	public EndDragEvent(data: PointerEventData) {
-		if (this.touchPointerId === data.pointerId) {
+	public EndDragEvent(pointerId: number) {
+		if (this.touchPointerId === pointerId) {
 			this.touchPointerId = -1;
 		}
 	}

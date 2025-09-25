@@ -71,21 +71,25 @@ export default class TouchJoystick extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnEndDragEvent(this.dragTarget.gameObject, (data) => {
-				this.mobileCameraMovement?.EndDragEvent(data);
-
-				if (this.joystickTouchId === data.pointerId) {
-					NativeTween.GraphicAlpha(this.handleOuterImage, 0.2, 0.2).SetUseUnscaledTime(true);
-					NativeTween.GraphicAlpha(this.handleInnerImage, 0.2, 0.2).SetUseUnscaledTime(true);
-					NativeTween.GraphicAlpha(this.handleOuterOutline, 0.2, 0.2).SetUseUnscaledTime(true);
-					this.input = Vector2.zero;
-					this.dragging = false;
-					this.joystickTouchId = -1;
-
-					// todo: adjust speed by distance
-					NativeTween.AnchoredPosition(this.handleInner, Vector2.zero, 0.1).SetUseUnscaledTime(true);
-				}
+				this.EndDrag(data.pointerId);
 			}),
 		);
+	}
+
+	private EndDrag(pointerId: number) {
+		this.mobileCameraMovement?.EndDragEvent(pointerId);
+
+		if (this.joystickTouchId === pointerId) {
+			NativeTween.GraphicAlpha(this.handleOuterImage, 0.2, 0.2).SetUseUnscaledTime(true);
+			NativeTween.GraphicAlpha(this.handleInnerImage, 0.2, 0.2).SetUseUnscaledTime(true);
+			NativeTween.GraphicAlpha(this.handleOuterOutline, 0.2, 0.2).SetUseUnscaledTime(true);
+			this.input = Vector2.zero;
+			this.dragging = false;
+			this.joystickTouchId = -1;
+
+			// todo: adjust speed by distance
+			NativeTween.AnchoredPosition(this.handleInner, Vector2.zero, 0.1).SetUseUnscaledTime(true);
+		}
 	}
 
 	public SetRaycastPadding(padding: Vector4): void {
@@ -116,6 +120,9 @@ export default class TouchJoystick extends AirshipBehaviour {
 
 	public SetActive(active: boolean) {
 		this.gameObject.SetActive(active);
+		if (!active && this.dragging) {
+			this.EndDrag(this.joystickTouchId);
+		}
 	}
 
 	override OnDestroy(): void {}

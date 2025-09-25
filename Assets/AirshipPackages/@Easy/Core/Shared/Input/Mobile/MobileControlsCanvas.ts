@@ -27,6 +27,23 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 	private bin = new Bin();
 
 	protected Start(): void {}
+	private canvasEnabled = true;
+
+	protected OnEnable(): void {
+		if (!this.canvasEnabled) {
+			this.canvasEnabled = true;
+			this.SetupEvents();
+		}
+	}
+
+	protected OnDisable(): void {
+		if (this.canvasEnabled) {
+			this.canvasEnabled = false;
+			this.HideCharacterControls();
+			Airship.Characters.localCharacterManager.input?.SetQueuedMoveDirection(new Vector3(0, 0, 0));
+		}
+		this.bin.Clean();
+	}
 
 	public Init(): void {
 		if (!Game.IsMobile()) return;
@@ -39,6 +56,10 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 		});
 		this.crouchImg = this.crouchGO.GetComponent<Image>()!;
 
+		this.SetupEvents();
+	}
+
+	private SetupEvents() {
 		// Listen for mobile static joystick setting changes
 		this.bin.Add(
 			contextbridge.subscribe("Settings:Loaded", () => {
@@ -76,9 +97,6 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 				});
 			}),
 		);
-		this.bin.Add(() => {
-			this.HideCharacterControls();
-		});
 	}
 
 	public UpdateButtonState(): void {
@@ -149,9 +167,5 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 
 			Airship.Characters.localCharacterManager.input?.SetQueuedMoveDirection(new Vector3(input.x, 0, input.y));
 		}
-	}
-
-	protected OnDestroy(): void {
-		this.bin.Clean();
 	}
 }

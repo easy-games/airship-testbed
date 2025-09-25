@@ -62,20 +62,31 @@ export default class DynamicJoystick extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnEndDragEvent(this.dragTarget.gameObject, (data) => {
-				this.mobileCameraMovement?.EndDragEvent(data);
+				this.mobileCameraMovement?.EndDragEvent(data.pointerId);
 
 				// Only end joystick if this was the joystick touch
 				if (this.joystickTouchId === data.pointerId) {
-					NativeTween.AnchoredPosition(this.handleInner, Vector2.zero, 0.1).SetUseUnscaledTime(true);
-					NativeTween.GraphicAlpha(this.handleOuterImage, 0, 0.2).SetUseUnscaledTime(true);
-					NativeTween.GraphicAlpha(this.handleInnerImage, 0, 0.2).SetUseUnscaledTime(true);
-					NativeTween.GraphicAlpha(this.handleOuterOutline, 0, 0.2).SetUseUnscaledTime(true);
-					this.input = Vector2.zero;
-					this.dragging = false;
-					this.joystickTouchId = -1;
+					this.StopDrag(false);
 				}
 			}),
 		);
+	}
+
+	private StopDrag(instant: boolean) {
+		if (instant) {
+			this.handleInner.anchoredPosition = Vector2.zero;
+			this.handleOuterImage.color.a = 0;
+			this.handleInnerImage.color.a = 0;
+			this.handleOuterOutline.color.a = 0;
+		} else {
+			NativeTween.AnchoredPosition(this.handleInner, Vector2.zero, 0.1).SetUseUnscaledTime(true);
+			NativeTween.GraphicAlpha(this.handleOuterImage, 0, 0.2).SetUseUnscaledTime(true);
+			NativeTween.GraphicAlpha(this.handleInnerImage, 0, 0.2).SetUseUnscaledTime(true);
+			NativeTween.GraphicAlpha(this.handleOuterOutline, 0, 0.2).SetUseUnscaledTime(true);
+		}
+		this.input = Vector2.zero;
+		this.dragging = false;
+		this.joystickTouchId = -1;
 	}
 
 	public SetRaycastPadding(padding: Vector4): void {
@@ -105,6 +116,9 @@ export default class DynamicJoystick extends AirshipBehaviour {
 	}
 
 	public SetActive(active: boolean) {
+		if (!active && this.dragging) {
+			this.StopDrag(true);
+		}
 		this.gameObject.SetActive(active);
 	}
 
