@@ -662,7 +662,7 @@ export class AirshipInputSingleton {
 		}
 	}
 
-	/*
+	/**
 	 *Show or hide all mobile controls. Hiding will also clear any Down inputs.
 	 */
 	public SetMobileControlsVisibility(visible: boolean) {
