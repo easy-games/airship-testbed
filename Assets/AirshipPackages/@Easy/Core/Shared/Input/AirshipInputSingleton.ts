@@ -662,11 +662,14 @@ export class AirshipInputSingleton {
 		}
 	}
 
-	public SetMobileButtonsVisibility(visible: boolean) {
-		//Toggle core mobile inputs
+	/*
+	 *Show or hide all mobile controls. Hiding will also clear any Down inputs.
+	 */
+	public SetMobileControlsVisibility(visible: boolean) {
+		// Toggle core mobile inputs
 		this.mobileControlCanvas.enabled = visible;
 
-		//Toggle all mobile buttons
+		// Toggle all mobile buttons
 		for (const [key, objects] of this.actionToMobileButtonTable) {
 			if (visible) {
 				this.ShowMobileButtons(key);
@@ -675,7 +678,7 @@ export class AirshipInputSingleton {
 			}
 		}
 
-		//Disable Joysticks
+		// Disable Joysticks
 		const moveJoy = this.GetMobileTouchJoystick();
 		if (moveJoy) {
 			moveJoy.SetActive(visible);
