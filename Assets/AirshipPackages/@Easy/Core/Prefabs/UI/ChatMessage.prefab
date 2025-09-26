@@ -41,9 +41,9 @@ RectTransform:
   - {fileID: 906809790331926032}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 178.27698, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 178.27698, y: -2160}
   m_SizeDelta: {x: 356.554, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5236343370060900888
@@ -105,7 +105,7 @@ MonoBehaviour:
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 1
+  m_ChildControlWidth: 0
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
@@ -184,7 +184,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: 8ac7941e-6d76-4bcb-94ac-dfe114444b2d
-  hash: fcdeb4617aeebab52f762810e31e734d
   script: {fileID: -7958996414543802251, guid: 867001632e8a5944386e877be5ff37de, type: 3}
   scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Singletons/Chat/ChatMessage.lua
   forceContext: 0
@@ -310,7 +309,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 265.55, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4289434019092587370
 CanvasRenderer:
@@ -448,7 +447,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 24, y: -20.305}
+  m_AnchoredPosition: {x: 24, y: -20.305054}
   m_SizeDelta: {x: 28, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5861095299018968832

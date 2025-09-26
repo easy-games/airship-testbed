@@ -90,7 +90,7 @@ export class ClientChatSingleton {
 		this.canvas = refs.GetValue("UI", "Canvas").GetComponent<Canvas>()!;
 		this.content = refs.GetValue("UI", "Content");
 		this.wrapper = refs.GetValue("UI", "Wrapper");
-		this.chatMessagePrefab = refs.GetValue("UI", "ChatMessagePrefab");
+		this.chatMessagePrefab = Object.Instantiate(refs.GetValue("UI", "ChatMessagePrefab"));
 		this.inputField = refs.GetValue("UI", "InputField");
 		this.inputTransform = refs.GetValue("UI", "Input");
 		this.chatWindow = this.canvas.gameObject.GetAirshipComponent<ChatWindow>()!;
@@ -110,6 +110,9 @@ export class ClientChatSingleton {
 						wrapperRect.anchorMax = new Vector2(0, 1);
 						wrapperRect.pivot = new Vector2(0, 1);
 						wrapperRect.offsetMin = new Vector2(wrapperRect.offsetMin.x, 216);
+
+						// Make chat message font (& profile picture) 10% smaller
+						this.ScaleChatMessagePrefab(0.90);
 					} else {
 						wrapperRect.anchorMax = new Vector2(0, 1);
 						wrapperRect.anchorMin = new Vector2(0, 0.55);
@@ -146,6 +149,36 @@ export class ClientChatSingleton {
 		contextbridge.callback<(val: boolean) => void>("ClientChatSingleton:SetUIEnabled", (from, val) => {
 			this.canvas.gameObject.SetActive(val);
 		});
+	}
+
+	/**
+	 * Scales down the size of font and profile picture in the chat message prefab.
+	 */
+	private ScaleChatMessagePrefab(fontScale: number) {
+		// Font
+		const refs = this.chatMessagePrefab.GetComponent<GameObjectReferences>()!;
+		const textGui = refs.GetValue<TMP_Text>("UI", "Text");
+		textGui.fontSize = math.ceil(textGui.fontSize * fontScale);
+
+		// Profile image
+		const profileImage = refs.GetValue<RawImage>("UI", "ProfilePicture");
+		const rectTransform = profileImage.rectTransform;
+		const prevSize = rectTransform.sizeDelta;
+		const newSize = new Vector2(
+			math.ceil(prevSize.x * fontScale),
+			math.ceil(prevSize.y * fontScale)
+		);
+		rectTransform.sizeDelta = newSize;
+
+		// Manually handle the offset (moves off pivot when changing sizeDelta)
+		const offset = prevSize.sub(newSize).div(2).mul(new Vector2(0, 1));
+		rectTransform.offsetMin = rectTransform.offsetMin.add(offset)
+		rectTransform.offsetMax = rectTransform.offsetMax.add(offset);
+
+		// Refresh rounded image
+		const roundedCorners = profileImage.GetComponent<ImageWithRoundedCorners>();
+		roundedCorners.radius = math.ceil(roundedCorners.radius * fontScale);
+		roundedCorners.Refresh();
 	}
 
 	public OpenMobile(): void {
