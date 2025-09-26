@@ -113,7 +113,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 			}),
 		);
 		this.shown = true;
-		this.Hide();
+		this.Hide(true);
 	}
 
 	override OnDisable(): void {
