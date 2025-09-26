@@ -3,7 +3,7 @@ import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
 import { Bin } from "../../Util/Bin";
-import { CanvasAPI, PointerDirection } from "../../Util/CanvasAPI";
+import { CanvasAPI, HoverState, PointerDirection } from "../../Util/CanvasAPI";
 import { InputUtils } from "../../Util/InputUtils";
 import { Signal } from "../../Util/Signal";
 import { ActionInputType } from "../InputUtil";
@@ -74,6 +74,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	private shown = false;
 	/** Position on enable */
 	private initialPosition: Vector3;
+	private btnFocused = false;
 
 	protected Awake(): void {
 		if (this.canvasDistanceCondition) this.canvasDistanceCondition.maxDistance = this.maxRange + 10;
@@ -93,14 +94,6 @@ export default class ProximityPrompt extends AirshipBehaviour {
 			task.unscaledDelay(0, () => {
 				Dependency<ProximityPromptController>().RegisterProximityPrompt(this);
 			});
-		}
-
-		if (!Game.IsMobile()) {
-			this.bin.AddEngineEventConnection(
-				CanvasAPI.OnClickEvent(this.button.gameObject, () => {
-					this.Activate();
-				}),
-			);
 		}
 
 		this.bin.AddEngineEventConnection(
@@ -216,16 +209,28 @@ export default class ProximityPrompt extends AirshipBehaviour {
 		if (Game.IsMobile()) {
 			this.backgroundImg.transform.localScale = new Vector3(2, 2, 2);
 			this.canvas.worldCamera = Camera.main;
-			this.shownBin.AddEngineEventConnection(
-				CanvasAPI.OnPointerEvent(this.backgroundImg.gameObject, (pointerDirection, button) => {
-					if (pointerDirection === PointerDirection.DOWN) {
-						Airship.Input.SetDown(this.actionName);
-					} else {
-						Airship.Input.SetUp(this.actionName);
-					}
-				}),
-			);
 		}
+
+		this.shownBin.AddEngineEventConnection(
+			CanvasAPI.OnPointerEvent(this.backgroundImg.gameObject, (pointerDirection, button) => {
+				if (pointerDirection === PointerDirection.DOWN) {
+					if (this.activateWhenDown && this.btnFocused) {
+						this.Activate();
+					}
+					this.KeyDown();
+				} else {
+					if (!this.activateWhenDown && this.btnFocused) {
+						this.Activate();
+					}
+					this.KeyUp();
+				}
+			}),
+		);
+		this.shownBin.AddEngineEventConnection(
+			CanvasAPI.OnHoverEvent(this.backgroundImg.gameObject, (hoverState, data) => {
+				this.btnFocused = hoverState === HoverState.ENTER;
+			}),
+		);
 
 		this.shownBin.Add(
 			Airship.Input.OnUp(this.actionName).Connect((event) => {
@@ -248,6 +253,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 
 		this.onShown.Fire();
 
+		//Is the key already pressed down when the character walks in range
 		if (this.activateWhenDown && Airship.Input.IsDown(this.actionName)) {
 			this.Activate();
 		}
