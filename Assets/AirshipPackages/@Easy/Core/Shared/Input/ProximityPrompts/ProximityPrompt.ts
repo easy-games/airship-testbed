@@ -179,15 +179,17 @@ export default class ProximityPrompt extends AirshipBehaviour {
 
 		this.shown = false;
 
-		//Don't actually hide until we aren't interacting with the prompt anymore
-		let infStart = Time.time;
-		while (this.btnDown && Time.time - infStart < 5) {
-			task.wait();
-		}
+		if (Game.IsMobile()) {
+			//Don't actually hide until we aren't interacting with the prompt anymore
+			let infStart = Time.time;
+			while (this.btnDown && Time.time - infStart < 5) {
+				task.wait();
+			}
 
-		//If it was shown again since starting the wait we shouldn't animate out.
-		if (this.shown) {
-			return;
+			//If it was shown again since starting the wait we shouldn't animate out.
+			if (this.shown) {
+				return;
+			}
 		}
 
 		this.shownBin.Clean();
