@@ -99,6 +99,10 @@ export class AirshipInputSingleton {
 	 */
 	private actionToMobileButtonTable = new Map<string, GameObject[]>();
 	/**
+	 * Tracks mobile buttons explicitly hidden so they persist across re-show events.
+	 */
+	private disabledMobileButtons = new Set<string>();
+	/**
 	 * Sensitivty multiplier maintained by game.
 	 */
 	private gameSensitivityMultiplier = 1;
@@ -549,6 +553,11 @@ export class AirshipInputSingleton {
 		mobileButtonsForAction.push(mobileButton);
 		this.actionToMobileButtonTable.set(lowerName, mobileButtonsForAction);
 
+		// If this button was hidden explicity by the user before being created, ensure it starts inactive
+		if (this.disabledMobileButtons.has(lowerName)) {
+			mobileButton.SetActive(false);
+		}
+
 		return mobileButton;
 	}
 
@@ -651,15 +660,49 @@ export class AirshipInputSingleton {
 	}
 
 	/**
-	 * Hides all mobile buttons that trigger the action `name`.
+	 * Shows all mobile buttons that trigger the action `name`.
 	 *
 	 * @param name An action name.
 	 */
 	public ShowMobileButtons(name: string): void {
-		const mobileButtonsForAction = this.actionToMobileButtonTable.get(name.lower()) ?? [];
+		const lowerName = name.lower();
+		const mobileButtonsForAction = this.actionToMobileButtonTable.get(lowerName) ?? [];
 		for (const mobileButton of mobileButtonsForAction) {
+			if (this.disabledMobileButtons.has(lowerName)) {
+				continue;
+			}
 			mobileButton.SetActive(true);
 		}
+	}
+
+	/**
+	 * Disables a mobile button that triggers the action `name`.
+	 * This will prevent the button from being shown when ShowMobileButtons is called.
+	 * @param name The action name of the button to disable.
+	 */
+	public DisableMobileButton(name: string): void {
+		const lowerName = name.lower();
+		this.disabledMobileButtons.add(lowerName);
+		this.HideMobileButtons(name);
+	}
+
+	/**
+	 * Reenables a mobile button that triggers the action `name`.
+	 * This will allow the button to be shown when ShowMobileButtons is called.
+	 * @param name The action name of the button to reenable.
+	 */
+	public ReenableMobileButton(name: string): void {
+		const lowerName = name.lower();
+		this.disabledMobileButtons.delete(lowerName);
+	}
+
+	/**
+	 * Returns whether or not the mobile button that triggers the action `name` is disabled.
+	 * @param name The action name of the button to check.
+	 */
+	public IsMobileButtonDisabled(name: string): boolean {
+		const lowerName = name.lower();
+		return this.disabledMobileButtons.has(lowerName);
 	}
 
 	/**
