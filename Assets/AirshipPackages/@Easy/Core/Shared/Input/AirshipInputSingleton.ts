@@ -354,6 +354,12 @@ export class AirshipInputSingleton {
 	 */
 	public DisableCoreActions(coreActions: CoreAction[]) {
 		for (const actionName of coreActions) {
+			if (Game.IsMobile()) {
+				const coreButtons = this.GetMobileButtons(actionName);
+				for (const coreButton of coreButtons) {
+					this.DisableMobileButton(coreButton.name);
+				}
+			}
 			if (Game.IsGameLuauContext()) {
 				task.defer(() => {
 					contextbridge.broadcast("ProtectedKeybind:UnregisterAction", actionName);
