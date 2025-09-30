@@ -1,3 +1,5 @@
+import { CoreAction } from "../AirshipCoreAction";
+
 export interface MobileButtonConfig {
 	/**
 	 * A path to an image.
@@ -28,3 +30,9 @@ export enum CoreMobileButton {
 	CrouchToggle = "CrouchToggle",
 	SprintToggle = "SprintToggle",
 }
+
+export const CoreMobileButtonToCoreAction = {
+	[CoreMobileButton.Jump]: CoreAction.Jump,
+	[CoreMobileButton.CrouchToggle]: CoreAction.Crouch,
+	[CoreMobileButton.SprintToggle]: CoreAction.Sprint,
+};

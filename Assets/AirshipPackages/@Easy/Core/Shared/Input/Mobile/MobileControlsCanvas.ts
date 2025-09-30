@@ -100,6 +100,7 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 	}
 
 	public UpdateButtonState(): void {
+		if (!this.crouchGO) return;
 		if (this.crouchToggle) {
 			Airship.Input.SetDown(CoreAction.Crouch);
 		} else {
