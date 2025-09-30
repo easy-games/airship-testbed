@@ -99,7 +99,7 @@ export class AirshipInputSingleton {
 	 */
 	private actionToMobileButtonTable = new Map<string, GameObject[]>();
 	/**
-	 * Tracks mobile buttons explicitly hidden so they persist across re-show events.
+	 * Tracks mobile buttons that are disabled by the user.
 	 */
 	private disabledMobileButtons = new Set<string>();
 	/**
@@ -559,7 +559,7 @@ export class AirshipInputSingleton {
 		mobileButtonsForAction.push(mobileButton);
 		this.actionToMobileButtonTable.set(lowerName, mobileButtonsForAction);
 
-		// If this button was hidden explicity by the user before being created, ensure it starts inactive
+		// If this button was disabled before being created, ensure it starts inactive
 		if (this.disabledMobileButtons.has(lowerName)) {
 			mobileButton.SetActive(false);
 		}
