@@ -114,7 +114,7 @@ export class Signal<T extends unknown[] | unknown = void> {
 
 			const itemIdx = items.indexOf(item);
 			if (itemIdx !== -1) {
-				items.unorderedRemove(itemIdx);
+				items.remove(itemIdx);
 
 				if (items.size() === 0) {
 					this.connections.delete(priority);
