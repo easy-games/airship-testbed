@@ -222,7 +222,7 @@ export class Signal<T extends unknown[] | unknown = void> {
 
 		this.firing = false;
 
-		// Register all queued connections during previous fire
+		// Register all queued connections during fire
 		for (const [priority, connections] of this.queuedConnections) {
 			for (const connection of connections) {
 				this.AddConnection(priority, connection);
