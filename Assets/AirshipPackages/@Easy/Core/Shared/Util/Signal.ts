@@ -1,4 +1,5 @@
 import { Cancellable } from "./Cancellable";
+import { MapUtil } from "./MapUtil";
 
 type SignalParams<T> = Parameters<
 	[T] extends [unknown[]] ? (...args: T) => never : [T] extends [unknown] ? (arg: T) => never : () => never
@@ -47,6 +48,11 @@ export class Signal<T extends unknown[] | unknown = void> {
 	private allowYielding = false;
 	private keys: number[] = [];
 	private readonly connections: Map<number, Array<CallbackItem<T>>> = new Map();
+	/**
+	 * Map from priority to all callbacks queued at that priority. Holds connections
+	 * that were registered while this signal was firing (to be added after fire completes).
+	 */
+	private queuedConnections = new Map<number, CallbackItem<T>[]>();
 	public debugGameObject = false;
 	public isDestroyed = false;
 
@@ -91,9 +97,8 @@ export class Signal<T extends unknown[] | unknown = void> {
 		const item: CallbackItem<T> = [callback, true];
 
 		if (this.firing) {
-			task.defer(() => {
-				this.AddConnection(priority, item);
-			});
+			const queuedConns = MapUtil.GetOrCreate(this.queuedConnections, priority, []);
+			queuedConns.push(item);
 		} else {
 			this.AddConnection(priority, item);
 		}
@@ -216,6 +221,13 @@ export class Signal<T extends unknown[] | unknown = void> {
 		}
 
 		this.firing = false;
+
+		// Register all queued connections during previous fire
+		for (const [priority, connections] of this.queuedConnections) {
+			for (const connection of connections) {
+				this.AddConnection(priority, connection);
+			}
+		}
 
 		return args[0] as T;
 	}
