@@ -53,6 +53,11 @@ export class Signal<T extends unknown[] | unknown = void> {
 	 * that were registered while this signal was firing (to be added after fire completes).
 	 */
 	private queuedConnections = new Map<number, CallbackItem<T>[]>();
+	/**
+	 * This flag is to safely handle DisconnectAll while firing. When enabled we stop
+	 * looping callbacks for the current Fire.
+	 */
+	private disconnectAllRequested = false;
 	public debugGameObject = false;
 	public isDestroyed = false;
 
@@ -124,8 +129,16 @@ export class Signal<T extends unknown[] | unknown = void> {
 		return () => {
 			if (!item[1]) return;
 			if (this.firing) {
+				// Mark as disconnected and cleanup later
 				item[1] = false;
 				task.defer(disconnect);
+
+				// Clear from queued connections
+				const queuedConnectionsAtPriority = this.queuedConnections.get(priority);
+				if (queuedConnectionsAtPriority) {
+					const queuedIdx = queuedConnectionsAtPriority.indexOf(item);
+					if (queuedIdx >= 0) queuedConnectionsAtPriority.remove(queuedIdx);
+				}
 			} else {
 				disconnect();
 			}
@@ -210,26 +223,36 @@ export class Signal<T extends unknown[] | unknown = void> {
 						break;
 					}
 				}
+
+				// Cancel fire when DisconnectAll is requested
+				if (this.disconnectAllRequested) break;
 			}
-			if (cancelled) {
-				break;
-			}
+			if (cancelled) break;
+			// Cancel fire when DisconnectAll is requested
+			if (this.disconnectAllRequested) break;
 		}
 
 		if (this.debugLogging) {
 			print("fire count: " + fireCount);
 		}
 
+		// Reset
+		this.disconnectAllRequested = false;
 		this.firing = false;
 
-		// Register all queued connections during fire
+		this.RegisterQueuedConnections();
+
+		return args[0] as T;
+	}
+
+	/** Register all queued connections during fire */
+	private RegisterQueuedConnections() {
 		for (const [priority, connections] of this.queuedConnections) {
 			for (const connection of connections) {
 				this.AddConnection(priority, connection);
 			}
 		}
-
-		return args[0] as T;
+		this.queuedConnections.clear();
 	}
 
 	/**
@@ -259,15 +282,11 @@ export class Signal<T extends unknown[] | unknown = void> {
 	 * Clears all connections.
 	 */
 	public DisconnectAll() {
-		if (this.firing) {
-			task.defer(() => {
-				this.connections.clear();
-				this.keys.clear();
-			});
-		} else {
-			this.connections.clear();
-			this.keys.clear();
-		}
+		if (this.firing) this.disconnectAllRequested = true;
+
+		this.connections.clear();
+		this.keys.clear();
+		this.queuedConnections.clear();
 	}
 
 	/**
