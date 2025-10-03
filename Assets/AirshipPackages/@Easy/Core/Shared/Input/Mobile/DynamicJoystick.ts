@@ -1,7 +1,7 @@
 import { Airship } from "../../Airship";
 import MobileCameraMovement from "../../MainMenu/Components/Overlay/MobileCameraMovement";
 import { Bin } from "../../Util/Bin";
-import { CanvasAPI } from "../../Util/CanvasAPI";
+import { CanvasAPI, PointerButton, PointerDirection } from "../../Util/CanvasAPI";
 
 export default class DynamicJoystick extends AirshipBehaviour {
 	@SerializeField() private dragTarget: RectTransform;
@@ -19,6 +19,7 @@ export default class DynamicJoystick extends AirshipBehaviour {
 	private canvas!: Canvas;
 	private bin = new Bin();
 	private mobileCameraMovement: MobileCameraMovement | undefined;
+	private startedInitialTouch = false;
 
 	public Awake(): void {
 		this.handleInnerImage = this.handleInner.GetComponent<Image>()!;
@@ -32,6 +33,15 @@ export default class DynamicJoystick extends AirshipBehaviour {
 	}
 
 	override Start(): void {
+		// Detect initial pointer down to prevent block placement
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnPointerEvent(this.dragTarget.gameObject, (direction, button) => {
+				if (direction === PointerDirection.DOWN && button === PointerButton.LEFT && !this.dragging) {
+					this.startedInitialTouch = true;
+				}
+			}),
+		);
+
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnBeginDragEvent(this.dragTarget.gameObject, (data) => {
 				if (!this.dragging) {
@@ -53,6 +63,9 @@ export default class DynamicJoystick extends AirshipBehaviour {
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnDragEvent(this.dragTarget.gameObject, (data) => {
 				if (this.dragging && this.joystickTouchId === data.pointerId) {
+					if (this.startedInitialTouch) {
+						this.startedInitialTouch = false;
+					}
 					this.HandleDrag(data.position);
 				} else {
 					this.mobileCameraMovement?.DragEvent(data);
@@ -87,6 +100,7 @@ export default class DynamicJoystick extends AirshipBehaviour {
 		this.input = Vector2.zero;
 		this.dragging = false;
 		this.joystickTouchId = -1;
+		this.startedInitialTouch = false;
 	}
 
 	public SetRaycastPadding(padding: Vector4): void {
@@ -129,6 +143,13 @@ export default class DynamicJoystick extends AirshipBehaviour {
 		if (this.dragging) {
 			this.StopDrag(false);
 		}
+	}
+
+	/**
+	 * Checks if the joystick initially started a touch
+	 */
+	public IsStartingInitialTouch(): boolean {
+		return this.startedInitialTouch;
 	}
 
 	override OnDestroy(): void {}

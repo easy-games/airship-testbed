@@ -1,7 +1,7 @@
 import { Airship } from "../../Airship";
 import MobileCameraMovement from "../../MainMenu/Components/Overlay/MobileCameraMovement";
 import { Bin } from "../../Util/Bin";
-import { CanvasAPI } from "../../Util/CanvasAPI";
+import { CanvasAPI, PointerButton, PointerDirection } from "../../Util/CanvasAPI";
 
 export default class TouchJoystick extends AirshipBehaviour {
 	@SerializeField() private dragTarget: RectTransform;
@@ -23,6 +23,7 @@ export default class TouchJoystick extends AirshipBehaviour {
 	 */
 	private dragging = false;
 	private joystickTouchId = -1;
+	private startedInitialTouch = false;
 
 	private rectTransform!: RectTransform;
 	private canvas!: Canvas;
@@ -44,6 +45,15 @@ export default class TouchJoystick extends AirshipBehaviour {
 	}
 
 	override Start(): void {
+		// Detect initial pointer down to prevent block placement
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnPointerEvent(this.dragTarget.gameObject, (direction, button) => {
+				if (direction === PointerDirection.DOWN && button === PointerButton.LEFT && !this.dragging) {
+					this.startedInitialTouch = true;
+				}
+			}),
+		);
+
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnBeginDragEvent(this.dragTarget.gameObject, (data) => {
 				if (!this.dragging) {
@@ -62,6 +72,9 @@ export default class TouchJoystick extends AirshipBehaviour {
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnDragEvent(this.dragTarget.gameObject, (data) => {
 				if (this.dragging && this.joystickTouchId === data.pointerId) {
+					if (this.startedInitialTouch) {
+						this.startedInitialTouch = false;
+					}
 					this.HandleDrag(data.position, "move");
 				} else {
 					this.mobileCameraMovement?.DragEvent(data);
@@ -86,6 +99,7 @@ export default class TouchJoystick extends AirshipBehaviour {
 			this.input = Vector2.zero;
 			this.dragging = false;
 			this.joystickTouchId = -1;
+			this.startedInitialTouch = false;
 
 			// todo: adjust speed by distance
 			NativeTween.AnchoredPosition(this.handleInner, Vector2.zero, 0.1).SetUseUnscaledTime(true);
@@ -132,6 +146,13 @@ export default class TouchJoystick extends AirshipBehaviour {
 		if (this.dragging) {
 			this.EndDrag(this.joystickTouchId);
 		}
+	}
+
+	/**
+	 * Checks if the joystick initially started a touch
+	 */
+	public IsStartingInitialTouch(): boolean {
+		return this.startedInitialTouch;
 	}
 
 	override OnDestroy(): void {}
