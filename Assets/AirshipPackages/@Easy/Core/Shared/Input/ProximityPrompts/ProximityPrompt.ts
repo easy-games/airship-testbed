@@ -2,12 +2,12 @@ import { ProximityPromptController } from "@Easy/Core/Client/Controllers/Proximi
 import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
+import MobileCameraMovement from "../../MainMenu/Components/Overlay/MobileCameraMovement";
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI, HoverState, PointerDirection } from "../../Util/CanvasAPI";
 import { InputUtils } from "../../Util/InputUtils";
 import { Signal } from "../../Util/Signal";
 import { ActionInputType } from "../InputUtil";
-import MobileCameraMovement from "../../MainMenu/Components/Overlay/MobileCameraMovement";
 
 export default class ProximityPrompt extends AirshipBehaviour {
 	@Header("Config")
@@ -74,7 +74,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	private bin = new Bin();
 	private shown = false;
 	/** Position on enable */
-	private initialPosition: Vector3;
+	private initialPosition: Vector3 | undefined;
 	private btnFocused = false;
 	private btnDown = false;
 	private mobileCamera: MobileCameraMovement | undefined;
@@ -206,7 +206,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 				}
 			});
 			task.delay(0.18, () => {
-				if (!interupt) {
+				if (!interupt && !this.canvas.IsDestroyed()) {
 					this.canvas.enabled = false;
 				}
 			});
@@ -316,8 +316,12 @@ export default class ProximityPrompt extends AirshipBehaviour {
 		});
 	}
 
-	public GetPosition() {
-		if (this.static) return this.initialPosition;
+	/**
+	 * @returns The position of the ProximityPrompt. If this is a static proximity prompt then
+	 * this returns the position when it was enabled.
+	 */
+	public GetPosition(): Vector3 {
+		if (this.static) return this.initialPosition ?? this.transform.position;
 		return this.transform.position;
 	}
 
