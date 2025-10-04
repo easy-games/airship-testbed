@@ -616,8 +616,8 @@ export class AirshipCameraSingleton {
 			this.SetMode(CharacterCameraMode.Fixed);
 		};
 
-		if (!value) {
-			this.SetModeCustom(this.previousCameraMode!);
+		if (!value && this.previousCameraMode) {
+			this.SetModeCustom(this.previousCameraMode);
 		};
 
 		this.firstPerson = value;
