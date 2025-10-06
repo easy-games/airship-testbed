@@ -4,7 +4,6 @@ import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { OnUpdate } from "../Util/Timer";
 
 /**
  * [Client only]
@@ -36,7 +35,7 @@ export class LoadingScreenSingleton {
 			this.loadingBin.Add(Mouse.AddUnlocker());
 		});
 
-		OnUpdate.Once(() => {
+		task.delay(0, () => {
 			if (!this.hasUsed) {
 				this.FinishLoading();
 			}
@@ -54,6 +53,38 @@ export class LoadingScreenSingleton {
 		this.hasUsed = true;
 		this.coreLoadingScreen!.updatedByGame = true;
 		this.coreLoadingScreen!.SetProgress(step, 50 + progress / 2);
+	}
+
+	/**
+	 * Shows skip button on the loading screen in case a loading step is optional (for example: warming shaders).
+	 * When clicked IsSkipRequested will return true once.
+	 */
+	public ShowSkipButton(): void {
+		if (!Game.playerFlags.has("SkipLoading")) return;
+
+		this.coreLoadingScreen?.SetSkipButtonShown(true);
+	}
+
+	/**
+	 * Hides skip button.
+	 */
+	public HideSkipButton(): void {
+		if (!Game.playerFlags.has("SkipLoading")) return;
+
+		this.coreLoadingScreen?.SetSkipButtonShown(false);
+	}
+
+	/**
+	 * Returns true one time if the client requests a skip. Won't return true again until the client next
+	 * requests a skip.
+	 */
+	public IsSkipRequested(): boolean {
+		if (!Game.playerFlags.has("SkipLoading")) return false;
+		if (!this.coreLoadingScreen) return false;
+
+		const requested = this.coreLoadingScreen.skipRequested;
+		if (requested) this.coreLoadingScreen.skipRequested = false;
+		return requested;
 	}
 
 	/**

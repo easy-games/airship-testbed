@@ -76,6 +76,8 @@ export default class HomePageComponent extends MainMenuPageComponent {
 
 		this.CreateSort(SortId.Popular, "Popular");
 
+		this.CreateSort(SortId.RecentlyUpdated, "Recently Updated");
+
 		// show user games on mobile for now, only need the sort if the user actually has games
 		if (Game.IsMobile()) {
 			const searchSingleton = Dependency<SearchSingleton>();
@@ -88,8 +90,6 @@ export default class HomePageComponent extends MainMenuPageComponent {
 				this.CreateSort(SortId.DeveloperGames, "My Games");
 			}
 		}
-
-		this.CreateSort(SortId.RecentlyUpdated, "Recently Updated");
 
 		Bridge.UpdateLayout(this.scrollRect.transform, true);
 		task.spawn(() => {

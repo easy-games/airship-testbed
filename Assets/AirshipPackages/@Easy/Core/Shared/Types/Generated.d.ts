@@ -27729,6 +27729,8 @@ interface CoreLoadingScreen extends BundleLoadingScreen {
     progressText: TMP_Text;
     disconnectButton: Button;
     continueButton: Button;
+    skipText: TMP_Text;
+    skipButton: Button;
     spinner: GameObject;
     gameImage: RawImage;
     editorGameImageColor: Color;
@@ -27737,6 +27739,7 @@ interface CoreLoadingScreen extends BundleLoadingScreen {
     errorText: TMP_Text;
     voiceChatCard: RectTransform;
     voiceChatToggle: InternalToggle;
+    skipRequested: boolean;
     updatedByGame: boolean;
 
 
@@ -27748,7 +27751,9 @@ interface CoreLoadingScreen extends BundleLoadingScreen {
     RetryBtn_OnClick(): void;
     SetError(msg: string): void;
     SetProgress(text: string, percent: number): void;
+    SetSkipButtonShown(shown: boolean): void;
     SetTotalDownloadSize(sizeBytes: number): void;
+    SkipBtn_OnClick(): void;
 
 
 }
