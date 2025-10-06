@@ -141,7 +141,7 @@ export default class DynamicJoystick extends AirshipBehaviour {
 	/**
 	 * Checks if the tap position is within the joystick's drag area
 	 */
-	public IsTapInJoystickDragArea(): boolean {
+	public IsPointerOverJoystickDragArea(): boolean {
 		return CanvasAPI.IsPointerOverTarget(this.dragTarget.gameObject);
 	}
 
