@@ -90,6 +90,8 @@ export class AirshipPlayersSingleton {
 				"",
 				"",
 				undefined as unknown as PlayerInfo,
+				Game.deviceType,
+				Game.platform,
 			);
 			if (!Game.IsHosting()) {
 				/**
@@ -160,7 +162,7 @@ export class AirshipPlayersSingleton {
 
 			if (Game.IsClient() && Game.coreContext === CoreContext.GAME && Game.IsProtectedLuauContext()) {
 				Game.WaitForLocalPlayerLoaded();
-				CoreNetwork.ClientToServer.Ready.client.FireServer();
+				CoreNetwork.ClientToServer.Ready.client.FireServer(Game.deviceType, Game.platform);
 			}
 		});
 	}
@@ -262,6 +264,11 @@ export class AirshipPlayersSingleton {
 					dto.profileImageId,
 					transferData,
 					playerInfo,
+
+					// These values will get overwritten inside the "Ready" network signal on server before onPlayerJoin is fired.
+					// So below values don't matter.
+					AirshipDeviceType.Desktop,
+					AirshipPlatform.Windows,
 				);
 			}
 			dto.gameObject.name = `Player_${dto.username}`;
@@ -313,7 +320,9 @@ export class AirshipPlayersSingleton {
 		});
 
 		if (Game.IsProtectedLuauContext()) {
-			CoreNetwork.ClientToServer.Ready.server.OnClientEvent((player) => {
+			CoreNetwork.ClientToServer.Ready.server.OnClientEvent((player, deviceType, platform) => {
+				(player.deviceType as AirshipDeviceType) = deviceType;
+				(player.platform as AirshipPlatform) = platform;
 				this.HandlePlayerConnect(player);
 				contextbridge.broadcast<(connId: number) => void>("ProtectedPlayers:PlayerReady", player.connectionId);
 			});
@@ -517,6 +526,8 @@ export class AirshipPlayersSingleton {
 				dto.profileImageId,
 				"",
 				playerInfo,
+				dto.deviceType,
+				dto.platform,
 			);
 		}
 

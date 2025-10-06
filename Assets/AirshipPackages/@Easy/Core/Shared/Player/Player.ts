@@ -20,6 +20,8 @@ export interface PlayerDto {
 	orgRoleName: string | undefined;
 	teamId: string | undefined;
 	clientTransferData: unknown | undefined;
+	deviceType: AirshipDeviceType;
+	platform: AirshipPlatform;
 }
 
 /**
@@ -70,6 +72,9 @@ export class Player {
 	 */
 	public readonly onChangeTeam = new Signal<[team: Team | undefined, oldTeam: Team | undefined]>();
 
+	public readonly deviceType: AirshipDeviceType;
+	public readonly platform = AirshipPlatformUtil.GetLocalPlatform();
+
 	public onUsernameChanged = new Signal<[username: string]>();
 
 	private bin = new Bin();
@@ -91,11 +96,6 @@ export class Player {
 	 * muted for the local player.
 	 */
 	public readonly voiceChatAudioSource!: AudioSource;
-
-	/**
-	 * WARNING: not implemented yet. only returns local platform for now.
-	 */
-	public platform = AirshipPlatformUtil.GetLocalPlatform();
 
 	private lagCompRequests = new Map<string, { check: () => any; complete: (param: any) => void; result?: any }>();
 
@@ -142,6 +142,9 @@ export class Player {
 		transferPacket: string,
 
 		private playerInfo: PlayerInfo,
+
+		deviceType: AirshipDeviceType,
+		platform: AirshipPlatform,
 	) {
 		if (playerInfo !== undefined) {
 			this.SetVoiceChatAudioSource(playerInfo.voiceChatAudioSource);
@@ -179,6 +182,11 @@ export class Player {
 			this.lagCompRequests.delete(id);
 		});
 		this.bin.AddEngineEventConnection(completeConnection);
+
+		// Init device type to whatever we use locally.
+		// This will later get set to the real device type on server in the "Ready" network signal.
+		this.deviceType = Game.deviceType;
+		this.platform = Game.platform;
 	}
 
 	/**
@@ -349,6 +357,8 @@ export class Player {
 			orgRoleName: this.orgRoleName,
 			teamId: this.team?.id,
 			clientTransferData: includeSensitiveData ? this.clientTransferData : undefined,
+			deviceType: this.deviceType,
+			platform: this.platform,
 		};
 	}
 

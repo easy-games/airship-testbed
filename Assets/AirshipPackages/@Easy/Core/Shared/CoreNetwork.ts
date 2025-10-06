@@ -30,7 +30,7 @@ export type ChatMessageNetworkEvent = SentChatMessage | UpdateChatMessage | Remo
 
 export const CoreNetwork = {
 	ClientToServer: {
-		Ready: new NetworkSignal("Ready"),
+		Ready: new NetworkSignal<[deviceType: AirshipDeviceType, platform: AirshipPlatform]>("Ready"),
 		GetServerInfo: new NetworkFunction<[], [gameId: string, serverId: string, organizationId: string]>(
 			"ServerInfo",
 		),
