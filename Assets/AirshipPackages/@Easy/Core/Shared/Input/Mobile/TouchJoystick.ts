@@ -30,6 +30,7 @@ export default class TouchJoystick extends AirshipBehaviour {
 
 	private bin = new Bin();
 	private tweenBin = new Bin();
+	private lastTouchId = -1;
 
 	public Awake(): void {
 		this.handleOuterImage = this.handleOuter.GetComponent<Image>()!;
@@ -48,6 +49,7 @@ export default class TouchJoystick extends AirshipBehaviour {
 			CanvasAPI.OnBeginDragEvent(this.dragTarget.gameObject, (data) => {
 				if (!this.dragging) {
 					this.joystickTouchId = data.pointerId;
+					this.lastTouchId = data.pointerId;
 					NativeTween.GraphicAlpha(this.handleOuterImage, 0.6, 0.2).SetUseUnscaledTime(true);
 					NativeTween.GraphicAlpha(this.handleInnerImage, 0.6, 0.2).SetUseUnscaledTime(true);
 					NativeTween.GraphicAlpha(this.handleOuterOutline, 0.4, 0.2).SetUseUnscaledTime(true);
@@ -146,6 +148,10 @@ export default class TouchJoystick extends AirshipBehaviour {
 	 */
 	public IsPointerOverJoystickDragArea(): boolean {
 		return CanvasAPI.IsPointerOverTarget(this.dragTarget.gameObject);
+	}
+
+	public GetLastTouchFingerId(): number {
+		return this.lastTouchId;
 	}
 
 	override OnDestroy(): void {}
