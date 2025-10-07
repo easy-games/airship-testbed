@@ -18,6 +18,11 @@ import SettingsSidebar from "./SettingsSidebar";
 
 const MOBILE_NAV_HEIGHT = 60;
 
+// Declared here to avoid another global type that starts with "Airship"
+declare var AirshipVersion: {
+	GetVersionHash(): string;
+};
+
 export default class SettingsPage extends AirshipBehaviour {
 	public sidebar!: SettingsSidebar;
 	public tabs!: RectTransform;
@@ -29,6 +34,8 @@ export default class SettingsPage extends AirshipBehaviour {
 	public desktopCloseButtonWrapper: RectTransform;
 	public mobileCloseButtonWrapper: RectTransform;
 	public gamePageSettingsContainer: Transform;
+	public mobileHeaderTitle: TMP_Text;
+	public sidebarVersionText: TMP_Text;
 
 	@Header("Toggles")
 	public sprintToggle: SettingsToggle;
@@ -241,6 +248,18 @@ export default class SettingsPage extends AirshipBehaviour {
 					);
 				}
 			}
+		}
+
+		// Version
+		if (Game.deviceType === AirshipDeviceType.Phone) {
+			this.mobileHeaderTitle.text = `Settings <color=#a6a6a6>(Airship v${Application.version})</color>`;
+		} else {
+			let hash = "unknown";
+			// backwards compat
+			try {
+				hash = AirshipVersion.GetVersionHash();
+			} catch (err) {}
+			this.sidebarVersionText.text = `Airship v${Application.version}@${hash}`;
 		}
 	}
 

@@ -119,6 +119,8 @@ export class AirshipPlayersSingleton {
 					username: player.username,
 					profileImageId: player.profileImageId,
 					connectionId: player.connectionId,
+					deviceType: player.deviceType,
+					platform: player.platform,
 				});
 				if (Game.IsServer() && this.joinMessagesEnabled) {
 					Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
@@ -133,6 +135,8 @@ export class AirshipPlayersSingleton {
 						username: player.username,
 						profileImageId: player.profileImageId,
 						connectionId: player.connectionId,
+						deviceType: player.deviceType,
+						platform: player.platform,
 					},
 				);
 				if (Game.IsServer() && this.disconnectMessagesEnabled) {
