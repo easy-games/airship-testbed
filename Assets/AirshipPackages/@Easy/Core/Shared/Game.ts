@@ -9,7 +9,7 @@ import { Signal } from "./Util/Signal";
 // Declared here to avoid another global type that starts with "Airship"
 declare var AirshipConst: {
 	playerVersion: number;
-	playerFlags: string[]
+	playerFlags: string[];
 };
 
 const platform = Application.platform;
