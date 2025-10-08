@@ -19,7 +19,6 @@ export default class DynamicJoystick extends AirshipBehaviour {
 	private canvas!: Canvas;
 	private bin = new Bin();
 	private mobileCameraMovement: MobileCameraMovement | undefined;
-	private lastTouchId = -1;
 
 	public Awake(): void {
 		this.handleInnerImage = this.handleInner.GetComponent<Image>()!;
@@ -38,7 +37,6 @@ export default class DynamicJoystick extends AirshipBehaviour {
 				if (!this.dragging) {
 					// First touch starts the joystick
 					this.joystickTouchId = data.pointerId;
-					this.lastTouchId = data.pointerId;
 					const localPosition = Bridge.ScreenPointToLocalPointInRectangle(this.dragTarget, data.position);
 					this.handleOuter.anchoredPosition = localPosition;
 					NativeTween.GraphicAlpha(this.handleOuterImage, 0.6, 0.2).SetUseUnscaledTime(true);
@@ -147,8 +145,8 @@ export default class DynamicJoystick extends AirshipBehaviour {
 		return CanvasAPI.IsPointerOverTarget(this.dragTarget.gameObject);
 	}
 
-	public GetLastTouchFingerId(): number {
-		return this.lastTouchId;
+	public GetTouchPointerId(): number {
+		return this.joystickTouchId;
 	}
 
 	override OnDestroy(): void {}
