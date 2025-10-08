@@ -472,4 +472,36 @@ export class Player {
 		}
 		this.lagCompRequests.set(checkId, { check: checkFunc, complete: completeFunc });
 	}
+
+	/**
+	 * Allows you to easily set the network buffer multiplier to a higher value. This improves network performance in poor network conditions, but
+	 * adds additional latency.
+	 *
+	 * This function should be called on both the server and the client with the same value for best results. Defaults to 3. Best values are between 2-5.
+	 */
+	public SetBufferTimeMultiplier(bufferTimeMultiplier: number) {
+		if (Game.IsHosting()) {
+			// Buffer time is irrelevant in host mode. Ignore it.
+			return;
+		}
+
+		if ($SERVER) {
+			if (this.networkIdentity.connectionToClient) {
+				this.networkIdentity.connectionToClient.bufferTimeMultiplier = bufferTimeMultiplier;
+			} else {
+				warn(`No connection to client for player ${this.username}. Buffer time multiplier has not been set.`);
+			}
+		}
+
+		if ($CLIENT) {
+			// If the network identity is undefined, this character will eventually become the local player on the client.
+			if (this.IsLocalPlayer() || this.networkIdentity === undefined) {
+				NetworkClient.bufferTimeMultiplier = bufferTimeMultiplier;
+			} else {
+				warn(
+					`Tried to set buffer time multiplier on non-local player ${this.username}. Buffer time multiplier has not been set.`,
+				);
+			}
+		}
+	}
 }

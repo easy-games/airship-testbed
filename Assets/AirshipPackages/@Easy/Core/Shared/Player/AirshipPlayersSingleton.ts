@@ -93,6 +93,8 @@ export class AirshipPlayersSingleton {
 				Game.deviceType,
 				Game.platform,
 			);
+			// We only need to set this up once, so we'll do it in the protexted context.
+			if (Game.IsProtectedLuauContext()) this.SetupNetworkingSettings(Game.localPlayer);
 			if (!Game.IsHosting()) {
 				/**
 				 * Host mode: start with no players
@@ -489,8 +491,12 @@ export class AirshipPlayersSingleton {
 			this.players.add(player);
 		}
 
-		// notify all clients of the joining player
 		if (Game.IsProtectedLuauContext()) {
+			// Setup network settings for ready player now that we have their device information.
+			// We only need to do this once on the server, so we'll do it in the protected context.
+			this.SetupNetworkingSettings(player);
+
+			// notify all clients of the joining player
 			CoreNetwork.ServerToClient.AddPlayer.server.FireExcept(player, player.Encode(false));
 		}
 
@@ -543,6 +549,21 @@ export class AirshipPlayersSingleton {
 
 		if (!Game.IsHosting()) {
 			this.onPlayerJoined.Fire(player);
+		}
+	}
+
+	/**
+	 * Used to set up networking buffer.
+	 */
+	private SetupNetworkingSettings(player: Player) {
+		const multiplier = player.deviceType === AirshipDeviceType.Desktop ? 3 : 5;
+
+		// If this player will be the local player (netId undefined)
+		// Set the buffer time multiplier for the player's device.
+		const clientLocalPlayer = Game.IsClient() && (player.networkIdentity === undefined || player.IsLocalPlayer());
+		const serverPlayer = Game.IsServer() && !player.IsBot();
+		if (clientLocalPlayer || serverPlayer) {
+			player.SetBufferTimeMultiplier(multiplier);
 		}
 	}
 

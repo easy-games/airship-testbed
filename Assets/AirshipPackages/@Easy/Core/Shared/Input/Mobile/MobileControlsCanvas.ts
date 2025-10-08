@@ -174,6 +174,15 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 			} else {
 				input = this.staticJoystick.input;
 			}
+
+			// Clap the direction to .1 intervals so that predicted inputs in server auth mode have
+			// a better chance of being correct
+			const clampInterval = 0.1;
+			input = new Vector2(
+				math.round(input.x / clampInterval) * clampInterval,
+				math.round(input.y / clampInterval) * clampInterval,
+			);
+
 			const inputMagnitude = input.magnitude;
 
 			const shouldSprint = inputMagnitude >= this.sprintThreshold;
