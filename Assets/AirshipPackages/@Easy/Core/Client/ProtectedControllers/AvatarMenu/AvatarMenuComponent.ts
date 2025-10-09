@@ -295,8 +295,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private IsPhoneMode() {
 		if (!Game.IsMobile()) return false;
-		const st = Dependency<MainMenuSingleton>().sizeType;
-		return st === "sm" || st === "md";
+		return Game.deviceType === AirshipDeviceType.Phone;
 	}
 
 	private SelectMainNav(index: number) {
