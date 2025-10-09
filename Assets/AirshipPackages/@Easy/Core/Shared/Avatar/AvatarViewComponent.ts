@@ -123,7 +123,10 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			OnUpdate.Connect((dt) => {
 				if (this.IsMobileMode()) return;
 				if (this.dragging) {
-					const mouseX = Input.GetAxis("Mouse X");
+					let mouseX = Input.GetAxis("Mouse X");
+					if (Game.IsMobile()) {
+						mouseX = ((Input.GetTouch(0)?.deltaPosition.x ?? 0) / Screen.width) * 2;
+					}
 					let vel = mouseX * this.dragSpeedMod * Time.deltaTime;
 					this.currentCamAngle += vel;
 
