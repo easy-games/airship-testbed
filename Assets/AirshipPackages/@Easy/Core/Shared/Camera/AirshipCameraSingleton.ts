@@ -609,16 +609,16 @@ export class AirshipCameraSingleton {
 	public SetFirstPerson(value: boolean) {
 		if (this.firstPerson === value) {
 			return;
-		};
+		}
 
 		if (value) {
 			this.previousCameraMode = this.cameraSystem!.GetMode();
 			this.SetMode(CharacterCameraMode.Fixed);
-		};
+		}
 
 		if (!value && this.previousCameraMode) {
 			this.SetModeCustom(this.previousCameraMode);
-		};
+		}
 
 		this.firstPerson = value;
 		this.firstPersonChanged.Fire(this.firstPerson);
