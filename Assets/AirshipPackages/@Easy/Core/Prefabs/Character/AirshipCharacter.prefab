@@ -981,7 +981,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterHeight: 1.8
   characterRadius: 0.2
-  colliderGroundOffset: 0.015
+  colliderGroundOffset: 0.05
   onlySprintForward: 0
   useAccelerationMovement: 0
   speed: 4.666667
@@ -1002,10 +1002,7 @@ MonoBehaviour:
   allowDebugFlying: 1
   flySpeedMultiplier: 3
   verticalFlySpeed: 2
-  jumpUpBlockCooldown: 0.4
   useGravity: 1
-  useGravityWhileGrounded: 0
-  alwaysSnapToGround: 0
   gravityMultiplier: 5
   upwardsGravityMultiplier: 1
   groundCollisionLayerMask:
@@ -1021,7 +1018,6 @@ MonoBehaviour:
   additionalNoInputDrag: 3
   airInputAcceleration: 60
   detectStepUps: 1
-  alwaysStepUp: 0
   assistedLedgeJump: 1
   maxStepUpHeight: 0.3
   stepUpRampDistance: 0.75

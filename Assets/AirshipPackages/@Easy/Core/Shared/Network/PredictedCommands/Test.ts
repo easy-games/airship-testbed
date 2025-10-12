@@ -33,14 +33,26 @@ export class TestPredictedCommand extends PredictedCustomCommand<InputCommand, S
 		return false;
 	}
 
-	override OnTick(input: Readonly<InputCommand> | undefined, replay: boolean, fullInput: CharacterInputData) {
-		this.progress++;
-
-		if (this.progress >= this.CHARGE_TIME_SEC / Time.fixedDeltaTime) {
-			this.character.movement.AddImpulse(Vector3.up.normalized.mul(20));
-			this.completed = true;
-			return false;
+	override OnTick(
+		input: Readonly<InputCommand> | undefined,
+		replay: boolean,
+		fullInput: CharacterInputData,
+	): false | void {
+		print(`Fired at ${NetworkTime.time}`);
+		if ($SERVER) {
+			this.character.player?.LagCompensationCheck(
+				() => {},
+				() => {},
+			);
 		}
+		return false;
+		// this.progress++;
+
+		// if (this.progress >= this.CHARGE_TIME_SEC / Time.fixedDeltaTime) {
+		// 	this.character.movement.AddImpulse(Vector3.up.normalized.mul(20));
+		// 	this.completed = true;
+		// 	return false;
+		// }
 	}
 
 	OnCaptureSnapshot(): StateData {

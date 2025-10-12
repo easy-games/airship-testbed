@@ -14,50 +14,50 @@ export default class CharacterMovementTestKeys extends AirshipBehaviour {
 	public fireOnServer = false;
 
 	protected Awake(): void {
-		if(Game.IsClient()){
+		if (Game.IsClient()) {
 			Airship.Input.CreateAction("ImpulseTest", Binding.Key(this.impulseKey));
 			Airship.Input.CreateAction("TeleportTest", Binding.Key(this.teleportKey));
 			Airship.Input.CreateAction("LookDirTest", Binding.Key(this.lookDirKey));
-	
-			Airship.Input.OnDown("ImpulseTest").Connect(()=>{
+
+			Airship.Input.OnDown("ImpulseTest").Connect(() => {
 				//IMPULSING
-				if(this.fireOnServer){
+				if (this.fireOnServer) {
 					//Send to server
 					Network.ClientToServer.TestMovement.client.FireServer(0);
-				}else{
+				} else {
 					this.ImpulseTest();
 				}
-			})
-	
-			Airship.Input.OnDown("TeleportTest").Connect(()=>{
+			});
+
+			Airship.Input.OnDown("TeleportTest").Connect(() => {
 				//TELEPORTING
-				if(this.fireOnServer){
+				if (this.fireOnServer) {
 					//Send to server
 					Network.ClientToServer.TestMovement.client.FireServer(1);
-				}else{
+				} else {
 					this.TeleportTest();
 				}
-			})
-	
-			Airship.Input.OnDown("LookDirTest").Connect(()=>{
+			});
+
+			Airship.Input.OnDown("LookDirTest").Connect(() => {
 				//LOOKING
-				if(this.fireOnServer){
+				if (this.fireOnServer) {
 					//Send to server
 					Network.ClientToServer.TestMovement.client.FireServer(2);
-				}else{
+				} else {
 					this.LookTest();
 				}
-			})
-		}else {
-			Network.ClientToServer.TestMovement.server.OnClientEvent((player, actionType)=>{
-				switch(actionType){
-					case 0: 
+			});
+		} else {
+			Network.ClientToServer.TestMovement.server.OnClientEvent((player, actionType) => {
+				switch (actionType) {
+					case 0:
 						this.ImpulseTest();
 						break;
-					case 1: 
+					case 1:
 						this.TeleportTest();
 						break;
-					case 2: 
+					case 2:
 						this.LookTest();
 						break;
 				}
@@ -65,25 +65,35 @@ export default class CharacterMovementTestKeys extends AirshipBehaviour {
 		}
 	}
 
-	private ImpulseTest(){
-		Airship.Characters.GetCharacters().forEach((character)=>{
-			character.movement.SetImpulse(new Vector3(MathUtil.RandomFloat(-1,1) * this.maxImpulse.x, 1* this.maxImpulse.y, MathUtil.RandomFloat(-1,1)* this.maxImpulse.z));
-		})
-	}
-
-	private TeleportTest(){
-		Airship.Characters.GetCharacters().forEach((character)=>{
-			character.movement.TeleportAndLook(
-				new Vector3(MathUtil.RandomFloat(-1,1) * this.maxImpulse.x, 1* this.maxImpulse.y, MathUtil.RandomFloat(-1,1)* this.maxImpulse.z),
-				new Vector3(MathUtil.RandomFloat(-1,1), MathUtil.RandomFloat(-1,1), MathUtil.RandomFloat(-1,1))
+	private ImpulseTest() {
+		Airship.Characters.GetCharacters().forEach((character) => {
+			character.movement.SetImpulse(
+				new Vector3(
+					MathUtil.RandomFloat(-1, 1) * this.maxImpulse.x,
+					1 * this.maxImpulse.y,
+					MathUtil.RandomFloat(-1, 1) * this.maxImpulse.z,
+				),
 			);
 		});
 	}
 
-	private LookTest(){
-		Airship.Characters.GetCharacters().forEach((character)=>{
+	private TeleportTest() {
+		Airship.Characters.GetCharacters().forEach((character) => {
+			character.movement.TeleportAndLook(
+				new Vector3(
+					MathUtil.RandomFloat(-1, 1) * this.maxImpulse.x,
+					1 * this.maxImpulse.y,
+					MathUtil.RandomFloat(-1, 1) * this.maxImpulse.z,
+				),
+				new Vector3(MathUtil.RandomFloat(-1, 1), MathUtil.RandomFloat(-1, 1), MathUtil.RandomFloat(-1, 1)),
+			);
+		});
+	}
+
+	private LookTest() {
+		Airship.Characters.GetCharacters().forEach((character) => {
 			character.movement.SetLookVector(
-				new Vector3(MathUtil.RandomFloat(-1,1), MathUtil.RandomFloat(-1,1), MathUtil.RandomFloat(-1,1))
+				new Vector3(MathUtil.RandomFloat(-1, 1), MathUtil.RandomFloat(-1, 1), MathUtil.RandomFloat(-1, 1)),
 			);
 		});
 	}

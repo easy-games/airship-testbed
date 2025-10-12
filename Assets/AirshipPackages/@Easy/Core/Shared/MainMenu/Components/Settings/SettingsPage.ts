@@ -18,6 +18,11 @@ import SettingsSidebar from "./SettingsSidebar";
 
 const MOBILE_NAV_HEIGHT = 60;
 
+// Declared here to avoid another global type that starts with "Airship"
+declare var AirshipVersion: {
+	GetVersionHash(): string;
+};
+
 export default class SettingsPage extends AirshipBehaviour {
 	public sidebar!: SettingsSidebar;
 	public tabs!: RectTransform;
@@ -29,6 +34,8 @@ export default class SettingsPage extends AirshipBehaviour {
 	public desktopCloseButtonWrapper: RectTransform;
 	public mobileCloseButtonWrapper: RectTransform;
 	public gamePageSettingsContainer: Transform;
+	public mobileHeaderTitle: TMP_Text;
+	public sidebarVersionText: TMP_Text;
 
 	@Header("Toggles")
 	public sprintToggle: SettingsToggle;
@@ -51,6 +58,9 @@ export default class SettingsPage extends AirshipBehaviour {
 	public sliderPrefab: GameObject;
 	public togglePrefab: GameObject;
 	public spacerPrefab: GameObject;
+
+	@Header("Pages")
+	public microphonePage: GameObject;
 
 	// public mobilePages!: RectTransform[];
 
@@ -242,6 +252,18 @@ export default class SettingsPage extends AirshipBehaviour {
 				}
 			}
 		}
+
+		// Version
+		if (Game.deviceType === AirshipDeviceType.Phone) {
+			this.mobileHeaderTitle.text = `Settings <color=#a6a6a6>(Airship v${Application.version})</color>`;
+		} else {
+			let hash = "unknown";
+			// backwards compat
+			try {
+				hash = AirshipVersion.GetVersionHash();
+			} catch (err) {}
+			this.sidebarVersionText.text = `Airship v${Application.version}@${hash}`;
+		}
 	}
 
 	protected Start(): void {
@@ -262,7 +284,32 @@ export default class SettingsPage extends AirshipBehaviour {
 			}
 		});
 
-		if (!Game.IsMobile()) {
+		// Hacky workaround for GetComponentsInChildren<Button> not working.
+		const images = this.rightSection.gameObject.GetComponentsInChildren<Image>(true);
+		const scrollRect = this.scrollView.GetComponent<ScrollRect>();
+		for (let img of images) {
+			if (!img.raycastTarget) continue;
+			const redirect = img.gameObject.AddComponent<AirshipRedirectScroll>();
+			redirect.redirectTarget = scrollRect;
+		}
+
+		if (Game.IsMobile()) {
+			// Mobile
+			this.mouseSensitivitySlider.gameObject.SetActive(false);
+			this.mouseSmoothingSlider.gameObject.SetActive(false);
+			this.sprintToggle.gameObject.SetActive(false);
+			this.microphonePage.SetActive(false);
+
+			this.touchSensitibitySlider.Init("Touch Sensitivity", settings.GetTouchSensitivity(), 0.01, 2, 0.01);
+			this.touchSensitibitySlider.onChange.Connect((val) => {
+				settings.SetTouchSensitivity(val);
+			});
+			this.mobileDynamicJoystickToggle.Init("Dynamic Joystick", settings.IsMobileDynamicJoystickEnabled());
+			this.mobileDynamicJoystickToggle.toggle.onValueChanged.Connect((val) => {
+				settings.SetMobileDynamicJoystick(val);
+			});
+		} else {
+			// Desktop
 			this.sprintToggle.Init("Toggle Sprint", settings.IsSprintToggleEnabled());
 			this.sprintToggle.toggle.onValueChanged.Connect((val) => {
 				settings.SetSprintToggleEnabled(val);
@@ -277,22 +324,7 @@ export default class SettingsPage extends AirshipBehaviour {
 			this.mouseSmoothingSlider.onChange.Connect((val) => {
 				settings.SetMouseSmoothing(val);
 			});
-		} else {
-			this.mouseSensitivitySlider.gameObject.SetActive(false);
-			this.mouseSmoothingSlider.gameObject.SetActive(false);
-			this.sprintToggle.gameObject.SetActive(false);
-		}
 
-		if (Game.IsMobile()) {
-			this.touchSensitibitySlider.Init("Touch Sensitivity", settings.GetTouchSensitivity(), 0.01, 2, 0.01);
-			this.touchSensitibitySlider.onChange.Connect((val) => {
-				settings.SetTouchSensitivity(val);
-			});
-			this.mobileDynamicJoystickToggle.Init("Dynamic Joystick", settings.IsMobileDynamicJoystickEnabled());
-			this.mobileDynamicJoystickToggle.toggle.onValueChanged.Connect((val) => {
-				settings.SetMobileDynamicJoystick(val);
-			});
-		} else {
 			this.touchSensitibitySlider.gameObject.SetActive(false);
 			this.mobileDynamicJoystickToggle.gameObject.SetActive(false);
 		}
