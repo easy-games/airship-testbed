@@ -55,7 +55,7 @@ export class MenuUtil {
 			title: "Local Http",
 			subtitle: "Local http testing scene.",
 			sceneName: "LocalHttp",
-		}
+		},
 	];
 
 	public static loadGlobalSceneRequest = new NetworkFunction<string, boolean>("LoadGlobalScene");

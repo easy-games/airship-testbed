@@ -22,6 +22,10 @@ export default class AirshipToggle extends AirshipBehaviour {
 		this.UpdateVisualValue(this.value, true);
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.button.gameObject, () => {
+				const redirect = this.gameObject.GetComponent<AirshipRedirectScroll>();
+				if (redirect?.isDragging) {
+					return;
+				}
 				this.SetValue(!this.value);
 			}),
 		);

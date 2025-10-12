@@ -5,7 +5,7 @@ export default class LoadingScreenTest extends AirshipBehaviour {
 		Airship.LoadingScreen.SetProgress("Big Wait", 0.1);
 
 		task.wait(3);
-		
+
 		Airship.LoadingScreen.ShowSkipButton();
 		while (task.wait()) {
 			if (Airship.LoadingScreen.IsSkipRequested()) break;

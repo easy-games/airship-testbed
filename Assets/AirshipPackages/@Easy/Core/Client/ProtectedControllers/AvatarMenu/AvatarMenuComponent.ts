@@ -15,7 +15,7 @@ import { Protected } from "@Easy/Core/Shared/Protected";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { CanvasAPI, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import MainMenuPageComponent from "../../../Shared/MainMenu/Components/MainMenuPageComponent";
 import { MainMenuController } from "../MainMenuController";
@@ -159,12 +159,18 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		// Hookup general buttons
 		if (this.avatarInteractionBtn) {
-			CanvasAPI.OnBeginDragEvent(this.avatarInteractionBtn.gameObject, () => {
-				this.OnDragAvatar(true);
-			});
-			CanvasAPI.OnEndDragEvent(this.avatarInteractionBtn.gameObject, () => {
-				this.OnDragAvatar(false);
-			});
+			if (Game.IsMobile()) {
+				CanvasAPI.OnPointerEvent(this.avatarInteractionBtn.gameObject, (dir) => {
+					this.OnDragAvatar(dir === PointerDirection.DOWN);
+				});
+			} else {
+				CanvasAPI.OnBeginDragEvent(this.avatarInteractionBtn.gameObject, () => {
+					this.OnDragAvatar(true);
+				});
+				CanvasAPI.OnEndDragEvent(this.avatarInteractionBtn.gameObject, () => {
+					this.OnDragAvatar(false);
+				});
+			}
 		}
 
 		if (this.saveBtn) {
@@ -295,8 +301,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private IsPhoneMode() {
 		if (!Game.IsMobile()) return false;
-		const st = Dependency<MainMenuSingleton>().sizeType;
-		return st === "sm" || st === "md";
+		return Game.deviceType === AirshipDeviceType.Phone;
 	}
 
 	private SelectMainNav(index: number) {

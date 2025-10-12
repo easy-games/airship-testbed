@@ -18,5 +18,5 @@ export default class InventoryDemoManager extends AirshipSingleton {
 		});
 	}
 
-	override OnDestroy(): void { }
+	override OnDestroy(): void {}
 }

@@ -24,15 +24,17 @@ export default class MessagingScene extends AirshipBehaviour {
 			});
 
 			SetInterval(2, () => {
-				Platform.Server.Messaging.Publish("test", "Hello from server!").then((result) => {
-					if (result.success) {
-						print("Message published successfully");
-					} else {
-						print("Failed to publish message");
-					}
-				}).catch((err) => {
-					print("Error publishing message:", err);
-				});
+				Platform.Server.Messaging.Publish("test", "Hello from server!")
+					.then((result) => {
+						if (result.success) {
+							print("Message published successfully");
+						} else {
+							print("Failed to publish message");
+						}
+					})
+					.catch((err) => {
+						print("Error publishing message:", err);
+					});
 			});
 		}
 	}

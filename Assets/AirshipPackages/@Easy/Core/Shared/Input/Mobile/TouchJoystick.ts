@@ -134,5 +134,23 @@ export default class TouchJoystick extends AirshipBehaviour {
 		}
 	}
 
+	/**
+	 * Checks if the joystick is currently visible
+	 */
+	public IsJoystickVisible(): boolean {
+		return this.handleOuterImage.color.a > 0.3;
+	}
+
+	/**
+	 * Checks if the tap position is within the joystick's drag area
+	 */
+	public IsPointerOverJoystickDragArea(): boolean {
+		return CanvasAPI.IsPointerOverTarget(this.dragTarget.gameObject);
+	}
+
+	public GetTouchPointerId(): number {
+		return this.joystickTouchId;
+	}
+
 	override OnDestroy(): void {}
 }
