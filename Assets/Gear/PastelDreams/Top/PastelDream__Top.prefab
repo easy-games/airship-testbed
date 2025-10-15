@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4952664883394766136}
   - component: {fileID: 7211189836391839181}
   - component: {fileID: -1918125106971268749}
+  - component: {fileID: 6906928209899394191}
   m_Layer: 0
   m_Name: PastelDream__Top
   m_TagString: Untagged
@@ -26,8 +27,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7526318275804835948}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -131,6 +132,26 @@ MonoBehaviour:
   - {fileID: 4300000, guid: b09594ac2c678ae459840501429699e8, type: 2}
   - {fileID: 4300000, guid: 140da519ee809f64ba1b7ee092f5293e, type: 2}
   canMeshCombine: 1
-  bodyMask: 77365248
+  bodyMask: 0
   serverClassId: b713b180-5f68-4bc9-97ad-08b43a7f36fd
+  serverClassIdStaging: 
+--- !u!114 &6906928209899394191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7526318275804835948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  accessorySlot: 5
+  visibilityMode: 2
+  skinnedToCharacter: 1
+  meshLods: []
+  canMeshCombine: 0
+  bodyMask: 0
+  serverClassId: 
   serverClassIdStaging: 

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3086884561775082787
+--- !u!1 &2470124634407389672
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,38 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 498905793332809017}
-  - component: {fileID: 7439705279956081129}
-  - component: {fileID: 2070974801591749010}
+  - component: {fileID: 8217365943743820111}
+  - component: {fileID: 5606070906902955921}
+  - component: {fileID: 1065306134230534877}
+  - component: {fileID: 6803735807008426485}
   m_Layer: 0
-  m_Name: PastelDream__Catears
+  m_Name: PastelDream__Hair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &498905793332809017
+--- !u!4 &8217365943743820111
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3086884561775082787}
+  m_GameObject: {fileID: 2470124634407389672}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &7439705279956081129
+--- !u!137 &5606070906902955921
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3086884561775082787}
+  m_GameObject: {fileID: 2470124634407389672}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -56,7 +57,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8a932dcde7ab85e48917ee588ef80e86, type: 2}
+  - {fileID: 2100000, guid: 6a41d017c3607d74d85cc432a6629c45, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -81,7 +82,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: -2748181088389361817, guid: 65c0b31e38b0bfc4c9ec067b721a54b5, type: 3}
+  m_Mesh: {fileID: 3751737835448803740, guid: 65c0b31e38b0bfc4c9ec067b721a54b5, type: 3}
   m_Bones:
   - {fileID: 0}
   - {fileID: 0}
@@ -109,27 +110,47 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0, y: 0.0154921785, z: 1.7774707}
-    m_Extent: {x: 0.2546951, y: 0.103764795, z: 0.1374327}
+    m_Center: {x: -0.00000011920929, y: 0.062068, z: 1.3483554}
+    m_Extent: {x: 0.3041776, y: 0.31770182, z: 0.49238276}
   m_DirtyAABB: 0
---- !u!114 &2070974801591749010
+--- !u!114 &1065306134230534877
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3086884561775082787}
+  m_GameObject: {fileID: 2470124634407389672}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accessorySlot: 1
-  visibilityMode: 2
+  accessorySlot: 2
+  visibilityMode: 0
   skinnedToCharacter: 1
   meshLods:
-  - {fileID: 4300000, guid: 52308040918f9bd40ac19aeb19e52e4d, type: 2}
-  - {fileID: 4300000, guid: 26d159dc444d57644b4d0f7300521a9f, type: 2}
+  - {fileID: 4300000, guid: 5b60f2ee08a32dc4387611e8d68a7e36, type: 2}
+  - {fileID: 4300000, guid: dc1746d6f3510c146a3af65045a0d6a1, type: 2}
+  canMeshCombine: 1
+  bodyMask: 0
+  serverClassId: 
+  serverClassIdStaging: 
+--- !u!114 &6803735807008426485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2470124634407389672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  accessorySlot: 6
+  visibilityMode: 2
+  skinnedToCharacter: 1
+  meshLods: []
   canMeshCombine: 0
   bodyMask: 0
   serverClassId: 

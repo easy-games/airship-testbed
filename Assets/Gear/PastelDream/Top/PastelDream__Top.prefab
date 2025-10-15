@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5004708356273392527
+--- !u!1 &7526318275804835948
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,38 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8993484412220464471}
-  - component: {fileID: 335354425383292602}
-  - component: {fileID: 1725442538415012305}
+  - component: {fileID: 4952664883394766136}
+  - component: {fileID: 7211189836391839181}
+  - component: {fileID: -1918125106971268749}
+  - component: {fileID: 6906928209899394191}
   m_Layer: 0
-  m_Name: PastelDream__Shoes
+  m_Name: PastelDream__Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8993484412220464471
+--- !u!4 &4952664883394766136
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5004708356273392527}
+  m_GameObject: {fileID: 7526318275804835948}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &335354425383292602
+--- !u!137 &7211189836391839181
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5004708356273392527}
+  m_GameObject: {fileID: 7526318275804835948}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -81,7 +82,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: -3583577496974096575, guid: 65c0b31e38b0bfc4c9ec067b721a54b5, type: 3}
+  m_Mesh: {fileID: 5457505586676322242, guid: 65c0b31e38b0bfc4c9ec067b721a54b5, type: 3}
   m_Bones:
   - {fileID: 0}
   - {fileID: 0}
@@ -109,28 +110,48 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0.000050276518, y: -0.013814762, z: 0.17943928}
-    m_Extent: {x: 0.37648752, y: 0.30189234, z: 0.35495177}
+    m_Center: {x: 0.00000011920929, y: -0.015000835, z: 1.1050128}
+    m_Extent: {x: 0.36793447, y: 0.17852521, z: 0.29882503}
   m_DirtyAABB: 0
---- !u!114 &1725442538415012305
+--- !u!114 &-1918125106971268749
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5004708356273392527}
+  m_GameObject: {fileID: 7526318275804835948}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accessorySlot: 10
+  accessorySlot: 5
   visibilityMode: 2
   skinnedToCharacter: 1
   meshLods:
-  - {fileID: 4300000, guid: 1ec3bb38cd1faaa44844262c9db35eca, type: 2}
-  - {fileID: 4300000, guid: 8128682b8e5a686418aac933613a6eaf, type: 2}
+  - {fileID: 4300000, guid: b09594ac2c678ae459840501429699e8, type: 2}
+  - {fileID: 4300000, guid: 140da519ee809f64ba1b7ee092f5293e, type: 2}
   canMeshCombine: 1
-  bodyMask: 125829120
+  bodyMask: 0
+  serverClassId: b713b180-5f68-4bc9-97ad-08b43a7f36fd
+  serverClassIdStaging: 
+--- !u!114 &6906928209899394191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7526318275804835948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  accessorySlot: 5
+  visibilityMode: 2
+  skinnedToCharacter: 1
+  meshLods: []
+  canMeshCombine: 0
+  bodyMask: 0
   serverClassId: 
   serverClassIdStaging: 

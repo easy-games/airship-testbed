@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4179359536536960842
+--- !u!1 &5004708356273392527
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,38 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2042860362290465573}
-  - component: {fileID: 3908211053727690717}
-  - component: {fileID: -1779826929604506354}
+  - component: {fileID: 8993484412220464471}
+  - component: {fileID: 335354425383292602}
+  - component: {fileID: 1725442538415012305}
+  - component: {fileID: 207794475874808780}
   m_Layer: 0
-  m_Name: PastelDream__Skirt
+  m_Name: PastelDream__Shoes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2042860362290465573
+--- !u!4 &8993484412220464471
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4179359536536960842}
+  m_GameObject: {fileID: 5004708356273392527}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &3908211053727690717
+--- !u!137 &335354425383292602
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4179359536536960842}
+  m_GameObject: {fileID: 5004708356273392527}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -81,7 +82,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: -7742067897819215204, guid: 65c0b31e38b0bfc4c9ec067b721a54b5, type: 3}
+  m_Mesh: {fileID: -3583577496974096575, guid: 65c0b31e38b0bfc4c9ec067b721a54b5, type: 3}
   m_Bones:
   - {fileID: 0}
   - {fileID: 0}
@@ -109,28 +110,48 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0.0014572591, y: -0.025797233, z: 0.77730095}
-    m_Extent: {x: 0.30415505, y: 0.24700089, z: 0.17155251}
+    m_Center: {x: 0.000050276518, y: -0.013814762, z: 0.17943928}
+    m_Extent: {x: 0.37648752, y: 0.30189234, z: 0.35495177}
   m_DirtyAABB: 0
---- !u!114 &-1779826929604506354
+--- !u!114 &1725442538415012305
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4179359536536960842}
+  m_GameObject: {fileID: 5004708356273392527}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accessorySlot: 5
+  accessorySlot: 10
   visibilityMode: 2
   skinnedToCharacter: 1
   meshLods:
-  - {fileID: 4300000, guid: a50db7db05f41e04fbe031f64265019d, type: 2}
-  - {fileID: 4300000, guid: a8a91c090f80de344867f819159335e7, type: 2}
+  - {fileID: 4300000, guid: 1ec3bb38cd1faaa44844262c9db35eca, type: 2}
+  - {fileID: 4300000, guid: 8128682b8e5a686418aac933613a6eaf, type: 2}
   canMeshCombine: 1
+  bodyMask: 125829120
+  serverClassId: 
+  serverClassIdStaging: 
+--- !u!114 &207794475874808780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5004708356273392527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b74917b00f1d374c9a7136917a61ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  accessorySlot: 6
+  visibilityMode: 2
+  skinnedToCharacter: 1
+  meshLods: []
+  canMeshCombine: 0
   bodyMask: 0
   serverClassId: 
   serverClassIdStaging: 
