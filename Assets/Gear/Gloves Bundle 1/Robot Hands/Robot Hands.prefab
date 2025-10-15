@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accessorySlot: 16
   visibilityMode: 2
-  skinnedToCharacter: 0
+  skinnedToCharacter: 1
   meshLods: []
   canMeshCombine: 0
   bodyMask: 768
