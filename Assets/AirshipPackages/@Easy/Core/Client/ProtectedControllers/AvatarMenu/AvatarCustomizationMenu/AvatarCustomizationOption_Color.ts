@@ -1,0 +1,73 @@
+import AvatarCustomizationBtn from "./AvatarCustomizationBtn";
+import { Protected } from "@Easy/Core/Shared/Protected";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
+
+export default class AvatarCustomizationOption_Color extends AirshipBehaviour {
+	@Header("Templates")
+	public colorBtnTemplate: GameObject;
+
+	@Header("References")
+	public palletHolder: Transform;
+	public currentColorBtn: AvatarCustomizationBtn;
+
+	public onSelectColor = new Signal<string>();
+
+	private colorPalletId: number = 0;
+	private palletBtns: AvatarCustomizationBtn[] = [];
+	private palletColors: string[];
+	private bin = new Bin();
+
+	public Init(currentColorStr: string, colorPalletId: number): void {
+		this.bin.Clean();
+		this.colorPalletId = colorPalletId;
+
+		//Set the active color
+		this.SetActiveColor(currentColorStr);
+
+		//Create the grid of color options
+		this.CreatePallet(Protected.Avatar.colorSets[colorPalletId]);
+	}
+
+	protected OnDestroy(): void {
+		this.bin.Clean();
+	}
+
+	private CreatePallet(colors: string[]) {
+		//Destroy old options
+		for (const childT of this.palletHolder) {
+			Destroy(childT.gameObject);
+		}
+		this.palletBtns.clear();
+
+		//Create new options
+		this.palletColors = colors;
+		for (const colorStr of colors) {
+			this.palletBtns.push(this.CreatePalletBtn(ColorUtil.HexToColor(colorStr, 1)));
+		}
+	}
+
+	private CreatePalletBtn(color: Color) {
+		let swatch = Instantiate(
+			this.colorBtnTemplate,
+			this.palletHolder,
+		).gameObject.GetAirshipComponent<AvatarCustomizationBtn>();
+		if (!swatch) {
+			error("Color Btn Template must have an AvatarCustomizationBtn component on it");
+		}
+		swatch.image.color = color;
+		const btnIndex = this.palletBtns.size();
+		this.bin.Add(
+			swatch.btn.onClick.Connect(() => {
+				this.onSelectColor.Fire(this.palletColors[btnIndex]);
+				this.SetActiveColor(this.palletColors[btnIndex]);
+			}),
+		);
+		return swatch;
+	}
+
+	private SetActiveColor(currentColorStr: string) {
+		this.currentColorBtn.image.color = ColorUtil.HexToColor(currentColorStr, 1);
+	}
+}

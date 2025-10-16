@@ -844,6 +844,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7318624406025699796}
+  - component: {fileID: 2574045012429438694}
   m_Layer: 0
   m_Name: CustomizationOptions
   m_TagString: Untagged
@@ -871,11 +872,78 @@ RectTransform:
   - {fileID: 6700674752583106289}
   m_Father: {fileID: 1737546173658115557}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 174.49}
+  m_SizeDelta: {x: 768, y: 174.49}
   m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &2574045012429438694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742874437551464967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guid: 0bd9cb48-d20c-4524-ac8b-09f245e6f0da
+  script: {fileID: 8834588432206829535, guid: 5c2b7c110f9fe9247bac0bc672632f88, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarCustomizationMenu/AvatarCustomizationPanel.lua
+  forceContext: 0
+  metadata:
+    name: AvatarCustomizationPanel
+    singleton: 0
+    decorators: []
+    properties:
+    - name: colorOptionTemplate
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Templates"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 6260057964077012576, guid: 4454448559d83414ca4bbc2196ad810f, type: 3}
+      modified: 1
+    - name: colorOptions
+      type: AirshipBehaviour
+      objectType: AvatarCustomizationOption_Color
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarCustomizationMenu/AvatarCustomizationOption_Color.ts
+      jsDocs:
+        text: []
+        tags: []
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"References"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 1093545937015807982}
+      modified: 1
+    displayIcon: {fileID: 0}
+    displayName: 
 --- !u!1 &818838571652806900
 GameObject:
   m_ObjectHideFlags: 0
@@ -3541,7 +3609,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
   m_OnCullStateChanged:
@@ -7026,6 +7094,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4454448559d83414ca4bbc2196ad810f, type: 3}
+--- !u!114 &1093545937015807982 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 756320917822211253, guid: 4454448559d83414ca4bbc2196ad810f, type: 3}
+  m_PrefabInstance: {fileID: 383918547318578011}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7328890691222209371 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6982409708181919744, guid: 4454448559d83414ca4bbc2196ad810f, type: 3}

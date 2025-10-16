@@ -448,7 +448,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private DisplayColorScheme() {
-		for (let color of Protected.Avatar.skinColors) {
+		for (let color of Protected.Avatar.colorSets[0]) {
 			this.AddColorButton(ColorUtil.HexToColor(color));
 		}
 		this.UpdateButtonGraphics();

@@ -36,17 +36,50 @@ export class ProtectedAvatarSingleton {
 
 	private readonly httpRetry = HttpRetryInstance();
 
-	public skinColors = [
-		"#FFF3EA",
-		"#F6D7BB",
-		"#ECB98C",
-		"#D99E72",
-		"#C68953",
-		"#A56E45",
-		"#925E39",
-		"#7D4F2B",
-		"#4E2F13",
-		"#352214",
+	public colorSets = [
+		//SKIN
+		["#FFF3EA", "#F6D7BB", "#ECB98C", "#D99E72", "#C68953", "#A56E45", "#925E39", "#7D4F2B", "#4E2F13", "#352214"],
+		//HAIR
+		[
+			"#1B1B1B", // Jet Black
+			"#312319", // Dark Brown
+			"#825e3a", // Warm Chestnut
+			"#ceab63ff", // Golden Brown
+			"#F2DDA6", // Pale Blonde
+			"#e3a37eff", // Strawberry Blonde
+			"#B85C4B", // Auburn
+			"#804040", // Deep Red
+			"#cac9c9", // Silver Gray
+			"#ea9ec8", // Lavender Dye
+			"#4BB6E5", // Teal Blue Dye
+			"#E85A9C", // Hot Pink
+			"#7E4BFF", // Vivid Purple
+			"#3AE374", // Neon Green
+		],
+		//Clothes
+		[
+			// --- Saturated Colors ---
+			"#E63946", // Red
+			"#F77F00", // Orange
+			"#F9C80E", // Yellow
+			"#3A86FF", // Blue
+			"#9B5DE5", // Purple
+			"#06D6A0", // Aqua Green
+
+			// --- Pastel Colors ---
+			"#F8AEB4", // Rose Pink
+			"#F7B48C", // Peachy Coral
+			"#FFF07C", // Soft Lemon
+			"#A7D3F3", // Sky Blue
+			"#C5B6F2", // Lilac
+			"#AEE6CF", // Mint Green
+
+			// --- Grayscale ---
+			"#FFFFFF", // White
+			"#BEBEBE", // Light Gray
+			"#707070", // Medium Gray
+			"#1E1E1E", // Black
+		],
 	];
 
 	constructor() {
@@ -146,7 +179,7 @@ export class ProtectedAvatarSingleton {
 
 					let outfit = await Protected.Avatar.CreateDefaultAvatarOutfit(
 						name,
-						ColorUtil.HexToColor(RandomUtil.FromArray(this.skinColors)),
+						ColorUtil.HexToColor(RandomUtil.FromArray(this.colorSets[0])),
 					);
 					if (!outfit) {
 						error("Unable to make a new outfit.");
