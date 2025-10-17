@@ -598,9 +598,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			if (!gear) error("failed to download clothing.");
 			if (gear?.accessoryPrefabs === undefined) error("empty accessory prefabs.");
 
-			// if(customization) {
-			//     this.avatarCustomizationPanel.Open();
-			// }
+			if (this.avatarCustomizationPanel) {
+				this.avatarCustomizationPanel.Open(gear);
+			}
 
 			for (let accessoryPrefab of gear.accessoryPrefabs) {
 				const newAcc = this.accessoryBuilder.Add(accessoryPrefab);

@@ -1,6 +1,9 @@
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import AvatarCustomizationOption_Color from "./AvatarCustomizationOption_Color";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { CoreAction } from "@Easy/Core/Shared/Input/AirshipCoreAction";
 
 export default class AvatarCustomizationPanel extends AirshipBehaviour {
 	@Header("Templates")
@@ -16,14 +19,20 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 
 	public Open(gear: PlatformGear) {
 		this.gear = gear;
-		if (gear.optionColors.size() <= 0) {
+		if (gear.optionColors === undefined || gear.optionColors.size() <= 0) {
 			//No customization options
+			print("No customization options");
 			this.Close();
 			return;
 		}
 
 		this.openBin.Clean();
-		NativeTween.LocalPositionY(this.transform, 0, 0.5).SetEaseExpoOut();
+		NativeTween.AnchoredPositionY(this.transform, 0, 0.5).SetEaseExpoOut();
+
+		//Clean previous options
+		for (const t of this.optionsHolder) {
+			Destroy(t.gameObject);
+		}
 
 		//Process customization options
 		let i = 0;
@@ -71,6 +80,6 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 
 	public Close() {
 		this.openBin.Clean();
-		NativeTween.LocalPositionY(this.transform, -200, 0.5).SetEaseExpoIn();
+		NativeTween.AnchoredPositionY(this.transform, -200, 0.5).SetEaseExpoIn();
 	}
 }

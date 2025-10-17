@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 4934240643983557124}
   - component: {fileID: 7110072868919172570}
   - component: {fileID: 3669255742219690182}
-  - component: {fileID: 6249470518555399840}
   m_Layer: 0
   m_Name: Pigtails
   m_TagString: Untagged
@@ -102,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - baseColor: {r: 1, g: 0.74388623, b: 0.5882353, a: 1}
+  - baseColor: {r: 0.24781048, g: 1, b: 0, a: 1}
   addedByEditorScript: 0
 --- !u!114 &3669255742219690182
 MonoBehaviour:
@@ -118,29 +117,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accessorySlot: 2
   visibilityMode: 2
-  skinnedToCharacter: 1
-  customization: {fileID: 6249470518555399840}
+  skinnedToCharacter: 0
+  customization: {fileID: 0}
   meshLods:
   - {fileID: 0}
   canMeshCombine: 0
   bodyMask: 0
   serverClassId: 
   serverClassIdStaging: 
---- !u!114 &6249470518555399840
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6879545063299408849}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7085748afafd846afba990be23c8556b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  customColors:
-  - key: Primary
-    defaultValue: {r: 1, g: 0.74509805, b: 0.5882353, a: 1}
-    currentValue: {r: 0, g: 0, b: 0, a: 0}
-    ren: {fileID: 4934240643983557124}
-  customTextures: []
