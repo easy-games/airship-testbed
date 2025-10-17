@@ -97,7 +97,7 @@ export class Player {
 	 */
 	public readonly voiceChatAudioSource!: AudioSource;
 
-	private lagCompRequests = new Map<string, { check: () => any; complete: (param: any) => void; result?: any }>();
+	private lagCompRequests = new Map<number, { check: () => any; complete: (param: any) => void; result?: any }>();
 
 	/** @internal */
 	constructor(
