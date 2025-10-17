@@ -19,7 +19,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 
 	public Open(gear: PlatformGear) {
 		this.gear = gear;
-		if (gear.optionColors === undefined || gear.optionColors.size() <= 0) {
+		if (this.gear.optionVariants < 2 && (gear.optionColors === undefined || gear.optionColors.size() <= 0)) {
 			//No customization options
 			print("No customization options");
 			this.Close();

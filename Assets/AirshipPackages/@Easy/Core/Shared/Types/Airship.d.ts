@@ -1240,6 +1240,7 @@ interface PlatformGear {
 	accessoryPrefabs: AccessoryComponent[];
 	face: AccessoryFace | undefined;
 	optionColors: Color[];
+	optionVariants: number;
 }
 interface PlatformGearConstructor {
 	DownloadYielding(classId: string, airId: string): PlatformGear | undefined;
