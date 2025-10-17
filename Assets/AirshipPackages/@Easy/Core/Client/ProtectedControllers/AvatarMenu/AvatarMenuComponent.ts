@@ -25,6 +25,7 @@ import AvatarMenuBtn from "./AvatarMenuBtn";
 import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import OutfitButton from "./Outfit/OutfitButtonComponent";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
+import AvatarCustomizationPanel from "./AvatarCustomizationMenu/AvatarCustomizationPanel";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -47,6 +48,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	public avatarLoadingContainer: RectTransform;
 	public avatarLoadingContainerMobile: RectTransform;
 	public gearLoadingIndicator: GameObject;
+	public avatarCustomizationPanel: AvatarCustomizationPanel;
 
 	public grid: GridLayoutGroup;
 
@@ -208,6 +210,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			}
 		}
 		this.accessoryBuilder = this.mainMenu.avatarView.accessoryBuilder;
+		this.avatarCustomizationPanel.accessoryBuilder = this.accessoryBuilder;
 
 		if (!this.downloadedAccessories) {
 			this.downloadedAccessories = true;
@@ -579,6 +582,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (alreadySelected) {
 			// Already selected this item so just deselect it
 			this.UpdateButtonGraphics();
+			this.avatarCustomizationPanel.Close();
 			return;
 		}
 
@@ -594,8 +598,14 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			if (!gear) error("failed to download clothing.");
 			if (gear?.accessoryPrefabs === undefined) error("empty accessory prefabs.");
 
+			// if(customization) {
+			//     this.avatarCustomizationPanel.Open();
+			// }
+
 			for (let accessoryPrefab of gear.accessoryPrefabs) {
-				this.accessoryBuilder.Add(accessoryPrefab);
+				const newAcc = this.accessoryBuilder.Add(accessoryPrefab);
+				if (newAcc) {
+				}
 			}
 		} catch (err) {
 			Debug.LogError(err);

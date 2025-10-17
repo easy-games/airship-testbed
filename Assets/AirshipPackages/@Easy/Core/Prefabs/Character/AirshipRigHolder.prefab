@@ -505,6 +505,7 @@ MonoBehaviour:
   accessorySlot: 9
   visibilityMode: 2
   skinnedToCharacter: 1
+  customization: {fileID: 0}
   meshLods: []
   canMeshCombine: 1
   bodyMask: 294912

@@ -771,6 +771,7 @@ MonoBehaviour:
   accessorySlot: 1
   visibilityMode: 0
   skinnedToCharacter: 0
+  customization: {fileID: 0}
   meshLods: []
   canMeshCombine: 1
   bodyMask: 0

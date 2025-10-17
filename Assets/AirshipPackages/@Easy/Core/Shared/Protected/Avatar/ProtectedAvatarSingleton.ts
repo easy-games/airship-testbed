@@ -42,17 +42,17 @@ export class ProtectedAvatarSingleton {
 		//HAIR
 		[
 			"#1B1B1B", // Jet Black
-			"#312319", // Dark Brown
+			"#483121", // Dark Brown
 			"#825e3a", // Warm Chestnut
-			"#ceab63ff", // Golden Brown
-			"#F2DDA6", // Pale Blonde
-			"#e3a37eff", // Strawberry Blonde
-			"#B85C4B", // Auburn
-			"#804040", // Deep Red
+			"#d0a651", // Golden Brown
+			"#fed878", // Pale Blonde
+			"#e08a62", // Strawberry Blonde
+			"#b04330", // Auburn
+			"#652020", // Deep Red
 			"#cac9c9", // Silver Gray
-			"#ea9ec8", // Lavender Dye
+			"#ff9ad2", // Lavender Dye
 			"#4BB6E5", // Teal Blue Dye
-			"#E85A9C", // Hot Pink
+			"#ed2683", // Hot Pink
 			"#7E4BFF", // Vivid Purple
 			"#3AE374", // Neon Green
 		],
