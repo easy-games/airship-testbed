@@ -461,7 +461,7 @@ export class Player {
 		const simulationManager = AirshipSimulationManager.Instance as AirshipSimulationManager &
 			AirshipSimulationManagerWithLagCompensation;
 		const checkId = simulationManager.RequestLagCompensationCheck(this.connectionId);
-		if (!checkId) {
+		if (checkId < 0) {
 			warn(
 				"Unable to schedule lag compensation for " +
 					this.username +
