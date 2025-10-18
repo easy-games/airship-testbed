@@ -17,8 +17,14 @@ export default class AvatarPlatformGearTest extends AirshipBehaviour {
 			accessoryPrefabs: this.testAssets,
 			classId: "aabbcc",
 			face: undefined,
-			optionColors: [new Color(1, 1, 1, 1)],
-			optionVariants: 3,
+			customizationColors: [
+				{ key: "Hair", value: new Color(1, 1, 1, 1), scheme: 1 },
+				{ key: "Cubes", value: new Color(0, 1, 1, 1), scheme: 2 },
+				{ key: "Main Cube", value: new Color(1, 1, 0, 1), scheme: 2 },
+			],
+
+			//, new Color(0, 0, 0, 1), new Color(0, 0, 1, 1)],
+			customizationVariantNames: ["Default"],
 		};
 
 		if (!Game.IsEditor()) {

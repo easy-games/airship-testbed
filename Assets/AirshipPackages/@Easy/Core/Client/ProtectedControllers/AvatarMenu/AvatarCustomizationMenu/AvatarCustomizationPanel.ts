@@ -19,9 +19,11 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 
 	public Open(gear: PlatformGear) {
 		this.gear = gear;
-		if (this.gear.optionVariants < 2 && (gear.optionColors === undefined || gear.optionColors.size() <= 0)) {
+		if (
+			(!this.gear || this.gear.customizationVariantNames.size() < 2) &&
+			(!gear.customizationColors || gear.customizationColors.size() <= 0)
+		) {
 			//No customization options
-			print("No customization options");
 			this.Close();
 			return;
 		}
@@ -36,8 +38,8 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 
 		//Process customization options
 		let i = 0;
-		for (const {} of gear.optionColors) {
-			this.SpawnColorOptions(i);
+		for (const color of gear.customizationColors) {
+			this.SpawnColorOptions(i, color);
 			i++;
 		}
 	}
@@ -46,13 +48,13 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 		this.openBin.Clean();
 	}
 
-	private SpawnColorOptions(index: number) {
+	private SpawnColorOptions(index: number, color: PlatformGearColor) {
 		// Create the color option sub panel
 		const options = Instantiate(
 			this.colorOptionTemplate,
 			this.optionsHolder,
 		).GetAirshipComponent<AvatarCustomizationOption_Color>()!;
-		options.Init("000000", 1);
+		options.Init(color.key, ColorUtil.ColorToHex(color.value), color.scheme);
 		const colorIndex = index;
 
 		// Process Color Swapping
@@ -63,14 +65,9 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 				const newColor = ColorUtil.HexToColor(colorStr);
 				for (const template of this.gear.accessoryPrefabs) {
 					if (template) {
-						const acc = this.accessoryBuilder.GetAccessoryRenderers(template.accessorySlot);
-						if (acc) {
-							for (const ren of acc) {
-								const urp = ren.GetComponent<MaterialColorURP>();
-								if (urp) {
-									urp.SetColor(colorIndex, newColor);
-								}
-							}
+						const acc = this.accessoryBuilder.GetActiveAccessoryBySlot(template.accessorySlot);
+						if (acc && acc.AccessoryComponent.colorSetter) {
+							acc.AccessoryComponent.colorSetter.SetColor(colorIndex, newColor);
 						}
 					}
 				}

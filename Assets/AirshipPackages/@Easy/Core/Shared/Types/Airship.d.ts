@@ -1239,9 +1239,22 @@ interface PlatformGear {
 	classId: string;
 	accessoryPrefabs: AccessoryComponent[];
 	face: AccessoryFace | undefined;
-	optionColors: Color[];
-	optionVariants: number;
+	customizationColors: PlatformGearColor[];
+	customizationVariantNames: string[];
 }
+
+interface PlatformGearColor {
+	key: string;
+	value: Color;
+	scheme: PlatformGearColorScheme;
+}
+
+declare const enum PlatformGearColorScheme {
+	Skin,
+	Hair,
+	Clothes,
+}
+
 interface PlatformGearConstructor {
 	DownloadYielding(classId: string, airId: string): PlatformGear | undefined;
 }

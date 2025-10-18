@@ -402,17 +402,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 756320917822211253}
   m_SourcePrefab: {fileID: 100100000, guid: facb48e4ccd914d3dafcc5550fff8b42, type: 3}
---- !u!114 &4395081338608557359 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6273864526173149239, guid: facb48e4ccd914d3dafcc5550fff8b42, type: 3}
-  m_PrefabInstance: {fileID: 7777516149701313816}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &5861027964582322794 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4231629217298704242, guid: facb48e4ccd914d3dafcc5550fff8b42, type: 3}
@@ -505,28 +494,6 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 4054285391545850085}
-      modified: 1
-    - name: labelTxt
-      type: object
-      objectType: TextMeshProUGUI
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      jsDocs:
-        text: []
-        tags: []
-      decorators:
-      - name: Header
-        parameters:
-        - type: string
-          serializedValue: '"References"'
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 4395081338608557359}
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 

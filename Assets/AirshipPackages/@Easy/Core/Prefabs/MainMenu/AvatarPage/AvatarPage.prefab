@@ -996,8 +996,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   guid: 072c2452-efaa-4642-b2ba-348b45d32dbf
-  script: {fileID: -2015981586003803051, guid: ebb78af253d2d40dc88b3572c5457cd7, type: 3}
-  scriptPath: Assets/Taylor/Tests/AvatarPlatformGearTest.lua
+  script: {fileID: 8692473185930725425, guid: ebb78af253d2d40dc88b3572c5457cd7, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarCustomizationMenu/AvatarPlatformGearTest.lua
   forceContext: 0
   metadata:
     name: AvatarPlatformGearTest
@@ -1035,7 +1035,7 @@ MonoBehaviour:
         serializedItems:
         - 
         objectRefs:
-        - {fileID: 3669255742219690182, guid: 939cd03f83531dc4799724b0cc19e376, type: 3}
+        - {fileID: 3073049856543275330, guid: 0fce7b1883299cd43bf79e1ce267d955, type: 3}
       refPath: 
       fileRef: 
       jsDocs:

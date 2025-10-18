@@ -41164,7 +41164,8 @@ interface AccessoryComponent extends MonoBehaviour {
     accessorySlot: AccessorySlot;
     visibilityMode: VisibilityMode;
     skinnedToCharacter: boolean;
-    customization: AccessoryCustomization;
+    colorSetter: CustomAccSetter_Color;
+    variantSetter: CustomAccSetter_Variant;
     meshLods: Readonly<Mesh[]>;
     bodyMask: number;
     serverClassId: string;
@@ -41185,49 +41186,64 @@ interface AccessoryComponent extends MonoBehaviour {
 
 }
     
-interface AccessoryCustomization extends MonoBehaviour {
-    customColors: Readonly<AccCustomValue<Color>[]>;
-    customTextures: Readonly<AccCustomValue<Texture2D>[]>;
+interface CustomAccSetter_Color extends MonoBehaviour {
+    colorGroups: Readonly<ColorGroup[]>;
 
 
 
-    SetColor(index: number, color: Color): boolean;
-    SetColor(key: string, color: Color): boolean;
-
-
-}
-    
-interface AccCustomValue<T> {
-    key: string;
-    defaultValue: T;
-    currentValue: T;
-    ren: Renderer;
-
-
-
+    SetColor(index: number, newColor: Color): void;
 
 
 }
     
-interface AccCustomValueConstructor {
+interface ColorGroup {
+    colorIndex: number;
+    matColor: Readonly<MaterialColorURP[]>;
 
 
-    new(): AccCustomValue<T>;
 
+    SetColor(newColor: Color): void;
 
 
 }
-declare const AccCustomValue: AccCustomValueConstructor;
     
-interface AccessoryCustomizationConstructor {
+interface ColorGroupConstructor {
 
 
-    new(): AccessoryCustomization;
+    new(): ColorGroup;
 
 
 
 }
-declare const AccessoryCustomization: AccessoryCustomizationConstructor;
+declare const ColorGroup: ColorGroupConstructor;
+    
+interface CustomAccSetter_ColorConstructor {
+
+
+    new(): CustomAccSetter_Color;
+
+
+
+}
+declare const CustomAccSetter_Color: CustomAccSetter_ColorConstructor;
+    
+interface CustomAccSetter_Variant extends MonoBehaviour {
+
+
+
+
+
+}
+    
+interface CustomAccSetter_VariantConstructor {
+
+
+    new(): CustomAccSetter_Variant;
+
+
+
+}
+declare const CustomAccSetter_Variant: CustomAccSetter_VariantConstructor;
     
 interface BodyMaskInspectorData {
     name: string;

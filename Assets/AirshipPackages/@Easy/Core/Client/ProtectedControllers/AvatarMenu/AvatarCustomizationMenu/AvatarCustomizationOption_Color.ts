@@ -9,6 +9,7 @@ export default class AvatarCustomizationOption_Color extends AirshipBehaviour {
 	public colorBtnTemplate: GameObject;
 
 	@Header("References")
+	public labelTxt: TextMeshProUGUI;
 	public palletHolder: Transform;
 	public currentColorBtn: AvatarCustomizationBtn;
 
@@ -19,9 +20,11 @@ export default class AvatarCustomizationOption_Color extends AirshipBehaviour {
 	private palletColors: string[];
 	private bin = new Bin();
 
-	public Init(currentColorStr: string, colorPalletId: number): void {
+	public Init(label: string, currentColorStr: string, colorPalletId: number): void {
 		this.bin.Clean();
 		this.colorPalletId = colorPalletId;
+
+		this.labelTxt.text = label;
 
 		//Set the active color
 		this.SetActiveColor(currentColorStr);
