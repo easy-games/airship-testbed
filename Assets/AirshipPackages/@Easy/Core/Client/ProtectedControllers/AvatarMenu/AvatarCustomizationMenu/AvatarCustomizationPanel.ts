@@ -4,6 +4,7 @@ import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { CoreAction } from "@Easy/Core/Shared/Input/AirshipCoreAction";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
 export default class AvatarCustomizationPanel extends AirshipBehaviour {
 	@Header("Templates")
@@ -13,6 +14,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 
 	@HideInInspector()
 	public accessoryBuilder: AccessoryBuilder;
+	public OnToggle = new Signal<boolean>();
 
 	private openBin = new Bin();
 	private gear: PlatformGear;
@@ -42,6 +44,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 			this.SpawnColorOptions(i, color);
 			i++;
 		}
+		this.OnToggle.Fire(true);
 	}
 
 	protected OnDisable(): void {
@@ -78,5 +81,6 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 	public Close() {
 		this.openBin.Clean();
 		NativeTween.AnchoredPositionY(this.transform, -200, 0.5).SetEaseExpoIn();
+		this.OnToggle.Fire(false);
 	}
 }

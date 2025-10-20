@@ -187,6 +187,12 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			});
 		}
 
+		this.bin.Add(
+			this.avatarCustomizationPanel.OnToggle.Connect((on) => {
+				this.SlideSaveButton(on);
+			}),
+		);
+
 		this.DestroyItemButtons();
 	}
 
@@ -583,6 +589,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			// Already selected this item so just deselect it
 			this.UpdateButtonGraphics();
 			this.avatarCustomizationPanel.Close();
+			NativeTween.PositionY(this.avatarToolbar, 27, 0.5).SetEaseExpoOut();
 			return;
 		}
 
@@ -598,9 +605,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			if (!gear) error("failed to download clothing.");
 			if (gear?.accessoryPrefabs === undefined) error("empty accessory prefabs.");
 
-			if (this.avatarCustomizationPanel) {
-				this.avatarCustomizationPanel.Open(gear);
-			}
+			//Will open if there are customization options
+			this.avatarCustomizationPanel.Open(gear);
 
 			for (let accessoryPrefab of gear.accessoryPrefabs) {
 				const newAcc = this.accessoryBuilder.Add(accessoryPrefab);
@@ -867,5 +873,13 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private Revert() {
 		this.LoadCurrentOutfit().expect();
+	}
+
+	private SlideSaveButton(up: boolean) {
+		if (up) {
+			NativeTween.AnchoredPositionY(this.avatarToolbar, 185, 0.5).SetEaseExpoOut();
+		} else {
+			NativeTween.AnchoredPositionY(this.avatarToolbar, 27, 0.5).SetEaseExpoIn();
+		}
 	}
 }
