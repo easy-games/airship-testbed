@@ -1,122 +1,54 @@
+using Mirror;
 using System;
 using UnityEditor;
 using UnityEngine;
 #if AIRSHIP_EDITOR_API
-public class TestEditor : UnityEditor.Editor {
-    private void OnSceneGUI() {
-        throw new NotImplementedException();
-    }
-}
-
-[AirshipEditor("ProximityPrompt")]
-public class ProximityPromptEditor : AirshipEditor {
-    private void DrawPreview() {
-        var objectText = serializedObject.FindAirshipProperty("objectText");
-        var actionText = serializedObject.FindAirshipProperty("actionText");
-        
-      //   EditorGUILayout.BeginHorizontal();
-      //   Rect r = EditorGUILayout.GetControlRect(false, GUILayout.Height(150));
-      // EditorGUILayout.EndHorizontal();
-    }
-    
-    public void DrawUserProperties() {
-        var objectText = serializedObject.FindAirshipProperty("objectText");
-        var actionText = serializedObject.FindAirshipProperty("actionText");
-        var actionName = serializedObject.FindAirshipProperty("actionName");
-        var maxRange = serializedObject.FindAirshipProperty("maxRange");
-        var mouseRaycastTarget = serializedObject.FindAirshipProperty("mouseRaycastTarget");
-        var @static = serializedObject.FindAirshipProperty("static");
-        var activateWhenDown = serializedObject.FindAirshipProperty("activateWhenDown");
-        var hideWhenDead = serializedObject.FindAirshipProperty("hideWhenDead");
-        
-        AirshipEditorGUI.BeginGroup();
-        {
-            AirshipEditorGUI.Heading(new GUIContent("Display"));
-            PropertyField(objectText);
-            PropertyField(actionText);
-        }
-        AirshipEditorGUI.EndGroup();
-       
-        AirshipEditorGUI.BeginGroup();
-        {
-            AirshipEditorGUI.Heading(new GUIContent("Input"));
-            PropertyField(actionName);
-            PropertyField(mouseRaycastTarget);
-            PropertyField(activateWhenDown);
-        }
-        AirshipEditorGUI.EndGroup();
-        
-        AirshipEditorGUI.BeginGroup();
-        {
-            AirshipEditorGUI.Heading(new GUIContent("Visibility"));
-            PropertyField(maxRange);
-            PropertyField(@static);
-            PropertyField(hideWhenDead);
-        }
-        AirshipEditorGUI.EndGroup();
-    }
-
-    public void DrawReferences() {
-        PropertyField("objectTextWrapper");
-        PropertyField("canvas");
-        PropertyField("objectTextLabel");
-        PropertyField("actionTextLabel");
-        PropertyField("keybindTextLabel");
-        PropertyField("backgroundImg");
-        PropertyField("button");
-        PropertyField("touchIcon");
-    }
-
-    public bool showRefs = false;
-    
+[CustomAirshipCoreEditor("Inventory")]
+public class InventoryEditor : AirshipEditor {
     public override void OnInspectorGUI() {
-        DrawPreview();
-        
-        DrawUserProperties();
-        
-        AirshipEditorGUI.HorizontalLine();
-        showRefs = EditorGUILayout.BeginFoldoutHeaderGroup(showRefs, new GUIContent("References", "The references to GameObjects for the Proximity Prompt"));
-        if (showRefs) {
-            DrawReferences();
+        var networkIdentity = serializedObject.FindAirshipProperty("networkIdentity");
+        if (networkIdentity.objectReferenceValue == null) {
+            var component = (AirshipComponent)target;
+            var networkIdentityComponent = component.GetComponentInParent<NetworkIdentity>();
+            
+            if (networkIdentityComponent != null) {
+                networkIdentity.objectReferenceValue = networkIdentityComponent;
+            }
         }
-        EditorGUILayout.EndFoldoutHeaderGroup();
-    }
-
-    public override void OnSceneGUI() {
-        var component = (AirshipComponent)target;
-        var maxRange = serializedObject.FindAirshipProperty("maxRange");
-        Handles.DrawWireDisc(component.transform.position, Vector3.up, maxRange.numberValue);
-    }
-
-    public override bool HasPreviewGUI() {
-        return true;
-    }
-
-    public override void OnPreviewGUI(Rect r, GUIStyle background) {
-        var objectText = serializedObject.FindAirshipProperty("objectText");
-        var actionText = serializedObject.FindAirshipProperty("actionText");
         
-        var originalRect = new Rect(r);
-        r.xMin = r.xMax / 2;
-        r.x = r.x / 2;
+        if (networkIdentity.objectReferenceValue == null) {
+            PropertyField(networkIdentity);
+            if (networkIdentity.objectReferenceValue == null) {
+                EditorGUILayout.HelpBox("This Inventory is missing a NetworkIdentity", MessageType.Error);
+            }
+        }
         
-        EditorGUI.DrawRect(r, new Color(0, 0, 0, 0.5f));
+        AirshipEditorGUI.BeginGroup();
+        {
+            AirshipEditorGUI.Heading(new GUIContent("Slots"));
+            var maxSlots = serializedObject.FindAirshipProperty("maxSlots");
+            PropertyField(maxSlots);
+        }
+        AirshipEditorGUI.EndGroup();
         
-        var backRect = new Rect(r) { height = 30};
-        EditorGUI.DrawRect(backRect, Color.black);
-        
-        EditorGUI.LabelField(backRect, objectText.stringValue, new GUIStyle(EditorStyles.whiteBoldLabel) { fontSize = 18, alignment = TextAnchor.MiddleCenter});
-
-        var midRect = new Rect(r) { y = r.yMax / 2 - 25 , width = 50, height = 50, x = originalRect.xMax / 2 - 25 };
-        EditorGUI.DrawRect(midRect, Color.white);
-
-        var bottomRect = new Rect(r) { y = r.yMax - 50, height =  50 };
-        EditorGUI.LabelField(bottomRect, actionText.stringValue, new GUIStyle(EditorStyles.whiteBoldLabel) { fontSize = 18, alignment = TextAnchor.MiddleCenter, wordWrap = true });
+        AirshipEditorGUI.BeginGroup();
+        {
+            AirshipEditorGUI.Heading(new GUIContent("Permissions"));
+            var modifyPermission = serializedObject.FindAirshipProperty("modifyPermission");
+            PropertyField(modifyPermission);
+            if (modifyPermission.enumValue.Name == "NetworkOwner") {
+                GUI.enabled = false;
+                PropertyField(new GUIContent("Network Identity"), "networkIdentity");
+                GUI.enabled = true;
+            } else if (modifyPermission.enumValue.Name == "Everyone") {
+                EditorGUILayout.HelpBox("This setting will allow anyone in the server to modify this inventory", MessageType.Warning);
+            }
+        }
+        AirshipEditorGUI.EndGroup();
     }
 }
 
-
-[AirshipEditor("CharacterConfigSetup")]
+[CustomAirshipCoreEditor("CharacterConfigSetup")]
 public class CharacterConfigEditor : AirshipEditor {
     private int selectedTabIndex = 0;
     public override void OnInspectorGUI() {
@@ -161,21 +93,25 @@ public class CharacterConfigEditor : AirshipEditor {
                     AirshipEditorGUI.HorizontalLine();
                     
                     var cameraMode = serializedObject.FindAirshipProperty("characterCameraMode");
-
-                    AirshipEditorGUI.PropertyField(cameraMode);
+                    
+                    PropertyField(cameraMode);
                     EditorGUI.indentLevel += 1;
                     if (cameraMode.enumValue.Name == "Fixed") {
-                        PropertyField("fixedXOffset");
-                        PropertyField("fixedYOffset");
-                        PropertyField("fixedZOffset");
-                        PropertyField("fixedMinRotX");
-                        PropertyField("fixedMaxRotX");
+                        // PropertyField("fixedXOffset");
+                        // PropertyField("fixedYOffset");
+                        // PropertyField("fixedZOffset");
+                        // PropertyField("fixedMinRotX");
+                        // PropertyField("fixedMaxRotX");
+                        
+                        PropertyFields("fixedXOffset", "fixedYOffset", "fixedZOffset", "fixedMinRotX", "fixedMaxRotX");
                     }
                     if (cameraMode.enumValue.Name is "Orbit" or "OrbitFixed") {
-                        PropertyField("orbitRadius");
-                        PropertyField("orbitYOffset");
-                        PropertyField("orbitMinRotX");
-                        PropertyField("orbitMaxRotX");
+                        // PropertyField("orbitRadius");
+                        // PropertyField("orbitYOffset");
+                        // PropertyField("orbitMinRotX");
+                        // PropertyField("orbitMaxRotX");
+                        
+                        PropertyFields("orbitRadius", "orbitYOffset", "orbitMinRotX", "orbitMaxRotX");
                     }
                 
                     EditorGUI.indentLevel -= 1;
@@ -184,7 +120,7 @@ public class CharacterConfigEditor : AirshipEditor {
                 // UI
                 PropertyField("showChat");
                 var visibility = serializedObject.FindAirshipProperty("inventoryVisibility");
-                AirshipEditorGUI.PropertyField(visibility);
+                PropertyField(visibility);
                 if (visibility.enumValue.Name != "Never") {
                     PropertyField("inventoryUIPrefab");
                 }
