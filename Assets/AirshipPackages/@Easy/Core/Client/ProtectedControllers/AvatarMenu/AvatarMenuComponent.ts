@@ -26,6 +26,7 @@ import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import OutfitButton from "./Outfit/OutfitButtonComponent";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
 import AvatarCustomizationPanel from "./AvatarCustomizationMenu/AvatarCustomizationPanel";
+import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -561,6 +562,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		return accessoryBtn;
 	}
 
+	public Dirty() {
+		this.SetDirty(true);
+	}
+
 	private SetDirty(val: boolean): void {
 		if (this.IsPhoneMode()) {
 			if (val && this.finishedFirstOutfitLoad) {
@@ -713,6 +718,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			error(`Index ${index} out of range of outfits`);
 		}
 		this.currentUserOutfitIndex = index;
+		this.avatarCustomizationPanel.Clear();
 		for (let i = 0; i < this.outfitBtns.size(); i++) {
 			this.outfitBtns[i].SetSelected(i === index);
 		}
@@ -834,17 +840,26 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			}
 		}
 
-		Protected.Avatar.SaveOutfitAccessories(this.viewedOutfit.outfitId, this.selectedColor, accessoryIds).then(
-			(value) => {
-				this.viewedOutfit = value;
-				if (Protected.Avatar.outfits && this.viewedOutfit) {
-					Protected.Avatar.outfits[this.currentUserOutfitIndex] = this.viewedOutfit;
-				}
-				if (Game.coreContext === CoreContext.GAME) {
-					CoreNetwork.ClientToServer.ChangedOutfit.client.FireServer();
-				}
-			},
-		);
+		let customMeta = "";
+		const currentMetaData = this.accessoryBuilder.GetCustomization();
+		if (currentMetaData) {
+			customMeta = EncodeJSON(currentMetaData);
+		}
+
+		Protected.Avatar.SaveOutfitAccessories(
+			this.viewedOutfit.outfitId,
+			this.selectedColor,
+			accessoryIds,
+			customMeta,
+		).then((value) => {
+			this.viewedOutfit = value;
+			if (Protected.Avatar.outfits && this.viewedOutfit) {
+				Protected.Avatar.outfits[this.currentUserOutfitIndex] = this.viewedOutfit;
+			}
+			if (Game.coreContext === CoreContext.GAME) {
+				CoreNetwork.ClientToServer.ChangedOutfit.client.FireServer();
+			}
+		});
 
 		this.SetDirty(false);
 	}

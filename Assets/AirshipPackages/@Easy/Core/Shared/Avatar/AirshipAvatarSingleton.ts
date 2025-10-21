@@ -1,6 +1,8 @@
 import { Airship } from "../Airship";
 import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
 import { Singleton } from "../Flamework";
+import { Game } from "../Game";
+import { DecodeJSON, EncodeJSON } from "../json";
 import { ColorUtil } from "../Util/ColorUtil";
 /**
  * Access using {@link Airship.Avatar}. Avatar singleton provides utilities for working with visual elements of a character
@@ -135,29 +137,57 @@ export class AirshipAvatarSingleton {
 		// Download clothing in parallel with Promise.all
 		const start = Time.time;
 		let promises: Promise<void>[] = [];
+
+		// TODO: Remove this test
+		if (Game.IsEditor()) {
+			if (outfit.metadata === undefined || outfit.metadata === "") {
+				let classData: AccessoryCustomizationGear[] = [];
+				for (let gear of outfit.gear) {
+					classData.push({
+						slots: [AccessorySlot.Hair],
+						variant: 0,
+						colors: ["#ffffff", "#000000"],
+					});
+				}
+				const customData: AccessoryCustomization = {
+					platformCustomGear: classData,
+				};
+				outfit.metadata = EncodeJSON(customData);
+			}
+		}
+
+		if (builder.SetCustomization(outfit.metadata as string) !== undefined) {
+			print("Parsed outfits customization data");
+		} else {
+			print("No customization found on outfit");
+		}
+
 		for (let clothingDto of outfit.gear) {
 			promises.push(
 				new Promise((resolve) => {
 					if (clothingDto.class.gear.airAssets.size() === 0) return resolve();
 
 					// todo: why are we returning if first person?
+					// I am guessing clothing like hair was blocking the first person camera
+					// But now we should have a toggle the decides which items actually render in first perosn
 					if (builder.firstPerson) {
 						return resolve();
 					}
 
-					const clothing = PlatformGear.DownloadYielding(
+					const clothingGear = PlatformGear.DownloadYielding(
 						clothingDto.class.classId,
 						clothingDto.class.gear.airAssets[0],
 					);
-					if (clothing) {
+
+					if (clothingGear) {
 						// print("Downloaded " + clothingDto.class.name + " " + (Time.time - start));
-						if (clothing.accessoryPrefabs && clothing.accessoryPrefabs.size() > 0) {
-							for (let accessoryPrefab of clothing.accessoryPrefabs) {
+						if (clothingGear.accessoryPrefabs && clothingGear.accessoryPrefabs.size() > 0) {
+							for (let accessoryPrefab of clothingGear.accessoryPrefabs) {
 								builder.Add(accessoryPrefab);
 							}
 						}
-						if (clothing.face) {
-							builder.SetFaceTexture(clothing.face.decalTexture);
+						if (clothingGear.face) {
+							builder.SetFaceTexture(clothingGear.face.decalTexture);
 						}
 					}
 					resolve();

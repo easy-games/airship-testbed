@@ -1,15 +1,14 @@
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import AvatarCustomizationOption_Color from "./AvatarCustomizationOption_Color";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
-import { Game } from "@Easy/Core/Shared/Game";
-import { Airship } from "@Easy/Core/Shared/Airship";
-import { CoreAction } from "@Easy/Core/Shared/Input/AirshipCoreAction";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import AvatarMenuComponent from "../AvatarMenuComponent";
 
 export default class AvatarCustomizationPanel extends AirshipBehaviour {
 	@Header("Templates")
 	public colorOptionTemplate: GameObject;
 	@Header("References")
+	public menu: AvatarMenuComponent;
 	public optionsHolder: Transform;
 
 	@HideInInspector()
@@ -18,12 +17,17 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 
 	private openBin = new Bin();
 	private gear: PlatformGear;
+	private modifiedGear = new Map<string, PlatformGear>();
+
+	public Clear() {
+		this.modifiedGear.clear();
+	}
 
 	public Open(gear: PlatformGear) {
 		this.gear = gear;
 		if (
 			(!this.gear || this.gear.customizationVariantNames.size() < 2) &&
-			(!gear.customizationColors || gear.customizationColors.size() <= 0)
+			(!gear?.customizationColors || gear.customizationColors.size() <= 0)
 		) {
 			//No customization options
 			this.Close();
@@ -31,6 +35,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 		}
 
 		this.openBin.Clean();
+		this.modifiedGear.set(gear.classId, gear);
 		NativeTween.AnchoredPositionY(this.transform, 0, 0.5).SetEaseExpoOut();
 
 		//Clean previous options
@@ -44,6 +49,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 			this.SpawnColorOptions(i, color);
 			i++;
 		}
+
 		this.OnToggle.Fire(true);
 	}
 
@@ -57,6 +63,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 			this.colorOptionTemplate,
 			this.optionsHolder,
 		).GetAirshipComponent<AvatarCustomizationOption_Color>()!;
+
 		options.Init(color.key, ColorUtil.ColorToHex(color.value), color.scheme);
 		const colorIndex = index;
 
@@ -68,12 +75,11 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 				const newColor = ColorUtil.HexToColor(colorStr);
 				for (const template of this.gear.accessoryPrefabs) {
 					if (template) {
-						const acc = this.accessoryBuilder.GetActiveAccessoryBySlot(template.accessorySlot);
-						if (acc && acc.AccessoryComponent.colorSetter) {
-							acc.AccessoryComponent.colorSetter.SetColor(colorIndex, newColor);
-						}
+						this.accessoryBuilder.SetCustomColor(template.accessorySlot, colorIndex, colorStr);
 					}
 				}
+				this.gear.customizationColors[colorIndex].value = newColor;
+				this.menu.Dirty();
 			}),
 		);
 	}

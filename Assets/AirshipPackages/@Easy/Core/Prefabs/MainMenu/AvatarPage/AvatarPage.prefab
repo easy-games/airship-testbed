@@ -1026,16 +1026,14 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 2574045012429438694}
       modified: 1
-    - name: testAssets
-      type: Array
-      objectType: 
+    - name: testAsset
+      type: object
+      objectType: AccessoryComponent
       items:
-        type: object
-        objectType: AccessoryComponent
-        serializedItems:
-        - 
-        objectRefs:
-        - {fileID: 3073049856543275330, guid: 0fce7b1883299cd43bf79e1ce267d955, type: 3}
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
       refPath: 
       fileRef: 
       jsDocs:
@@ -1048,7 +1046,7 @@ MonoBehaviour:
           serializedValue: '"Debugging"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
+      serializedObject: {fileID: 3073049856543275330, guid: 0fce7b1883299cd43bf79e1ce267d955, type: 3}
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 

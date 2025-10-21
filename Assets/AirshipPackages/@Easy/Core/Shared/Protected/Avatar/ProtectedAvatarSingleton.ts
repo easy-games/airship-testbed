@@ -17,6 +17,7 @@ import { AirshipUrl } from "../../Util/AirshipUrl";
 import { ColorUtil } from "../../Util/ColorUtil";
 import { RandomUtil } from "../../Util/RandomUtil";
 import { Signal } from "../../Util/Signal";
+import { DecodeJSON, EncodeJSON } from "../../json";
 
 const contentServiceClient = new ContentServiceClient(UnityMakeRequest(AirshipUrl.ContentService));
 
@@ -335,11 +336,12 @@ export class ProtectedAvatarSingleton {
 		});
 	}
 
-	public async SaveOutfitAccessories(outfitId: string, skinColor: string, instanceIds: string[]) {
+	public async SaveOutfitAccessories(outfitId: string, skinColor: string, instanceIds: string[], metaData: string) {
 		this.Log("SaveOutfitAccessories");
 		return this.UpdateOutfit(outfitId, {
 			gear: instanceIds,
 			skinColor: skinColor,
+			metadata: metaData || metaData === "" ? (metaData as Object) : undefined,
 		});
 	}
 

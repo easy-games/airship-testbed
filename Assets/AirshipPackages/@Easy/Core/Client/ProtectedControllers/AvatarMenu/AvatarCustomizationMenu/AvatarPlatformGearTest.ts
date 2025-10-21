@@ -8,13 +8,14 @@ export default class AvatarPlatformGearTest extends AirshipBehaviour {
 	public customization: AvatarCustomizationPanel;
 
 	@Header("Debugging")
-	public testAssets: AccessoryComponent[] = [];
+	public testAsset: AccessoryComponent;
 
-	private testAsset: PlatformGear;
+	private testGear: PlatformGear;
+	private testing = false;
 
 	protected Start(): void {
-		this.testAsset = {
-			accessoryPrefabs: this.testAssets,
+		this.testGear = {
+			accessoryPrefabs: [this.testAsset],
 			classId: "aabbcc",
 			face: undefined,
 			customizationColors: [
@@ -32,10 +33,14 @@ export default class AvatarPlatformGearTest extends AirshipBehaviour {
 		}
 
 		Airship.Input.OnDown(CoreAction.Interact).Connect((e) => {
-			for (const prefab of this.testAsset.accessoryPrefabs) {
-				this.customization.accessoryBuilder.Add(prefab);
+			if (this.testing) {
+				this.customization.accessoryBuilder.RemoveBySlot(this.testAsset.accessorySlot);
+				this.customization.Close();
+			} else {
+				this.customization.accessoryBuilder.Add(this.testAsset);
+				this.customization.Open(this.testGear);
 			}
-			this.customization.Open(this.testAsset);
+			this.testing = !this.testing;
 		});
 	}
 }

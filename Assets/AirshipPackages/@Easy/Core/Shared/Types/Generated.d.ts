@@ -41177,6 +41177,7 @@ interface AccessoryComponent extends MonoBehaviour {
 
 
     Copy(other: AccessoryComponent): void;
+    Customize(variant: number, colorsHex: Readonly<string[]>): void;
     GetServerClassId(): string;
     GetServerInstanceId(): string;
     GetSlotNumber(): number;
@@ -55159,6 +55160,7 @@ declare const CanvasDistanceManager: CanvasDistanceManagerConstructor;
     
 interface ActiveAccessory {
     AccessoryComponent: AccessoryComponent;
+    gearClassId: string;
     lodLevel: number;
     maxLodLevel: number;
     rootTransform: Transform;
@@ -55505,6 +55507,46 @@ interface WorldSpaceCanvasScalerConstructor {
 
 }
 declare const WorldSpaceCanvasScaler: WorldSpaceCanvasScalerConstructor;
+    
+interface AccessoryCustomization {
+    platformCustomGear: Readonly<AccessoryCustomizationGear[]>;
+
+
+
+
+
+}
+    
+interface AccessoryCustomizationGear {
+    slots: Readonly<number[]>;
+    variant: number;
+    colors: Readonly<string[]>;
+
+
+
+
+
+}
+    
+interface AccessoryCustomizationGearConstructor {
+
+
+    new(): AccessoryCustomizationGear;
+
+
+
+}
+declare const AccessoryCustomizationGear: AccessoryCustomizationGearConstructor;
+    
+interface AccessoryCustomizationConstructor {
+
+
+    new(): AccessoryCustomization;
+
+
+
+}
+declare const AccessoryCustomization: AccessoryCustomizationConstructor;
     
 interface VibrationManager {
 
