@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
+  m_Name: PastelDreams Skirt Gear
+  m_EditorClassIdentifier: 
+  classId: 9af9d710-4226-448f-94da-e1691f8f3cdf
+  accessoryPrefabs:
+  - {fileID: -1779826929604506354, guid: 0605e8fde77686f4d95899af9b91ee25, type: 3}
+  face: {fileID: 0}
