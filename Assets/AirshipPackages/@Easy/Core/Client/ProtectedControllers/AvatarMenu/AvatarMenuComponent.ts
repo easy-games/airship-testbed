@@ -27,6 +27,7 @@ import OutfitButton from "./Outfit/OutfitButtonComponent";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
 import AvatarCustomizationPanel from "./AvatarCustomizationMenu/AvatarCustomizationPanel";
 import { DecodeJSON, EncodeJSON } from "@Easy/Core/Shared/json";
+import { Airship } from "@Easy/Core/Shared/Airship";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -759,27 +760,27 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			return;
 		}
 
-		this.RemoveAllAccessories();
+		// this.RemoveAllAccessories();
 
-		// Download all accessories in parallel with Promise.all
-		// We won't mesh combine until after all this is done.
-		let promises: Promise<void>[] = [];
-		for (let gearDto of this.viewedOutfit.gear) {
-			promises.push(
-				new Promise(async (resolve) => {
-					if (gearDto.class.gear.airAssets.size() === 0) return resolve();
+		// // Download all accessories in parallel with Promise.all
+		// // We won't mesh combine until after all this is done.
+		// let promises: Promise<void>[] = [];
+		// for (let gearDto of this.viewedOutfit.gear) {
+		// 	promises.push(
+		// 		new Promise(async (resolve) => {
+		// 			if (gearDto.class.gear.airAssets.size() === 0) return resolve();
 
-					if (gearDto.class.gear.category === AirshipGearCategory.FaceDecal) {
-						await this.SelectFaceItem(gearDto);
-						return resolve();
-					}
+		// 			if (gearDto.class.gear.category === AirshipGearCategory.FaceDecal) {
+		// 				await this.SelectFaceItem(gearDto);
+		// 				return resolve();
+		// 			}
 
-					await this.SelectItem(gearDto);
-					resolve();
-				}),
-			);
-		}
-		await Promise.all(promises);
+		// 			await this.SelectItem(gearDto);
+		// 			resolve();
+		// 		}),
+		// 	);
+		// }
+		// await Promise.all(promises);
 
 		const charTransform = this.mainMenu.avatarView?.humanEntityGo?.transform!;
 		if (!this.hasMeshCombinedOnce) {
@@ -789,6 +790,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				this.hasMeshCombinedOnce = true;
 			});
 		}
+
+		await Airship.Avatar.LoadOutfit(this.accessoryBuilder, this.viewedOutfit, {
+			removeOldClothingAccessories: true,
+		});
 
 		this.SelectSkinColor(ColorUtil.HexToColor(this.viewedOutfit.skinColor));
 
