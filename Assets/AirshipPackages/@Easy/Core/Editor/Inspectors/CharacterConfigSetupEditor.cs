@@ -1,52 +1,7 @@
-using Mirror;
 using System;
 using UnityEditor;
 using UnityEngine;
 #if AIRSHIP_EDITOR_API
-[CustomAirshipCoreEditor("Inventory")]
-public class InventoryEditor : AirshipEditor {
-    public override void OnInspectorGUI() {
-        var networkIdentity = serializedObject.FindAirshipProperty("networkIdentity");
-        if (networkIdentity.objectReferenceValue == null) {
-            var component = (AirshipComponent)target;
-            var networkIdentityComponent = component.GetComponentInParent<NetworkIdentity>();
-            
-            if (networkIdentityComponent != null) {
-                networkIdentity.objectReferenceValue = networkIdentityComponent;
-            }
-        }
-        
-        if (networkIdentity.objectReferenceValue == null) {
-            PropertyField(networkIdentity);
-            if (networkIdentity.objectReferenceValue == null) {
-                EditorGUILayout.HelpBox("This Inventory is missing a NetworkIdentity", MessageType.Error);
-            }
-        }
-        
-        AirshipEditorGUI.BeginGroup();
-        {
-            AirshipEditorGUI.Heading(new GUIContent("Slots"));
-            var maxSlots = serializedObject.FindAirshipProperty("maxSlots");
-            PropertyField(maxSlots);
-        }
-        AirshipEditorGUI.EndGroup();
-        
-        AirshipEditorGUI.BeginGroup();
-        {
-            AirshipEditorGUI.Heading(new GUIContent("Permissions"));
-            var modifyPermission = serializedObject.FindAirshipProperty("modifyPermission");
-            PropertyField(modifyPermission);
-            if (modifyPermission.enumValue.Name == "NetworkOwner") {
-                GUI.enabled = false;
-                PropertyField(new GUIContent("Network Identity"), "networkIdentity");
-                GUI.enabled = true;
-            } else if (modifyPermission.enumValue.Name == "Everyone") {
-                EditorGUILayout.HelpBox("This setting will allow anyone in the server to modify this inventory", MessageType.Warning);
-            }
-        }
-        AirshipEditorGUI.EndGroup();
-    }
-}
 
 [CustomAirshipCoreEditor("CharacterConfigSetup")]
 public class CharacterConfigEditor : AirshipEditor {
@@ -96,21 +51,10 @@ public class CharacterConfigEditor : AirshipEditor {
                     
                     PropertyField(cameraMode);
                     EditorGUI.indentLevel += 1;
-                    if (cameraMode.enumValue.Name == "Fixed") {
-                        // PropertyField("fixedXOffset");
-                        // PropertyField("fixedYOffset");
-                        // PropertyField("fixedZOffset");
-                        // PropertyField("fixedMinRotX");
-                        // PropertyField("fixedMaxRotX");
-                        
+                    if (cameraMode.enumValue.name == "Fixed") {
                         PropertyFields("fixedXOffset", "fixedYOffset", "fixedZOffset", "fixedMinRotX", "fixedMaxRotX");
                     }
-                    if (cameraMode.enumValue.Name is "Orbit" or "OrbitFixed") {
-                        // PropertyField("orbitRadius");
-                        // PropertyField("orbitYOffset");
-                        // PropertyField("orbitMinRotX");
-                        // PropertyField("orbitMaxRotX");
-                        
+                    if (cameraMode.enumValue.name is "Orbit" or "OrbitFixed") {
                         PropertyFields("orbitRadius", "orbitYOffset", "orbitMinRotX", "orbitMaxRotX");
                     }
                 
@@ -121,7 +65,7 @@ public class CharacterConfigEditor : AirshipEditor {
                 PropertyField("showChat");
                 var visibility = serializedObject.FindAirshipProperty("inventoryVisibility");
                 PropertyField(visibility);
-                if (visibility.enumValue.Name != "Never") {
+                if (visibility.enumValue.name != "Never") {
                     PropertyField("inventoryUIPrefab");
                 }
             }

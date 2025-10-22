@@ -1,5 +1,5 @@
 ﻿#if AIRSHIP_EDITOR_API
-using Editor.Typescript;
+using TypescriptAst;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,42 +15,63 @@ public class ProximityPromptEditor : AirshipEditor {
         var activateWhenDown = serializedObject.FindAirshipProperty("activateWhenDown");
         var hideWhenDead = serializedObject.FindAirshipProperty("hideWhenDead");
         
-        AirshipEditorGUI.BeginGroup();
+        AirshipEditorGUI.BeginGroup(new GUIContent("Display"));
         {
-            AirshipEditorGUI.Heading(new GUIContent("Display"));
             PropertyField(objectText);
             PropertyField(actionText);
+            PropertyField(@static);
         }
         AirshipEditorGUI.EndGroup();
        
-        AirshipEditorGUI.BeginGroup();
+        AirshipEditorGUI.BeginGroup(new GUIContent("Input"));
         {
-            AirshipEditorGUI.Heading(new GUIContent("Input"));
             PropertyField(actionName);
             PropertyField(mouseRaycastTarget);
             PropertyField(activateWhenDown);
         }
         AirshipEditorGUI.EndGroup();
         
-        AirshipEditorGUI.BeginGroup();
+        AirshipEditorGUI.BeginGroup(new GUIContent("Visibility"));
         {
-            AirshipEditorGUI.Heading(new GUIContent("Visibility"));
             PropertyField(maxRange);
-            PropertyField(@static);
             PropertyField(hideWhenDead);
         }
         AirshipEditorGUI.EndGroup();
     }
 
     public void DrawReferences() {
-        PropertyField("objectTextWrapper");
-        PropertyField("canvas");
-        PropertyField("objectTextLabel");
-        PropertyField("actionTextLabel");
-        PropertyField("keybindTextLabel");
-        PropertyField("backgroundImg");
-        PropertyField("button");
-        PropertyField("touchIcon");
+        string[] referenceProperties = new[] {
+            "objectTextWrapper",
+            "canvas",
+            "objectTextLabel",
+            "actionTextLabel",
+            "keybindTextLabel",
+            "backgroundImg",
+            "button",
+            "touchIcon",
+        };
+
+        var hasIssues = false;
+        
+        foreach (var propertyName in referenceProperties) {
+            var property = serializedObject.FindAirshipProperty(propertyName);
+            AirshipEditorGUI.ValidateProperty(property, prop => prop.objectReferenceValue != null);
+            hasIssues = hasIssues || !property.valid;
+        }
+
+        if (hasIssues) {
+            EditorGUILayout.HelpBox("Missing properties, Proximity Prompt may not work as expected", MessageType.Warning);
+        }
+        
+        AirshipEditorGUI.HorizontalLine(new Color(70 / 255f, 70 / 255f, 70 / 255f));
+        showRefs = EditorGUILayout.BeginFoldoutHeaderGroup(showRefs, new GUIContent("References", "The references to GameObjects for the Proximity Prompt"));
+        if (showRefs || hasIssues) {
+            foreach (var propertyName in referenceProperties) {
+                var property = serializedObject.FindAirshipProperty(propertyName);
+                PropertyField(property);
+            }
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
     }
 
     public bool showRefs = false;
@@ -58,18 +79,30 @@ public class ProximityPromptEditor : AirshipEditor {
     public override void OnInspectorGUI() {
         DrawUserProperties();
         
-        AirshipEditorGUI.HorizontalLine();
-        showRefs = EditorGUILayout.BeginFoldoutHeaderGroup(showRefs, new GUIContent("References", "The references to GameObjects for the Proximity Prompt"));
-        if (showRefs) {
+
             DrawReferences();
-        }
-        EditorGUILayout.EndFoldoutHeaderGroup();
+       
+        
     }
 
     public override void OnSceneGUI() {
         var component = (AirshipComponent)target;
         var maxRange = serializedObject.FindAirshipProperty("maxRange");
-        Handles.DrawWireDisc(component.transform.position, Vector3.up, maxRange.numberValue);
+        
+        var transform = component.transform;
+        var position = transform.position;
+
+        var prevColor = Handles.color;
+        Handles.color = new Color(0, 0.5f, 1);
+        maxRange.numberValue = Handles.RadiusHandle(transform.rotation, position, maxRange.numberValue);
+        
+        Handles.Label(
+            position + new Vector3(0, maxRange.numberValue, 0), 
+            $"{string.Format("{0:0.##}", maxRange.numberValue)}m", 
+            new GUIStyle(EditorStyles.whiteLargeLabel) {normal = {textColor = Handles.color }});
+        
+        maxRange.serializedProperty.serializedObject.ApplyModifiedProperties();
+        Handles.color = prevColor;
     }
 
     public override bool HasPreviewGUI() {
