@@ -195,11 +195,15 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 						this.latestTouchId = newestTouchId;
 
 						const segmentIndex = this.GetSegmentUnderPointer();
-						this.SetSelectedIndex(segmentIndex);
+						if (segmentIndex === -1) {
+							this.Hide();
+						} else {
+							this.SetSelectedIndex(segmentIndex);
+						}
 					} else if (dir === PointerDirection.UP) {
 						const segmentIndex = this.GetSegmentUnderPointer();
 						// Only submit if releasing over the currently selected segment
-						if (segmentIndex === this.selectedIndex) {
+						if (segmentIndex === this.selectedIndex && segmentIndex !== -1) {
 							const segment = this.radialSegments[this.selectedIndex];
 							const squishDuration = 0.1;
 
@@ -223,7 +227,7 @@ export abstract class InternalRadialUI<T extends InternalRadialUIData = Internal
 			this.bin.AddEngineEventConnection(
 				CanvasAPI.OnDragEvent(this.bg.gameObject, (data) => {
 					const segmentIndex = this.GetNearestSegmentByAngle(data.position);
-					if (this.selectedIndex !== segmentIndex) {
+					if (this.selectedIndex !== segmentIndex && segmentIndex !== -1) {
 						this.SetSelectedIndex(segmentIndex);
 					}
 				}),

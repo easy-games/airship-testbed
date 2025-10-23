@@ -97,7 +97,7 @@ export class Player {
 	 */
 	public readonly voiceChatAudioSource!: AudioSource;
 
-	private lagCompRequests = new Map<string, { check: () => any; complete: (param: any) => void; result?: any }>();
+	private lagCompRequests = new Map<number, { check: () => any; complete: (param: any) => void; result?: any }>();
 
 	/** @internal */
 	constructor(
@@ -461,7 +461,7 @@ export class Player {
 		const simulationManager = AirshipSimulationManager.Instance as AirshipSimulationManager &
 			AirshipSimulationManagerWithLagCompensation;
 		const checkId = simulationManager.RequestLagCompensationCheck(this.connectionId);
-		if (!checkId) {
+		if (Game.playerFlags.has("LagCompCheckIdIsInt") && checkId < 0) {
 			warn(
 				"Unable to schedule lag compensation for " +
 					this.username +

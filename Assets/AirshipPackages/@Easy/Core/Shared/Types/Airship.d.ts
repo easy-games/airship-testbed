@@ -290,9 +290,9 @@ interface AirshipSimulationManager extends MonoBehaviour {
 }
 
 interface AirshipSimulationManagerWithLagCompensation {
-	OnLagCompensationRequestCheck(callback: (id: string) => void): EngineEventConnection;
-	OnLagCompensationRequestComplete(callback: (id: string) => void): EngineEventConnection;
-	RequestLagCompensationCheck(clientId: number): string;
+	OnLagCompensationRequestCheck(callback: (id: number) => void): EngineEventConnection;
+	OnLagCompensationRequestComplete(callback: (id: number) => void): EngineEventConnection;
+	RequestLagCompensationCheck(clientId: number): number;
 }
 
 interface AirshipSimulationManagerConstructor {

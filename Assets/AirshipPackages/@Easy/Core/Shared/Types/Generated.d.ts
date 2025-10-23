@@ -54806,7 +54806,6 @@ declare const AnimationEventData: AnimationEventDataConstructor;
 interface VoxelWorld extends MonoBehaviour {
     useSimplifiedVoxels: boolean;
     doVisuals: boolean;
-    debugReloadOnScriptReloadMode: boolean;
     useCameraAsFocusPosition: boolean;
     autoLoad: boolean;
     voxelWorldFile: WorldSaveFile;
@@ -54966,10 +54965,10 @@ interface VoxelWorldNetworker extends NetworkBehaviour {
     OnReadyCommand(connection: NetworkConnectionToClient): void;
     OnReadyCommand(): void;
     OnStartClient(): void;
-    TargetFinishedSendingWorldRpc(conn: NetworkConnection): void;
-    TargetWriteChunksRpc(conn: NetworkConnection, positions: Readonly<Vector3[]>, chunks: Readonly<Chunk[]>): void;
-    TargetWriteVoxelGroupRpc(conn: NetworkConnection, positions: Readonly<Vector3[]>, nums: Readonly<number[]>, priority: boolean): void;
-    TargetWriteVoxelRpc(conn: NetworkConnection, pos: Vector3, voxel: number): void;
+    RpcFinishedSendingWorld(conn: NetworkConnection): void;
+    RpcWriteChunks(conn: NetworkConnection, positions: Readonly<Vector3[]>, chunks: Readonly<Chunk[]>): void;
+    RpcWriteVoxel(pos: Vector3, voxel: number): void;
+    RpcWriteVoxelGroup(positions: Readonly<Vector3[]>, nums: Readonly<number[]>, priority: boolean): void;
     Weaved(): boolean;
 
 
@@ -55063,12 +55062,11 @@ interface VoxelRaycastResult {
     
 interface VoxelWorldConstructor {
     runThreaded: boolean;
+    chunkSize: number;
     maxActiveThreads: number;
     maxMainThreadMeshMillisecondsPerFrame: number;
     maxMainThreadThreadKickoffMillisecondsPerFrame: number;
-    showDebugSpheres: boolean;
     showDebugBounds: boolean;
-    chunkSize: number;
     flipNames: Readonly<string[]>;
     allFlips: Readonly<number[]>;
 
