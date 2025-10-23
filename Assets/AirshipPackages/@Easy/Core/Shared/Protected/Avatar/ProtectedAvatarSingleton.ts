@@ -229,7 +229,7 @@ export class ProtectedAvatarSingleton {
 	}
 
 	private Log(message: string) {
-		// print("Protected.Avatar: " + message);
+		print("Protected.Avatar: " + message);
 	}
 
 	public async GetAllOutfits(): Promise<AirshipOutfit[] | undefined> {
@@ -337,11 +337,11 @@ export class ProtectedAvatarSingleton {
 	}
 
 	public async SaveOutfitAccessories(outfitId: string, skinColor: string, instanceIds: string[], metaData: string) {
-		this.Log("SaveOutfitAccessories");
+		this.Log("SaveOutfitAccessories: " + metaData);
 		return this.UpdateOutfit(outfitId, {
 			gear: instanceIds,
 			skinColor: skinColor,
-			metadata: metaData || metaData === "" ? (metaData as Object) : undefined,
+			metadata: metaData && metaData !== "" ? (metaData as Object) : undefined,
 		});
 	}
 

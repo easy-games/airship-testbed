@@ -4,6 +4,7 @@ import { Singleton } from "../Flamework";
 import { Game } from "../Game";
 import { DecodeJSON, EncodeJSON } from "../json";
 import { ColorUtil } from "../Util/ColorUtil";
+import inspect from "../Util/Inspect";
 /**
  * Access using {@link Airship.Avatar}. Avatar singleton provides utilities for working with visual elements of a character
  *
@@ -129,7 +130,7 @@ export class AirshipAvatarSingleton {
 		outfit: AirshipOutfit,
 		options: { removeOldClothingAccessories?: boolean } = {},
 	) {
-		// print("Loading outfit: " + inspect(outfit) + " " + debug.traceback());
+		print("Loading outfit: " + inspect(outfit) + " " + debug.traceback());
 		if (options.removeOldClothingAccessories) {
 			builder.RemoveClothingAccessories();
 		}
@@ -139,27 +140,32 @@ export class AirshipAvatarSingleton {
 		let promises: Promise<void>[] = [];
 
 		// TODO: Remove this test
-		if (Game.IsEditor()) {
-			if (outfit.metadata === undefined || outfit.metadata === "") {
-				let classData: AccessoryCustomizationGear[] = [];
-				for (let gear of outfit.gear) {
-					classData.push({
-						slots: [AccessorySlot.Hair],
-						variant: 0,
-						colors: ["#ffffff", "#000000"],
-					});
-				}
-				const customData: AccessoryCustomization = {
-					platformCustomGear: classData,
-				};
-				outfit.metadata = EncodeJSON(customData);
-			}
-		}
+		// if (Game.IsEditor()) {
+		// 	if (outfit.metadata === undefined || outfit.metadata === "") {
+		// 		let classData: AccessoryCustomizationGear[] = [];
+		// 		for (let i = 0; i < 35; i++) {
+		// 			classData.push({
+		// 				slots: [i],
+		// 				variant: 0,
+		// 				colors: ["#ff0000", "#ff88ba"],
+		// 			});
+		// 		}
+		// 		const customData: AccessoryCustomization = {
+		// 			platformCustomGear: classData,
+		// 		};
+		// 		outfit.metadata = EncodeJSON(customData);
+		// 	} else {
+		// 		print("Outfit already has meta data");
+		// 	}
+		// }
 
-		if (builder.SetCustomization(outfit.metadata as string) !== undefined) {
-			print("Parsed outfits customization data");
-		} else {
-			print("No customization found on outfit");
+		const meta = outfit.metadata as string;
+		if (meta !== undefined && meta !== "") {
+			if (builder.SetCustomization(meta) !== undefined) {
+				print("Parsed outfits customization data: " + outfit.metadata);
+			} else {
+				print("No customization found on outfit");
+			}
 		}
 
 		for (let clothingDto of outfit.gear) {

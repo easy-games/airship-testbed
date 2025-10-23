@@ -3,6 +3,8 @@ import AvatarCustomizationOption_Color from "./AvatarCustomizationOption_Color";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import AvatarMenuComponent from "../AvatarMenuComponent";
+import { Game } from "@Easy/Core/Shared/Game";
+import { Protected } from "@Easy/Core/Shared/Protected";
 
 export default class AvatarCustomizationPanel extends AirshipBehaviour {
 	@Header("Templates")
@@ -25,11 +27,16 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 
 	public Open(gear: PlatformGear) {
 		this.gear = gear;
+		if (!gear) {
+			// No Gear
+			return;
+		}
+
 		if (
-			(!this.gear || this.gear.customizationVariantNames.size() < 2) &&
-			(!gear?.customizationColors || gear.customizationColors.size() <= 0)
+			this.gear.customizationVariantNames.size() < 2 &&
+			(!gear.customizationColors || gear.customizationColors.size() <= 0)
 		) {
-			//No customization options
+			// No customization options
 			this.Close();
 			return;
 		}
