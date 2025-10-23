@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
   m_Name: Hitman Hair 2
   m_EditorClassIdentifier: 
-  classId: 326d4299-7da2-49ea-a795-88ddc4d7f2ad
+  classId: afc33741-9cd0-4f76-a4ca-b6714d125fda
   accessoryPrefabs:
   - {fileID: 870037589829360169, guid: d552adc934f8b364a932139d7bd841e5, type: 3}
   face: {fileID: 0}

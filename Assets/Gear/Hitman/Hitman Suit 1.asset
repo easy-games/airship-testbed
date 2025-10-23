@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
   m_Name: Hitman Suit 1
   m_EditorClassIdentifier: 
-  classId: ccda859b-1b9a-400c-b5e5-b72cfb1d3442
+  classId: 8fe82c0f-32b6-4778-b71b-fe418c9bdaa6
   accessoryPrefabs:
   - {fileID: 1825991683774352564, guid: af3c5899b9b93014b90c1d7b272a1f9f, type: 3}
   face: {fileID: 0}

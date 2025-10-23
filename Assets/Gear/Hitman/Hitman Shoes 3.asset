@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
   m_Name: Hitman Shoes 3
   m_EditorClassIdentifier: 
-  classId: 32fdb850-f0fd-4ee9-81d4-44725d12192d
+  classId: 0376fcf2-16e1-4c95-aac5-b6097f088b64
   accessoryPrefabs:
   - {fileID: 1158754457340063191, guid: f7b8c0ab886661b4bae87148855c0cae, type: 3}
   face: {fileID: 0}
