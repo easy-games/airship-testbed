@@ -897,9 +897,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private SlideSaveButton(up: boolean) {
 		if (up) {
-			NativeTween.AnchoredPositionY(this.avatarToolbar, 185, 0.5).SetEaseExpoOut();
+			NativeTween.AnchoredPositionY(this.avatarToolbar, 190, 0.5).SetEaseExpoOut();
 		} else {
-			NativeTween.AnchoredPositionY(this.avatarToolbar, 27, 0.5).SetEaseExpoIn();
+			NativeTween.AnchoredPositionY(this.avatarToolbar, 35, 0.5).SetEaseExpoIn();
 		}
 	}
 }

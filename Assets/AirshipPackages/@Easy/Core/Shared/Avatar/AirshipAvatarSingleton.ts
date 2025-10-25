@@ -160,12 +160,10 @@ export class AirshipAvatarSingleton {
 		// }
 
 		const meta = outfit.metadata as string;
-		if (meta !== undefined && meta !== "") {
-			if (builder.SetCustomization(meta) !== undefined) {
-				print("Parsed outfits customization data: " + outfit.metadata);
-			} else {
-				print("No customization found on outfit");
-			}
+		if (builder.SetCustomization(meta) !== undefined) {
+			print("Parsed outfits customization data: " + outfit.metadata);
+		} else {
+			print("No customization found on outfit");
 		}
 
 		for (let clothingDto of outfit.gear) {

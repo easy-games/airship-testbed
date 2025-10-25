@@ -596,7 +596,7 @@ interface AccessoryBuilder extends MonoBehaviour {
 
 	SetCustomization(json: string): AccessoryCustomization | undefined;
 	GetCustomization(): AccessoryCustomization | undefined;
-	SetCustomColor(slot: AccessorySlot, colorIndex: number, colorHex: string): void;
+	SetCustomColor(slot: AccessorySlot, colorKey: string, colorHex: string): void;
 
 	/**
 	 * Regenerates the combined skinned mesh. Skinned mesh accessories will not be visible until this method is called.

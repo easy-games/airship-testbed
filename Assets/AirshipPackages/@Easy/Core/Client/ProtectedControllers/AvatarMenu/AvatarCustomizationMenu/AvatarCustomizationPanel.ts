@@ -73,6 +73,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 
 		options.Init(color.key, ColorUtil.ColorToHex(color.value), color.scheme);
 		const colorIndex = index;
+		const colorKey = color.key;
 
 		// Process Color Swapping
 		this.openBin.Add(
@@ -82,7 +83,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 				const newColor = ColorUtil.HexToColor(colorStr);
 				for (const template of this.gear.accessoryPrefabs) {
 					if (template) {
-						this.accessoryBuilder.SetCustomColor(template.accessorySlot, colorIndex, colorStr);
+						this.accessoryBuilder.SetCustomColor(template.accessorySlot, colorKey, colorStr);
 					}
 				}
 				this.gear.customizationColors[colorIndex].value = newColor;
