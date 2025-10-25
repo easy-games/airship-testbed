@@ -15,19 +15,16 @@ MonoBehaviour:
   classId: de35194b-4222-4836-bae8-d26fdb0834e3
   accessoryPrefabs:
   - {fileID: 3073049856543275330, guid: 0fce7b1883299cd43bf79e1ce267d955, type: 3}
-  - {fileID: 3073049856543275330, guid: 0fce7b1883299cd43bf79e1ce267d955, type: 3}
-  - {fileID: 3073049856543275330, guid: 0fce7b1883299cd43bf79e1ce267d955, type: 3}
-  - {fileID: 3073049856543275330, guid: 0fce7b1883299cd43bf79e1ce267d955, type: 3}
   face: {fileID: 0}
   customizationColors:
-  - key: Hair Color
-    value: {r: 1, g: 0, b: 0, a: 1}
+  - key: Main Color
+    value: {r: 1, g: 0.80784315, b: 0.45882353, a: 1}
     scheme: 1
-  - key: Outer Cubes
-    value: {r: 0, g: 0.11830664, b: 1, a: 1}
-    scheme: 2
-  - key: Main Cube
-    value: {r: 0.07971394, g: 1, b: 0, a: 1}
+  - key: Cube Color A
+    value: {r: 0, g: 1, b: 0, a: 1}
+    scheme: 0
+  - key: Cube Color B
+    value: {r: 0, g: 0, b: 1, a: 1}
     scheme: 2
   customizationVariantNames:
   - Default

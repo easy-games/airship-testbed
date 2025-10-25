@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - baseColor: {r: 1, g: 1, b: 1, a: 1}
+  - baseColor: {r: 0, g: 1, b: 0, a: 1}
   addedByEditorScript: 0
 --- !u!1 &1134971083782281246
 GameObject:
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - baseColor: {r: 1, g: 1, b: 1, a: 1}
+  - baseColor: {r: 0, g: 1, b: 0, a: 1}
   addedByEditorScript: 0
 --- !u!1 &1617133447920636532
 GameObject:
@@ -334,15 +334,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorGroups:
-  - colorIndex: 0
+  - key: Main Color
+    materialColorIndex: -1
     matColor:
     - {fileID: 1368308682093549661}
-  - colorIndex: 0
+  - key: Cube Color A
+    materialColorIndex: -1
     matColor:
     - {fileID: 8083210499809394476}
     - {fileID: 4557149118206448117}
     - {fileID: 6795681901967929521}
-  - colorIndex: 0
+  - key: Cube Color B
+    materialColorIndex: -1
     matColor:
     - {fileID: 1415154735354452218}
 --- !u!1 &6076943473511179321
@@ -445,7 +448,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - baseColor: {r: 1, g: 1, b: 1, a: 1}
+  - baseColor: {r: 0, g: 1, b: 0, a: 1}
   addedByEditorScript: 0
 --- !u!1 &7796977133342221604
 GameObject:
@@ -547,7 +550,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - baseColor: {r: 1, g: 1, b: 1, a: 1}
+  - baseColor: {r: 0, g: 0, b: 1, a: 1}
   addedByEditorScript: 0
 --- !u!1001 &2565628080538988161
 PrefabInstance:
