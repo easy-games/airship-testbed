@@ -1,6 +1,8 @@
 import { Bin } from "../../Util/Bin";
-import { CanvasAPI, PointerButton, PointerDirection } from "../../Util/CanvasAPI";
+import { CanvasAPI, HoverState, PointerButton, PointerDirection } from "../../Util/CanvasAPI";
 import { ColorUtil } from "../../Util/ColorUtil";
+import { ProtectedUtil } from "../../Util/ProtectedUtil";
+import { SignalPriority } from "../../Util/Signal";
 import { AirshipButtonClickEffect } from "./AirshipButtonClickEffect";
 
 export default class AirshipButton extends AirshipBehaviour {
@@ -19,6 +21,7 @@ export default class AirshipButton extends AirshipBehaviour {
 	public clickEffect = AirshipButtonClickEffect.Squish;
 	@Tooltip("Sets child text to underline on mouse hover.")
 	public underlineOnHover = false;
+	public sounds = false;
 
 	@Header("Optional Variables")
 	public disabledColorHex = "#2E3035";
@@ -40,6 +43,24 @@ export default class AirshipButton extends AirshipBehaviour {
 				if (this.disabled) return;
 
 				dir === PointerDirection.DOWN ? this.PlayMouseDownEffect() : this.PlayMouseUpEffect();
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnHoverEvent(this.button.gameObject, (hov) => {
+				if (this.sounds) {
+					if (hov === HoverState.ENTER) {
+						ProtectedUtil.PlayHoverSound();
+					}
+				}
+			}),
+		);
+
+		this.bin.Add(
+			this.button.onClick.ConnectWithPriority(SignalPriority.HIGHEST, () => {
+				if (this.sounds) {
+					ProtectedUtil.PlayClickSound();
+				}
 			}),
 		);
 

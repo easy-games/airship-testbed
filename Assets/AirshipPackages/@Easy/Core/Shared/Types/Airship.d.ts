@@ -1261,6 +1261,11 @@ declare const enum PlatformGearColorScheme {
 }
 
 interface PlatformGearConstructor {
+	/**
+	 *
+	 * @param classId The PlatformGear class ID. This can be found from right clicking clothing in the Avatar Editor.
+	 */
+	DownloadYielding(classId: string): PlatformGear | undefined;
 	DownloadYielding(classId: string, airId: string): PlatformGear | undefined;
 }
 declare const PlatformGear: PlatformGearConstructor;

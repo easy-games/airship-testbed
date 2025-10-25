@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: 
   gameId: 319a92cb-c8b5-4559-8cff-0d1be7d230f3
-  startingScene: {fileID: 102900000, guid: d3e23cdc27fa047bdb3d8bdb895816e7, type: 3}
+  startingScene: {fileID: 102900000, guid: 7d6039b9289ce4659aa5c4a5f7601d3c, type: 3}
   gameScenes:
   - {fileID: 102900000, guid: d3e23cdc27fa047bdb3d8bdb895816e7, type: 3}
   - {fileID: 102900000, guid: 7adf34f37f4884c5ab92c16c58f38874, type: 3}
   - {fileID: 102900000, guid: e9d121344df1d4c2984b42511b101410, type: 3}
   - {fileID: 102900000, guid: 714c5eb5525d04a4ba047d84aaaacc90, type: 3}
+  - {fileID: 102900000, guid: 7d6039b9289ce4659aa5c4a5f7601d3c, type: 3}
   packages:
   - id: '@Easy/Core'
     assetVersion: 669
@@ -110,4 +111,4 @@ MonoBehaviour:
   reuseCollisionCallbacks2D: 1
   autoSyncTransforms2D: 0
   supportsMobile: 1
-  compileURPShaders: 0
+  compileURPShaders: 1

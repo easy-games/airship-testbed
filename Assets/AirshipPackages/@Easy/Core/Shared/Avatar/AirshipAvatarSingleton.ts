@@ -178,22 +178,26 @@ export class AirshipAvatarSingleton {
 						return resolve();
 					}
 
-					const clothingGear = PlatformGear.DownloadYielding(
-						clothingDto.class.classId,
-						clothingDto.class.gear.airAssets[0],
-					);
-
-					if (clothingGear) {
-						// print("Downloaded " + clothingDto.class.name + " " + (Time.time - start));
-						if (clothingGear.accessoryPrefabs && clothingGear.accessoryPrefabs.size() > 0) {
-							for (let accessoryPrefab of clothingGear.accessoryPrefabs) {
-								builder.Add(accessoryPrefab);
+					try {
+						const clothing = PlatformGear.DownloadYielding(
+							clothingDto.class.classId,
+							clothingDto.class.gear.airAssets[0],
+						);
+						if (clothing) {
+							// print("Downloaded " + clothingDto.class.name + " " + (Time.time - start));
+							if (clothing.accessoryPrefabs && clothing.accessoryPrefabs.size() > 0) {
+								for (let accessoryPrefab of clothing.accessoryPrefabs) {
+									builder.Add(accessoryPrefab);
+								}
+							}
+							if (clothing.face) {
+								builder.SetFaceTexture(clothing.face.decalTexture);
 							}
 						}
-						if (clothingGear.face) {
-							builder.SetFaceTexture(clothingGear.face.decalTexture);
-						}
+					} catch (err) {
+						Debug.LogError(`Failed to equip gear with classId=${clothingDto.class.classId} ` + err);
 					}
+
 					resolve();
 				}),
 			);
