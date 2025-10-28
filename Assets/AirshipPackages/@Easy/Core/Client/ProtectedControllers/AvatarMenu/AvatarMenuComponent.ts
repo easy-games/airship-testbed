@@ -611,7 +611,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			// Already selected this item so just deselect it
 			this.UpdateButtonGraphics();
 			this.avatarCustomizationPanel.Close();
-			NativeTween.PositionY(this.avatarToolbar, 27, 0.5).SetEaseExpoOut();
+			NativeTween.PositionY(this.avatarToolbar, 35, 0.5).SetEaseExpoOut();
 			return;
 		}
 
