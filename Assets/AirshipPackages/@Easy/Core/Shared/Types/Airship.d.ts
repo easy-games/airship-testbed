@@ -594,8 +594,9 @@ interface AccessoryBuilder extends MonoBehaviour {
 	 */
 	SetSkinColor(color: Color): void;
 
-	SetCustomization(json: string): AccessoryCustomization | undefined;
-	GetCustomization(): AccessoryCustomization | undefined;
+	SetCustomization(customData: OutfitCustomization | undefined): OutfitCustomization | undefined;
+	GetCustomization(): OutfitCustomization | undefined;
+	GetCustomizationJSON(): string | undefined;
 	SetCustomColor(slot: AccessorySlot, colorKey: string, colorHex: string): void;
 
 	/**

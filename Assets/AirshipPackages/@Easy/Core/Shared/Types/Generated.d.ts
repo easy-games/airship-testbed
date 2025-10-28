@@ -39725,7 +39725,7 @@ interface MaterialColorURP extends MonoBehaviour {
     EditorFirstTimeSetup(): void;
     GetColorSettingByMaterial(mat: Material): ColorSetting;
     InitializeColorsFromCurrentMaterials(): void;
-    SetColor(indx: number, newColor: Color): void;
+    SetColor(index: number, newColor: Color): void;
     SetColorOnAll(newColor: Color): void;
 
 
@@ -41177,7 +41177,7 @@ interface AccessoryComponent extends MonoBehaviour {
 
 
     Copy(other: AccessoryComponent): void;
-    Customize(variant: number, colorsHex: Readonly<string[]>): void;
+    Customize(variant: number, colorsHex: Readonly<OutfitCustomizationColor[]>): void;
     GetServerClassId(): string;
     GetServerInstanceId(): string;
     GetSlotNumber(): number;
@@ -41192,13 +41192,14 @@ interface CustomAccSetter_Color extends MonoBehaviour {
 
 
 
-    SetColor(index: number, newColor: Color): void;
+    SetColor(key: string, newColor: Color): void;
 
 
 }
     
 interface ColorGroup {
-    colorIndex: number;
+    key: string;
+    materialColorIndex: number;
     matColor: Readonly<MaterialColorURP[]>;
 
 
@@ -41245,6 +41246,26 @@ interface CustomAccSetter_VariantConstructor {
 
 }
 declare const CustomAccSetter_Variant: CustomAccSetter_VariantConstructor;
+    
+interface OutfitCustomizationColor {
+    key: string;
+    colorHex: string;
+
+
+
+
+
+}
+    
+interface OutfitCustomizationColorConstructor {
+
+
+    new(): OutfitCustomizationColor;
+
+
+
+}
+declare const OutfitCustomizationColor: OutfitCustomizationColorConstructor;
     
 interface BodyMaskInspectorData {
     name: string;
@@ -55158,7 +55179,6 @@ declare const CanvasDistanceManager: CanvasDistanceManagerConstructor;
     
 interface ActiveAccessory {
     AccessoryComponent: AccessoryComponent;
-    gearClassId: string;
     lodLevel: number;
     maxLodLevel: number;
     rootTransform: Transform;
@@ -55506,8 +55526,8 @@ interface WorldSpaceCanvasScalerConstructor {
 }
 declare const WorldSpaceCanvasScaler: WorldSpaceCanvasScalerConstructor;
     
-interface AccessoryCustomization {
-    platformCustomGear: Readonly<AccessoryCustomizationGear[]>;
+interface OutfitCustomization {
+    platformCustomSlots: Readonly<OutfitCustomizationSlot[]>;
 
 
 
@@ -55515,10 +55535,10 @@ interface AccessoryCustomization {
 
 }
     
-interface AccessoryCustomizationGear {
-    slots: Readonly<number[]>;
+interface OutfitCustomizationSlot {
+    slot: number;
     variant: number;
-    colors: Readonly<string[]>;
+    colors: Readonly<OutfitCustomizationColor[]>;
 
 
 
@@ -55526,25 +55546,25 @@ interface AccessoryCustomizationGear {
 
 }
     
-interface AccessoryCustomizationGearConstructor {
+interface OutfitCustomizationSlotConstructor {
 
 
-    new(): AccessoryCustomizationGear;
+    new(): OutfitCustomizationSlot;
 
 
 
 }
-declare const AccessoryCustomizationGear: AccessoryCustomizationGearConstructor;
+declare const OutfitCustomizationSlot: OutfitCustomizationSlotConstructor;
     
-interface AccessoryCustomizationConstructor {
+interface OutfitCustomizationConstructor {
 
 
-    new(): AccessoryCustomization;
+    new(): OutfitCustomization;
 
 
 
 }
-declare const AccessoryCustomization: AccessoryCustomizationConstructor;
+declare const OutfitCustomization: OutfitCustomizationConstructor;
     
 interface VibrationManager {
 

@@ -3,8 +3,10 @@ import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
 import { Singleton } from "../Flamework";
 import { Game } from "../Game";
 import { DecodeJSON, EncodeJSON } from "../json";
+import { Protected } from "../Protected";
 import { ColorUtil } from "../Util/ColorUtil";
 import inspect from "../Util/Inspect";
+import { Signal } from "../Util/Signal";
 /**
  * Access using {@link Airship.Avatar}. Avatar singleton provides utilities for working with visual elements of a character
  *
@@ -12,6 +14,7 @@ import inspect from "../Util/Inspect";
  */
 @Singleton()
 export class AirshipAvatarSingleton {
+	public OnLoadedAccessory = new Signal<[slot: AccessorySlot, instanceId: string]>();
 	constructor() {
 		Airship.Avatar = this;
 	}
@@ -130,7 +133,7 @@ export class AirshipAvatarSingleton {
 		outfit: AirshipOutfit,
 		options: { removeOldClothingAccessories?: boolean } = {},
 	) {
-		print("Loading outfit: " + inspect(outfit) + " " + debug.traceback());
+		print("Loading outfit: " + EncodeJSON(outfit));
 		if (options.removeOldClothingAccessories) {
 			builder.RemoveClothingAccessories();
 		}
@@ -139,31 +142,15 @@ export class AirshipAvatarSingleton {
 		const start = Time.time;
 		let promises: Promise<void>[] = [];
 
-		// TODO: Remove this test
-		// if (Game.IsEditor()) {
-		// 	if (outfit.metadata === undefined || outfit.metadata === "") {
-		// 		let classData: AccessoryCustomizationGear[] = [];
-		// 		for (let i = 0; i < 35; i++) {
-		// 			classData.push({
-		// 				slots: [i],
-		// 				variant: 0,
-		// 				colors: ["#ff0000", "#ff88ba"],
-		// 			});
-		// 		}
-		// 		const customData: AccessoryCustomization = {
-		// 			platformCustomGear: classData,
-		// 		};
-		// 		outfit.metadata = EncodeJSON(customData);
-		// 	} else {
-		// 		print("Outfit already has meta data");
-		// 	}
-		// }
+		if (outfit.metadata !== undefined) {
+			const customizationMeta = Protected.Avatar.GetCSCustomData(outfit.metadata as OutfitCustomization);
+			print("Parsed outfits customization data: " + inspect(customizationMeta));
 
-		const meta = outfit.metadata as string;
-		if (builder.SetCustomization(meta) !== undefined) {
-			print("Parsed outfits customization data: " + outfit.metadata);
-		} else {
-			print("No customization found on outfit");
+			if (builder.SetCustomization(customizationMeta) !== undefined) {
+				print("Sent custom data to C#");
+			} else {
+				print("Misformatted meta data on outfit");
+			}
 		}
 
 		for (let clothingDto of outfit.gear) {
@@ -188,6 +175,7 @@ export class AirshipAvatarSingleton {
 							if (clothing.accessoryPrefabs && clothing.accessoryPrefabs.size() > 0) {
 								for (let accessoryPrefab of clothing.accessoryPrefabs) {
 									builder.Add(accessoryPrefab);
+									this.OnLoadedAccessory.Fire(accessoryPrefab.accessorySlot, clothingDto.instanceId);
 								}
 							}
 							if (clothing.face) {

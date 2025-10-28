@@ -18,6 +18,8 @@ import { ColorUtil } from "../../Util/ColorUtil";
 import { RandomUtil } from "../../Util/RandomUtil";
 import { Signal } from "../../Util/Signal";
 import { DecodeJSON, EncodeJSON } from "../../json";
+import inspect from "../../Util/Inspect";
+import { CSArrayUtil } from "../../Util/CSArrayUtil";
 
 const contentServiceClient = new ContentServiceClient(UnityMakeRequest(AirshipUrl.ContentService));
 
@@ -336,13 +338,84 @@ export class ProtectedAvatarSingleton {
 		});
 	}
 
-	public async SaveOutfitAccessories(outfitId: string, skinColor: string, instanceIds: string[], metaData: string) {
-		this.Log("SaveOutfitAccessories: " + metaData);
+	public async SaveOutfitAccessories(
+		outfitId: string,
+		skinColor: string,
+		instanceIds: string[],
+		metaData: OutfitCustomization | undefined,
+	) {
+		let tsMetaData: OutfitCustomization | undefined = undefined;
+		if (metaData) {
+			for (const gear of metaData.platformCustomSlots) {
+				for (const color of gear.colors) {
+					print("ProtectedAvatar color " + color.key + " value: " + color.colorHex);
+				}
+			}
+			tsMetaData = this.GetTSCustomData(metaData);
+		}
 		return this.UpdateOutfit(outfitId, {
 			gear: instanceIds,
 			skinColor: skinColor,
-			metadata: metaData && metaData !== "" ? (metaData as Object) : undefined,
+			metadata: tsMetaData,
 		});
+	}
+
+	//Copy CS customization object to a TS instance so that the server can properly JSON encode it
+	public GetTSCustomData(metaData: OutfitCustomization) {
+		if (!metaData || !metaData.platformCustomSlots) {
+			return undefined;
+		}
+		const outfitGear: OutfitCustomizationSlot[] = [];
+		let i = 0;
+		for (const customSlot of metaData.platformCustomSlots) {
+			const colors: OutfitCustomizationColor[] = [];
+			for (const color of customSlot.colors) {
+				colors.push({ colorHex: color.colorHex, key: color.key });
+			}
+			outfitGear.push({
+				colors: colors,
+				slot: customSlot.slot,
+				variant: customSlot.variant,
+			});
+			i++;
+		}
+
+		const tsMetaData: OutfitCustomization = {
+			platformCustomSlots: outfitGear,
+		};
+
+		return tsMetaData;
+	}
+
+	//Copy TS customization object into C# object
+	public GetCSCustomData(metaData: OutfitCustomization) {
+		const csMetaData: OutfitCustomization = new OutfitCustomization();
+
+		if (!metaData || !metaData.platformCustomSlots) {
+			return undefined;
+		}
+		const outfitSlots: OutfitCustomizationSlot[] = [];
+		let i = 0;
+		for (const customSlot of metaData.platformCustomSlots) {
+			const colors: OutfitCustomizationColor[] = [];
+			for (const color of customSlot.colors) {
+				const customColor = new OutfitCustomizationColor();
+				customColor.key = color.key;
+				customColor.colorHex = color.colorHex;
+				colors.push(customColor);
+			}
+
+			const newSlot = new OutfitCustomizationSlot();
+			newSlot.colors = colors;
+			newSlot.slot = customSlot.slot;
+			newSlot.variant = customSlot.variant;
+
+			outfitSlots.push(newSlot);
+			i++;
+		}
+
+		csMetaData.platformCustomSlots = outfitSlots;
+		return csMetaData;
 	}
 
 	private UpdateOutfit(outfitId: string, update: AirshipUpdateOutfitDto) {

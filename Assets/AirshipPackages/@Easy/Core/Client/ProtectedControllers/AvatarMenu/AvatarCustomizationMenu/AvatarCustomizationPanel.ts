@@ -25,7 +25,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 		this.modifiedGear.clear();
 	}
 
-	public Open(gear: PlatformGear) {
+	public Open(gear: PlatformGear, customization: OutfitCustomizationSlot | undefined) {
 		this.gear = gear;
 		if (!gear) {
 			// No Gear
@@ -52,8 +52,15 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 
 		//Process customization options
 		let i = 0;
-		for (const color of gear.customizationColors) {
-			this.SpawnColorOptions(i, color);
+		for (const defaultColor of gear.customizationColors) {
+			if (customization) {
+				for (const selectedColor of customization.colors) {
+					if (selectedColor.key === defaultColor.key) {
+						defaultColor.value = ColorUtil.HexToColor(selectedColor.colorHex);
+					}
+				}
+			}
+			this.SpawnColorOptions(i, defaultColor);
 			i++;
 		}
 
@@ -79,15 +86,16 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 		this.openBin.Add(
 			options.onSelectColor.Connect((colorStr) => {
 				//make accessory the color
-				print("Heard new color: " + colorStr);
 				const newColor = ColorUtil.HexToColor(colorStr);
 				for (const template of this.gear.accessoryPrefabs) {
 					if (template) {
+						print("Setting color: " + colorStr + " to slot: " + template.accessorySlot);
 						this.accessoryBuilder.SetCustomColor(template.accessorySlot, colorKey, colorStr);
 					}
 				}
 				this.gear.customizationColors[colorIndex].value = newColor;
 				this.menu.Dirty();
+				options.SetActiveColor(newColor);
 			}),
 		);
 	}

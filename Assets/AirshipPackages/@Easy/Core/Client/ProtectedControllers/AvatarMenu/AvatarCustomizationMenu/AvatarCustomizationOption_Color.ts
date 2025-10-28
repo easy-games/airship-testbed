@@ -27,7 +27,7 @@ export default class AvatarCustomizationOption_Color extends AirshipBehaviour {
 		this.labelTxt.text = label;
 
 		//Set the active color
-		this.SetActiveColor(currentColorStr);
+		this.SetActiveColorHex(currentColorStr);
 
 		//Create the grid of color options
 		this.CreatePallet(Protected.Avatar.colorSets[colorPalletId]);
@@ -64,13 +64,16 @@ export default class AvatarCustomizationOption_Color extends AirshipBehaviour {
 		this.bin.Add(
 			swatch.btn.onClick.Connect(() => {
 				this.onSelectColor.Fire(this.palletColors[btnIndex]);
-				this.SetActiveColor(this.palletColors[btnIndex]);
 			}),
 		);
 		return swatch;
 	}
 
-	private SetActiveColor(currentColorStr: string) {
-		this.currentColorBtn.image.color = ColorUtil.HexToColor(currentColorStr, 1);
+	public SetActiveColorHex(currentColorStr: string) {
+		this.SetActiveColor(ColorUtil.HexToColor(currentColorStr, 1));
+	}
+
+	public SetActiveColor(color: Color) {
+		this.currentColorBtn.image.color = color;
 	}
 }
