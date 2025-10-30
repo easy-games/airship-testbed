@@ -1456,3 +1456,27 @@ interface QualityManager {
 	OnQualityCheck(callback: (frameHealth: FrameHealth, report: QualityReport) => void): EngineEventConnection;
 }
 declare const QualityManager: QualityManager;
+
+interface RectTransformUtility {}
+
+interface RectTransformUtilityConstructor {
+	ScreenPointToLocalPointInRectangle(
+		rect: RectTransform,
+		screenPoint: Vector2,
+		cam: Camera,
+	): LuaTuple<[hitPlaneOfRect: boolean, localPoint: Vector2]>;
+	ScreenPointToLocalPointInRectangle(
+		rect: RectTransform,
+		screenPoint: Vector2,
+	): LuaTuple<[hitPlaneOfRect: boolean, localPoint: Vector2]>;
+
+	ScreenPointToWorldPointInRectangle(
+		rect: RectTransform,
+		screenPoint: Vector2,
+		cam: Camera,
+	): LuaTuple<[hitPlaneOfRect: boolean, worldPoint: Vector3]>;
+	ScreenPointToWorldPointInRectangle(
+		rect: RectTransform,
+		screenPoint: Vector2,
+	): LuaTuple<[hitPlaneOfRect: boolean, worldPoint: Vector3]>;
+}
