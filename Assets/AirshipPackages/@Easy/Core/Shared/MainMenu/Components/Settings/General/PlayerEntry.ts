@@ -33,6 +33,7 @@ export default class PlayerEntry extends AirshipBehaviour {
 	private player: ProtectedPlayer;
 
 	private bin = new Bin();
+	private partyInviteBin = new Bin();
 
 	public OnEnable(): void {}
 
@@ -72,7 +73,8 @@ export default class PlayerEntry extends AirshipBehaviour {
 
 			this.addToPartyBtn.gameObject.SetActive(showAddParty);
 			if (showAddParty) {
-				this.bin.AddEngineEventConnection(
+				this.partyInviteBin.Clean();
+				this.partyInviteBin.AddEngineEventConnection(
 					CanvasAPI.OnClickEvent(this.addToPartyBtn.gameObject, () => {
 						task.spawn(() => {
 							this.addToPartyOverlay.SetActive(true);
@@ -81,6 +83,32 @@ export default class PlayerEntry extends AirshipBehaviour {
 					}),
 				);
 			}
+
+			this.bin.Add(
+				Dependency<ProtectedPartyController>().onPartyChange.Connect((partyData) => {
+					const isPlayerInParty =
+						partyData.members.find((member) => member.uid === player.userId) !== undefined;
+					const shouldShowButton = !player.IsLocalPlayer() && !isPlayerInParty;
+
+					if (shouldShowButton) {
+						this.addToPartyBtn.gameObject.SetActive(true);
+						this.partyInviteBin.Clean();
+						this.partyInviteBin.AddEngineEventConnection(
+							CanvasAPI.OnClickEvent(this.addToPartyBtn.gameObject, () => {
+								task.spawn(() => {
+									this.addToPartyOverlay.SetActive(true);
+									const [res] = Dependency<ProtectedPartyController>()
+										.InviteToParty(player.userId)
+										.await();
+								});
+							}),
+						);
+					} else {
+						this.addToPartyBtn.gameObject.SetActive(false);
+						this.addToPartyOverlay.SetActive(false);
+					}
+				}),
+			);
 		});
 
 		// Friend Request
@@ -131,5 +159,6 @@ export default class PlayerEntry extends AirshipBehaviour {
 
 	public OnDisable(): void {
 		this.bin.Clean();
+		this.partyInviteBin.Clean();
 	}
 }

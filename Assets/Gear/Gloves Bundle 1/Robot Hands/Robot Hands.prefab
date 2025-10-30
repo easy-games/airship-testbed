@@ -47,8 +47,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accessorySlot: 16
   visibilityMode: 2
-  skinnedToCharacter: 0
-  meshLods: []
+  skinnedToCharacter: 1
+  meshLods:
+  - {fileID: 4300000, guid: d46b16b5c7ca04a97acc1e8d9426881a, type: 2}
+  - {fileID: 4300000, guid: e7d71fc75a6d640ab8f3f571fac6d144, type: 2}
   canMeshCombine: 0
   bodyMask: 768
   serverClassId: 

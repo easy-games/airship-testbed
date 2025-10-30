@@ -1,7 +1,4 @@
-import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import { Cancellable } from "./Cancellable";
-
-class Test {}
 
 type SignalParams<T> = Parameters<
 	[T] extends [unknown[]] ? (...args: T) => never : [T] extends [unknown] ? (arg: T) => never : () => never
@@ -10,10 +7,7 @@ type SignalParams<T> = Parameters<
 export type SignalCallback<T> = (...args: SignalParams<T>) => unknown;
 type SignalWait<T> = T extends unknown[] ? LuaTuple<T> : T;
 
-interface CallbackItem<T> {
-	id: number;
-	callback: SignalCallback<T>;
-}
+type CallbackItem<T> = [callback: SignalCallback<T>, connected: boolean];
 
 export const enum SignalPriority {
 	HIGHEST = 0,
@@ -28,14 +22,55 @@ export const enum SignalPriority {
 	MONITOR = 500,
 }
 
-let idCounter = 1;
+let freeRunnerThread: thread | undefined;
+
+function acquireRunnerThreadAndCall(fn: Callback, ...params: unknown[]) {
+	const acquiredThread = freeRunnerThread as thread;
+	freeRunnerThread = undefined;
+	fn(...params);
+	freeRunnerThread = acquiredThread;
+}
+
+function runEventHandlerThread(...params: unknown[]) {
+	(acquireRunnerThreadAndCall as Callback)(...params);
+	while (true) {
+		(acquireRunnerThreadAndCall as Callback)(coroutine.yield() as any);
+	}
+}
+
+/**
+ * A Signal is an object that is used to dispatch and receive arbitrary events.
+ */
 export class Signal<T extends unknown[] | unknown = void> {
+	private firing = false;
 	private debugLogging = false;
 	private allowYielding = false;
+	private keys: number[] = [];
 	private readonly connections: Map<number, Array<CallbackItem<T>>> = new Map();
 	public debugGameObject = false;
-	// private readonly connections: Array<CallbackItem<T>> = [];
 	public isDestroyed = false;
+
+	private AddConnection(priority: SignalPriority, item: CallbackItem<T>) {
+		if (this.connections.has(priority)) {
+			this.connections.get(priority)!.push(item);
+		} else {
+			this.connections.set(priority, [item]);
+
+			// Ordered insertion of "priority" into keys array:
+			let inserted = false;
+			for (let i = 0; i < this.keys.size(); i++) {
+				const key = this.keys[i];
+				if (key > priority) {
+					this.keys.insert(i, priority);
+					inserted = true;
+					break;
+				}
+			}
+			if (!inserted) {
+				this.keys.push(priority);
+			}
+		}
+	}
 
 	/**
 	 * Connect a callback function to the signal.
@@ -53,34 +88,41 @@ export class Signal<T extends unknown[] | unknown = void> {
 	 * The returned function can be called to disconnect the callback.
 	 */
 	public ConnectWithPriority(priority: SignalPriority, callback: SignalCallback<T>): () => void {
-		let id = idCounter;
-		idCounter++;
-		const item: CallbackItem<T> = {
-			callback,
-			id,
-		};
-		if (this.connections.has(priority)) {
-			this.connections.get(priority)!.push(item);
+		const item: CallbackItem<T> = [callback, true];
+
+		if (this.firing) {
+			task.defer(() => {
+				this.AddConnection(priority, item);
+			});
 		} else {
-			this.connections.set(priority, [item]);
+			this.AddConnection(priority, item);
 		}
+
+		const disconnect = () => {
+			const items = this.connections.get(priority);
+			if (!items) return;
+
+			const itemIdx = items.indexOf(item);
+			if (itemIdx !== -1) {
+				items.unorderedRemove(itemIdx);
+
+				if (items.size() === 0) {
+					this.connections.delete(priority);
+					const keyIdx = this.keys.indexOf(priority);
+					if (keyIdx !== -1) {
+						this.keys.remove(keyIdx);
+					}
+				}
+			}
+		};
+
 		return () => {
-			for (const [priority, items] of this.connections) {
-				let removed = false;
-				for (const i of $range(0, items.size() - 1)) {
-					const item = items[i];
-					if (item.id === id) {
-						items.remove(i);
-						removed = true;
-						break;
-					}
-				}
-				if (removed) {
-					if (items.size() === 0) {
-						this.connections.delete(priority);
-					}
-					break;
-				}
+			if (!item[1]) return;
+			if (this.firing) {
+				item[1] = false;
+				task.defer(disconnect);
+			} else {
+				disconnect();
 			}
 		};
 	}
@@ -93,56 +135,66 @@ export class Signal<T extends unknown[] | unknown = void> {
 	 */
 	public Once(callback: SignalCallback<T>): () => void {
 		let done = false;
-		const c = this.Connect((...args) => {
+		const disconnect = this.Connect((...args) => {
 			if (done) return;
 			done = true;
-			c();
+			disconnect();
 			callback(...args);
 		});
-		return c;
+		return disconnect;
 	}
 
 	/**
 	 * Invokes all callback functions with the given arguments.
 	 */
 	public Fire(...args: SignalParams<T>): T {
+		assert(!this.firing, "cannot fire signal while signal is currently firing");
+		this.firing = true;
+
 		if (this.debugLogging) {
-			print("key count: " + this.connections.size());
 			let callbackCount = 0;
-			for (let priority of ObjectUtils.keys(this.connections)) {
-				for (let connection of this.connections.get(priority)!) {
-					callbackCount++;
-				}
+			for (const [_, conns] of this.connections) {
+				callbackCount += conns.size();
 			}
+			print("key count: " + this.connections.size());
 			print("callback count: " + callbackCount);
 		}
 
 		let fireCount = 0;
-		let keys = ObjectUtils.keys(this.connections).sort((a, b) => a < b);
 		let cancelled = false;
-		let isCancellable = false;
-		if (args.size() === 1 && args[0] instanceof Cancellable) {
-			isCancellable = true;
-		}
-		for (let priority of keys) {
+		const isCancellable = args.size() === 1 && args[0] instanceof Cancellable;
+
+		for (const priority of this.keys) {
 			const conns = this.connections.get(priority);
 			if (!conns) continue;
 
-			const entries = [...conns];
-			for (let entry of entries) {
+			for (let entry of conns) {
+				if (!entry[1]) continue;
+
 				fireCount++;
 
 				if (this.allowYielding) {
 					try {
-						entry.callback(...args);
+						entry[0](...args);
 					} catch (e) {
 						warn("Error in signal callback: " + e);
 					}
 				} else {
-					const thread = task.spawnDetached(entry.callback, ...args);
+					if (!isCancellable) {
+						// TODO Re-enable this once confirmed to not cause crashes
+						// if (!freeRunnerThread) {
+						// 	freeRunnerThread = coroutine.create(runEventHandlerThread);
+						// }
+						task.spawnDetached(entry[0], ...args);
+					} else {
+						const thread = task.spawnDetached(entry[0], ...args);
 
-					if (this.allowYielding && isCancellable && coroutine.status(thread) !== "dead") {
-						warn(debug.traceback(thread, "Signal callback yielded. This might be an error.") + "\n--\n");
+						if (coroutine.status(thread) !== "dead") {
+							// TODO: Temporarily commented out until plugin change is pushed.
+							// warn(
+							// 	debug.traceback(thread, "Signal callback yielded. This might be an error.") + "\n--\n",
+							// );
+						}
 					}
 				}
 
@@ -158,9 +210,13 @@ export class Signal<T extends unknown[] | unknown = void> {
 				break;
 			}
 		}
+
 		if (this.debugLogging) {
 			print("fire count: " + fireCount);
 		}
+
+		this.firing = false;
+
 		return args[0] as T;
 	}
 
@@ -191,7 +247,15 @@ export class Signal<T extends unknown[] | unknown = void> {
 	 * Clears all connections.
 	 */
 	public DisconnectAll() {
-		this.connections.clear();
+		if (this.firing) {
+			task.defer(() => {
+				this.connections.clear();
+				this.keys.clear();
+			});
+		} else {
+			this.connections.clear();
+			this.keys.clear();
+		}
 	}
 
 	/**
@@ -214,15 +278,33 @@ export class Signal<T extends unknown[] | unknown = void> {
 		return this;
 	}
 
+	/**
+	 * A yieldable signal is one in which calling `Fire()` may yield if
+	 * any connected function handlers yield. This also means that all events
+	 * will run in series. The default behavior is `false`, where the signal
+	 * will call event handlers in separate threads, thus calling `Fire()` will
+	 * not yield by default.
+	 *
+	 * Note: When using Cancellable events and _not_ allowing `Fire()` to yield,
+	 * then any connected handlers that _do_ yield will throw a warning.
+	 *
+	 * ```ts
+	 * // Example:
+	 * const signal = new Signal().WithAllowYield(true);
+	 * ```
+	 */
 	public WithAllowYield(value: boolean): Signal<T> {
 		this.allowYielding = value;
 		return this;
 	}
 
+	/**
+	 * Returns the number of connections.
+	 */
 	public GetConnectionCount(): number {
 		let i = 0;
-		for (const value of ObjectUtils.values(this.connections)) {
-			i += value.size();
+		for (const [_, conns] of this.connections) {
+			i += conns.size();
 		}
 		return i;
 	}

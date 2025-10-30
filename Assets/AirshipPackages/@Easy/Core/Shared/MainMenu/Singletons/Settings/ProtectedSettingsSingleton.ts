@@ -268,10 +268,17 @@ export class ProtectedSettingsSingleton {
 
 			// simple reconcile logic
 			if (this.data.limitFps === undefined) {
-				this.data.limitFps = -1;
+				if (Game.IsMobile()) {
+					this.data.limitFps = 60;
+				} else {
+					this.data.limitFps = -1;
+				}
 			}
 		} else {
 			this.data = defaultData;
+			if (Game.IsMobile()) {
+				this.data.limitFps = 60;
+			}
 
 			const platform = Game.platform;
 			let lowEndDevice = platform === AirshipPlatform.iOS || platform === AirshipPlatform.Android;

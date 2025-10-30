@@ -42,5 +42,9 @@ export class ProtectedCacheSingleton implements OnStart {
 		return tex;
 	}
 
+	public ApplyHeightToUrl(url: string, height: number): string {
+		return `${url}?height=${height}`;
+	}
+
 	OnStart(): void {}
 }

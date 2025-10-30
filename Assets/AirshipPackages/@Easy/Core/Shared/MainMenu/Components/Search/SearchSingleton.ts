@@ -2,6 +2,7 @@ import { AirshipGame } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
 import DateParser from "@Easy/Core/Shared/DateParser";
 import { Controller, Service } from "@Easy/Core/Shared/Flamework/flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import { ContentServiceClient, ContentServiceGames } from "@Easy/Core/Shared/TypePackages/content-service-types";
 import { UnityMakeRequest, UnityMakeRequestError } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
@@ -85,7 +86,7 @@ export default class SearchSingleton {
 		} catch (err) {
 			if (UnityMakeRequestError.IsInstance(err)) {
 				const errorMessage = UnityMakeRequestError.DisplayText(err) ?? "An unknown error occurred";
-				warn(`Failed to decode popular games: ${errorMessage}`);
+				CoreLogger.Error(`Failed to decode popular games: ${errorMessage}`);
 			}
 
 			task.delay(1, () => {

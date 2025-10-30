@@ -1,6 +1,7 @@
 import {
 	ServerBridgeApiAddAllowedPlayer,
 	ServerBridgeApiAddTag,
+	ServerBridgeApiAllowNewConnections,
 	ServerBridgeApiCreateServer,
 	ServerBridgeApiDelistServer,
 	ServerBridgeApiGetAllowedPlayers,
@@ -92,11 +93,9 @@ export class AirshipServerManagerService {
 
 	/**
 	 * Shuts down the current server. All players will be transferred off of the server before shutting down.
-	 * @param blockJoins If true, the server access mode will be set to "CLOSED" before shutting down. This stops
-	 * new players from joining while any shutdown logic runs.
 	 */
-	public ShutdownServer(blockJoins?: boolean) {
-		contextbridge.invoke(ServerManagerServiceBridgeTopics.ShutdownServer, LuauContext.Protected, blockJoins);
+	public ShutdownServer() {
+		contextbridge.invoke(ServerManagerServiceBridgeTopics.ShutdownServer, LuauContext.Protected);
 	}
 
 	/**
@@ -280,6 +279,26 @@ export class AirshipServerManagerService {
 		return contextbridge.invoke<ServerBridgeApiGetCurrentRegion>(
 			ServerManagerServiceBridgeTopics.GetCurrentRegion,
 			LuauContext.Protected,
+		);
+	}
+
+	/**
+	 * When set to true (default), players will be allowed to connect to the server. When set to false,
+	 * no players will be allowed to join the server, no matter how they are transferred. All transfers to
+	 * this server will no longer succeed.
+	 *
+	 * AllowNewConnections is automatically set to false when a server shutdown is triggered, but
+	 * you can override that behavior by setting it back to true when the onShutdown signal is fired.
+	 * This may be useful in cases where you wish to delay the server shutdown for an extended period and
+	 * want players to be able to rejoin the server during that time.
+	 * @param allowed If new connections should be allowed
+	 * @returns true if the setting was updated, false otherwise
+	 */
+	public async AllowNewConnections(allowed: boolean) {
+		return contextbridge.invoke<ServerBridgeApiAllowNewConnections>(
+			ServerManagerServiceBridgeTopics.AllowNewConnections,
+			LuauContext.Protected,
+			allowed,
 		);
 	}
 }

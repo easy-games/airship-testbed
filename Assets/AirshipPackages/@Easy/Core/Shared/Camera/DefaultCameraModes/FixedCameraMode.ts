@@ -1,5 +1,5 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { ControlScheme, Mouse, Preferred, Touchscreen } from "@Easy/Core/Shared/UserInput";
+import { ControlScheme, Mouse, Preferred } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CameraMode, CameraTransform } from "..";
 import { MoveDirectionMode } from "../../Character/LocalCharacter/MoveDirectionMode";
@@ -18,7 +18,6 @@ export class FixedCameraMode extends CameraMode {
 
 	public OnStopBin = new Bin();
 	private readonly preferred = this.OnStopBin.Add(new Preferred());
-	private readonly touchscreen = this.OnStopBin.Add(new Touchscreen());
 
 	public config: FixedCameraConfig;
 	private locked = false;
@@ -85,50 +84,8 @@ export class FixedCameraMode extends CameraMode {
 		);
 	}
 
-	private SetupMobileControls() {
-		const touchscreen = this.OnStopBin.Add(new Touchscreen());
-		let touchStartPos = new Vector3(0, 0, 0);
-		let touchStartRotX = 0;
-		let touchStartRotY = 0;
-		let touchOverUI = false;
-		this.OnStopBin.Add(
-			touchscreen.pan.Connect((position, phase) => {
-				switch (phase) {
-					case TouchPhase.Began:
-						if (InputBridge.Instance.IsPointerOverUI()) {
-							touchOverUI = true;
-						} else {
-							touchOverUI = false;
-							touchStartPos = position;
-							touchStartRotX = this.rotationX;
-							touchStartRotY = this.rotationY;
-						}
-						break;
-					case TouchPhase.Moved: {
-						if (touchOverUI) break;
-						const deltaPosSinceStart = position.sub(touchStartPos);
-						this.rotationY =
-							(touchStartRotY - deltaPosSinceStart.x * Airship.Input.GetTouchSensitivity()) % TAU;
-						this.rotationX = math.clamp(
-							touchStartRotX + deltaPosSinceStart.y * Airship.Input.GetTouchSensitivity(),
-							this.minRotX,
-							this.maxRotX,
-						);
-						break;
-					}
-					case TouchPhase.Ended:
-						touchOverUI = false;
-						break;
-					default:
-						break;
-				}
-			}),
-		);
-	}
-
 	OnEnable(camera: Camera, rootTransform: Transform) {
 		Airship.Characters.localCharacterManager.SetMoveDirMode(MoveDirectionMode.Character);
-		this.SetupMobileControls();
 
 		this.occlusionCam = rootTransform.GetComponent<OcclusionCam>()!;
 		if (this.occlusionCam === undefined) {
@@ -137,7 +94,6 @@ export class FixedCameraMode extends CameraMode {
 		this.occlusionCam.Init(camera);
 
 		this.OnStopBin.Add(this.preferred);
-		this.OnStopBin.Add(this.touchscreen);
 
 		this.OnStopBin.Add(
 			Airship.Input.preferredControls.ObserveControlScheme((scheme) => {

@@ -1,4 +1,3 @@
-import { AirshipServerAccessMode } from "@Easy/Core/Shared/Airship/Types/AirshipServerManager";
 import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
@@ -36,15 +35,7 @@ export class ShutdownService {
 				return;
 			}
 
-			const players = PlayerManagerBridge.Instance.GetPlayers();
-			let playerCount = 0;
-			for (let p of players) {
-				// bot check
-				if (p.connectionId > 0 && p.connectionId < 50_000) {
-					continue;
-				}
-				playerCount++;
-			}
+			const playerCount = this.GetPlayerCount();
 
 			if (playerCount > 0) {
 				this.playerConnected = true;
@@ -56,22 +47,56 @@ export class ShutdownService {
 				if (this.playerConnected) {
 					if (this.timeWithNoPlayers >= ShutdownService.shutdownTimeAllPlayersLeft) {
 						print("Server will shutdown due to excessive time with all players having left.");
-						this.Shutdown(true);
+						this.AttemptNoPlayerShutdown();
 					}
 				} else {
 					if (this.timeWithNoPlayers >= ShutdownService.shutdownTimeNobodyConnected) {
 						print("Server will shutdown due to excessive time with nobody ever connecting.");
-						this.Shutdown(true);
+						this.AttemptNoPlayerShutdown();
 					}
 				}
 			}
 		});
 	}
 
-	public Shutdown(blockJoins = false): void {
+	/**
+	 * Attempts to shut down an empty server. Disables joins then confirms the server is empty before actually shutting
+	 * down the server. Shutdown() will immedately shut down the server even if new players are in the process of joining.
+	 * @returns
+	 */
+	private AttemptNoPlayerShutdown() {
+		if (this.fireOnShutdownStarted) return;
+		if (Game.IsServer() && !Game.IsEditor()) {
+			Dependency<ProtectedServerManagerService>().SetAllocationAllowed(false).expect();
+
+			// Wait for a little bit to see if we had anyone join while the allocation allow change was being made.
+			// If someone shows up, we'll reset back to allocation allowed and ignore the shutdown trigger.
+			task.wait(10);
+			if (this.GetPlayerCount() > 0) {
+				Dependency<ProtectedServerManagerService>().SetAllocationAllowed(true).expect();
+				return;
+			}
+		}
+		this.Shutdown();
+	}
+
+	private GetPlayerCount() {
+		const players = PlayerManagerBridge.Instance.GetPlayers();
+		let playerCount = 0;
+		for (let p of players) {
+			// bot check
+			if (p.connectionId > 0 && p.connectionId < 50_000) {
+				continue;
+			}
+			playerCount++;
+		}
+		return playerCount;
+	}
+
+	public Shutdown(): void {
 		if (this.fireOnShutdownStarted) return; // No need to recall shutdown once it's been called once.
-		if (Game.IsServer() && !Game.IsEditor() && blockJoins) {
-			Dependency<ProtectedServerManagerService>().SetAccessMode(AirshipServerAccessMode.CLOSED).await();
+		if (Game.IsServer() && !Game.IsEditor()) {
+			Dependency<ProtectedServerManagerService>().SetAllocationAllowed(false).await();
 		}
 		this.serverBootstrap.InvokeOnProcessExit();
 	}
@@ -82,6 +107,10 @@ export class ShutdownService {
 		let done = false;
 
 		print("Received shutdown event in TS.");
+		// Extra call to disable joins in case the server was stopped through a direct sigint and no mark for shutdown.
+		if (Game.IsServer() && !Game.IsEditor()) {
+			Dependency<ProtectedServerManagerService>().SetAllocationAllowed(false).await();
+		}
 
 		const Done = () => {
 			if (done) return;

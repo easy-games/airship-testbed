@@ -149,16 +149,9 @@ export class AirshipChatSingleton {
 									type: "remove",
 									internalMessageId: messageId,
 								});
-								if (moderationResult.messageBlockedReasons.size() > 0) {
-									player.SendMessage(
-										"Your message was blocked for violating our community guidelines for the following reason(s): " +
-										moderationResult.messageBlockedReasons.join(", "),
-									);
-								} else {
-									player.SendMessage(
-										"Your message was blocked for violating our community guidelines.",
-									);
-								}
+								player.SendMessage(
+									"Your message was blocked.",
+								);
 								return;
 							} else if (moderationResult.transformedMessage) {
 								CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients({

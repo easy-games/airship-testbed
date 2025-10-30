@@ -48,6 +48,9 @@ MonoBehaviour:
   refreshMode: 0
   lookTarget: {fileID: 4941434443909322917}
   scaleToTarget: 1
+  invertAxis: 0
+  forwardAxis: 2
+  lockAxis: -1
 --- !u!1 &2266346355371500606
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,6 +99,9 @@ MonoBehaviour:
   refreshMode: 0
   lookTarget: {fileID: 7417441015961336389}
   scaleToTarget: 1
+  invertAxis: 0
+  forwardAxis: 2
+  lockAxis: -1
 --- !u!1 &3064858938603612540
 GameObject:
   m_ObjectHideFlags: 0
@@ -600,6 +606,9 @@ MonoBehaviour:
   refreshMode: 0
   lookTarget: {fileID: 4899779571754391932}
   scaleToTarget: 1
+  invertAxis: 0
+  forwardAxis: 2
+  lockAxis: -1
 --- !u!1 &5815388037475000221
 GameObject:
   m_ObjectHideFlags: 0

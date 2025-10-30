@@ -89,6 +89,7 @@ export class ProtectedTransferService {
 			uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
 			gameId,
 			preferredServerId: config?.preferredServerId,
+			loadingScreenImageId: config?.loadingScreenImageId,
 			serverTransferData: config?.serverTransferData,
 			clientTransferData: config?.clientTransferData,
 		});
@@ -104,6 +105,7 @@ export class ProtectedTransferService {
 		const result = await client.transfers.sendToServer({
 			uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
 			serverId,
+			loadingScreenImageId: config?.loadingScreenImageId,
 			serverTransferData: config?.serverTransferData,
 			clientTransferData: config?.clientTransferData,
 		});
@@ -117,11 +119,13 @@ export class ProtectedTransferService {
 	): Promise<ReturnType<ServerBridgeApiTransferGroupToMatchingServer>> {
 		const result = await client.transfers.sendToMatchingServer({
 			uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
+			serverId: config.serverId,
 			sceneId: config.sceneId,
 			maxPlayers: config.maxPlayers,
 			regions: config.regions,
 			tag: config.tag,
 			accessMode: config.accessMode,
+			loadingScreenImageId: config.loadingScreenImageId,
 			serverTransferData: config.serverTransferData,
 			clientTransferData: config.clientTransferData,
 		});
@@ -137,6 +141,7 @@ export class ProtectedTransferService {
 		const result = await client.transfers.sendToPlayer({
 			uids: players.map((p) => (typeIs(p, "string") ? p : p.userId)),
 			targetUserId,
+			loadingScreenImageId: config?.loadingScreenImageId,
 			serverTransferData: config?.serverTransferData,
 			clientTransferData: config?.clientTransferData,
 		});

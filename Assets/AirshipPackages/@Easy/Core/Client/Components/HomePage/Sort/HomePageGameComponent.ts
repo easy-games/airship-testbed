@@ -61,7 +61,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 
 	private FadeIn(): void {
 		task.delay(this.index * 0.04, () => {
-			// if (this.canvasGroup) return;
+			if (this.gameObject.IsDestroyed()) return;
 			NativeTween.CanvasGroupAlpha(this.canvasGroup, 1, 0.22).SetEaseQuadOut();
 			this.transform.localScale = Vector3.one.mul(0.7);
 			NativeTween.LocalScale(this.transform, Vector3.one, 0.22).SetEaseQuadOut();
@@ -93,19 +93,31 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 
 		this.UpdatePlayerCount(gameDto.liveStats?.playerCount ?? 0);
 
-		{
+		// Wait a little bit for the layout to render/load before starting image downloads since we need
+		// to read the desired pixel size post layout render. I think we only need to wait one frame for this, but
+		// we'll wait little longer just in case.
+		task.unscaledDelay(Time.fixedDeltaTime, () => {
 			// Game image
 			let url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".png";
+
+			// Resolutions are 16:9 & divisble by 8 https://pacoup.com/2011/06/12/list-of-true-169-resolutions/
+			let height = 576;
+			const adjustedHeight = this.gameImg.GetPixelAdjustedRect().height * 1.5; // Always use a bit higher res than needed
+			if (adjustedHeight <= 432) height = 432;
+			if (adjustedHeight <= 288) height = 288;
+			url = Protected.Cache.ApplyHeightToUrl(url, height);
+
 			task.spawn(async () => {
 				const tex = await Protected.Cache.DownloadImage(url);
 				this.gameImg.texture = tex;
 				this.gameImg.color = Color.white;
 			});
-		}
+		});
 
 		if (gameDto.organization) {
 			// Org image
 			let url = AirshipUrl.CDN + "/images/" + gameDto.organization.iconImageId + ".png";
+			url = Protected.Cache.ApplyHeightToUrl(url, 128);
 			task.spawn(async () => {
 				const tex = await Protected.Cache.DownloadImage(url);
 				this.orgImg.texture = tex;

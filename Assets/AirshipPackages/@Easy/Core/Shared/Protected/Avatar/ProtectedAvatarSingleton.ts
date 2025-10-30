@@ -198,10 +198,6 @@ export class ProtectedAvatarSingleton {
 		// print("Protected.Avatar: " + message);
 	}
 
-	public GetImageUrl(imageId: string) {
-		return `${AirshipUrl.CDN}/images/${imageId}.png`;
-	}
-
 	public async GetAllOutfits(): Promise<AirshipOutfit[] | undefined> {
 		return await contentServiceClient.outfits.getOutfits();
 	}

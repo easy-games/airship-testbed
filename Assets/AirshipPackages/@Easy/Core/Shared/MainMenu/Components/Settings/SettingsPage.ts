@@ -44,6 +44,9 @@ export default class SettingsPage extends AirshipBehaviour {
 	@Header("Video Settings")
 	public limitFpsButtonGroup!: SettingsButtonGroup;
 
+	@Header("Keybinds")
+	public keybindsSection: GameObject;
+
 	@Header("Prefabs")
 	public sliderPrefab: GameObject;
 	public togglePrefab: GameObject;
@@ -142,6 +145,10 @@ export default class SettingsPage extends AirshipBehaviour {
 				}
 			}),
 		);
+
+		if (Game.IsMobile()) {
+			this.keybindsSection?.SetActive(false);
+		}
 
 		// Limit FPS
 		if (Game.IsMobile()) {

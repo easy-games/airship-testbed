@@ -103,6 +103,11 @@ export class AirshipInputSingleton {
 	 */
 	private gameSensitivityMultiplier = 1;
 
+	/*
+	 * Core mobile inputs
+	 */
+	private mobileControlCanvas: MobileControlsCanvas;
+
 	public preferredControls = new PreferredControls();
 
 	public isSprintToggleSprinting = false;
@@ -448,7 +453,7 @@ export class AirshipInputSingleton {
 		this.mobileControlsContainer = mobileControlsCanvas;
 		this.mobileCameraControlContainer = mobileCameraControlCanvas;
 
-		const controls = this.mobileControlsContainer.GetAirshipComponent<MobileControlsCanvas>()!;
+		this.mobileControlCanvas = this.mobileControlsContainer.GetAirshipComponent<MobileControlsCanvas>()!;
 
 		this.controlManager.ObserveControlScheme((controlScheme) => {
 			if (controlScheme === ControlScheme.Touch) {
@@ -465,7 +470,7 @@ export class AirshipInputSingleton {
 			}
 		});
 
-		controls.Init();
+		this.mobileControlCanvas.Init();
 	}
 
 	/**
@@ -654,6 +659,33 @@ export class AirshipInputSingleton {
 		const mobileButtonsForAction = this.actionToMobileButtonTable.get(name.lower()) ?? [];
 		for (const mobileButton of mobileButtonsForAction) {
 			mobileButton.SetActive(true);
+		}
+	}
+
+	/**
+	 * Show or hide all mobile controls. Hiding will also clear any Down inputs.
+	 */
+	public SetMobileControlsVisibility(visible: boolean) {
+		// Toggle core mobile inputs
+		this.mobileControlCanvas.enabled = visible;
+
+		// Toggle all mobile buttons
+		for (const [key, objects] of this.actionToMobileButtonTable) {
+			if (visible) {
+				this.ShowMobileButtons(key);
+			} else {
+				this.HideMobileButtons(key);
+			}
+		}
+
+		// Disable Joysticks
+		const moveJoy = this.GetMobileTouchJoystick();
+		if (moveJoy) {
+			moveJoy.SetActive(visible);
+		}
+		const camJoy = this.GetMobileCameraMovement();
+		if (camJoy) {
+			camJoy.SetActive(visible);
 		}
 	}
 

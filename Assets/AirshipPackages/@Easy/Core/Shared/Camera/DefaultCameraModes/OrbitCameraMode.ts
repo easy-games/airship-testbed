@@ -1,5 +1,5 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { ControlScheme, Mouse, Preferred, Touchscreen } from "@Easy/Core/Shared/UserInput";
+import { ControlScheme, Mouse, Preferred } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { MoveDirectionMode } from "../../Character/LocalCharacter/MoveDirectionMode";
 import { Binding } from "../../Input/Binding";
@@ -48,7 +48,6 @@ export class OrbitCameraMode extends CameraMode {
 	private smoothVector = new Vector2(0, 0);
 
 	private readonly preferred = this.onDisableBin.Add(new Preferred());
-	private readonly touchscreen = this.onDisableBin.Add(new Touchscreen());
 
 	constructor(target: GameObject, config?: OrbitCameraConfig) {
 		super(target);
@@ -156,8 +155,6 @@ export class OrbitCameraMode extends CameraMode {
 		this.onDisableBin.Add(this.BindArrowKeyAxis(OrbitArrowKey.Left));
 		this.onDisableBin.Add(this.BindArrowKeyAxis(OrbitArrowKey.Right));
 
-		this.SetupMobileControls();
-
 		this.occlusionCam = rootTransform.GetComponent<OcclusionCam>()!;
 		if (this.occlusionCam === undefined) {
 			this.occlusionCam = rootTransform.gameObject.AddComponent<OcclusionCam>();
@@ -165,7 +162,6 @@ export class OrbitCameraMode extends CameraMode {
 		this.occlusionCam.Init(camera);
 
 		this.onDisableBin.Add(this.preferred);
-		this.onDisableBin.Add(this.touchscreen);
 
 		this.onDisableBin.Add(
 			Airship.Input.preferredControls.ObserveControlScheme((scheme) => {
@@ -201,45 +197,6 @@ export class OrbitCameraMode extends CameraMode {
 				};
 			}),
 		);
-	}
-
-	private SetupMobileControls() {
-		const touchscreen = this.onDisableBin.Add(new Touchscreen());
-		let touchStartPos = Vector3.zero;
-		let touchStartRotX = 0;
-		let touchStartRotY = 0;
-		let touchOverUI = false;
-		touchscreen.pan.Connect((position, phase) => {
-			switch (phase) {
-				case TouchPhase.Began:
-					if (InputBridge.Instance.IsPointerOverUI()) {
-						touchOverUI = true;
-					} else {
-						touchOverUI = false;
-						touchStartPos = position;
-						touchStartRotX = this.rotationX;
-						touchStartRotY = this.rotationY;
-					}
-					break;
-				case TouchPhase.Moved: {
-					if (touchOverUI) break;
-					const deltaPosSinceStart = position.sub(touchStartPos);
-					this.rotationY =
-						(touchStartRotY - deltaPosSinceStart.x * CameraConstants.SensitivityScalar) % (math.pi * 2);
-					this.rotationX = math.clamp(
-						touchStartRotX + deltaPosSinceStart.y * CameraConstants.SensitivityScalar,
-						this.minRotX,
-						this.maxRotX,
-					);
-					break;
-				}
-				case TouchPhase.Ended:
-					touchOverUI = false;
-					break;
-				default:
-					break;
-			}
-		});
 	}
 
 	OnDisable() {

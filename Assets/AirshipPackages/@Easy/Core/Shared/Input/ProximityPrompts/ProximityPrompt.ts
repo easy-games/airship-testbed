@@ -3,10 +3,11 @@ import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
 import { Bin } from "../../Util/Bin";
-import { CanvasAPI, PointerDirection } from "../../Util/CanvasAPI";
+import { CanvasAPI, HoverState, PointerDirection } from "../../Util/CanvasAPI";
 import { InputUtils } from "../../Util/InputUtils";
 import { Signal } from "../../Util/Signal";
 import { ActionInputType } from "../InputUtil";
+import MobileCameraMovement from "../../MainMenu/Components/Overlay/MobileCameraMovement";
 
 export default class ProximityPrompt extends AirshipBehaviour {
 	@Header("Config")
@@ -24,7 +25,9 @@ export default class ProximityPrompt extends AirshipBehaviour {
 		"If true the prompt will only ever render where it was spawned (you are unable to move it). This is slightly faster in bulk.",
 	)
 	public static = false;
-	@Tooltip("If true this prompt can be activated at any time by having the activation key in the down state.")
+	@Tooltip(
+		"If true this prompt can be activated at any time by having the activation key in the down state. This has no effect on mobile.",
+	)
 	public activateWhenDown = false;
 	@Tooltip("If true the prompt will be hidden when a player is dead")
 	public hideWhenDead = false;
@@ -72,9 +75,18 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	private shown = false;
 	/** Position on enable */
 	private initialPosition: Vector3;
+	private btnFocused = false;
+	private btnDown = false;
+	private mobileCamera: MobileCameraMovement | undefined;
 
 	protected Awake(): void {
 		if (this.canvasDistanceCondition) this.canvasDistanceCondition.maxDistance = this.maxRange + 10;
+		// `activateWhenDown` is for quickly activating prompts while a key is down, and is not applicable
+		// to mobile.
+		if (Game.IsMobile()) {
+			this.activateWhenDown = false;
+			this.mobileCamera = Airship.Input.GetMobileCameraMovement();
+		}
 	}
 
 	override OnEnable(): void {
@@ -88,14 +100,6 @@ export default class ProximityPrompt extends AirshipBehaviour {
 			});
 		}
 
-		if (!Game.IsMobile()) {
-			this.bin.AddEngineEventConnection(
-				CanvasAPI.OnClickEvent(this.button.gameObject, () => {
-					this.Activate();
-				}),
-			);
-		}
-
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnPointerEvent(this.button.gameObject, (dir, btn) => {
 				if (dir === PointerDirection.DOWN) {
@@ -106,7 +110,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 			}),
 		);
 		this.shown = true;
-		this.Hide();
+		this.Hide(true);
 	}
 
 	override OnDisable(): void {
@@ -118,11 +122,13 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	}
 
 	private KeyDown(): void {
-		NativeTween.LocalScale(this.canvas.transform, Vector3.one.mul(0.008), 0.08).SetEaseQuadOut();
+		this.btnDown = true;
+		NativeTween.LocalScale(this.transform, Vector3.one.mul(0.8), 0.08).SetEaseQuadOut();
 	}
 
 	private KeyUp(): void {
-		NativeTween.LocalScale(this.canvas.transform, Vector3.one.mul(0.01), 0.08).SetEaseQuadOut();
+		this.btnDown = false;
+		NativeTween.LocalScale(this.transform, Vector3.one, 0.08).SetEaseQuadOut();
 	}
 
 	/**
@@ -155,7 +161,6 @@ export default class ProximityPrompt extends AirshipBehaviour {
 	public SetMaxRange(val: number): void {
 		(this.maxRange as number) = val;
 		if (this.canvasDistanceCondition) this.canvasDistanceCondition.maxDistance = val + 10;
-
 	}
 
 	/**
@@ -170,15 +175,29 @@ export default class ProximityPrompt extends AirshipBehaviour {
 
 	protected Hide(instant?: boolean): void {
 		if (this.gameObject.IsDestroyed()) return;
-		if (!this.shown) return;
+		if (!this.shown && !instant) return;
+
 		this.shown = false;
+
+		if (Game.IsMobile()) {
+			//Don't actually hide until we aren't interacting with the prompt anymore
+			let infStart = Time.time;
+			while (this.btnDown && Time.time - infStart < 5) {
+				task.wait();
+			}
+
+			//If it was shown again since starting the wait we shouldn't animate out.
+			if (this.shown) {
+				return;
+			}
+		}
 
 		this.shownBin.Clean();
 		if (instant) {
-			this.canvas.transform.localScale = Vector3.zero;
+			this.transform.localScale = Vector3.zero;
 			this.canvas.enabled = false;
 		} else {
-			const tween = NativeTween.LocalScale(this.canvas.transform, Vector3.zero, 0.18).SetEaseQuadOut();
+			const tween = NativeTween.LocalScale(this.transform, Vector3.zero, 0.18).SetEaseQuadOut();
 			let interupt = false;
 			this.shownBin.Add(() => {
 				interupt = true;
@@ -201,8 +220,8 @@ export default class ProximityPrompt extends AirshipBehaviour {
 		this.shownBin.Clean();
 
 		this.canvas.enabled = true;
-		this.canvas.transform.localScale = Vector3.zero;
-		NativeTween.LocalScale(this.canvas.transform, Vector3.one.mul(0.01), 0.18).SetEaseQuadOut();
+		this.transform.localScale = Vector3.zero;
+		NativeTween.LocalScale(this.transform, Vector3.one, 0.18).SetEaseQuadOut();
 
 		// for button
 		this.backgroundImg.raycastTarget = Game.IsMobile() || this.mouseRaycastTarget;
@@ -210,16 +229,49 @@ export default class ProximityPrompt extends AirshipBehaviour {
 		if (Game.IsMobile()) {
 			this.backgroundImg.transform.localScale = new Vector3(2, 2, 2);
 			this.canvas.worldCamera = Camera.main;
-			this.shownBin.AddEngineEventConnection(
-				CanvasAPI.OnPointerEvent(this.backgroundImg.gameObject, (pointerDirection, button) => {
-					if (pointerDirection === PointerDirection.DOWN) {
-						Airship.Input.SetDown(this.actionName);
-					} else {
-						Airship.Input.SetUp(this.actionName);
-					}
-				}),
-			);
 		}
+
+		this.shownBin.AddEngineEventConnection(
+			CanvasAPI.OnPointerEvent(this.backgroundImg.gameObject, (pointerDirection, button) => {
+				if (pointerDirection === PointerDirection.DOWN) {
+					if (this.activateWhenDown && this.btnFocused) {
+						this.Activate();
+					}
+					this.KeyDown();
+				} else {
+					if (!this.activateWhenDown && this.btnFocused) {
+						this.Activate();
+					}
+					this.KeyUp();
+				}
+			}),
+		);
+
+		this.shownBin.AddEngineEventConnection(
+			CanvasAPI.OnDragEvent(this.backgroundImg.gameObject, (data) => {
+				if (this.mobileCamera && this.btnDown && !this.btnFocused) {
+					//Drag camera instead of interact with prompt
+					this.mobileCamera.DragEvent(data);
+				}
+			}),
+		);
+
+		this.shownBin.AddEngineEventConnection(
+			CanvasAPI.OnHoverEvent(this.backgroundImg.gameObject, (hoverState, data) => {
+				this.btnFocused = hoverState === HoverState.ENTER;
+
+				//If we originally clicked on the prompt
+				if (this.mobileCamera && this.btnDown) {
+					if (this.btnFocused) {
+						//Stop dragging camera
+						this.mobileCamera.EndDragEvent(data.pointerId);
+					} else {
+						//Drag camera
+						this.mobileCamera.BeginDragEvent(data);
+					}
+				}
+			}),
+		);
 
 		this.shownBin.Add(
 			Airship.Input.OnUp(this.actionName).Connect((event) => {
@@ -242,6 +294,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 
 		this.onShown.Fire();
 
+		//Is the key already pressed down when the character walks in range
 		if (this.activateWhenDown && Airship.Input.IsDown(this.actionName)) {
 			this.Activate();
 		}

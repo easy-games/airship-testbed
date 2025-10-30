@@ -3,6 +3,7 @@ import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import HomePageGameComponent from "./HomePageGameComponent";
 
 export default class SortComponent extends AirshipBehaviour {
@@ -12,18 +13,26 @@ export default class SortComponent extends AirshipBehaviour {
 	public pageScrollRect?: ScrollRect;
 	public gridLayoutGroup!: GridLayoutGroup;
 	public layoutElement!: LayoutElement;
-	public gameMap = new Map<string, HomePageGameComponent>();
+	public refreshBtn: Button;
+	@NonSerialized() public isRefreshing = false;
+
+	@NonSerialized() public gameMap = new Map<string, HomePageGameComponent>();
 	@NonSerialized() public games: AirshipGame[] = [];
+
+	/**
+	 * Will show spinner while this signal yields.
+	 */
+	public onRequestRefresh = new Signal().WithAllowYield(true);
 
 	private bin = new Bin();
 
 	override Awake(): void {
 		this.Clear();
 		this.titleText.SetActive(false);
+		this.refreshBtn.gameObject.SetActive(false);
 	}
 
 	public OnEnable(): void {
-		const rect = this.gameObject.GetComponent<RectTransform>()!;
 		const mainMenu = Dependency<MainMenuSingleton>();
 		this.bin.Add(
 			mainMenu.ObserveScreenSize((sizeType, size) => {
@@ -46,6 +55,28 @@ export default class SortComponent extends AirshipBehaviour {
 				}
 				Bridge.UpdateLayout(this.content, true);
 				this.UpdatePreferredHeight();
+			}),
+		);
+
+		this.bin.Add(
+			this.refreshBtn.onClick.Connect(() => {
+				if (this.isRefreshing) return;
+				this.isRefreshing = true;
+				const loadingBin = new Bin();
+
+				let spinTime = 0.4;
+				this.refreshBtn.transform.rotation = Quaternion.identity;
+				NativeTween.RotationZ(this.refreshBtn.transform, 180, spinTime).SetEaseQuadOut();
+
+				task.spawn(() => {
+					try {
+						this.onRequestRefresh.Fire();
+					} catch (err) {
+						warn(err);
+					}
+					this.isRefreshing = false;
+					loadingBin.Clean();
+				});
 			}),
 		);
 	}
@@ -89,7 +120,10 @@ export default class SortComponent extends AirshipBehaviour {
 
 	public SetGames(games: AirshipGame[], indexOffset: number): HomePageGameComponent[] {
 		this.games = games;
-		this.titleText.gameObject.SetActive(games.size() > 0);
+
+		let hasGames = games.size() > 0;
+		this.titleText.gameObject.SetActive(hasGames);
+		this.refreshBtn.gameObject.SetActive(hasGames);
 
 		this.content.gameObject.ClearChildren();
 		let gameComponents: HomePageGameComponent[] = [];

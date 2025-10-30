@@ -23,7 +23,10 @@ export class RightClickMenuController {
 		canvas: Canvas,
 		position: Vector2,
 		buttons: RightClickMenuButton[],
-		parent?: GameObject,
+		parentConfig?: {
+			parentObject: GameObject;
+			asLastSibling?: boolean;
+		},
 	): () => void {
 		if (this.opened) {
 			this.currentBin.Clean();
@@ -38,8 +41,11 @@ export class RightClickMenuController {
 			Asset.LoadAsset("AirshipPackages/@Easy/Core/Prefabs/UI/RightClickMenu/RightClickMenu.prefab"),
 			canvas.transform,
 		);
-		if (parent) {
-			parentGo.transform.SetParent(parent.transform);
+		if (parentConfig) {
+			parentGo.transform.SetParent(parentConfig.parentObject.transform);
+			if (parentConfig.asLastSibling) {
+				parentGo.transform.SetAsLastSibling();
+			}
 		}
 		const bgGo = parentGo.transform.GetChild(0).gameObject;
 		const menuGo = parentGo.transform.GetChild(1).gameObject;

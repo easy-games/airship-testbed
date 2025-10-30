@@ -6,12 +6,12 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { ProtectedUtil } from "@Easy/Core/Shared/Util/ProtectedUtil";
 import { MainMenuSingleton } from "../../../Singletons/MainMenuSingleton";
 import { SettingsPageSingleton } from "../../../Singletons/SettingsPageSingleton";
 import MainMenuPageComponent from "../../MainMenuPageComponent";
 import { SettingsTab } from "../SettingsPageName";
 import EscapeMenuButton from "./EscapeMenuButton";
-import { ProtectedUtil } from "@Easy/Core/Shared/Util/ProtectedUtil";
 
 export default class GameGeneralPage extends MainMenuPageComponent {
 	public settingsBtn: Button;
@@ -47,7 +47,7 @@ export default class GameGeneralPage extends MainMenuPageComponent {
 		this.playerListPage.SetActive(false);
 
 		const mainMenu = Dependency<MainMenuSingleton>();
-		if (mainMenu.leaveMatchButtonData && !Game.IsMobile()) {
+		if (mainMenu.leaveMatchButtonData) {
 			this.leaveMatchBtn.text.text = mainMenu.leaveMatchButtonData.text;
 			this.leaveMatchBtn.gameObject.SetActive(true);
 			this.leaveMatchSpacer.gameObject.SetActive(true);

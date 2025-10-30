@@ -3382,7 +3382,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5851182451793476457}
   m_HandleRect: {fileID: 6796106799109526970}
   m_Direction: 2
-  m_Value: 1.0000007
+  m_Value: 1
   m_Size: 0.91070086
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4431,6 +4431,28 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 4782042351782588494}
+      modified: 1
+    - name: keybindsSection
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators:
+      - name: Header
+        parameters:
+        - type: string
+          serializedValue: '"Keybinds"'
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 7348204734949170328}
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 

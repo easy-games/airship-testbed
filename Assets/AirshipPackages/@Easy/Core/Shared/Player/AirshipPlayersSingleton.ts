@@ -499,6 +499,10 @@ export class AirshipPlayersSingleton {
 			team = Airship.Teams.FindById(dto.teamId);
 		}
 
+		// Wait for local player connectionId data before we start adding additional player objects.
+		// If we don't, we could end up adding two player objects for the local player since the local
+		// player initializes with connId 0
+		Game.WaitForLocalPlayerLoaded();
 		let player = this.FindByConnectionId(dto.connectionId);
 		if (!player) {
 			const nob = NetworkUtil.WaitForNetworkIdentity(dto.netId);

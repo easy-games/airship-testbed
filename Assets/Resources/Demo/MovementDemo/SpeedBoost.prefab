@@ -822,6 +822,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rebuildMode: 0
   contentHolder: {fileID: 1664301601595242569}
+  centerGrid: 0
   numberOfGridElements: {x: 1, y: 1, z: 1}
   localGridElementSize: {x: 1, y: 1, z: 1.72}
   randomLocalPositionOffset: {x: 0, y: 0, z: 0}

@@ -304,6 +304,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5230852655977530220, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
+      propertyPath: m_Name
+      value: Confirm Text (TMP)
+      objectReference: {fileID: 0}
     - target: {fileID: 5697189377693666290, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -405,6 +409,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7493476462765347322, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
+      propertyPath: metadata.properties.Array.data[1].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7493476462765347322, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
       propertyPath: m_metadata.properties.Array.data[1].serializedValue
       value: 0
       objectReference: {fileID: 0}
@@ -415,6 +423,10 @@ PrefabInstance:
     - target: {fileID: 7912594410175597541, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
       propertyPath: m_HorizontalAlignment
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8012868004065787895, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
+      propertyPath: metadata.properties.Array.data[1].serializedValue
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8012868004065787895, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
       propertyPath: m_metadata.properties.Array.data[1].serializedValue
@@ -451,6 +463,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 6557990283319988637}
   m_SourcePrefab: {fileID: 100100000, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
+--- !u!114 &1981748237745666165 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 447671509870006115, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
+  m_PrefabInstance: {fileID: 2141153038151939862}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2903911791735027923 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3889459967142678469, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}
@@ -468,16 +491,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptFile: {fileID: -7787817251508483134, guid: 8d19770e8c7ee48e3be9e44240b5d314, type: 3}
-  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Modal/ConfirmModal.lua
-  m_error: 0
-  m_yielded: 0
-  m_canResume: 0
-  m_asyncYield: 0
-  m_onUpdateHandle: -1
-  m_onLateUpdateHandle: -1
-  m_shortFileName: 
-  m_metadata:
+  guid: 072dc93c-3c0e-4d2e-aa83-c80c8ecedb9a
+  script: {fileID: -7787817251508483134, guid: 8d19770e8c7ee48e3be9e44240b5d314, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Modal/ConfirmModal.lua
+  forceContext: 0
+  metadata:
     name: ConfirmModal
     singleton: 0
     decorators: []
@@ -492,6 +510,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -507,6 +528,9 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -522,14 +546,34 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
+      jsDocs:
+        text: []
+        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 6729665876499205291}
       modified: 1
+    - name: confirmText
+      type: object
+      objectType: TMP_Text
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 1981748237745666165}
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
-  contextOverwritten: 0
 --- !u!224 &4013294432643342498 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3027810235059869620, guid: b4133d9ff571e4eecaee0729b5a769e7, type: 3}

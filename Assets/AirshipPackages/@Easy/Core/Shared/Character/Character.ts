@@ -243,8 +243,8 @@ export default class Character extends AirshipBehaviour {
 			bin.Clean();
 		}
 		this.observeHeldSlotBins.clear();
+		this.bin.Clean();
 		if (Game.IsClient() && !this.despawned) {
-			this.bin.Clean();
 			this.despawned = true;
 			this.onDespawn.Fire();
 			Airship.Characters.onCharacterDespawned.Fire(this);
@@ -679,6 +679,8 @@ export default class Character extends AirshipBehaviour {
 
 		this.maxHealth = maxHealth;
 		this.onMaxHealthChanged.Fire(this.maxHealth, oldMaxHealth);
+
+		if (this.health > maxHealth) this.SetHealth(maxHealth, false, true);
 
 		// If we're a dedicated server network max health to clients
 		if (Game.IsServer() && !Game.IsClient()) {

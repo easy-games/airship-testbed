@@ -47,7 +47,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		const mainMenu = Dependency<MainMenuSingleton>();
 		mainMenu.ObserveScreenSize((st) => {
 			if (Game.IsMobile() && st === "sm") {
-				this.mainSortedContentLayoutGroup.padding.top = 20;
+				this.mainSortedContentLayoutGroup.padding.top = 0;
 
 				// this.verticalLayoutGroup.padding.left = 4;
 				// this.verticalLayoutGroup.padding.right = 4;
@@ -63,11 +63,15 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		this.ClearSorts();
 		this.addedDiscordHero = false;
 
+		const hour = 60 * 60;
 		this.CreateFeaturedEvent(
 			"47c5fdbd-bf3f-4a5b-9ad3-dea11a52a762",
-			"Early access playtest of BedWars 2.\nWelcome to Airship!",
-			1755363600,
-			1755374400,
+			Game.deviceType === AirshipDeviceType.Phone
+				? "The first mobile playtest!\nPlay on Mac, Windows, iOS, and Android!"
+				: "The first mobile playtest of BedWars 2.\nPlay on Mac, Windows, iOS, and Android!",
+			AirshipUrl.CDN + "/airship/Barbarian.png",
+			1758992400,
+			1758992400 + 3 * hour,
 		);
 
 		this.CreateSort(SortId.Popular, "Popular");
@@ -143,12 +147,24 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		sortComponent.SetTitle(title);
 		sortComponent.pageScrollRect = this.scrollRect;
 		this.sorts.set(sortId, sortComponent);
+
+		this.bin.Add(
+			sortComponent.onRequestRefresh.Connect(() => {
+				this.FetchGames();
+			}),
+		);
 	}
 
-	private CreateFeaturedEvent(gameId: string, description: string, startTime: number, endTime: number): void {
+	private CreateFeaturedEvent(
+		gameId: string,
+		description: string,
+		popoutImageUrl: string,
+		startTime: number,
+		endTime: number,
+	): void {
 		const go = Instantiate(this.featuredEventPrefab, this.mainContent);
 		const featuredEvent = go.GetAirshipComponent<MenuFeaturedEvent>()!;
-		featuredEvent.Init(gameId, description, startTime, endTime);
+		featuredEvent.Init(gameId, description, popoutImageUrl, startTime, endTime);
 	}
 
 	private CreateSpacer(): void {
