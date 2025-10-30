@@ -1442,11 +1442,20 @@ interface RectTransformUtilityConstructor {
 	ScreenPointToLocalPointInRectangle(
 		rect: RectTransform,
 		screenPoint: Vector2,
-		cam: Camera | undefined = undefined,
+		cam: Camera,
 	): LuaTuple<[hitPlaneOfRect: boolean, localPoint: Vector2]>;
+	ScreenPointToLocalPointInRectangle(
+		rect: RectTransform,
+		screenPoint: Vector2,
+	): LuaTuple<[hitPlaneOfRect: boolean, localPoint: Vector2]>;
+
 	ScreenPointToWorldPointInRectangle(
 		rect: RectTransform,
 		screenPoint: Vector2,
-		cam: Camera | undefined,
+		cam: Camera,
+	): LuaTuple<[hitPlaneOfRect: boolean, worldPoint: Vector3]>;
+	ScreenPointToWorldPointInRectangle(
+		rect: RectTransform,
+		screenPoint: Vector2,
 	): LuaTuple<[hitPlaneOfRect: boolean, worldPoint: Vector3]>;
 }
