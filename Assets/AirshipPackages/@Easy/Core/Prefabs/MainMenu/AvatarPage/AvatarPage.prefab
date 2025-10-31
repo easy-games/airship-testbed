@@ -479,7 +479,7 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: avatarCenterRect
       type: object
       objectType: RectTransform
@@ -680,8 +680,8 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
+      serializedObject: {fileID: 982984482520169929}
+      modified: 1
     - name: mobileTopBarScrollRect
       type: object
       objectType: ScrollRect
@@ -1002,6 +1002,24 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 7815662951505243774}
+      modified: 1
+    - name: colorPicker
+      type: AirshipBehaviour
+      objectType: ColorPicker
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: AirshipPackages/@Easy/Core/Client/Components/ColorPicker/ColorPicker.ts
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 1109089166247527486}
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
@@ -3566,8 +3584,8 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 768, y: 0}
-  m_Pivot: {x: 0.5, y: 0}
+  m_SizeDelta: {x: 650, y: 0}
+  m_Pivot: {x: 1, y: 0}
 --- !u!1 &4256413018656055638
 GameObject:
   m_ObjectHideFlags: 0
@@ -10015,6 +10033,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98676e6edf8408c4cb26e3447b9aebc4, type: 3}
+--- !u!114 &1109089166247527486 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2687327435288224799, guid: 98676e6edf8408c4cb26e3447b9aebc4, type: 3}
+  m_PrefabInstance: {fileID: 3039657791245459489}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &9142462877388754904 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6111249610491883513, guid: 98676e6edf8408c4cb26e3447b9aebc4, type: 3}

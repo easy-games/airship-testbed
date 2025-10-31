@@ -5,6 +5,7 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import AvatarMenuComponent from "../AvatarMenuComponent";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
+import ColorPicker from "@Easy/Core/Client/Components/ColorPicker/ColorPicker";
 
 export default class AvatarCustomizationPanel extends AirshipBehaviour {
 	@Header("Templates")
@@ -12,6 +13,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 	@Header("References")
 	public menu: AvatarMenuComponent;
 	public optionsHolder: Transform;
+	public colorPicker: ColorPicker;
 
 	@HideInInspector()
 	public accessoryBuilder: AccessoryBuilder;
@@ -20,6 +22,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 	private openBin = new Bin();
 	private gear: PlatformGear;
 	private modifiedGear = new Map<string, PlatformGear>();
+	private colorPickerBin = new Bin();
 
 	public Clear() {
 		this.modifiedGear.clear();
@@ -85,19 +88,39 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 		// Process Color Swapping
 		this.openBin.Add(
 			options.onSelectColor.Connect((colorStr) => {
-				//make accessory the color
-				const newColor = ColorUtil.HexToColor(colorStr);
-				for (const template of this.gear.accessoryPrefabs) {
-					if (template) {
-						print("Setting color: " + colorStr + " to slot: " + template.accessorySlot);
-						this.accessoryBuilder.SetCustomColor(template.accessorySlot, colorKey, colorStr);
-					}
-				}
-				this.gear.customizationColors[colorIndex].value = newColor;
-				this.menu.Dirty();
-				options.SetActiveColor(newColor);
+				this.SelectColorOption(options, ColorUtil.HexToColor(colorStr), colorStr, colorKey, colorIndex);
 			}),
 		);
+
+		this.openBin.Add(
+			options.onClickActiveColor.Connect((option) => {
+				this.colorPickerBin.Clean();
+				this.colorPickerBin.Add(
+					this.colorPicker.OnNewColor.Connect((newColor, newHex) => {
+						this.SelectColorOption(option, newColor, newHex, colorKey, colorIndex);
+					}),
+				);
+				this.colorPicker.Open(option.GetActiveColor(), colorKey);
+			}),
+		);
+	}
+
+	private SelectColorOption(
+		option: AvatarCustomizationOption_Color,
+		newColor: Color,
+		newColorHex: string,
+		colorKey: string,
+		index: number,
+	) {
+		//make accessory the color
+		for (const template of this.gear.accessoryPrefabs) {
+			if (template) {
+				this.accessoryBuilder.SetCustomColor(template.accessorySlot, colorKey, newColorHex);
+			}
+		}
+		this.gear.customizationColors[index].value = newColor;
+		this.menu.Dirty();
+		option.SetActiveColor(newColor);
 	}
 
 	public Close() {

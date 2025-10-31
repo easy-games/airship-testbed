@@ -12,8 +12,10 @@ export default class AvatarCustomizationOption_Color extends AirshipBehaviour {
 	public labelTxt: TextMeshProUGUI;
 	public palletHolder: Transform;
 	public currentColorBtn: AvatarCustomizationBtn;
+	public openColorPickerBtn: Button;
 
 	public onSelectColor = new Signal<string>();
+	public onClickActiveColor = new Signal<AvatarCustomizationOption_Color>();
 
 	private colorPalletId: number = 0;
 	private palletBtns: AvatarCustomizationBtn[] = [];
@@ -31,6 +33,12 @@ export default class AvatarCustomizationOption_Color extends AirshipBehaviour {
 
 		//Create the grid of color options
 		this.CreatePallet(Protected.Avatar.colorSets[colorPalletId]);
+
+		this.bin.Add(
+			this.openColorPickerBtn.onClick.Connect(() => {
+				this.onClickActiveColor.Fire(this);
+			}),
+		);
 	}
 
 	protected OnDestroy(): void {
@@ -75,5 +83,9 @@ export default class AvatarCustomizationOption_Color extends AirshipBehaviour {
 
 	public SetActiveColor(color: Color) {
 		this.currentColorBtn.image.color = color;
+	}
+
+	public GetActiveColor() {
+		return this.currentColorBtn.image.color;
 	}
 }

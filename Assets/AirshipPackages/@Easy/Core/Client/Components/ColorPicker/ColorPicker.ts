@@ -19,7 +19,7 @@ export default class ColorPicker extends AirshipBehaviour {
 	public saturationSlide: Slider;
 	public valueSlide: Slider;
 
-	public OnNewColor = new Signal<Color>();
+	public OnNewColor = new Signal<[color: Color, hex: string]>();
 
 	private initialColor: Color;
 	private currentColor: Color;
@@ -29,6 +29,7 @@ export default class ColorPicker extends AirshipBehaviour {
 	private isOpen = false;
 	private draggingColor = false;
 	private canDragColor = true;
+	private currentColorHex = "#FFFFFF";
 
 	protected Start(): void {
 		if (Game.IsEditor()) {
@@ -142,20 +143,22 @@ export default class ColorPicker extends AirshipBehaviour {
 	public SetColor(color: Color) {
 		this.currentColor = color;
 		this.currentColorImg.color = color;
-		this.hexInput.SetTextWithoutNotify(ColorUtil.ColorToHex(color));
+		this.currentColorHex = ColorUtil.ColorToHex(color);
+		this.hexInput.SetTextWithoutNotify(this.currentColorHex);
 		this.currentHvs = ColorUtil.RgbToHsv(color);
 		this.hueSlide.SetValueWithoutNotify(this.currentHvs.x);
 		this.valueSlide.SetValueWithoutNotify(this.currentHvs.y);
 		this.saturationSlide.SetValueWithoutNotify(this.currentHvs.z);
 
-		this.OnNewColor.Fire(color);
+		this.OnNewColor.Fire(this.currentColor, this.currentColorHex);
 	}
 
 	public SetHsvColor(hsv: Vector3) {
 		this.currentColor = ColorUtil.HsvToRgb(hsv);
 		this.currentColorImg.color = this.currentColor;
-		this.hexInput.SetTextWithoutNotify(ColorUtil.ColorToHex(this.currentColor));
-		this.OnNewColor.Fire(this.currentColor);
+		this.currentColorHex = ColorUtil.ColorToHex(this.currentColor);
+		this.hexInput.SetTextWithoutNotify(this.currentColorHex);
+		this.OnNewColor.Fire(this.currentColor, this.currentColorHex);
 	}
 
 	public GetColor() {
@@ -165,7 +168,7 @@ export default class ColorPicker extends AirshipBehaviour {
 	public GetColorFromUV(uv: Vector2) {
 		const hue = math.clamp01(uv.x);
 		const value = math.clamp01(uv.y);
-		const saturation = 1 - (value * 2 - 1);
+		const saturation = math.clamp01(1 - (value * 2 - 1));
 		return ColorUtil.HsvToRgb(new Vector3(hue, saturation, value));
 	}
 
