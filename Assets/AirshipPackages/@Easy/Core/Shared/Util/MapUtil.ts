@@ -5,8 +5,12 @@ export class MapUtil {
 	 * Will either get the value at key or if none exists it will set to provided default
 	 *
 	 * @returns new entry
+	 * @deprecated Use `Map.getOrInsert` or `Map.getOrInsertComputed`
 	 */
 	public static GetOrCreate<K, V extends defined>(map: Map<K, V>, key: K, initValue: V): V;
+	/**
+	 * @deprecated Use `Map.getOrInsert` or `Map.getOrInsertComputed`
+	 */
 	public static GetOrCreate<K, V extends defined>(
 		map: Map<K, V>,
 		key: K,
@@ -32,6 +36,9 @@ export class MapUtil {
 		}
 	}
 
+	/**
+	 * @deprecated Use `Map.values()`
+	 */
 	public static Values<T extends defined>(map: Map<unknown, T>): T[] {
 		const result: T[] = [];
 		for (const entry of map) {
@@ -41,6 +48,9 @@ export class MapUtil {
 		return result;
 	}
 
+	/**
+	 * @deprecated Use `Map.keys()`
+	 */
 	public static Keys<T extends defined>(map: Map<T, unknown>): T[] {
 		const result: T[] = [];
 		for (const entry of map) {
@@ -49,6 +59,9 @@ export class MapUtil {
 		return result;
 	}
 
+	/**
+	 * @deprecated Use `[...map]`
+	 */
 	public static Entries<T, K>(map: Map<T, K>): [T, K][] {
 		const result: [T, K][] = [];
 		for (const entry of map) {

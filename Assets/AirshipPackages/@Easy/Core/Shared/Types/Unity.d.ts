@@ -168,6 +168,7 @@ interface CheckableTypes extends CheckablePrimitives {
 	Plane: Plane;
 	Ray: Ray;
 	Color: Color;
+	buffer: buffer;
 	Quaternion: Quaternion;
 	BinaryBlob: BinaryBlob;
 	Matrix4x4: Matrix4x4;

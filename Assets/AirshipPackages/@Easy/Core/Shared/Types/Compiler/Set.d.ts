@@ -20,10 +20,7 @@ interface ReadonlySet<T> extends Iterable<T> {
 	 * Performs the specified action for each (element / pair of elements) in the set
 	 * @param callbackfn  A function that accepts up to three arguments. forEach calls the callbackfn function one time for each (element / pair of elements) in the array.
 	 */
-	forEach(
-		this: ReadonlySet<T>,
-		callbackfn: (value: T, value2: T, self: ReadonlySet<T>) => void
-	): void;
+	forEach(this: ReadonlySet<T>, callbackfn: (value: T, value2: T, self: ReadonlySet<T>) => void): void;
 
 	/**
 	 * Returns the number of elements in the set
@@ -34,6 +31,11 @@ interface ReadonlySet<T> extends Iterable<T> {
 	 * Returns a boolean for whether the given key exists in the set
 	 */
 	has(this: ReadonlySet<T>, value: T): boolean;
+
+	/**
+	 * Returns a shallow copy of this set
+	 */
+	clone(this: ReadonlySet<T>): Set<T>;
 }
 
 interface ReadonlySetConstructor {
