@@ -19,12 +19,26 @@ export class AirshipSettingsSingleton {
 		});
 	}
 
-	protected OnStart(): void { }
+	protected OnStart(): void {}
 
-	public AddSlider(name: string, startingValue: number, min: number, max: number, increment: number = 1): void {
+	/**
+	 * Adds a slider to the game's settings.
+	 * @param name The name of this slider
+	 * @param startingValue The starting value of this slider
+	 * @param min The minimum value this slider can be set to
+	 * @param max The maximum value this slider can be set to
+	 * @param [increment=0.01] The increment for this slider - defaults to `0.01`
+	 */
+	public AddSlider(name: string, startingValue: number, min: number, max: number, increment: number = 0.01): void {
 		contextbridge.invoke("Settings:AddSlider", LuauContext.Protected, name, startingValue, min, max, increment);
 	}
 
+	/**
+	 * Listen to the value of the named slider
+	 * @param name The name of the toggle
+	 * @param callback The callback that is fired with the initial value, as well as every time the value is changed
+	 * @returns
+	 */
 	public ObserveSlider(name: string, callback: (val: number) => void): () => void {
 		const startingVal = contextbridge.invoke("Settings:Slider:GetValue", LuauContext.Protected, name);
 		task.spawn(() => {
@@ -37,14 +51,29 @@ export class AirshipSettingsSingleton {
 		});
 	}
 
+	/**
+	 * Gets the value of the named slider
+	 * @param name The name of the slider
+	 */
 	public GetSlider(name: string): number {
 		return contextbridge.invoke("Settings:Slider:GetValue", LuauContext.Protected, name);
 	}
 
+	/**
+	 * Adds a toggle to the game's settings
+	 * @param name The name of the setting
+	 * @param startingValue The starting value of this toggle
+	 */
 	public AddToggle(name: string, startingValue: boolean): void {
 		contextbridge.invoke("Settings:AddToggle", LuauContext.Protected, name, startingValue);
 	}
 
+	/**
+	 * Listen to the value of the named toggle
+	 * @param name The name of the toggle
+	 * @param callback The callback that is fired with the initial value, as well as every time the value is changed
+	 * @returns
+	 */
 	public ObserveToggle(name: string, callback: (val: boolean) => void): () => void {
 		const startingVal = contextbridge.invoke("Settings:Toggle:GetValue", LuauContext.Protected, name);
 		task.spawn(() => {
@@ -60,6 +89,10 @@ export class AirshipSettingsSingleton {
 		);
 	}
 
+	/**
+	 * Gets the value of the named toggle
+	 * @param name The name of the toggle
+	 */
 	public GetToggle(name: string): boolean {
 		return contextbridge.invoke("Settings:Toggle:GetValue", LuauContext.Protected, name);
 	}

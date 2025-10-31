@@ -14,14 +14,14 @@ export default class SettingsSlider extends AirshipBehaviour {
 
 	override Start(): void {}
 
-	public Init(name: string, startingValue: number, min: number, max: number, increment: number = 0.01): void {
+	public Init(name: string, startingValue: number, min: number, max: number, increment: number): void {
 		this.titleText.text = name;
 
 		const slider = this.slider.GetComponent<Slider>()!;
 		let ignoreNextSliderChange = false;
 		let ignoreNextInputFieldChange = false;
 
-		let valRounded = this.ValidateIncrement(math.floor(startingValue * 100) / 100, increment);
+		let valRounded = this.ValidateIncrement(math.clamp(startingValue, min, max), increment);
 		let textValue = string.format("%.2f", valRounded);
 
 		slider.maxValue = max;
@@ -37,7 +37,7 @@ export default class SettingsSlider extends AirshipBehaviour {
 				}
 				const value = tonumber(this.inputField.text);
 				if (value === undefined) return;
-				let newValue = this.ValidateIncrement(math.floor(value * 100) / 100, increment);
+				let newValue = this.ValidateIncrement(value, increment);
 
 				ignoreNextSliderChange = true;
 				this.onChange.Fire(value);
@@ -47,7 +47,7 @@ export default class SettingsSlider extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnValueChangeEvent(this.slider, (value) => {
-				let newValue = this.ValidateIncrement(math.floor(value * 100) / 100, increment);
+				let newValue = this.ValidateIncrement(value, increment);
 
 				if (ignoreNextSliderChange) {
 					ignoreNextSliderChange = false;
@@ -73,7 +73,7 @@ export default class SettingsSlider extends AirshipBehaviour {
 	}
 
 	private ValidateIncrement(value: number, increment: number): number {
-		return math.round(value / increment) * increment;
+		return math.floor(value / increment + 0.5) * increment; // math.floor works better with negative numbers
 	}
 
 	override OnDestroy(): void {
