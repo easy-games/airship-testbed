@@ -3,8 +3,6 @@ import AvatarCustomizationOption_Color from "./AvatarCustomizationOption_Color";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import AvatarMenuComponent from "../AvatarMenuComponent";
-import { Game } from "@Easy/Core/Shared/Game";
-import { Protected } from "@Easy/Core/Shared/Protected";
 import ColorPicker from "@Easy/Core/Client/Components/ColorPicker/ColorPicker";
 
 export default class AvatarCustomizationPanel extends AirshipBehaviour {
@@ -14,6 +12,9 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 	public menu: AvatarMenuComponent;
 	public optionsHolder: Transform;
 	public colorPicker: ColorPicker;
+
+	@Header("Variables")
+	public heightOffset = 200;
 
 	@HideInInspector()
 	public accessoryBuilder: AccessoryBuilder;
@@ -125,7 +126,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 
 	public Close() {
 		this.openBin.Clean();
-		NativeTween.AnchoredPositionY(this.transform, -200, 0.5).SetEaseExpoIn();
+		NativeTween.AnchoredPositionY(this.transform, -this.heightOffset, 0.5).SetEaseExpoIn();
 		this.OnToggle.Fire(false);
 	}
 }
