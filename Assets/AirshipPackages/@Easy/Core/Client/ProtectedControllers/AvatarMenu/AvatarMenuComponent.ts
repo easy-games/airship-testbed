@@ -60,8 +60,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	@Header("Button Holders")
 	public outfitButtonHolder!: Transform;
 	public mainNavButtonHolder!: Transform;
-	//public subNavBarButtonHolder!: Transform;
-	//public subBarHolders: Transform[] = [];
+	// public subNavBarButtonHolder!: Transform;
+	// public subBarHolders: Transform[] = [];
 
 	@Header("Buttons")
 	public revertBtn!: AirshipButton;
@@ -70,8 +70,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	@NonSerialized() private outfitBtns: AvatarMenuBtn[] = [];
 	private mainNavBtns: AvatarMenuBtn[] = [];
-	//private subNavBtns: AvatarMenuBtn[] = [];
-	//private subBarBtns: AvatarMenuBtn[][] = [[]]; //Each sub category has its own list of buttons
+	// private subNavBtns: AvatarMenuBtn[] = [];
+	// private subBarBtns: AvatarMenuBtn[][] = [[]]; //Each sub category has its own list of buttons
 
 	private activeMainIndex = -1;
 	private activeSubIndex = -1;
@@ -96,7 +96,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private finishedFirstOutfitLoad = false;
 
 	private Log(message: string) {
-		print("Avatar Editor: " + message + " (" + Time.time + ")");
+		if (Game.IsEditor()) {
+			print("Avatar Editor: " + message + " (" + Time.time + ")");
+		}
 	}
 
 	override Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void {
@@ -271,7 +273,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			);
 		}
 
-		//"Enter" should allow you to rename currently selected outfit button
+		// "Enter" should allow you to rename currently selected outfit button
 		this.bin.Add(
 			Keyboard.OnKeyDown(Key.Enter, (event) => {
 				if (event.uiProcessed) return;
@@ -333,7 +335,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		let i = 0;
 		this.activeMainIndex = index;
 
-		//Highlight this category button
+		// Highlight this category button
 		for (i = 0; i < this.mainNavBtns.size(); i++) {
 			const nav = this.mainNavBtns[i];
 			nav.SetSelected(i === index);
@@ -353,20 +355,20 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		switch (this.activeMainIndex) {
 			case 0:
-				//SKIN COLOR
+				// SKIN COLOR
 				this.DisplayColorScheme();
 				break;
 			case 1:
-				//FACE
+				// FACE
 				this.DisplayFaceItems();
 				this.UpdateButtonGraphics();
 				return;
 			case 2:
-				//HAIR
+				// HAIR
 				this.DisplayItemsOfType(AccessorySlot.Hair);
 				break;
 			case 3:
-				//HEAD
+				// HEAD
 				this.DisplayItemsOfType(AccessorySlot.Head);
 				this.DisplayItemsOfType(AccessorySlot.Face);
 				this.DisplayItemsOfType(AccessorySlot.Ears);
@@ -374,27 +376,27 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				this.DisplayItemsOfType(AccessorySlot.Neck);
 				break;
 			case 4:
-				//TORSO
+				// TORSO
 				this.DisplayItemsOfType(AccessorySlot.Torso);
 				this.DisplayItemsOfType(AccessorySlot.Backpack);
 				this.DisplayItemsOfType(AccessorySlot.TorsoOuter);
 				this.DisplayItemsOfType(AccessorySlot.TorsoInner);
 				break;
 			case 5:
-				//HANDS
+				// HANDS
 				this.DisplayItemsOfType(AccessorySlot.Hands);
 				this.DisplayItemsOfType(AccessorySlot.RightWrist);
 				this.DisplayItemsOfType(AccessorySlot.LeftWrist);
 				this.DisplayItemsOfType(AccessorySlot.HandsOuter);
 				break;
 			case 6:
-				//LEGS
+				// LEGS
 				this.DisplayItemsOfType(AccessorySlot.Legs);
 				this.DisplayItemsOfType(AccessorySlot.LegsOuter);
 				this.DisplayItemsOfType(AccessorySlot.LegsInner);
 				break;
 			case 7:
-				//FEET
+				// FEET
 				this.DisplayItemsOfType(AccessorySlot.Feet);
 				this.DisplayItemsOfType(AccessorySlot.FeetInner);
 				this.DisplayItemsOfType(AccessorySlot.RightFoot);
@@ -405,9 +407,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private DisplayItemsOfType(slot: AccessorySlot) {
-		//this.currentSlot = slot;
+		// this.currentSlot = slot;
 
-		//Accessories
+		// Accessories
 		let validClothingItems = Protected.Avatar.ownedClothing.filter(
 			(c) =>
 				c.class.gear.category === AirshipGearCategory.Clothing &&
@@ -428,7 +430,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (clothing && clothing.size() > 0) {
 			clothing.forEach((clothingItem) => {
 				this.AddItemButton(clothingItem, async (clickedBtn) => {
-					print(`Equipping ${clothingItem.class.name} (${clothingItem.class.classId})`);
+					this.Log(`Equipping ${clothingItem.class.name} (${clothingItem.class.classId})`);
 					await this.SelectItem(clothingItem, clickedBtn);
 					this.accessoryBuilder.UpdateCombinedMesh();
 				});
@@ -496,17 +498,17 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private AddItemButton(clothingDto: AirshipGearItem, onClickCallback: (clickedBtn: AvatarAccessoryBtn) => void) {
-		//let newButton = PoolManager.SpawnObject(this.itemButtonTemplate, this.mainContentHolder);
+		// let newButton = PoolManager.SpawnObject(this.itemButtonTemplate, this.mainContentHolder);
 		const newButton = Object.Instantiate(this.itemButtonTemplate!, this.mainContentHolder!);
 		const redirectScroll = newButton.GetComponent<AirshipRedirectScroll>();
 		this.itemButtonBin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(newButton, () => {
-				//Make sure we aren't scrolling
+				// Make sure we aren't scrolling
 				if (redirectScroll?.isDragging) {
 					return;
 				}
 
-				//Fire the buttons call to action
+				// Fire the buttons call to action
 				task.spawn(() => {
 					onClickCallback(accessoryBtn);
 				});
@@ -520,11 +522,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		accessoryBtn.instanceId = clothingDto.instanceId;
 		accessoryBtn.SetText(clothingDto.class.name);
 		accessoryBtn.noColorChanges = false;
-		//TODO: Removed the image until we can load it from the server
 		accessoryBtn.iconImage.enabled = false;
 		this.currentContentBtns.push({ id: clothingDto.instanceId, button: accessoryBtn });
 
-		//download the items thumbnail
+		// download the items thumbnail
 		let cloudImage = newButton.gameObject.GetComponent<CloudImage>()!;
 		if (cloudImage === undefined) {
 			cloudImage = newButton.gameObject.AddComponent<CloudImage>();
@@ -592,17 +593,15 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		let alreadySelected = false;
 		let oldGearSlots: AccessorySlot[] = [];
-		print("Checking new ID: " + clothingDto.class.classId);
 		for (const [slot, instanceId] of this.activeAccessories) {
-			print("Slot " + slot + " id: " + instanceId);
 			if (instanceId === clothingDto.instanceId) {
 				alreadySelected = true;
 				oldGearSlots.push(slot);
 			}
 		}
 
-		//Gears can have many slots so be sure to remove all of them in the set
-		//Even if the new gear only contains 1 of the many slots
+		// Gears can have many slots so be sure to remove all of them in the set
+		// Even if the new gear only contains 1 of the many slots
 		for (const gearSlot of oldGearSlots) {
 			this.activeAccessories.delete(gearSlot);
 			this.accessoryBuilder.RemoveBySlot(gearSlot);
@@ -624,7 +623,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			if (!gear) error("failed to download clothing.");
 			if (gear?.accessoryPrefabs === undefined) error("empty accessory prefabs.");
 
-			//Will open if there are customization options
+			// Will open if there are customization options
 			let foundCustomSlot: OutfitCustomizationSlot | undefined;
 			const customization = this.accessoryBuilder.GetCustomization();
 			if (customization) {
@@ -802,10 +801,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	}
 
 	private UpdateButtonGraphics() {
-		//Highlight selected items
+		// Highlight selected items
 		for (let i = 0; i < this.currentContentBtns.size(); i++) {
 			let button = this.currentContentBtns[i];
-			//Found matching class ID or this button is the active color
+			// Found matching class ID or this button is the active color
 			let active = this.selectedColor === button.id || this.selectedFaceId === button.id;
 			if (!active) {
 				for (const [k, instanceId] of this.activeAccessories) {
@@ -847,20 +846,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			gearIds.add(this.selectedFaceId);
 		}
 
-		//let customMeta = "";
 		const currentMetaData = this.accessoryBuilder.GetCustomization();
-		// if (currentMetaData !== undefined) {
-		// 	print("Encoding: " + currentMetaData);
-		// 	customMeta = EncodeJSON(currentMetaData);
-		// }
-
-		if (currentMetaData) {
-			for (const gear of currentMetaData.platformCustomSlots) {
-				for (const color of gear.colors) {
-					print("Got customization: " + color.colorHex);
-				}
-			}
-		}
 
 		Protected.Avatar.SaveOutfitAccessories(
 			this.viewedOutfit.outfitId,

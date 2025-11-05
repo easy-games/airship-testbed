@@ -136,7 +136,7 @@ export default class ColorPicker extends AirshipBehaviour {
 				math.inverseLerp(rect.yMin, rect.yMax, localPoint.y),
 			);
 
-			//Check if the click is inside the RBG image
+			// Check if the click is inside the RBG image
 			if (!this.draggingColor && (uv.x <= 0 || uv.x >= 1 || uv.y <= 0 || uv.y >= 1)) {
 				this.canDragColor = false;
 				return;

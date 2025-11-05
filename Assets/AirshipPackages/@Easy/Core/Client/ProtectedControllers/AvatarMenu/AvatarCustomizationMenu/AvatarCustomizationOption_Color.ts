@@ -28,10 +28,10 @@ export default class AvatarCustomizationOption_Color extends AirshipBehaviour {
 
 		this.labelTxt.text = label;
 
-		//Set the active color
+		// Set the active color
 		this.SetActiveColorHex(currentColorStr);
 
-		//Create the grid of color options
+		// Create the grid of color options
 		this.CreatePallet(Protected.Avatar.colorSets[colorPalletId]);
 
 		this.bin.Add(
@@ -46,13 +46,13 @@ export default class AvatarCustomizationOption_Color extends AirshipBehaviour {
 	}
 
 	private CreatePallet(colors: string[]) {
-		//Destroy old options
+		// Destroy old options
 		for (const childT of this.palletHolder) {
 			Destroy(childT.gameObject);
 		}
 		this.palletBtns.clear();
 
-		//Create new options
+		// Create new options
 		this.palletColors = colors;
 		for (const colorStr of colors) {
 			this.palletBtns.push(this.CreatePalletBtn(ColorUtil.HexToColor(colorStr, 1)));

@@ -70,12 +70,12 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 			this.iconImage.sprite = icon;
 		}
 
-		//Clean previous options
+		// Clean previous options
 		for (const t of this.optionsHolder) {
 			Destroy(t.gameObject);
 		}
 
-		//Process customization options
+		// Process customization options
 		let i = 0;
 		for (const defaultColor of gear.customizationColors) {
 			if (customization) {
@@ -140,7 +140,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 		colorKey: string,
 		index: number,
 	) {
-		//make accessory the color
+		// make accessory the color
 		for (const template of this.gear.accessoryPrefabs) {
 			if (template) {
 				this.accessoryBuilder.SetCustomColor(template.accessorySlot, colorKey, newColorHex);
