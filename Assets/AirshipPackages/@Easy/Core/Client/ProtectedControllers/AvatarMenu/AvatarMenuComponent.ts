@@ -426,10 +426,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		// }
 
 		if (clothing && clothing.size() > 0) {
-			clothing.forEach((c) => {
-				this.AddItemButton(c, async () => {
-					print(`Equipping ${c.class.name} (${c.class.classId})`);
-					await this.SelectItem(c);
+			clothing.forEach((clothingItem) => {
+				this.AddItemButton(clothingItem, async (clickedBtn) => {
+					print(`Equipping ${clothingItem.class.name} (${clothingItem.class.classId})`);
+					await this.SelectItem(clothingItem, clickedBtn);
 					this.accessoryBuilder.UpdateCombinedMesh();
 				});
 			});
@@ -495,7 +495,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private AddItemButton(clothingDto: AirshipGearItem, onClickCallback: () => void) {
+	private AddItemButton(clothingDto: AirshipGearItem, onClickCallback: (clickedBtn: AvatarAccessoryBtn) => void) {
 		//let newButton = PoolManager.SpawnObject(this.itemButtonTemplate, this.mainContentHolder);
 		const newButton = Object.Instantiate(this.itemButtonTemplate!, this.mainContentHolder!);
 		const redirectScroll = newButton.GetComponent<AirshipRedirectScroll>();
@@ -508,7 +508,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 				//Fire the buttons call to action
 				task.spawn(() => {
-					onClickCallback();
+					onClickCallback(accessoryBtn);
 				});
 			}),
 		);
@@ -586,7 +586,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 	}
 
-	private async SelectItem(clothingDto: AirshipGearItem): Promise<void> {
+	private async SelectItem(clothingDto: AirshipGearItem, clickedBtn?: AvatarAccessoryBtn): Promise<void> {
 		if (clothingDto.class.gear.airAssets.size() === 0 || !clothingDto.class.gear.subcategory) return;
 		const slot = Protected.Avatar.GearClothingSubcategoryToSlot(clothingDto.class.gear.subcategory);
 
@@ -635,7 +635,13 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 					}
 				}
 			}
-			this.avatarCustomizationPanel.Open(gear, foundCustomSlot, clothingDto.class.name, clothingDto.createdAt);
+			this.avatarCustomizationPanel.Open(
+				gear,
+				foundCustomSlot,
+				clothingDto.class.name,
+				clothingDto.createdAt,
+				clickedBtn?.iconImage.sprite,
+			);
 
 			for (let accessoryPrefab of gear.accessoryPrefabs) {
 				const newAcc = this.accessoryBuilder.Add(accessoryPrefab);

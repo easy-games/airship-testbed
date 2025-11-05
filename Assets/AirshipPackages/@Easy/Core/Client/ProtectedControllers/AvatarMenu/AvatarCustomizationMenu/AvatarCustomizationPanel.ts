@@ -13,6 +13,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 	public menu: AvatarMenuComponent;
 	public optionsHolder: Transform;
 	public colorPicker: ColorPicker;
+	public iconImage: Image;
 	public labelTxt: TextMeshProUGUI;
 	public dateTxt: TextMeshProUGUI;
 
@@ -32,7 +33,13 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 		this.modifiedGear.clear();
 	}
 
-	public Open(gear: PlatformGear, customization: OutfitCustomizationSlot | undefined, label?: string, date?: string) {
+	public Open(
+		gear: PlatformGear,
+		customization: OutfitCustomizationSlot | undefined,
+		label?: string,
+		date?: string,
+		icon?: Sprite,
+	) {
 		this.gear = gear;
 		if (!gear) {
 			// No Gear
@@ -56,7 +63,11 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 			this.labelTxt.text = label;
 		}
 		if (this.dateTxt && date) {
-			this.dateTxt.text = date;
+			const localDate = DateTime.fromISO(date).ToLocalTime();
+			this.dateTxt.text = localDate.Month + "/" + localDate.Day + "/" + localDate.Year;
+		}
+		if (this.iconImage && icon) {
+			this.iconImage.sprite = icon;
 		}
 
 		//Clean previous options
