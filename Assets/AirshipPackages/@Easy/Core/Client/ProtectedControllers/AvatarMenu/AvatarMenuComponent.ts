@@ -27,6 +27,7 @@ import OutfitButton from "./Outfit/OutfitButtonComponent";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
 import AvatarCustomizationPanel from "./AvatarCustomizationMenu/AvatarCustomizationPanel";
 import { Airship } from "@Easy/Core/Shared/Airship";
+import { TimeUtil } from "@Easy/Core/Shared/Util/TimeUtil";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -634,7 +635,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 					}
 				}
 			}
-			this.avatarCustomizationPanel.Open(gear, foundCustomSlot);
+			this.avatarCustomizationPanel.Open(gear, foundCustomSlot, clothingDto.class.name, clothingDto.createdAt);
 
 			for (let accessoryPrefab of gear.accessoryPrefabs) {
 				const newAcc = this.accessoryBuilder.Add(accessoryPrefab);

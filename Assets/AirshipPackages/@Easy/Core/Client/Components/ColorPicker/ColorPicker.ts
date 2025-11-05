@@ -3,6 +3,7 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { CoreAction } from "@Easy/Core/Shared/Input/AirshipCoreAction";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 
@@ -20,6 +21,7 @@ export default class ColorPicker extends AirshipBehaviour {
 	public valueSlide: Slider;
 
 	public OnNewColor = new Signal<[color: Color, hex: string]>();
+	public OnClose = new Signal();
 
 	private initialColor: Color;
 	private currentColor: Color;
@@ -54,44 +56,22 @@ export default class ColorPicker extends AirshipBehaviour {
 		}
 		this.isOpen = true;
 
-		NativeTween.LocalScale(this.transform, new Vector3(1.1, 1.1, 1.1), 0.1).SetEaseBackOut();
-		NativeTween.CanvasGroupAlpha(this.canvas, 1, 0.1);
+		NativeTween.LocalScale(this.transform, new Vector3(1, 1, 1), 0.1).SetEaseBackOut();
+		NativeTween.CanvasGroupAlpha(this.canvas, 1, 0.1).SetEaseBackOut();
 		this.canvas.interactable = true;
 		this.canvas.blocksRaycasts = true;
 
-		this.openBin.Add(
-			Mouse.onMoved.Connect((mousePos) => {
-				if (Mouse.isLeftDown) {
-					if (!this.canDragColor) {
-						return;
+		if (!Game.IsMobile()) {
+			this.openBin.Add(
+				Mouse.onMoved.Connect((mousePos) => {
+					if (Mouse.isLeftDown) {
+						this.SelectRBG(mousePos);
+					} else {
+						this.DeselectRBG();
 					}
-					const [hit, localPoint] = RectTransformUtility.ScreenPointToLocalPointInRectangle(
-						this.colorImage.rectTransform,
-						mousePos,
-					);
-					if (hit) {
-						// Normalize the local coordinates to UV (0–1)
-						const rect = this.colorImage.rectTransform.rect;
-						const uv = new Vector2(
-							math.inverseLerp(rect.xMin, rect.xMax, localPoint.x),
-							math.inverseLerp(rect.yMin, rect.yMax, localPoint.y),
-						);
-
-						//print("LocalImage hit uv: " + uv);
-						//Check if the click is inside the RBG image
-						if (!this.draggingColor && (uv.x <= 0 || uv.x >= 1 || uv.y <= 0 || uv.y >= 1)) {
-							this.canDragColor;
-							return;
-						}
-						this.draggingColor = true;
-						this.SetColor(this.GetColorFromUV(uv));
-					}
-				} else {
-					this.draggingColor = false;
-					this.canDragColor = true;
-				}
-			}),
-		);
+				}),
+			);
+		}
 		this.openBin.Add(
 			this.closeBtn.onClick.Connect(() => {
 				this.Close();
@@ -127,6 +107,50 @@ export default class ColorPicker extends AirshipBehaviour {
 		);
 	}
 
+	protected Update(dt: number): void {
+		if (Game.IsMobile()) {
+			if (Input.touchCount > 0) {
+				const touch = Input.GetTouch(0);
+				if (touch.phase === TouchPhase.Began || touch.phase === TouchPhase.Moved) {
+					this.SelectRBG(touch.position);
+				} else {
+					this.DeselectRBG();
+				}
+			}
+		}
+	}
+
+	private SelectRBG(screenPosition: Vector2) {
+		if (!this.canDragColor) {
+			return;
+		}
+		const [hit, localPoint] = RectTransformUtility.ScreenPointToLocalPointInRectangle(
+			this.colorImage.rectTransform,
+			screenPosition,
+		);
+		if (hit) {
+			// Normalize the local coordinates to UV (0–1)
+			const rect = this.colorImage.rectTransform.rect;
+			const uv = new Vector2(
+				math.inverseLerp(rect.xMin, rect.xMax, localPoint.x),
+				math.inverseLerp(rect.yMin, rect.yMax, localPoint.y),
+			);
+
+			//Check if the click is inside the RBG image
+			if (!this.draggingColor && (uv.x <= 0 || uv.x >= 1 || uv.y <= 0 || uv.y >= 1)) {
+				this.canDragColor = false;
+				return;
+			}
+			this.draggingColor = true;
+			this.SetColor(this.GetColorFromUV(uv));
+		}
+	}
+
+	private DeselectRBG() {
+		this.draggingColor = false;
+		this.canDragColor = true;
+	}
+
 	public Close() {
 		if (!this.isOpen) {
 			return;
@@ -134,8 +158,8 @@ export default class ColorPicker extends AirshipBehaviour {
 		this.isOpen = false;
 		this.openBin.Clean();
 
-		NativeTween.LocalScale(this.transform, new Vector3(0.9, 0.9, 0.9), 0.1).SetEaseBackOut();
-		NativeTween.CanvasGroupAlpha(this.canvas, 0, 0.1);
+		NativeTween.LocalScale(this.transform, new Vector3(0.8, 0.8, 0.8), 0.1).SetEaseBackOut();
+		NativeTween.CanvasGroupAlpha(this.canvas, 0, 0.1).SetEaseBackOut();
 		this.canvas.interactable = false;
 		this.canvas.blocksRaycasts = false;
 	}

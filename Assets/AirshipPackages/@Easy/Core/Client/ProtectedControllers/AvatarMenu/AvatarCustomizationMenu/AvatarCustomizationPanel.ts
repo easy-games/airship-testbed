@@ -4,6 +4,7 @@ import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import AvatarMenuComponent from "../AvatarMenuComponent";
 import ColorPicker from "@Easy/Core/Client/Components/ColorPicker/ColorPicker";
+import { ContentServiceGear } from "@Easy/Core/Shared/TypePackages/content-service-types";
 
 export default class AvatarCustomizationPanel extends AirshipBehaviour {
 	@Header("Templates")
@@ -12,6 +13,8 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 	public menu: AvatarMenuComponent;
 	public optionsHolder: Transform;
 	public colorPicker: ColorPicker;
+	public labelTxt: TextMeshProUGUI;
+	public dateTxt: TextMeshProUGUI;
 
 	@Header("Variables")
 	public heightOffset = 200;
@@ -29,7 +32,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 		this.modifiedGear.clear();
 	}
 
-	public Open(gear: PlatformGear, customization: OutfitCustomizationSlot | undefined) {
+	public Open(gear: PlatformGear, customization: OutfitCustomizationSlot | undefined, label?: string, date?: string) {
 		this.gear = gear;
 		if (!gear) {
 			// No Gear
@@ -48,6 +51,13 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 		this.openBin.Clean();
 		this.modifiedGear.set(gear.classId, gear);
 		NativeTween.AnchoredPositionY(this.transform, 0, 0.5).SetEaseExpoOut();
+
+		if (this.labelTxt && label) {
+			this.labelTxt.text = label;
+		}
+		if (this.dateTxt && date) {
+			this.dateTxt.text = date;
+		}
 
 		//Clean previous options
 		for (const t of this.optionsHolder) {
@@ -90,6 +100,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 		this.openBin.Add(
 			options.onSelectColor.Connect((colorStr) => {
 				this.SelectColorOption(options, ColorUtil.HexToColor(colorStr), colorStr, colorKey, colorIndex);
+				this.menu.Dirty();
 			}),
 		);
 
@@ -99,6 +110,11 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 				this.colorPickerBin.Add(
 					this.colorPicker.OnNewColor.Connect((newColor, newHex) => {
 						this.SelectColorOption(option, newColor, newHex, colorKey, colorIndex);
+					}),
+				);
+				this.colorPickerBin.Add(
+					this.colorPicker.OnClose.Connect(() => {
+						this.menu.Dirty();
 					}),
 				);
 				this.colorPicker.Open(option.GetActiveColor(), colorKey);
@@ -120,7 +136,6 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 			}
 		}
 		this.gear.customizationColors[index].value = newColor;
-		this.menu.Dirty();
 		option.SetActiveColor(newColor);
 	}
 
