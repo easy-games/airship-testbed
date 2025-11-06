@@ -9,7 +9,7 @@ export default class AvatarCustomizationOption_Variant extends AirshipBehaviour 
 	@Header("References")
 	public btnHolder: Transform;
 
-	public onSelect = new Signal<number>();
+	public OnSelect = new Signal<[varientIndex: number]>();
 
 	private currentVariant: number = 0;
 	private bin = new Bin();
@@ -56,7 +56,7 @@ export default class AvatarCustomizationOption_Variant extends AirshipBehaviour 
 		btn.txt.text = "" + index;
 		this.bin.Add(
 			btn.btn.onClick.Connect(() => {
-				this.onSelect.Fire(index);
+				this.OnSelect.Fire(index);
 				this.SetVariant(index);
 			}),
 		);

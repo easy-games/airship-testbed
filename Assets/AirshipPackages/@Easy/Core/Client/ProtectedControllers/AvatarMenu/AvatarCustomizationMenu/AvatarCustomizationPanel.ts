@@ -4,11 +4,12 @@ import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import AvatarMenuComponent from "../AvatarMenuComponent";
 import ColorPicker from "@Easy/Core/Client/Components/ColorPicker/ColorPicker";
-import { ContentServiceGear } from "@Easy/Core/Shared/TypePackages/content-service-types";
+import AvatarCustomizationOption_Variant from "./AvatarCustomizationOption_Variant";
 
 export default class AvatarCustomizationPanel extends AirshipBehaviour {
 	@Header("Templates")
 	public colorOptionTemplate: GameObject;
+	public variantOptionTemplate: GameObject;
 	@Header("References")
 	public menu: AvatarMenuComponent;
 	public optionsHolder: Transform;
@@ -79,6 +80,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 		let i = 0;
 		for (const defaultColor of gear.customizationColors) {
 			if (customization) {
+                // See if we have a color saved for this key
 				for (const selectedColor of customization.colors) {
 					if (selectedColor.key === defaultColor.key) {
 						defaultColor.value = ColorUtil.HexToColor(selectedColor.colorHex);
@@ -88,6 +90,13 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 			this.SpawnColorOptions(i, defaultColor);
 			i++;
 		}
+
+        // Process variant options
+        if(gear.customizationVariantNames.size() > 0) {
+            // See if we have a saved varient index
+            const currentIndex = customization?.variant??0;
+            this.SpawnVariantOptions(currentIndex, gear.customizationVariantNames);
+        }
 
 		this.OnToggle.Fire(true);
 	}
@@ -115,6 +124,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 			}),
 		);
 
+        // Listen to color picker selections
 		this.openBin.Add(
 			options.onClickActiveColor.Connect((option) => {
 				this.colorPickerBin.Clean();
@@ -149,6 +159,26 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 		this.gear.customizationColors[index].value = newColor;
 		option.SetActiveColor(newColor);
 	}
+
+    private SpawnVariantOptions(currentIndex: number, variantNames: string[]) {
+		// Create the color option sub panel
+		const options = Instantiate(
+			this.variantOptionTemplate,
+			this.optionsHolder,
+		).GetAirshipComponent<AvatarCustomizationOption_Variant>()!;
+        options.Init(currentIndex, variantNames.size());
+        options.OnSelect.Connect((variantIndex) => {
+            this.SelectVariantOption(variantIndex);
+        })
+    }
+
+    private SelectVariantOption(variantIndex: number) {
+		for (const template of this.gear.accessoryPrefabs) {
+			if (template) {
+                this.accessoryBuilder.SetCustomVariant(template.accessorySlot, variantIndex);
+			}
+		}
+    }
 
 	public Close() {
 		this.openBin.Clean();

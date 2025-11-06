@@ -106,7 +106,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: eb5ca12d64e772c4896f375e9731ee32, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 3e70418c580cd8646bd171c790b8fcff, type: 2}
+      objectReference: {fileID: 2100000, guid: 0697de92c3f809a4ea5818fba6f86d7a, type: 2}
     - target: {fileID: 919132149155446097, guid: eb5ca12d64e772c4896f375e9731ee32, type: 3}
       propertyPath: m_Name
       value: Hitman Hair

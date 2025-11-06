@@ -598,7 +598,8 @@ interface AccessoryBuilder extends MonoBehaviour {
 	GetCustomization(): OutfitCustomization | undefined;
 	GetCustomizationJSON(): string | undefined;
 	SetCustomColor(slot: AccessorySlot, colorKey: string, colorHex: string): void;
-
+    SetCustomVariant(slot: AccessorySlot, variantIndex: number): void;
+    
 	/**
 	 * Regenerates the combined skinned mesh. Skinned mesh accessories will not be visible until this method is called.
 	 *
@@ -1199,7 +1200,8 @@ interface AccessoryComponent extends MonoBehaviour {
 	localRotation: Quaternion;
 	localScale: Vector3;
 
-	Customize(variant: number, colors: string[]);
+	CustomizeVariant(variant: number);
+	CustomizeColor(colors: string[]);
 	Copy(other: AccessoryComponent): void;
 	GetServerInstanceId(): string;
 	GetServerClassId(): string;
