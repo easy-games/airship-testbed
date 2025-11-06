@@ -357,7 +357,8 @@ MonoBehaviour:
   accessorySlot: 15
   visibilityMode: 2
   skinnedToCharacter: 0
-  customization: {fileID: 0}
+  colorSetter: {fileID: 0}
+  variantSetter: {fileID: 0}
   meshLods:
   - {fileID: 4300000, guid: 04594b637cb364f388b6489f882751b8, type: 2}
   - {fileID: 4300000, guid: f01df6770c0c4409c9a31a51868486e5, type: 2}
