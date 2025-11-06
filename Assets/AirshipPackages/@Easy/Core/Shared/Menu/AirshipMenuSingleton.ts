@@ -62,6 +62,13 @@ export class AirshipMenuSingleton implements OnStart {
 	}
 
 	/**
+	 * Opens an in-game party management window.
+	 */
+	public OpenPartyMenu(): void {
+		contextbridge.broadcast("Menu:OpenPartyModal");
+	}
+
+	/**
 	 * Opens the Airship escape menu.
 	 */
 	public OpenMenu(): void {
