@@ -28,17 +28,9 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
+import { PendingSocialNotification } from "./PendingSocialNotification";
 import { SocialNotificationType } from "./SocialNotificationType";
 import { SteamFriendsProtectedController } from "./SteamFriendsProtectedController";
-
-interface PendingSocialNotification {
-	type: SocialNotificationType;
-	key: string;
-	title: string;
-	username: string;
-	userId: string;
-	extraData: unknown;
-}
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
@@ -68,6 +60,7 @@ export class ProtectedFriendsController {
 	private friendsScrollRect!: ScrollRect;
 
 	public pendingSocialNotifications: PendingSocialNotification[] = [];
+	public onNewSocialNotification = new Signal<PendingSocialNotification>();
 	public socialNotificationHandlers = new Map<
 		SocialNotificationType,
 		(username: string, userId: string, result: boolean, extraData: unknown) => void
@@ -102,6 +95,9 @@ export class ProtectedFriendsController {
 			extraData,
 		};
 		this.pendingSocialNotifications.push(pendingNotif);
+		task.spawn(() => {
+			this.onNewSocialNotification.Fire(pendingNotif);
+		});
 
 		task.spawn(() => {
 			this.CachePendingNotificationsYielding();
@@ -115,13 +111,7 @@ export class ProtectedFriendsController {
 		this.socialNotification.titleText.text = title.upper();
 		this.socialNotification.usernameText.text = username;
 		this.socialNotification.onResult.Connect((result) => {
-			let index = this.pendingSocialNotifications.indexOf(pendingNotif);
-			if (index > -1) {
-				this.pendingSocialNotifications.remove(index);
-			}
-			task.spawn(() => {
-				this.CachePendingNotificationsYielding();
-			});
+			this.ClearPendingNotification(pendingNotif);
 
 			const callback = this.socialNotificationHandlers.get(socialNotificationType);
 			if (callback === undefined) {
@@ -136,6 +126,16 @@ export class ProtectedFriendsController {
 			if (texture) {
 				this.socialNotification.userImage.texture = texture;
 			}
+		});
+	}
+
+	public ClearPendingNotification(notif: PendingSocialNotification): void {
+		let index = this.pendingSocialNotifications.indexOf(notif);
+		if (index > -1) {
+			this.pendingSocialNotifications.remove(index);
+		}
+		task.spawn(() => {
+			this.CachePendingNotificationsYielding();
 		});
 	}
 
