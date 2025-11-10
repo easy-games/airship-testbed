@@ -53,7 +53,7 @@ MonoBehaviour:
   variantSetter: {fileID: 6742034232218451503}
   meshLods: []
   canMeshCombine: 0
-  bodyMask: 3
+  bodyMask: 2
   serverClassId: 
   serverClassIdStaging: 
 --- !u!114 &6742034232218451503
@@ -73,7 +73,7 @@ MonoBehaviour:
   variants:
   - customMesh: {fileID: -910307672963471494, guid: 26ced6065e2a1264e8cab79fc26369e6, type: 3}
     customMat: {fileID: 2100000, guid: 49bd8cc4faff17f4b84ab9ff79ce045b, type: 2}
-  - customMesh: {fileID: 3792334260117117438, guid: 26ced6065e2a1264e8cab79fc26369e6, type: 3}
+  - customMesh: {fileID: 8154441871727368241, guid: 26ced6065e2a1264e8cab79fc26369e6, type: 3}
     customMat: {fileID: 2100000, guid: e19fe1e370cd4b54ebb2b88d38e62de4, type: 2}
   - customMesh: {fileID: -989019789122608665, guid: 26ced6065e2a1264e8cab79fc26369e6, type: 3}
     customMat: {fileID: 2100000, guid: d639e38e5d3c28e48a34bea188762a2b, type: 2}
@@ -130,9 +130,25 @@ PrefabInstance:
       value: TVHeadMeshes
       objectReference: {fileID: 0}
     - target: {fileID: 6289927001355267473, guid: 26ced6065e2a1264e8cab79fc26369e6, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6289927001355267473, guid: 26ced6065e2a1264e8cab79fc26369e6, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 49bd8cc4faff17f4b84ab9ff79ce045b, type: 2}
+    - target: {fileID: 6289927001355267473, guid: 26ced6065e2a1264e8cab79fc26369e6, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d639e38e5d3c28e48a34bea188762a2b, type: 2}
+    - target: {fileID: 6289927001355267473, guid: 26ced6065e2a1264e8cab79fc26369e6, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e19fe1e370cd4b54ebb2b88d38e62de4, type: 2}
+    - target: {fileID: 7148879399400057146, guid: 26ced6065e2a1264e8cab79fc26369e6, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -910307672963471494, guid: 26ced6065e2a1264e8cab79fc26369e6, type: 3}
     - target: {fileID: 7469470220865973388, guid: 26ced6065e2a1264e8cab79fc26369e6, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 

@@ -53,7 +53,7 @@ export default class AvatarCustomizationOption_Variant extends AirshipBehaviour 
 			error("Color Btn Template must have an AvatarCustomizationBtn component on it");
 		}
 		btn.image.color = new Color(0.6, 0.6, 0.6, 1);
-		btn.txt.text = "" + index;
+		btn.txt.text = "" + (index + 1);
 		this.bin.Add(
 			btn.btn.onClick.Connect(() => {
 				this.OnSelect.Fire(index);

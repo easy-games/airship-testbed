@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5164240073184041849}
   - component: {fileID: 771987778367067085}
   - component: {fileID: 8370701911170464507}
+  - component: {fileID: 4766439521770289630}
   m_Layer: 0
   m_Name: SetVariantBtn
   m_TagString: Untagged
@@ -121,6 +122,83 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4766439521770289630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091363963718493182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guid: fb7bbff4-4eb0-4711-81d4-042bd62ec711
+  script: {fileID: -7007461328013439005, guid: 969dcd273bd5ece4cac97bf7858c45bf, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Client/ProtectedControllers/AvatarMenu/AvatarCustomizationMenu/AvatarCustomizationBtn.lua
+  forceContext: 0
+  metadata:
+    name: AvatarCustomizationBtn
+    singleton: 0
+    decorators: []
+    properties:
+    - name: btn
+      type: object
+      objectType: Button
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 8370701911170464507}
+      modified: 1
+    - name: image
+      type: object
+      objectType: Image
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 771987778367067085}
+      modified: 1
+    - name: txt
+      type: object
+      objectType: TextMeshProUGUI
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2764931032828513668}
+      modified: 1
+    displayIcon: {fileID: 0}
+    displayName: 
 --- !u!1 &5718073344558101289
 GameObject:
   m_ObjectHideFlags: 0
