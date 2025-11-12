@@ -87,17 +87,17 @@ ModelImporter:
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/weapon.L
         weight: 1
       - path: Airship_Rig/root_motion/master/spine/upper_arm.R
-        weight: 1
+        weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R
-        weight: 1
+        weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R
-        weight: 1
+        weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/fingers.R
-        weight: 1
+        weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/thumb.R
-        weight: 1
+        weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/weapon.R
-        weight: 1
+        weight: 0
       - path: Airship_Rig/root_motion/master/spine/head
         weight: 1
       - path: Airship_Rig/root_motion/master/hips
@@ -115,7 +115,7 @@ ModelImporter:
       - path: Airship_Rig/root_motion/master/thigh.R/shin.R/foot.R
         weight: 0
       maskType: 1
-      maskSource: {fileID: 31900000, guid: 6cfa280e44e39314bb9f7514a7144ffc, type: 2}
+      maskSource: {fileID: 31900000, guid: 3e9a4c1be0e9fce4faefdb3c50830e20, type: 2}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Airship_Character_Emote__Wave
@@ -249,17 +249,17 @@ ModelImporter:
       - path: Airship_Rig/root_motion/master/spine
         weight: 1
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L
-        weight: 1
+        weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L
-        weight: 1
+        weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L
-        weight: 1
+        weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/fingers.L
-        weight: 1
+        weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/thumb.L
-        weight: 1
+        weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/weapon.L
-        weight: 1
+        weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.R
         weight: 1
       - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R
@@ -289,7 +289,7 @@ ModelImporter:
       - path: Airship_Rig/root_motion/master/thigh.R/shin.R/foot.R
         weight: 0
       maskType: 1
-      maskSource: {fileID: 31900000, guid: 6cfa280e44e39314bb9f7514a7144ffc, type: 2}
+      maskSource: {fileID: 31900000, guid: b9b677effc282bc43b92db61319af0de, type: 2}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Airship_Character_Emote__Finger_Gun
@@ -423,17 +423,17 @@ ModelImporter:
       - path: Airship_Rig/root_motion/master/spine
         weight: 1
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L
-        weight: 1
+        weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L
-        weight: 1
+        weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L
-        weight: 1
+        weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/fingers.L
-        weight: 1
+        weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/thumb.L
-        weight: 1
+        weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/weapon.L
-        weight: 1
+        weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.R
         weight: 1
       - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R
@@ -463,7 +463,7 @@ ModelImporter:
       - path: Airship_Rig/root_motion/master/thigh.R/shin.R/foot.R
         weight: 0
       maskType: 1
-      maskSource: {fileID: 31900000, guid: 6cfa280e44e39314bb9f7514a7144ffc, type: 2}
+      maskSource: {fileID: 31900000, guid: b9b677effc282bc43b92db61319af0de, type: 2}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Airship_Character_Emote__Cut_Throat

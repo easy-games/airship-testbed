@@ -190,7 +190,7 @@ export default class FriendCard extends AirshipBehaviour {
 		// }
 		this.usernameText.text = displayName;
 
-		if (userData.statusText && userData.statusText !== "") {
+		if (userData.statusText && userData.statusText !== "" && userData.status === "online") {
 			this.statusText.text = userData.statusText;
 		} else {
 			if (userData.status === "online") {

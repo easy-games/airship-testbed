@@ -37,6 +37,7 @@ export namespace GameCoordinatorPrisma {
 		statusText: string | undefined;
 		lastOnlineTime: string | undefined;
 		createdAt: string;
+		linkedSteamAccountId: string | undefined;
 		adminBanned: boolean;
 		adminBannedAt: string | undefined;
 	};
@@ -784,11 +785,14 @@ export namespace GameCoordinatorStats {
 	export type GetGamePlayersArgs = {
 		data: GamePlayerCountDto;
 	};
+	export type PlatformStats = {
+		players: { online: number; inGame: number };
+		games: { active: number };
+		servers: { active: number };
+	};
 
 	export interface ClientSpec {
-		getStats(
-			options?: RequestOptions,
-		): Promise<{ players: { online: number; inGame: number }; games: { active: number } }>;
+		getStats(options?: RequestOptions): Promise<PlatformStats>;
 		getGamePlayers(
 			args: GetGamePlayersArgs["data"],
 			options?: RequestOptions,
@@ -803,9 +807,7 @@ export namespace GameCoordinatorStats {
 			this.makeRequest = makeRequest;
 		}
 
-		async getStats(
-			options?: RequestOptions,
-		): Promise<{ players: { online: number; inGame: number }; games: { active: number } }> {
+		async getStats(options?: RequestOptions): Promise<PlatformStats> {
 			return await this.makeRequest({
 				method: "GET",
 				routeId: "GameCoordinator:Stats:getStats",
@@ -837,11 +839,26 @@ export namespace GameCoordinatorStats {
 }
 // ====+==== SteamAuth TYPES ====+====
 export namespace GameCoordinatorSteamAuth {
+	export type SteamAuthLinkArgs = {
+		query?: {
+			session?: string;
+		};
+	};
+	export type SteamAuthReturnLinkArgs = {
+		query?: {
+			session?: string;
+		};
+	};
+
 	export interface ClientSpec {
 		steamAuthMain(options?: RequestOptions): Promise<void>;
 		steamAuthReturnMain(options?: RequestOptions): Promise<void>;
 		steamAuthCreate(options?: RequestOptions): Promise<void>;
 		steamAuthReturnCreate(options?: RequestOptions): Promise<void>;
+		steamAuthLinkUrl(options?: RequestOptions): Promise<{ url: string }>;
+		steamAuthLink(args?: SteamAuthLinkArgs["query"], options?: RequestOptions): Promise<void>;
+		steamAuthReturnLink(args?: SteamAuthReturnLinkArgs["query"], options?: RequestOptions): Promise<void>;
+		steamAuthUnlink(options?: RequestOptions): Promise<void>;
 		steamAuthTest(options?: RequestOptions): Promise<void>;
 		steamAuthReturnTest(options?: RequestOptions): Promise<void>;
 		steamAuthReturn(options?: RequestOptions): Promise<void>;
@@ -886,6 +903,40 @@ export namespace GameCoordinatorSteamAuth {
 				routeId: "GameCoordinator:SteamAuth:steamAuthReturnCreate",
 				path: `/auth/steam/return/create`,
 				retryKey: options?.retryKey ?? "GameCoordinator:SteamAuth:steamAuthReturnCreate",
+			});
+		}
+		async steamAuthLinkUrl(options?: RequestOptions): Promise<{ url: string }> {
+			return await this.makeRequest({
+				method: "GET",
+				routeId: "GameCoordinator:SteamAuth:steamAuthLinkUrl",
+				path: `/auth/steam/link/url`,
+				retryKey: options?.retryKey ?? "GameCoordinator:SteamAuth:steamAuthLinkUrl",
+			});
+		}
+		async steamAuthLink(args?: SteamAuthLinkArgs["query"], options?: RequestOptions): Promise<void> {
+			return await this.makeRequest({
+				method: "GET",
+				routeId: "GameCoordinator:SteamAuth:steamAuthLink",
+				path: `/auth/steam/link`,
+				retryKey: options?.retryKey ?? "GameCoordinator:SteamAuth:steamAuthLink",
+				query: args,
+			});
+		}
+		async steamAuthReturnLink(args?: SteamAuthReturnLinkArgs["query"], options?: RequestOptions): Promise<void> {
+			return await this.makeRequest({
+				method: "GET",
+				routeId: "GameCoordinator:SteamAuth:steamAuthReturnLink",
+				path: `/auth/steam/return/link`,
+				retryKey: options?.retryKey ?? "GameCoordinator:SteamAuth:steamAuthReturnLink",
+				query: args,
+			});
+		}
+		async steamAuthUnlink(options?: RequestOptions): Promise<void> {
+			return await this.makeRequest({
+				method: "GET",
+				routeId: "GameCoordinator:SteamAuth:steamAuthUnlink",
+				path: `/auth/steam/unlink`,
+				retryKey: options?.retryKey ?? "GameCoordinator:SteamAuth:steamAuthUnlink",
 			});
 		}
 		async steamAuthTest(options?: RequestOptions): Promise<void> {

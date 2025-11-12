@@ -2,13 +2,13 @@ import { SocketController } from "@Easy/Core/Client/ProtectedControllers/Socket/
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
 import { Protected } from "../../Protected";
+import { GameCoordinatorClient } from "../../TypePackages/game-coordinator-types";
+import { UnityMakeRequest } from "../../TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "../../Util/AirshipUrl";
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";
 import { ChatColor } from "../../Util/ChatColor";
 import { SetInterval } from "../../Util/Timer";
-import { GameCoordinatorClient } from "../../TypePackages/game-coordinator-types";
-import { UnityMakeRequest } from "../../TypePackages/UnityMakeRequest";
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
@@ -107,7 +107,7 @@ export default class SocialMenu extends AirshipBehaviour {
 		try {
 			const result = client.stats.getStats().expect();
 			this.playerCountText.text = `${result.players.online} Players Connected`;
-			this.serverCountText.text = `${result.games.active} Servers Online`;
+			this.serverCountText.text = `${result.servers.active} Servers Online`;
 		} catch {
 			return;
 		}

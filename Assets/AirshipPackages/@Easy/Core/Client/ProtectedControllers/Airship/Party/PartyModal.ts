@@ -36,6 +36,7 @@ export default class PartyModal extends AirshipBehaviour {
 	public window: RectTransform;
 	public leaveBtn: Button;
 	public wrapper: RectTransform;
+	public nobodyOnlineNotice: GameObject;
 
 	private uidToPartyMember = new Map<string, PartyModalMember>();
 	private bin = new Bin();
@@ -68,9 +69,12 @@ export default class PartyModal extends AirshipBehaviour {
 			}),
 		);
 
+		this.nobodyOnlineNotice.SetActive(false);
 		this.playersParent.gameObject.ClearChildren();
 		this.bin.Add(
 			Airship.Players.ObservePlayers((p) => {
+				this.nobodyOnlineNotice.SetActive(Airship.Players.GetPlayers().size() <= 1);
+
 				// Show local player in editor for easier testing
 				if (!Game.IsEditor() && p.IsLocalPlayer()) return;
 
