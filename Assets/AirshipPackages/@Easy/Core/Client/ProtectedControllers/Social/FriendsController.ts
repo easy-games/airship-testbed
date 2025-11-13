@@ -96,6 +96,11 @@ export class ProtectedFriendsController {
 		};
 		this.pendingSocialNotifications.push(pendingNotif);
 		task.spawn(() => {
+			// Broadcast this event to game context for the PartyHud
+			if (pendingNotif.type === SocialNotificationType.PartyInvite) {
+				contextbridge.broadcast("social:party-invite");
+			}
+
 			this.onNewSocialNotification.Fire(pendingNotif);
 		});
 

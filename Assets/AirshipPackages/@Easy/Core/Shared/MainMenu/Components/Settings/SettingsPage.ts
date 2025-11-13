@@ -262,7 +262,7 @@ export default class SettingsPage extends AirshipBehaviour {
 			try {
 				hash = AirshipVersion.GetVersionHash();
 			} catch (err) {}
-			this.sidebarVersionText.text = `Airship v${Application.version}@${hash}`;
+			this.sidebarVersionText.text = `Airship ${Application.version}-${hash}`;
 		}
 	}
 
