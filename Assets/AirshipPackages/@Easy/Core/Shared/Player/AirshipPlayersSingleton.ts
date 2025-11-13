@@ -600,11 +600,11 @@ export class AirshipPlayersSingleton {
 	 *
 	 * ```ts
 	 * Airship.players.ObservePlayers((player) => {
-	 * 	print(`${player.name} entered`);
-	 * 	return () => {
-	 *  	print(`${player.name} left`);
-	 * 	};
-	 * });
+	 *      print(`${player.name} entered`);
+	 *      return () => {
+	 *          print(`${player.name} left`);
+	 *      };
+	 *  });
 	 * ```
 	 *
 	 * @returns Disconnect function -- call to stop observing players and call the

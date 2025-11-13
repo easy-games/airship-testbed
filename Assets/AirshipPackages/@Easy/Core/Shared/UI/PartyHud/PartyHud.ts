@@ -14,6 +14,11 @@ export default class PartyHud extends AirshipBehaviour {
 	public membersParent: Transform;
 	public memberPrefab: GameObject;
 
+	@Header("Notification Badge")
+	public notifWrapper: GameObject;
+	public notifText: TMP_Text;
+	@NonSerialized() private notifCounter: number;
+
 	@Header("Other")
 	public partyBtn: Button;
 
@@ -24,6 +29,8 @@ export default class PartyHud extends AirshipBehaviour {
 	override Start(): void {
 		this.partyBtnGO = this.partyBtn.gameObject;
 		this.membersParent.gameObject.ClearChildren();
+
+		this.notifWrapper?.SetActive(false);
 
 		task.spawn(async () => {
 			const party = await Platform.Client.Party.GetParty();
@@ -38,7 +45,18 @@ export default class PartyHud extends AirshipBehaviour {
 
 		this.bin.Add(
 			this.partyBtn.onClick.Connect(() => {
+				this.notifWrapper?.SetActive(false);
 				Airship.Menu.OpenPartyMenu();
+			}),
+		);
+
+		this.bin.Add(
+			contextbridge.subscribe("social:party-invite", () => {
+				this.notifWrapper?.SetActive(true);
+				this.notifCounter++;
+				if (this.notifText) {
+					this.notifText.text = this.notifCounter + "";
+				}
 			}),
 		);
 	}
