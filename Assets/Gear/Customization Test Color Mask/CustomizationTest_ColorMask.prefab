@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8703994902616753487}
   - component: {fileID: 3073049856543275330}
+  - component: {fileID: 6833489710002016100}
+  - component: {fileID: 761024252341195133}
   m_Layer: 0
   m_Name: CustomizationTest_ColorMask
   m_TagString: Untagged
@@ -48,13 +50,57 @@ MonoBehaviour:
   accessorySlot: 2
   visibilityMode: 2
   skinnedToCharacter: 0
-  colorSetter: {fileID: 0}
-  variantSetter: {fileID: 0}
+  colorSetter: {fileID: 6833489710002016100}
+  variantSetter: {fileID: 761024252341195133}
   meshLods: []
   canMeshCombine: 0
   bodyMask: 0
   serverClassId: 
   serverClassIdStaging: 
+--- !u!114 &6833489710002016100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5137622317055745624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed1fc092de65d9a4a83277497745f5eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorMaskRens:
+  - {fileID: 3772719633315508741}
+  colorGroups:
+  - key: Main Color
+    materialColorIndex: 0
+    matColor: []
+  - key: Secondary
+    materialColorIndex: 0
+    matColor: []
+  - key: Tertiary
+    materialColorIndex: 0
+    matColor: []
+--- !u!114 &761024252341195133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5137622317055745624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba4e9ed749430314b8b58572a1e96a27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  affectedRenderers:
+  - {fileID: 3772719633315508741}
+  shaderPath: Airship/LitOpaqueRBGColorMask
+  variants:
+  - customMesh: {fileID: 0}
+    customMat: {fileID: 2100000, guid: 0697de92c3f809a4ea5818fba6f86d7a, type: 2}
+  - customMesh: {fileID: 0}
+    customMat: {fileID: 2100000, guid: 7fa13aeeb25636142881d832c3269b36, type: 2}
 --- !u!1001 &2565628080538988161
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -114,33 +160,15 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: eb5ca12d64e772c4896f375e9731ee32, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1368308682093549661}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb5ca12d64e772c4896f375e9731ee32, type: 3}
 --- !u!4 &2598656528340109674 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: eb5ca12d64e772c4896f375e9731ee32, type: 3}
   m_PrefabInstance: {fileID: 2565628080538988161}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3412489319527879632 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: eb5ca12d64e772c4896f375e9731ee32, type: 3}
+--- !u!23 &3772719633315508741 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: eb5ca12d64e772c4896f375e9731ee32, type: 3}
   m_PrefabInstance: {fileID: 2565628080538988161}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1368308682093549661
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3412489319527879632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colorSettings:
-  - baseColor: {r: 1, g: 0.8086512, b: 0.4575472, a: 1}
-  addedByEditorScript: 0
