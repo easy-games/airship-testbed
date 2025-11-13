@@ -1770,6 +1770,9 @@ interface Rigidbody {
 }
 
 interface Component extends Object {
+	/**@internal @hidden Internal Nominal Marker for Component - Do not use  */
+	readonly _nominal_Component: never;
+
 	/**
 	 * The Transform attached to this GameObject.
 	 *
@@ -1982,17 +1985,9 @@ interface GameObject extends Object {
 	readonly gameObject: GameObject;
 
 	/**
-	 * Adds a component class of type componentType to the GameObject. C# Users can use a generic version.
-	 *
 	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.AddComponent.html | GameObject.AddComponent}
 	 */
-	AddComponent(componentType: unknown): Component;
-	/**
-	 * Generic version of this method.
-	 *
-	 * More info: {@link https://docs.unity3d.com/ScriptReference/GameObject.AddComponent.html | GameObject.AddComponent}
-	 */
-	AddComponent<T>(): T;
+	AddComponent<T extends Component>(): T;
 	BroadcastMessage(methodName: string, options: SendMessageOptions): void;
 	/**
 	 * Calls the method named methodName on every MonoBehaviour in this GameObject or any of its children.
@@ -5506,5 +5501,5 @@ declare const Rect: RectConstructor;
 
 declare const enum SleepTimeout {
 	NeverSleep = -1,
-	SystemSetting = -2, 
+	SystemSetting = -2,
 }

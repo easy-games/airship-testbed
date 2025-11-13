@@ -15,6 +15,9 @@
  * ```
  */
 declare abstract class AirshipBehaviour {
+	/**@internal @hidden Internal Nominal Marker for Behaviour - Do not use  */
+	private _nominal_AirshipBehaviour: never;
+
 	/**
 	 * The `GameObject` this behaviour is attached to.
 	 */
@@ -172,7 +175,7 @@ type AirshipDecorator<T> = T & {
 
 type AirshipBehaviourFieldDecorator<T extends ReadonlyArray<unknown>> = (
 	...args: T
-) => AirshipDecorator<(target: AirshipBehaviour, property: string) => void>;
+) => AirshipDecorator<(target: AirshipBehaviour | AirshipScriptableObject, property: string) => void>;
 
 type AirshipBehaviourMethodDecorator<T extends ReadonlyArray<unknown>> = (...args: T) => AirshipDecorator<
 	(
@@ -185,6 +188,10 @@ type AirshipBehaviourMethodDecorator<T extends ReadonlyArray<unknown>> = (...arg
 type AirshipBehaviourClassDecorator<T extends ReadonlyArray<unknown>> = (
 	...args: T
 ) => AirshipDecorator<(target: typeof AirshipBehaviour) => void>;
+
+type AirshipScriptableClassDecorator<T extends ReadonlyArray<unknown>> = (
+	...args: T
+) => AirshipDecorator<(target: typeof AirshipScriptableObject) => void>;
 
 /**
  * Marks this property to not be serialized in an AirshipBehaviour
@@ -244,3 +251,5 @@ declare const RequireComponent: <T>() => AirshipDecorator<(target: typeof Airshi
 
 declare const AirshipComponentMenu: AirshipBehaviourClassDecorator<[path: string]>;
 declare const AirshipComponentIcon: AirshipBehaviourClassDecorator<[assetPath: string]>;
+declare const CreateAssetMenu: AirshipScriptableClassDecorator<[fileName: string, menuName: string, order?: number]>;
+declare const Serializable: <T>() => AirshipDecorator<(target: new () => object) => void>;
