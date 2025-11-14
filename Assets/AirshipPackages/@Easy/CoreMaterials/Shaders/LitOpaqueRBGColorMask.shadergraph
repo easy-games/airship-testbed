@@ -109,9 +109,6 @@
             "m_Id": "a7c2ff04fe8f45e895eb260527ae64bd"
         },
         {
-            "m_Id": "a13641df638642d6a8b99c62f7a6b028"
-        },
-        {
             "m_Id": "4004083812354c20b2c8871abe3c3db7"
         },
         {
@@ -1555,30 +1552,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
-    "m_ObjectId": "397131bcbc8d443faf988384d7521067",
-    "m_Id": 0,
-    "m_DisplayName": "A",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "A",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    }
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
     "m_ObjectId": "3a3140b3200640a585872186fc8302ac",
     "m_Group": {
@@ -1726,30 +1699,6 @@
     },
     "m_Property": {
         "m_Id": "7a5a2f18c12e45608243849b6e6941d0"
-    }
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
-    "m_ObjectId": "4124cb5fe8ed47a4bd66da22b9e9ad91",
-    "m_Id": 2,
-    "m_DisplayName": "Out",
-    "m_SlotType": 1,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Out",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
     }
 }
 
@@ -1988,7 +1937,7 @@
     "m_ObjectId": "52c68e5ac4154888bc6b7a057ab26a87",
     "m_Title": "Metallic",
     "m_Position": {
-        "x": -843.0,
+        "x": -842.9999389648438,
         "y": 845.0
     }
 }
@@ -2981,49 +2930,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.AddNode",
-    "m_ObjectId": "a13641df638642d6a8b99c62f7a6b028",
-    "m_Group": {
-        "m_Id": "d0f05edc050d4be0a440d4aa571305a7"
-    },
-    "m_Name": "Add",
-    "m_DrawState": {
-        "m_Expanded": true,
-        "m_Position": {
-            "serializedVersion": "2",
-            "x": -854.0001220703125,
-            "y": 170.99993896484376,
-            "width": 130.0,
-            "height": 118.00003051757813
-        }
-    },
-    "m_Slots": [
-        {
-            "m_Id": "397131bcbc8d443faf988384d7521067"
-        },
-        {
-            "m_Id": "a9d11f42ad4b41ea9af70d84bd33821f"
-        },
-        {
-            "m_Id": "4124cb5fe8ed47a4bd66da22b9e9ad91"
-        }
-    ],
-    "synonyms": [
-        "addition",
-        "sum",
-        "plus"
-    ],
-    "m_Precision": 0,
-    "m_PreviewExpanded": false,
-    "m_DismissedVersion": 0,
-    "m_PreviewMode": 0,
-    "m_CustomColors": {
-        "m_SerializableColors": []
-    }
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "a1e45cab02b64ae8af6f3c3865633bcb",
     "m_Id": 4,
@@ -3254,30 +3160,6 @@
     "m_ShaderOutputName": "Sampler",
     "m_StageCapability": 3,
     "m_BareResource": false
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
-    "m_ObjectId": "a9d11f42ad4b41ea9af70d84bd33821f",
-    "m_Id": 1,
-    "m_DisplayName": "B",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "B",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    }
 }
 
 {
@@ -3515,8 +3397,8 @@
     "m_ObjectId": "c5d6d8e5f409428789342a5abdcfae33",
     "m_Title": "Normal",
     "m_Position": {
-        "x": -820.0,
-        "y": 349.9999694824219
+        "x": -819.9998779296875,
+        "y": 350.00006103515627
     }
 }
 
@@ -3526,8 +3408,8 @@
     "m_ObjectId": "c953bfbbce664a9cb92ca7ea27e8c6e1",
     "m_Title": "RBG Split",
     "m_Position": {
-        "x": -2039.0001220703125,
-        "y": -560.0
+        "x": -2038.9998779296875,
+        "y": -560.0000610351563
     }
 }
 
@@ -3702,8 +3584,8 @@
     "m_ObjectId": "d0f05edc050d4be0a440d4aa571305a7",
     "m_Title": "Diffuse Color",
     "m_Position": {
-        "x": -1742.0,
-        "y": 100.0
+        "x": -1741.9998779296875,
+        "y": 100.00001525878906
     }
 }
 
