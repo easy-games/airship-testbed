@@ -251,5 +251,5 @@ declare const RequireComponent: <T>() => AirshipDecorator<(target: typeof Airshi
 
 declare const AirshipComponentMenu: AirshipBehaviourClassDecorator<[path: string]>;
 declare const AirshipComponentIcon: AirshipBehaviourClassDecorator<[assetPath: string]>;
-declare const CreateAssetMenu: AirshipScriptableClassDecorator<[fileName: string, menuName: string, order?: number]>;
+declare const CreateAssetMenu: AirshipScriptableClassDecorator<[menuName?: string, fileName?: string, order?: number]>;
 declare const Serializable: <T>() => AirshipDecorator<(target: new () => object) => void>;
