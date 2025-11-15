@@ -9,4 +9,6 @@ declare abstract class AirshipScriptableObject {
 	protected OnEnable?(): void;
 	protected OnDisable?(): void;
 	protected OnDestroy?(): void;
+
+	public static CreateInstance<T extends AirshipScriptableObject>(): T;
 }
