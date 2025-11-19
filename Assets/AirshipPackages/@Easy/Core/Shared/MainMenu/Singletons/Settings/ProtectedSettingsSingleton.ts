@@ -395,14 +395,9 @@ export class ProtectedSettingsSingleton {
 			QualitySettings.shadows = ShadowQuality.All;
 			QualitySettings.shadowResolution = ShadowResolution.VeryHigh;
 			QualitySettings.shadowDistance = 120;
-
-			pipelineAsset.shadowCascadeCount = 4;
-			pipelineAsset.cascade4Split = new Vector3(0.067, 0.2, 0.467);
 		} else {
-			QualitySettings.shadowResolution = ShadowResolution.Medium;
+			QualitySettings.shadowResolution = ShadowResolution.Low;
 			QualitySettings.shadowDistance = 100;
-
-			pipelineAsset.shadowCascadeCount = 2;
 		}
 	}
 

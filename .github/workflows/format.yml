@@ -1,0 +1,20 @@
+name: Code Formatting
+
+on:
+  pull_request:
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Node
+        uses: actions/setup-node@v4
+      
+      - name: Prettier
+        run: |
+          npm i prettier
+          npx prettier **/*.ts --check

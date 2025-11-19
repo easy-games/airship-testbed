@@ -9,7 +9,6 @@ import { PartyCommand } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientC
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { ProtectedPlayer } from "@Easy/Core/Shared/Player/ProtectedPlayer";
 import { Protected } from "@Easy/Core/Shared/Protected";
-import StringUtils from "@Easy/Core/Shared/Types/StringUtil";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -121,7 +120,7 @@ export class ClientChatSingleton {
 						// wrapperRect.offsetMax = new Vector2(0, 0);
 						// wrapperRect.offsetMin = new Vector2(0, 0);
 					}
-					wrapperRect.anchoredPosition = new Vector2(ProtectedUtil.GetNotchHeight() + 190, -14);
+					wrapperRect.anchoredPosition = new Vector2(ProtectedUtil.GetNotchHeight() + 236, -14);
 				} else {
 					const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
 					const wrapperImg = wrapperRect.GetComponent<Image>()!;
@@ -514,19 +513,35 @@ export class ClientChatSingleton {
 		}
 	}
 
-	private detectUrlInChatMessage(message: string) {
-		const domainPattern = "%f[%w][%w-]+%.[a-z]+[%w%p]*%f[%A]";
-		const match = string.match(Bridge.RemoveRichText(message), domainPattern);
+	private detectUrlInChatMessage(message: string): string | undefined {
+		const cleanMessage = Bridge.RemoveRichText(message).lower();
+		const patterns = [
+			"https?://[%w%-%.]+[%w%.%-/?#&=_~]*", // URLs with http protocol
+			"%f[%w][%w%-]+%.[%a]+[%w%.%-/?#&=_~]*%f[%W]", // URLs matching only domain.tld
+		];
+
 		let url: string | undefined;
-		if (match !== undefined && match.size() > 0) {
-			url = match[0] as string;
-			if (!StringUtils.startsWith(url.lower(), "https://")) {
-				url = "https://" + url;
+		for (const pattern of patterns) {
+			const match = string.match(cleanMessage, pattern);
+			if (match !== undefined && match.size() > 0) {
+				url = match[0] as string;
+
+				// Don't make domains from emails clickable
+				if (cleanMessage.includes("@" + url)) {
+					continue;
+				}
+
+				// Add protocol if missing
+				if (!string.match(url, "^https?://")) {
+					url = "https://" + url;
+				}
+
+				print("Found chat URL: " + url);
+				return url;
 			}
-			print("found chat url: " + url);
 		}
 
-		return url;
+		return undefined;
 	}
 
 	public ClearChatMessage(messageId: string): void {

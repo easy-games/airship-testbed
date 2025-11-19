@@ -290,9 +290,9 @@ interface AirshipSimulationManager extends MonoBehaviour {
 }
 
 interface AirshipSimulationManagerWithLagCompensation {
-	OnLagCompensationRequestCheck(callback: (id: string) => void): EngineEventConnection;
-	OnLagCompensationRequestComplete(callback: (id: string) => void): EngineEventConnection;
-	RequestLagCompensationCheck(clientId: number): string;
+	OnLagCompensationRequestCheck(callback: (id: number) => void): EngineEventConnection;
+	OnLagCompensationRequestComplete(callback: (id: number) => void): EngineEventConnection;
+	RequestLagCompensationCheck(clientId: number): number;
 }
 
 interface AirshipSimulationManagerConstructor {
@@ -877,6 +877,7 @@ interface AuthManagerStatic {
 	GetSavedAccount(): AuthSave | undefined;
 	SaveAuthAccount(refreshToken: string): void;
 	ClearSavedAccount(): void;
+	SetUserInfo(uid: string, username: string): void;
 }
 declare const AuthManager: AuthManagerStatic;
 
@@ -1240,6 +1241,11 @@ interface PlatformGear {
 	face: AccessoryFace | undefined;
 }
 interface PlatformGearConstructor {
+	/**
+	 *
+	 * @param classId The PlatformGear class ID. This can be found from right clicking clothing in the Avatar Editor.
+	 */
+	DownloadYielding(classId: string): PlatformGear | undefined;
 	DownloadYielding(classId: string, airId: string): PlatformGear | undefined;
 }
 declare const PlatformGear: PlatformGearConstructor;
@@ -1429,3 +1435,27 @@ interface QualityManager {
 	OnQualityCheck(callback: (frameHealth: FrameHealth, report: QualityReport) => void): EngineEventConnection;
 }
 declare const QualityManager: QualityManager;
+
+interface RectTransformUtility {}
+
+interface RectTransformUtilityConstructor {
+	ScreenPointToLocalPointInRectangle(
+		rect: RectTransform,
+		screenPoint: Vector2,
+		cam: Camera,
+	): LuaTuple<[hitPlaneOfRect: boolean, localPoint: Vector2]>;
+	ScreenPointToLocalPointInRectangle(
+		rect: RectTransform,
+		screenPoint: Vector2,
+	): LuaTuple<[hitPlaneOfRect: boolean, localPoint: Vector2]>;
+
+	ScreenPointToWorldPointInRectangle(
+		rect: RectTransform,
+		screenPoint: Vector2,
+		cam: Camera,
+	): LuaTuple<[hitPlaneOfRect: boolean, worldPoint: Vector3]>;
+	ScreenPointToWorldPointInRectangle(
+		rect: RectTransform,
+		screenPoint: Vector2,
+	): LuaTuple<[hitPlaneOfRect: boolean, worldPoint: Vector3]>;
+}

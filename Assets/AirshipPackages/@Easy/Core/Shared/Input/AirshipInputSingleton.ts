@@ -19,7 +19,7 @@ import { InputActionEvent } from "./InputActionEvent";
 import { ActionInputType, InputUtil, KeyType, ModifierKey } from "./InputUtil";
 import AirshipMobileButton from "./Mobile/AirshipMobileButton";
 import DynamicJoystick from "./Mobile/DynamicJoystick";
-import { MobileButtonConfig } from "./Mobile/MobileButton";
+import { CoreMobileButton, CoreMobileButtonToCoreAction, MobileButtonConfig } from "./Mobile/MobileButton";
 import MobileControlsCanvas from "./Mobile/MobileControlsCanvas";
 import TouchJoystick from "./Mobile/TouchJoystick";
 import ProximityPrompt from "./ProximityPrompts/ProximityPrompt";
@@ -129,36 +129,6 @@ export class AirshipInputSingleton {
 		// 	}
 		// });
 
-		if (Game.coreContext === CoreContext.GAME && Game.IsGameLuauContext()) {
-			if (Game.IsMobile()) {
-				this.CreateMobileControlCanvas();
-			}
-
-			// A Game keybind was updated from the keybind menu.
-			contextbridge.subscribe(
-				"ProtectedKeybind:Updated",
-				(
-					from: LuauContext,
-					name: string,
-					id: number,
-					isKeyBinding: boolean,
-					key?: Key,
-					modifierKey?: ModifierKey,
-					mouseButton?: MouseButton,
-				) => {
-					if (from !== LuauContext.Protected) return;
-					const matchingGameAction = this.GetActions(name).find((a) => a.id === id);
-					if (!matchingGameAction) return;
-					let binding: Binding | undefined;
-					if (isKeyBinding && key) binding = Binding.Key(key, modifierKey);
-					if (!isKeyBinding && mouseButton !== undefined && mouseButton > -1) {
-						binding = Binding.MouseButton(mouseButton, modifierKey);
-					}
-					if (binding) matchingGameAction.UpdateBinding(binding);
-				},
-			);
-		}
-
 		if (Game.IsProtectedLuauContext()) {
 			contextbridge.subscribe(
 				"ProtectedKeybind:CreateAction",
@@ -223,6 +193,36 @@ export class AirshipInputSingleton {
 
 			this.isSprintToggleSprinting = !this.isSprintToggleSprinting;
 		});
+
+		if (Game.coreContext === CoreContext.GAME && Game.IsGameLuauContext()) {
+			if (Game.IsMobile()) {
+				this.CreateMobileControlCanvas();
+			}
+
+			// A Game keybind was updated from the keybind menu.
+			contextbridge.subscribe(
+				"ProtectedKeybind:Updated",
+				(
+					from: LuauContext,
+					name: string,
+					id: number,
+					isKeyBinding: boolean,
+					key?: Key,
+					modifierKey?: ModifierKey,
+					mouseButton?: MouseButton,
+				) => {
+					if (from !== LuauContext.Protected) return;
+					const matchingGameAction = this.GetActions(name).find((a) => a.id === id);
+					if (!matchingGameAction) return;
+					let binding: Binding | undefined;
+					if (isKeyBinding && key) binding = Binding.Key(key, modifierKey);
+					if (!isKeyBinding && mouseButton !== undefined && mouseButton > -1) {
+						binding = Binding.MouseButton(mouseButton, modifierKey);
+					}
+					if (binding) matchingGameAction.UpdateBinding(binding);
+				},
+			);
+		}
 	}
 
 	/**
@@ -350,6 +350,9 @@ export class AirshipInputSingleton {
 	 */
 	public DisableCoreActions(coreActions: CoreAction[]) {
 		for (const actionName of coreActions) {
+			this.GetActions(actionName).forEach((a) => {
+				a.UnsetBinding();
+			});
 			if (Game.IsGameLuauContext()) {
 				task.defer(() => {
 					contextbridge.broadcast("ProtectedKeybind:UnregisterAction", actionName);
@@ -357,9 +360,16 @@ export class AirshipInputSingleton {
 			} else {
 				this.UnregisterAction(actionName);
 			}
-			this.GetActions(actionName).forEach((a) => {
-				a.UnsetBinding();
-			});
+
+			// Disable core mobile buttons if their action is disabled
+			if (Game.IsMobile()) {
+				for (const [, coreMobileButton] of pairs(CoreMobileButton)) {
+					const correspondingCoreAction = CoreMobileButtonToCoreAction[coreMobileButton];
+					if (correspondingCoreAction === actionName) {
+						this.HideMobileButtons(coreMobileButton);
+					}
+				}
+			}
 		}
 	}
 
@@ -374,6 +384,17 @@ export class AirshipInputSingleton {
 	/** Unregisters an action (removes binding, clears from settings menu) */
 	private UnregisterAction(name: string) {
 		this.actionTable.delete(name.lower());
+	}
+
+	/**
+	 * Checks if a core action is enabled.
+	 *
+	 * @param actionName The name of the action to check
+	 * @returns True if the action is enabled, false otherwise
+	 */
+	public IsCoreActionEnabled(actionName: string): boolean {
+		const actions = this.GetActions(actionName);
+		return actions.some((a) => !a.binding.IsUnset());
 	}
 
 	/**
@@ -549,6 +570,11 @@ export class AirshipInputSingleton {
 		mobileButtonsForAction.push(mobileButton);
 		this.actionToMobileButtonTable.set(lowerName, mobileButtonsForAction);
 
+		const isCoreAction = CoreMobileButtonToCoreAction[actionName as CoreMobileButton];
+		if (isCoreAction && !this.IsCoreActionEnabled(isCoreAction)) {
+			mobileButton.SetActive(false);
+		}
+
 		return mobileButton;
 	}
 
@@ -651,7 +677,7 @@ export class AirshipInputSingleton {
 	}
 
 	/**
-	 * Hides all mobile buttons that trigger the action `name`.
+	 * Shows all mobile buttons that trigger the action `name`.
 	 *
 	 * @param name An action name.
 	 */

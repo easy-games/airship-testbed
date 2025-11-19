@@ -27,6 +27,8 @@ export class ReplyCommand extends ChatCommand {
 				text += " ";
 			}
 		}
-		Dependency<DirectMessageController>().SendDirectMessage(friend.userId, text);
+		task.spawn(() => {
+			Dependency<DirectMessageController>().SendDirectMessage(friend.userId, text);
+		});
 	}
 }

@@ -10,16 +10,18 @@ export default class ModerationTest extends AirshipBehaviour {
 			task.wait(3);
 			print(`Player ${player.username} joined the game.`);
 
-			Platform.Server.Moderation.ModerateText(`This is a test message: ${player.username}`).then((response) => {
-				print("Moderation response: ", json.encode(response));
-				if (response.blocked) {
-					print(`Message blocked: ${response.text}`);
-				} else {
-					print(`Message allowed: ${response.text}`);
-				}
-			}).catch((err) => {
-				print(`Error moderating message: ${err}`);
-			});
+			Platform.Server.Moderation.ModerateText(`This is a test message: ${player.username}`)
+				.then((response) => {
+					print("Moderation response: ", json.encode(response));
+					if (response.blocked) {
+						print(`Message blocked: ${response.text}`);
+					} else {
+						print(`Message allowed: ${response.text}`);
+					}
+				})
+				.catch((err) => {
+					print(`Error moderating message: ${err}`);
+				});
 		});
 	}
 }

@@ -7,4 +7,6 @@ export interface BridgedPlayer {
 	userId: string;
 	profileImageId: string;
 	connectionId: number;
+	deviceType: AirshipDeviceType;
+	platform: AirshipPlatform;
 }

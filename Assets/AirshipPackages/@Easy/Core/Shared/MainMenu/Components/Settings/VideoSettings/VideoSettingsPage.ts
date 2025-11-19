@@ -1,3 +1,4 @@
+import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import SettingsToggle from "../Controls/SettingsToggle";
 
@@ -19,11 +20,15 @@ export default class VideoSettingsPage extends AirshipBehaviour {
 			Protected.Settings.MarkAsDirty();
 		});
 
-		this.vsyncToggle.Init("VSync", Protected.Settings.data.vsync);
-		this.vsyncToggle.toggle.onValueChanged.Connect((val) => {
-			Protected.Settings.SetVsync(val);
-			Protected.Settings.MarkAsDirty();
-		});
+		if (Game.IsMobile()) {
+			this.vsyncToggle.gameObject.SetActive(false);
+		} else {
+			this.vsyncToggle.Init("VSync", Protected.Settings.data.vsync);
+			this.vsyncToggle.toggle.onValueChanged.Connect((val) => {
+				Protected.Settings.SetVsync(val);
+				Protected.Settings.MarkAsDirty();
+			});
+		}
 	}
 
 	override OnDestroy(): void {}

@@ -4,8 +4,9 @@ import { Game } from "../../Game";
 import { ColorUtil } from "../../Util/ColorUtil";
 import { CoreAction } from "../AirshipCoreAction";
 import { CoreIcon } from "../UI/CoreIcon";
+import AirshipMobileButton from "./AirshipMobileButton";
 import DynamicJoystick from "./DynamicJoystick";
-import { CoreMobileButton } from "./MobileButton";
+import { CoreMobileButton, CoreMobileButtonToCoreAction } from "./MobileButton";
 import TouchJoystick from "./TouchJoystick";
 
 export default class MobileControlsCanvas extends AirshipBehaviour {
@@ -114,6 +115,11 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 		}
 	}
 
+	/**
+	 * Shows all character control UI elements for mobile devices.
+	 * This includes activating the appropriate joystick and making
+	 * core mobile buttons that aren't disabled visible.
+	 */
 	public ShowCharacterControls(): void {
 		if (this.isJoystickDynamic) {
 			this.dynamicJoystick.gameObject.SetActive(true);
@@ -122,16 +128,29 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 		}
 
 		for (const [, button] of pairs(CoreMobileButton)) {
-			Airship.Input.ShowMobileButtons(button);
+			if (Airship.Input.IsCoreActionEnabled(CoreMobileButtonToCoreAction[button])) {
+				const buttons = Airship.Input.GetMobileButtons(button);
+				for (const button of buttons) {
+					button.GetAirshipComponent<AirshipMobileButton>()?.FadeIn();
+				}
+			}
 		}
 	}
 
+	/**
+	 * Hides all character control UI elements for mobile devices.
+	 * This includes deactivating both joystick types and making
+	 * core mobile buttons that aren't disabled invisible.
+	 */
 	public HideCharacterControls(): void {
 		this.staticJoystick.gameObject.SetActive(false);
 		this.dynamicJoystick.gameObject.SetActive(false);
 
 		for (const [, button] of pairs(CoreMobileButton)) {
-			Airship.Input.HideMobileButtons(button);
+			const buttons = Airship.Input.GetMobileButtons(button);
+			for (const button of buttons) {
+				button.GetAirshipComponent<AirshipMobileButton>()?.FadeOut();
+			}
 		}
 	}
 
@@ -155,6 +174,15 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 			} else {
 				input = this.staticJoystick.input;
 			}
+
+			// Clap the direction to .01 intervals so that predicted inputs in server auth mode have
+			// a better chance of being correct
+			const clampInterval = 0.01;
+			input = new Vector2(
+				math.round(input.x / clampInterval) * clampInterval,
+				math.round(input.y / clampInterval) * clampInterval,
+			);
+
 			const inputMagnitude = input.magnitude;
 
 			const shouldSprint = inputMagnitude >= this.sprintThreshold;

@@ -1,4 +1,5 @@
 import { Cancellable } from "./Cancellable";
+import { MapUtil } from "./MapUtil";
 
 type SignalParams<T> = Parameters<
 	[T] extends [unknown[]] ? (...args: T) => never : [T] extends [unknown] ? (arg: T) => never : () => never
@@ -47,6 +48,16 @@ export class Signal<T extends unknown[] | unknown = void> {
 	private allowYielding = false;
 	private keys: number[] = [];
 	private readonly connections: Map<number, Array<CallbackItem<T>>> = new Map();
+	/**
+	 * Map from priority to all callbacks queued at that priority. Holds connections
+	 * that were registered while this signal was firing (to be added after fire completes).
+	 */
+	private queuedConnections = new Map<number, CallbackItem<T>[]>();
+	/**
+	 * This flag is to safely handle DisconnectAll while firing. When enabled we stop
+	 * looping callbacks for the current Fire.
+	 */
+	private disconnectAllRequested = false;
 	public debugGameObject = false;
 	public isDestroyed = false;
 
@@ -91,9 +102,8 @@ export class Signal<T extends unknown[] | unknown = void> {
 		const item: CallbackItem<T> = [callback, true];
 
 		if (this.firing) {
-			task.defer(() => {
-				this.AddConnection(priority, item);
-			});
+			const queuedConns = MapUtil.GetOrCreate(this.queuedConnections, priority, []);
+			queuedConns.push(item);
 		} else {
 			this.AddConnection(priority, item);
 		}
@@ -104,7 +114,7 @@ export class Signal<T extends unknown[] | unknown = void> {
 
 			const itemIdx = items.indexOf(item);
 			if (itemIdx !== -1) {
-				items.unorderedRemove(itemIdx);
+				items.remove(itemIdx);
 
 				if (items.size() === 0) {
 					this.connections.delete(priority);
@@ -119,8 +129,16 @@ export class Signal<T extends unknown[] | unknown = void> {
 		return () => {
 			if (!item[1]) return;
 			if (this.firing) {
+				// Mark as disconnected and cleanup later
 				item[1] = false;
 				task.defer(disconnect);
+
+				// Clear from queued connections
+				const queuedConnectionsAtPriority = this.queuedConnections.get(priority);
+				if (queuedConnectionsAtPriority) {
+					const queuedIdx = queuedConnectionsAtPriority.indexOf(item);
+					if (queuedIdx >= 0) queuedConnectionsAtPriority.remove(queuedIdx);
+				}
 			} else {
 				disconnect();
 			}
@@ -181,10 +199,11 @@ export class Signal<T extends unknown[] | unknown = void> {
 					}
 				} else {
 					if (!isCancellable) {
-						if (!freeRunnerThread) {
-							freeRunnerThread = coroutine.create(runEventHandlerThread);
-						}
-						task.spawnDetached(freeRunnerThread, entry[0], ...args);
+						// TODO Re-enable this once confirmed to not cause crashes
+						// if (!freeRunnerThread) {
+						// 	freeRunnerThread = coroutine.create(runEventHandlerThread);
+						// }
+						task.spawnDetached(entry[0], ...args);
 					} else {
 						const thread = task.spawnDetached(entry[0], ...args);
 
@@ -204,19 +223,36 @@ export class Signal<T extends unknown[] | unknown = void> {
 						break;
 					}
 				}
+
+				// Cancel fire when DisconnectAll is requested
+				if (this.disconnectAllRequested) break;
 			}
-			if (cancelled) {
-				break;
-			}
+			if (cancelled) break;
+			// Cancel fire when DisconnectAll is requested
+			if (this.disconnectAllRequested) break;
 		}
 
 		if (this.debugLogging) {
 			print("fire count: " + fireCount);
 		}
 
+		// Reset
+		this.disconnectAllRequested = false;
 		this.firing = false;
 
+		this.RegisterQueuedConnections();
+
 		return args[0] as T;
+	}
+
+	/** Register all queued connections during fire */
+	private RegisterQueuedConnections() {
+		for (const [priority, connections] of this.queuedConnections) {
+			for (const connection of connections) {
+				this.AddConnection(priority, connection);
+			}
+		}
+		this.queuedConnections.clear();
 	}
 
 	/**
@@ -246,15 +282,11 @@ export class Signal<T extends unknown[] | unknown = void> {
 	 * Clears all connections.
 	 */
 	public DisconnectAll() {
-		if (this.firing) {
-			task.defer(() => {
-				this.connections.clear();
-				this.keys.clear();
-			});
-		} else {
-			this.connections.clear();
-			this.keys.clear();
-		}
+		if (this.firing) this.disconnectAllRequested = true;
+
+		this.connections.clear();
+		this.keys.clear();
+		this.queuedConnections.clear();
 	}
 
 	/**

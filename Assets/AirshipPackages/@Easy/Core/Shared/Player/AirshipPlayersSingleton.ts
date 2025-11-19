@@ -90,7 +90,11 @@ export class AirshipPlayersSingleton {
 				"",
 				"",
 				undefined as unknown as PlayerInfo,
+				Game.deviceType,
+				Game.platform,
 			);
+			// We only need to set this up once, so we'll do it in the protexted context.
+			if (Game.IsProtectedLuauContext()) this.SetupNetworkingSettings(Game.localPlayer);
 			if (!Game.IsHosting()) {
 				/**
 				 * Host mode: start with no players
@@ -117,6 +121,8 @@ export class AirshipPlayersSingleton {
 					username: player.username,
 					profileImageId: player.profileImageId,
 					connectionId: player.connectionId,
+					deviceType: player.deviceType,
+					platform: player.platform,
 				});
 				if (Game.IsServer() && this.joinMessagesEnabled) {
 					Game.BroadcastMessage(ChatColor.Aqua(player.username) + ChatColor.Gray(" joined the server."));
@@ -131,6 +137,8 @@ export class AirshipPlayersSingleton {
 						username: player.username,
 						profileImageId: player.profileImageId,
 						connectionId: player.connectionId,
+						deviceType: player.deviceType,
+						platform: player.platform,
 					},
 				);
 				if (Game.IsServer() && this.disconnectMessagesEnabled) {
@@ -160,7 +168,7 @@ export class AirshipPlayersSingleton {
 
 			if (Game.IsClient() && Game.coreContext === CoreContext.GAME && Game.IsProtectedLuauContext()) {
 				Game.WaitForLocalPlayerLoaded();
-				CoreNetwork.ClientToServer.Ready.client.FireServer();
+				CoreNetwork.ClientToServer.Ready.client.FireServer(Game.deviceType, Game.platform);
 			}
 		});
 	}
@@ -262,6 +270,11 @@ export class AirshipPlayersSingleton {
 					dto.profileImageId,
 					transferData,
 					playerInfo,
+
+					// These values will get overwritten inside the "Ready" network signal on server before onPlayerJoin is fired.
+					// So below values don't matter.
+					AirshipDeviceType.Desktop,
+					AirshipPlatform.Windows,
 				);
 			}
 			dto.gameObject.name = `Player_${dto.username}`;
@@ -313,7 +326,9 @@ export class AirshipPlayersSingleton {
 		});
 
 		if (Game.IsProtectedLuauContext()) {
-			CoreNetwork.ClientToServer.Ready.server.OnClientEvent((player) => {
+			CoreNetwork.ClientToServer.Ready.server.OnClientEvent((player, deviceType, platform) => {
+				(player.deviceType as AirshipDeviceType) = deviceType;
+				(player.platform as AirshipPlatform) = platform;
 				this.HandlePlayerConnect(player);
 				contextbridge.broadcast<(connId: number) => void>("ProtectedPlayers:PlayerReady", player.connectionId);
 			});
@@ -476,8 +491,12 @@ export class AirshipPlayersSingleton {
 			this.players.add(player);
 		}
 
-		// notify all clients of the joining player
 		if (Game.IsProtectedLuauContext()) {
+			// Setup network settings for ready player now that we have their device information.
+			// We only need to do this once on the server, so we'll do it in the protected context.
+			this.SetupNetworkingSettings(player);
+
+			// notify all clients of the joining player
 			CoreNetwork.ServerToClient.AddPlayer.server.FireExcept(player, player.Encode(false));
 		}
 
@@ -499,6 +518,10 @@ export class AirshipPlayersSingleton {
 			team = Airship.Teams.FindById(dto.teamId);
 		}
 
+		// Wait for local player connectionId data before we start adding additional player objects.
+		// If we don't, we could end up adding two player objects for the local player since the local
+		// player initializes with connId 0
+		Game.WaitForLocalPlayerLoaded();
 		let player = this.FindByConnectionId(dto.connectionId);
 		if (!player) {
 			const nob = NetworkUtil.WaitForNetworkIdentity(dto.netId);
@@ -513,6 +536,8 @@ export class AirshipPlayersSingleton {
 				dto.profileImageId,
 				"",
 				playerInfo,
+				dto.deviceType,
+				dto.platform,
 			);
 		}
 
@@ -524,6 +549,21 @@ export class AirshipPlayersSingleton {
 
 		if (!Game.IsHosting()) {
 			this.onPlayerJoined.Fire(player);
+		}
+	}
+
+	/**
+	 * Used to set up networking buffer.
+	 */
+	private SetupNetworkingSettings(player: Player) {
+		const multiplier = player.deviceType === AirshipDeviceType.Desktop ? 3 : 5;
+
+		// If this player will be the local player (netId undefined)
+		// Set the buffer time multiplier for the player's device.
+		const clientLocalPlayer = Game.IsClient() && (player.networkIdentity === undefined || player.IsLocalPlayer());
+		const serverPlayer = Game.IsServer() && !player.IsBot();
+		if (clientLocalPlayer || serverPlayer) {
+			player.SetBufferTimeMultiplier(multiplier);
 		}
 	}
 
@@ -560,11 +600,11 @@ export class AirshipPlayersSingleton {
 	 *
 	 * ```ts
 	 * Airship.players.ObservePlayers((player) => {
-	 * 	print(`${player.name} entered`);
-	 * 	return () => {
-	 *  	print(`${player.name} left`);
-	 * 	};
-	 * });
+	 *      print(`${player.name} entered`);
+	 *      return () => {
+	 *          print(`${player.name} left`);
+	 *      };
+	 *  });
 	 * ```
 	 *
 	 * @returns Disconnect function -- call to stop observing players and call the

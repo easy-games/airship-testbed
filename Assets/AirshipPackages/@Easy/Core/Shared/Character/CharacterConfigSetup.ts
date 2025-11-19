@@ -5,6 +5,7 @@ import { FixedCameraMode } from "../Camera/DefaultCameraModes/FixedCameraMode";
 import { OrbitCameraMode } from "../Camera/DefaultCameraModes/OrbitCameraMode";
 import { Dependency } from "../Flamework";
 import { Game } from "../Game";
+import { CoreMobileButton } from "../Input/Mobile/MobileButton";
 import { InventoryUIVisibility } from "../Inventory/InventoryUIVisibility";
 import { CharacterCameraMode } from "./LocalCharacter/CharacterCameraMode";
 
@@ -158,11 +159,11 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 			});
 
 			if (!this.enableJumping) {
-				Airship.Input.HideMobileButtons("Jump");
+				Airship.Input.HideMobileButtons(CoreMobileButton.Jump);
 			}
 
 			if (!this.enableCrouching) {
-				Airship.Input.HideMobileButtons("Crouch");
+				Airship.Input.HideMobileButtons(CoreMobileButton.CrouchToggle);
 			}
 		}
 	}

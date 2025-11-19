@@ -67,6 +67,9 @@ export class ProximityPromptController {
 
 				let possiblePrompts = new Map<string, ProximityPrompt[]>();
 				for (let prompt of this.allPrompts) {
+					const promptPosition = prompt.GetPosition();
+					if (!promptPosition) continue;
+
 					// If the player is dead and prompt is set to hide when dead, skip getting new prompts
 					if (Game.localPlayer.character?.IsDead() && prompt.hideWhenDead) continue;
 
@@ -76,7 +79,7 @@ export class ProximityPromptController {
 						promptActionMap.set(prompt.actionName, [prompt]);
 					}
 
-					const distToPrompt = localCharacterPosition.sub(prompt.GetPosition()).magnitude;
+					const distToPrompt = localCharacterPosition.sub(promptPosition).magnitude;
 					if (distToPrompt > prompt.maxRange) continue;
 
 					const actionPrompts = MapUtil.GetOrCreate(possiblePrompts, prompt.actionName, []);

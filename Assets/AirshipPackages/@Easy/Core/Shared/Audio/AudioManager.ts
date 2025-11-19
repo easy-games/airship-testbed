@@ -1,4 +1,5 @@
 import { CoreRefs } from "@Easy/Core/Shared/CoreRefs";
+import { Airship } from "../Airship";
 import { Asset } from "../Asset";
 import StringUtils from "../Types/StringUtil";
 
@@ -61,6 +62,11 @@ export interface PlaySoundConfig {
 	 * Mixer group for sound to play in.
 	 */
 	mixerGroup?: AudioMixerGroup;
+
+	/**
+	 * Distance culling will stop the sound from playing if main camera is further away than this distance.
+	 */
+	distanceCulling?: number;
 }
 
 interface PositionalPlaySoundConfig extends PlaySoundConfig {
@@ -271,6 +277,17 @@ export class AudioManager {
 		if (!audioResource) {
 			warn("Cannot play sound: AudioResource is undefined.");
 			return undefined;
+		}
+
+		if (config?.distanceCulling) {
+			const cameraPosition = Airship.Camera.cameraRig?.mainCamera?.transform.position;
+			if (cameraPosition) {
+				const distanceSquared = position.sub(cameraPosition).sqrMagnitude;
+				const cullingDistanceSquared = config.distanceCulling * config.distanceCulling;
+				if (distanceSquared > cullingDistanceSquared) {
+					return undefined;
+				}
+			}
 		}
 
 		const audioSource = this.GetAudioSource(position, config?.audioSourceTemplate);

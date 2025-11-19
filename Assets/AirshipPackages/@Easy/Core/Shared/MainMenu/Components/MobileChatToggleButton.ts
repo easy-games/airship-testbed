@@ -29,7 +29,12 @@ export default class MobileChatToggleButton extends AirshipBehaviour {
 			CanvasAPI.OnClickEvent(this.button.gameObject, () => {
 				let newVal = !this.active;
 				this.SetActiveVisuals(newVal);
-				newVal ? clientChat.OpenMobile() : clientChat.HideMobile();
+				if (newVal) {
+					contextbridge.invoke("Emotes:HideEmoteWheel", LuauContext.Game);
+					clientChat.OpenMobile();
+				} else {
+					clientChat.HideMobile();
+				}
 			}),
 		);
 
@@ -59,5 +64,12 @@ export default class MobileChatToggleButton extends AirshipBehaviour {
 		} else {
 			this.bgImage.color = this.disabledColor;
 		}
+	}
+
+	public HideMobileChat(): void {
+		if (!this.active) return;
+		this.SetActiveVisuals(false);
+		const clientChat = Dependency<ClientChatSingleton>();
+		clientChat.HideMobile();
 	}
 }

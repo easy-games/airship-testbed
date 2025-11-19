@@ -603,8 +603,11 @@ declare namespace math {
 	/** Linearly interpolates between `a` and `b` by amount `t`. The value `t` is clamped to the range of `[0, 1]`. */
 	function lerpClamped(a: number, b: number, t: number): number;
 
-	/** Returns where a value lies between `a` and `b`. */
+	/** Returns where a value lies between `a` and `b`. Note: This is unclamped. */
 	function inverseLerp(a: number, b: number, value: number): number;
+
+	/** Returns where a value lies between `a` and `b`. The returned value is clamped to the range of `[a, b]` */
+	function inverseLerpClamped(a: number, b: number, value: number): number;
 
 	/** Returns the closest power of two from `n`. */
 	function closestPowerOfTwo(n: number): number;
@@ -1025,9 +1028,25 @@ declare namespace table {
 	 * This freezing effect is shallow, which means that you can write to a table within a frozen table.
 	 * To deep freeze a table, call this function recursively on all of the descending tables.
 	 */
-	function freeze<T extends object>(t: T): Readonly<T>;
+	function freeze<T extends object>(
+		t: T,
+	): T extends ReadonlyMap<infer K, infer V>
+		? ReadonlyMap<K, V>
+		: T extends ReadonlySet<infer T>
+		? ReadonlySet<T>
+		: T extends ReadonlyArray<infer V>
+		? ReadonlyArray<V>
+		: Readonly<T>;
 	/** Returns whether or not `t` is frozen */
-	function isfrozen<T extends object>(t: T): t is Readonly<T>;
+	function isfrozen<T extends object>(
+		t: T,
+	): t is T extends ReadonlyArray<infer V>
+		? ReadonlyArray<V>
+		: T extends ReadonlyMap<infer K, infer V>
+		? ReadonlyMap<K, V>
+		: T extends ReadonlySet<infer V>
+		? Readonly<ReadonlySet<V>>
+		: Readonly<T>;
 
 	/**
 	 * Takes an object and returns a new object that has the same keys, values and metatable.

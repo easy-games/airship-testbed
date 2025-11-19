@@ -8,6 +8,7 @@ import { MainMenuSingleton } from "../../Singletons/MainMenuSingleton";
 export default class AirshipOverlayManager extends AirshipBehaviour {
 	@Header("References")
 	public escapeButton!: RectTransform;
+	public emoteButton!: RectTransform;
 	public chatButton!: RectTransform;
 	public canvasScalar: CanvasScaler;
 
@@ -20,9 +21,11 @@ export default class AirshipOverlayManager extends AirshipBehaviour {
 				if (scheme === ControlScheme.Touch) {
 					this.escapeButton.gameObject.SetActive(true);
 					this.chatButton.gameObject.SetActive(true);
+					this.emoteButton.gameObject.SetActive(true);
 				} else {
 					this.escapeButton.gameObject.SetActive(false);
 					this.chatButton.gameObject.SetActive(false);
+					this.emoteButton.gameObject.SetActive(false);
 				}
 			}),
 		);
@@ -44,6 +47,7 @@ export default class AirshipOverlayManager extends AirshipBehaviour {
 		Dependency<MainMenuController>().onToggled.Connect((opened) => {
 			if (!Game.IsMobile()) return;
 			this.chatButton.gameObject.SetActive(!opened);
+			this.emoteButton.gameObject.SetActive(!opened);
 		});
 	}
 

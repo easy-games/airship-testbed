@@ -981,7 +981,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterHeight: 1.8
   characterRadius: 0.2
-  colliderGroundOffset: 0.015
+  colliderGroundOffset: 0.05
   onlySprintForward: 0
   useAccelerationMovement: 0
   speed: 4.666667

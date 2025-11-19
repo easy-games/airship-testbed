@@ -35,14 +35,14 @@ ModelImporter:
       takeName: Airship_Character_Gesture__Negative_RightHand
       internalID: 464310227929572309
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 60
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -73,7 +73,7 @@ ModelImporter:
       - path: Airship_Rig/root_motion/master
         weight: 0
       - path: Airship_Rig/root_motion/master/spine
-        weight: 0
+        weight: 1
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L
         weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L
@@ -99,7 +99,7 @@ ModelImporter:
       - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/weapon.R
         weight: 1
       - path: Airship_Rig/root_motion/master/spine/head
-        weight: 0
+        weight: 1
       - path: Airship_Rig/root_motion/master/hips
         weight: 0
       - path: Airship_Rig/root_motion/master/thigh.L
@@ -115,195 +115,21 @@ ModelImporter:
       - path: Airship_Rig/root_motion/master/thigh.R/shin.R/foot.R
         weight: 0
       maskType: 1
-      maskSource: {fileID: 31900000, guid: 73b71d1ebff5d1546b27eff36dd98fe1, type: 2}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Airship_Character_Gesture__Negative_LeftHand
-      takeName: Airship_Character_Gesture__Negative_LeftHand
-      internalID: -7508136028908914956
-      firstFrame: 0
-      lastFrame: 30
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Body
-        weight: 0
-      - path: Face
-        weight: 0
-      - path: Head
-        weight: 0
-      - path: Arms
-        weight: 0
-      - path: Airship_Rig
-        weight: 0
-      - path: Airship_Rig/root_motion
-        weight: 0
-      - path: Airship_Rig/root_motion/master
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.L
-        weight: 1
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L
-        weight: 1
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L
-        weight: 1
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/fingers.L
-        weight: 1
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/thumb.L
-        weight: 1
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/weapon.L
-        weight: 1
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/fingers.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/thumb.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/weapon.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/head
-        weight: 0
-      - path: Airship_Rig/root_motion/master/hips
-        weight: 0
-      - path: Airship_Rig/root_motion/master/thigh.L
-        weight: 0
-      - path: Airship_Rig/root_motion/master/thigh.L/shin.L
-        weight: 0
-      - path: Airship_Rig/root_motion/master/thigh.L/shin.L/foot.L
-        weight: 0
-      - path: Airship_Rig/root_motion/master/thigh.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/thigh.R/shin.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/thigh.R/shin.R/foot.R
-        weight: 0
-      maskType: 1
-      maskSource: {fileID: 31900000, guid: 5011098b94c00bb4091381d9237e8e90, type: 2}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Airship_Character_Gesture__Positive_LeftHand
-      takeName: Airship_Character_Gesture__Positive_LeftHand
-      internalID: -4933616862402142054
-      firstFrame: 0
-      lastFrame: 30
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Body
-        weight: 0
-      - path: Face
-        weight: 0
-      - path: Head
-        weight: 0
-      - path: Arms
-        weight: 0
-      - path: Airship_Rig
-        weight: 0
-      - path: Airship_Rig/root_motion
-        weight: 0
-      - path: Airship_Rig/root_motion/master
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.L
-        weight: 1
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L
-        weight: 1
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L
-        weight: 1
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/fingers.L
-        weight: 1
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/thumb.L
-        weight: 1
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/weapon.L
-        weight: 1
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/fingers.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/thumb.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/weapon.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/head
-        weight: 0
-      - path: Airship_Rig/root_motion/master/hips
-        weight: 0
-      - path: Airship_Rig/root_motion/master/thigh.L
-        weight: 0
-      - path: Airship_Rig/root_motion/master/thigh.L/shin.L
-        weight: 0
-      - path: Airship_Rig/root_motion/master/thigh.L/shin.L/foot.L
-        weight: 0
-      - path: Airship_Rig/root_motion/master/thigh.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/thigh.R/shin.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/thigh.R/shin.R/foot.R
-        weight: 0
-      maskType: 1
-      maskSource: {fileID: 31900000, guid: 5011098b94c00bb4091381d9237e8e90, type: 2}
+      maskSource: {fileID: 31900000, guid: b9b677effc282bc43b92db61319af0de, type: 2}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Airship_Character_Gesture__Positive_RightHand
       takeName: Airship_Character_Gesture__Positive_RightHand
       internalID: 7804001176748369513
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 60
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -334,7 +160,7 @@ ModelImporter:
       - path: Airship_Rig/root_motion/master
         weight: 0
       - path: Airship_Rig/root_motion/master/spine
-        weight: 0
+        weight: 1
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L
         weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L
@@ -360,7 +186,7 @@ ModelImporter:
       - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/weapon.R
         weight: 1
       - path: Airship_Rig/root_motion/master/spine/head
-        weight: 0
+        weight: 1
       - path: Airship_Rig/root_motion/master/hips
         weight: 0
       - path: Airship_Rig/root_motion/master/thigh.L
@@ -376,21 +202,21 @@ ModelImporter:
       - path: Airship_Rig/root_motion/master/thigh.R/shin.R/foot.R
         weight: 0
       maskType: 1
-      maskSource: {fileID: 31900000, guid: 73b71d1ebff5d1546b27eff36dd98fe1, type: 2}
+      maskSource: {fileID: 31900000, guid: b9b677effc282bc43b92db61319af0de, type: 2}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Airship_Character_Gesture__Pointing_RightHand
       takeName: Airship_Character_Gesture__Pointing_RightHand
       internalID: -5045878675382109921
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 90
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -421,7 +247,7 @@ ModelImporter:
       - path: Airship_Rig/root_motion/master
         weight: 0
       - path: Airship_Rig/root_motion/master/spine
-        weight: 0
+        weight: 1
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L
         weight: 0
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L
@@ -447,7 +273,7 @@ ModelImporter:
       - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/weapon.R
         weight: 1
       - path: Airship_Rig/root_motion/master/spine/head
-        weight: 0
+        weight: 1
       - path: Airship_Rig/root_motion/master/hips
         weight: 0
       - path: Airship_Rig/root_motion/master/thigh.L
@@ -463,94 +289,7 @@ ModelImporter:
       - path: Airship_Rig/root_motion/master/thigh.R/shin.R/foot.R
         weight: 0
       maskType: 1
-      maskSource: {fileID: 31900000, guid: 73b71d1ebff5d1546b27eff36dd98fe1, type: 2}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Airship_Character_Gesture__Pointing_LeftHand
-      takeName: Airship_Character_Gesture__Pointing_LeftHand
-      internalID: 7508947180506267230
-      firstFrame: 0
-      lastFrame: 30
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Body
-        weight: 0
-      - path: Face
-        weight: 0
-      - path: Head
-        weight: 0
-      - path: Arms
-        weight: 0
-      - path: Airship_Rig
-        weight: 0
-      - path: Airship_Rig/root_motion
-        weight: 0
-      - path: Airship_Rig/root_motion/master
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.L
-        weight: 1
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L
-        weight: 1
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L
-        weight: 1
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/fingers.L
-        weight: 1
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/thumb.L
-        weight: 1
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L/hand.L/weapon.L
-        weight: 1
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/fingers.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/thumb.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/weapon.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/spine/head
-        weight: 0
-      - path: Airship_Rig/root_motion/master/hips
-        weight: 0
-      - path: Airship_Rig/root_motion/master/thigh.L
-        weight: 0
-      - path: Airship_Rig/root_motion/master/thigh.L/shin.L
-        weight: 0
-      - path: Airship_Rig/root_motion/master/thigh.L/shin.L/foot.L
-        weight: 0
-      - path: Airship_Rig/root_motion/master/thigh.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/thigh.R/shin.R
-        weight: 0
-      - path: Airship_Rig/root_motion/master/thigh.R/shin.R/foot.R
-        weight: 0
-      maskType: 1
-      maskSource: {fileID: 31900000, guid: 5011098b94c00bb4091381d9237e8e90, type: 2}
+      maskSource: {fileID: 31900000, guid: b9b677effc282bc43b92db61319af0de, type: 2}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Airship_Character_Gesture__HandsUp
@@ -595,7 +334,7 @@ ModelImporter:
       - path: Airship_Rig/root_motion/master
         weight: 0
       - path: Airship_Rig/root_motion/master/spine
-        weight: 0
+        weight: 1
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L
         weight: 1
       - path: Airship_Rig/root_motion/master/spine/upper_arm.L/forearm.L
@@ -621,7 +360,7 @@ ModelImporter:
       - path: Airship_Rig/root_motion/master/spine/upper_arm.R/forearm.R/hand.R/weapon.R
         weight: 1
       - path: Airship_Rig/root_motion/master/spine/head
-        weight: 0
+        weight: 1
       - path: Airship_Rig/root_motion/master/hips
         weight: 0
       - path: Airship_Rig/root_motion/master/thigh.L
@@ -637,7 +376,7 @@ ModelImporter:
       - path: Airship_Rig/root_motion/master/thigh.R/shin.R/foot.R
         weight: 0
       maskType: 1
-      maskSource: {fileID: 31900000, guid: 737efd26dd7f946de83b16d10973b496, type: 2}
+      maskSource: {fileID: 31900000, guid: 6cfa280e44e39314bb9f7514a7144ffc, type: 2}
       additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:

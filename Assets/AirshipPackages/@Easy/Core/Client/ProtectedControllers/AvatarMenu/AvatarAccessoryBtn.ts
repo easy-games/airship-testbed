@@ -1,5 +1,10 @@
+import { AirshipGearItem } from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { CanvasAPI, HoverState, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { MainMenuController } from "../MainMenuController";
+import { RightClickMenuController } from "../UI/RightClickMenu/RightClickMenuController";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
 
 export default class AvatarAccessoryBtn extends AirshipBehaviour {
@@ -33,6 +38,27 @@ export default class AvatarAccessoryBtn extends AirshipBehaviour {
 					this.outline.enabled = true;
 				} else {
 					this.outline.enabled = false;
+				}
+			}),
+		);
+	}
+
+	public Init(gearItem: AirshipGearItem): void {
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnPointerEvent(this.button.gameObject, (dir, btn) => {
+				if (dir === PointerDirection.DOWN && btn === PointerButton.RIGHT) {
+					Dependency<RightClickMenuController>().OpenRightClickMenu(
+						Dependency<MainMenuController>().mainContentCanvas,
+						Mouse.position,
+						[
+							{
+								text: "Copy Class ID",
+								onClick: () => {
+									Bridge.CopyToClipboard(gearItem.class.classId);
+								},
+							},
+						],
+					);
 				}
 			}),
 		);

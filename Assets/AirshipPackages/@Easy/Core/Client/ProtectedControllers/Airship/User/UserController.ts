@@ -176,6 +176,10 @@ export class ProtectedUserController {
 			this.localUserLoaded = true;
 			this.isGuestDetermined = true;
 
+			try {
+				AuthManager.SetUserInfo(user.uid, user.username);
+			} catch (err) {}
+
 			const writeUser = Game.localPlayer as Player;
 			(writeUser.userId as string) = user.uid;
 			(writeUser.username as string) = user.username;

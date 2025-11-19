@@ -13,6 +13,11 @@ export default class SettingsButton extends AirshipBehaviour {
 		this.text.text = text;
 		this.bin.Add(
 			this.button.onClick.Connect(() => {
+				const redirect = this.gameObject.GetComponent<AirshipRedirectScroll>();
+				if (redirect?.isDragging) {
+					return;
+				}
+
 				onSelected();
 			}),
 		);

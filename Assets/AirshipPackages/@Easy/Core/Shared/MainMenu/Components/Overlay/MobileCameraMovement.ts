@@ -96,4 +96,12 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 			this.touchPointerId = -1;
 		}
 	}
+
+	public CancelDrag(): void {
+		this.touchPointerId = -1;
+	}
+
+	public GetTouchPointerId(): number {
+		return this.touchPointerId;
+	}
 }

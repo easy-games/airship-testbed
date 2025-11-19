@@ -612,18 +612,18 @@ export default class PredictedCommandManager extends AirshipSingleton {
 			// temporary instance just for comparing snapshot data
 			const config = this.commandHandlerMap[commandIdenfitier.commandId];
 			const tempInstance = new config.handler(character, commandIdenfitier, config);
-			print(
-				`Client recieved end report for ${commandIdentifierStr}. Server ended cmd on cmd# ${commandNumber}. Client predicted end on cmd# ${
-					lastState?.commandNumber
-				}. Client predicted state: ${inspect(lastState?.snapshot)} Server Auth State: ${inspect(stateData)}`,
-			);
+			// print(
+			// 	`Client recieved end report for ${commandIdentifierStr}. Server ended cmd on cmd# ${commandNumber}. Client predicted end on cmd# ${
+			// 		lastState?.commandNumber
+			// 	}. Client predicted state: ${inspect(lastState?.snapshot)} Server Auth State: ${inspect(stateData)}`,
+			// );
 			// if the final states match, then we are good. No resim required
 			if (
 				lastState &&
 				lastState.commandNumber === commandNumber &&
 				tempInstance.CompareSnapshots(lastState?.snapshot[1], stateData[1])
 			) {
-				print("Final states match, no resim required.");
+				// print("Final states match, no resim required.");
 				return;
 			}
 

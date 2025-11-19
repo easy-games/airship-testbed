@@ -77,7 +77,7 @@ export class InputUtils {
 	};
 
 	public static keyCodeSpritePathMap: Record<Key, string> = {
-		[Key.None]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard.sprite", // fixme
+		[Key.None]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_none.png.sprite",
 		[Key.A]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_a.png.sprite",
 		[Key.B]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_b.png.sprite",
 		[Key.C]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_c.png.sprite",
@@ -121,7 +121,7 @@ export class InputUtils {
 		[Key.UpArrow]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_arrow_up.png.sprite",
 		[Key.DownArrow]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_arrow_down.png.sprite",
 
-		[Key.Backquote]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_apostrophe.png.sprite", // fixme
+		[Key.Backquote]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_backquote.png.sprite",
 		[Key.Minus]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_minus.png.sprite",
 		[Key.Equals]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_equals.png.sprite",
 		[Key.Slash]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_slash_forward.png.sprite",
@@ -141,8 +141,8 @@ export class InputUtils {
 		[MouseButton.LeftButton]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/mouse_left.png.sprite",
 		[MouseButton.MiddleButton]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/mouse_scroll.png.sprite",
 		[MouseButton.RightButton]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/mouse_right.png.sprite",
-		[MouseButton.ForwardButton]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/mouse.png.sprite", // fixme
-		[MouseButton.BackButton]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/mouse.png.sprite", // fixme
+		[MouseButton.ForwardButton]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/mouse_forward.png.sprite",
+		[MouseButton.BackButton]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/mouse_back.png.sprite",
 	};
 
 	/**
