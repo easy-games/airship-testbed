@@ -57,9 +57,9 @@ export class BotCommand extends ChatCommand {
 			if (!character.movement) return;
 
 			let direction = new Vector3(randDirectionComponent(), 0, randDirectionComponent());
-			direction = character.movement.TransformMoveDirection(direction, MoveDirectionMode.Character);
 
 			if (Game.playerFlags.has("HasTransformMoveDirection")) {
+				direction = character.movement.TransformMoveDirection(direction, MoveDirectionMode.Character);
 				character.movement.SetMoveInput(
 					direction,
 					math.random() < 0.2,
