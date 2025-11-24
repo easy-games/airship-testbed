@@ -34,7 +34,7 @@ export class CharacterInput {
 		this.enabled = enabled;
 		if (!enabled) {
 			const localCharacterSingleton = Dependency<LocalCharacterSingleton>();
-			this.movement?.SetMoveInput(Vector3.zero, false, false, false, localCharacterSingleton.GetMoveDirMode());
+			this.movement?.SetMoveInput(Vector3.zero, false, false, false);
 		}
 	}
 
@@ -98,31 +98,27 @@ export class CharacterInput {
 			}
 		};
 
-		const onMobileJoystickChanged = (position: Vector3, phase: MobileJoystickPhase) => {
-			if (!this.enabled) return;
-			this.movement?.SetMoveInput(position, false, false, false, localCharacterSingleton.GetMoveDirMode());
-		};
-
 		this.bin.Add(
 			OnUpdate.Connect((dt) => {
 				if (!localCharacterSingleton.IsDefaultMovementEnabled()) return;
+				if (!this.movement) return;
 
 				let sprinting = this.IsSprinting();
+				const moveDir = this.movement.TransformMoveDirection(this.queuedMoveDirection, localCharacterSingleton.GetMoveDirMode());
 
 				const moveSignal = new LocalCharacterInputSignal(
-					this.queuedMoveDirection,
+					moveDir,
 					this.enabled ? Airship.Input.IsDown("Jump") : false,
 					sprinting,
 					this.enabled ? Airship.Input.IsDown("Crouch") : false,
 				);
 				localCharacterSingleton.onBeforeLocalEntityInput.Fire(moveSignal);
 
-				this.movement?.SetMoveInput(
+				this.movement.SetMoveInput(
 					moveSignal.moveDirection,
 					moveSignal.jump,
 					moveSignal.sprinting,
 					moveSignal.crouch,
-					localCharacterSingleton.GetMoveDirMode(),
 				);
 			}),
 		);
