@@ -216,7 +216,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	 * @param init Whether this is the initial setup
 	 * @returns Cleanup function
 	 */
-	public SetupHotbarForCharacter(character: Character, init: boolean = false): () => void {
+	private SetupHotbarForCharacter(character: Character, init: boolean = false): () => void {
 		const invBin = new Bin();
 		const slotBinMap = new Map<number, Bin>();
 
