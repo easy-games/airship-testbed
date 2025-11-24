@@ -4,6 +4,7 @@ import { ControlScheme, Preferred } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Airship } from "../../Airship";
+import { Game } from "../../Game";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 import { LocalCharacterSingleton } from "./LocalCharacterSingleton";
 
@@ -34,7 +35,12 @@ export class CharacterInput {
 		this.enabled = enabled;
 		if (!enabled) {
 			const localCharacterSingleton = Dependency<LocalCharacterSingleton>();
-			this.movement?.SetMoveInput(Vector3.zero, false, false, false);
+
+			if (Game.playerFlags.has("HasTransformMoveDirection")) {
+				this.movement?.SetMoveInput(Vector3.zero, false, false, false);
+			} else {
+				this.movement?.SetMoveInput(Vector3.zero, false, false, false, localCharacterSingleton.GetMoveDirMode());
+			}
 		}
 	}
 
@@ -104,7 +110,10 @@ export class CharacterInput {
 				if (!this.movement) return;
 
 				let sprinting = this.IsSprinting();
-				const moveDir = this.movement.TransformMoveDirection(this.queuedMoveDirection, localCharacterSingleton.GetMoveDirMode());
+				let moveDir = this.queuedMoveDirection;
+				if (Game.playerFlags.has("HasTransformMoveDirection")) {
+					moveDir = this.movement.TransformMoveDirection(moveDir, localCharacterSingleton.GetMoveDirMode());
+				}
 
 				const moveSignal = new LocalCharacterInputSignal(
 					moveDir,
@@ -114,12 +123,22 @@ export class CharacterInput {
 				);
 				localCharacterSingleton.onBeforeLocalEntityInput.Fire(moveSignal);
 
-				this.movement.SetMoveInput(
-					moveSignal.moveDirection,
-					moveSignal.jump,
-					moveSignal.sprinting,
-					moveSignal.crouch,
-				);
+				if (Game.playerFlags.has("HasTransformMoveDirection")) {
+					this.movement.SetMoveInput(
+						moveSignal.moveDirection,
+						moveSignal.jump,
+						moveSignal.sprinting,
+						moveSignal.crouch,
+					);
+				} else {
+					this.movement.SetMoveInput(
+						moveSignal.moveDirection,
+						moveSignal.jump,
+						moveSignal.sprinting,
+						moveSignal.crouch,
+						localCharacterSingleton.GetMoveDirMode()
+					);
+				}
 			}),
 		);
 		this.bin.Add(
