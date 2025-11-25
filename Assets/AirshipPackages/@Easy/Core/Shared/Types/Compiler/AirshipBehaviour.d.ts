@@ -189,10 +189,6 @@ type AirshipBehaviourClassDecorator<T extends ReadonlyArray<unknown>> = (
 	...args: T
 ) => AirshipDecorator<(target: typeof AirshipBehaviour) => void>;
 
-type AirshipScriptableClassDecorator<T extends ReadonlyArray<unknown>> = (
-	...args: T
-) => AirshipDecorator<(target: typeof AirshipScriptableObject) => void>;
-
 /**
  * Marks this property to not be serialized in an AirshipBehaviour
  *
@@ -251,5 +247,5 @@ declare const RequireComponent: <T>() => AirshipDecorator<(target: typeof Airshi
 
 declare const AirshipComponentMenu: AirshipBehaviourClassDecorator<[path: string]>;
 declare const AirshipComponentIcon: AirshipBehaviourClassDecorator<[assetPath: string]>;
-declare const CreateAssetMenu: AirshipScriptableClassDecorator<[menuName?: string, fileName?: string, order?: number]>;
-declare const Serializable: <T>() => AirshipDecorator<(target: new () => object) => void>;
+
+// declare const Serializable: <T>() => AirshipDecorator<(target: new () => object) => void>;
