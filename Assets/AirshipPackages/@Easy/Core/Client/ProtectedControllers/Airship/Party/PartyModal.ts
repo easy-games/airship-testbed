@@ -8,6 +8,7 @@ import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
+import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { ProtectedFriendsController } from "../../Social/FriendsController";
 import { MainMenuPartyController } from "../../Social/MainMenuPartyController";
 import { PendingSocialNotification } from "../../Social/PendingSocialNotification";
@@ -40,6 +41,7 @@ export default class PartyModal extends AirshipBehaviour {
 
 	private uidToPartyMember = new Map<string, PartyModalMember>();
 	private bin = new Bin();
+	private uidToPlayer = new Map<string, PartyModalPlayer>();
 
 	override Start(): void {
 		this.window.localScale = Vector3.one.mul(1.1);
@@ -73,6 +75,8 @@ export default class PartyModal extends AirshipBehaviour {
 		this.playersParent.gameObject.ClearChildren();
 		this.bin.Add(
 			Airship.Players.ObservePlayers((p) => {
+				if (this.uidToPlayer.has(p.userId)) return;
+
 				this.nobodyOnlineNotice.SetActive(Airship.Players.GetPlayers().size() <= 1);
 
 				// Show local player in editor for easier testing
@@ -80,12 +84,22 @@ export default class PartyModal extends AirshipBehaviour {
 
 				const go = Instantiate(this.playerPrefab, this.playersParent);
 				const modalPlayer = go.GetAirshipComponent<PartyModalPlayer>()!;
-				modalPlayer.Init(p);
+				modalPlayer.Init(p.username, p.userId);
+				this.uidToPlayer.set(p.userId, modalPlayer);
 
 				return () => {
+					this.uidToPlayer.delete(p.userId);
 					Destroy(go);
 				};
 			}),
+		);
+
+		SetInterval(
+			10,
+			() => {
+				this.FetchFriendsAsPossibleInvites();
+			},
+			true,
 		);
 
 		this.bin.Add(
@@ -113,6 +127,20 @@ export default class PartyModal extends AirshipBehaviour {
 				this.AddIncomingInvite(notif, notif.extraData as GameCoordinatorParty.PartySnapshot);
 			}
 		}
+	}
+
+	private async FetchFriendsAsPossibleInvites(): Promise<void> {
+		// const friends = await Platform.Client.User.GetFriends();
+		// for (let friend of friends) {
+		// 	if (this.uidToPartyMember.has(friend.uid)) {
+		// 		// todo: check for offline in server AND offline on platform --> delete
+		// 		continue;
+		// 	}
+		// 	const go = Instantiate(this.playerPrefab, this.playersParent);
+		// 	const modalPlayer = go.GetAirshipComponent<PartyModalPlayer>()!;
+		// 	modalPlayer.Init(friend.username, friend.uid);
+		// 	this.uidToPlayer.set(friend.uid, modalPlayer);
+		// }
 	}
 
 	private AddIncomingInvite(notif: PendingSocialNotification, data: GameCoordinatorParty.PartySnapshot): void {

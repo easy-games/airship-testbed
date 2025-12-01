@@ -22,8 +22,8 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 
 	private crouchToggle = false;
 
-	// If the joystick is moved under 60% of the range, the player will walk.
-	private readonly sprintThreshold = 0.6;
+	// If the joystick is moved under 75% of the range, the player will walk.
+	private readonly sprintThreshold = 0.75;
 
 	private bin = new Bin();
 

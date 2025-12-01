@@ -86,6 +86,9 @@ export default class GearUnlockUI extends AirshipBehaviour {
 		acc.transform.localPosition = Vector3.zero;
 		acc.transform.localRotation = Quaternion.Euler(-90, 70, 0);
 		this.accessory = acc;
+
+		// Starting rotation
+		this.targetGearParent.localRotation = Quaternion.Euler(0, 180, 0);
 		this.dummy.localRotation = Quaternion.Euler(0, 250, 0);
 
 		const meshRenderers = this.accessory.gameObject.GetComponentsInChildren<MeshRenderer>();

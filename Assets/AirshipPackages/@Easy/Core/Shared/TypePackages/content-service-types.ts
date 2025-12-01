@@ -44,22 +44,22 @@ export namespace ContentServicePrisma {
 	} as const;
 	export type ImageOwnerType = (typeof ImageOwnerType)[keyof typeof ImageOwnerType];
 	// eslint-disable-next-line @typescript-eslint/naming-convention
-	export const CurrencyPayoutRequestState = {
-		PROCESSING: "PROCESSING",
-		PAID: "PAID",
-		REJECTED: "REJECTED",
-	} as const;
-	export type CurrencyPayoutRequestState =
-		(typeof CurrencyPayoutRequestState)[keyof typeof CurrencyPayoutRequestState];
-	// eslint-disable-next-line @typescript-eslint/naming-convention
 	export const ResourceType = {
 		GAME: "GAME",
 		ORGANIZATION: "ORGANIZATION",
 	} as const;
 	export type ResourceType = (typeof ResourceType)[keyof typeof ResourceType];
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	export const ArtifactOwner = {
+		Platform: "Platform",
+		Game: "Game",
+	} as const;
+	export type ArtifactOwner = (typeof ArtifactOwner)[keyof typeof ArtifactOwner];
 	export type Artifact = {
 		id: string;
-		gameId: string;
+		gameId: string | undefined;
+		uploadedBy: string | undefined;
+		owner: ContentServicePrisma.ArtifactOwner;
 		type: string;
 		name: string;
 		note: string | undefined;
@@ -99,6 +99,7 @@ export namespace ContentServicePrisma {
 		description: string;
 		iconImageId: string;
 		createdAt: string;
+		adminBanned: boolean;
 	};
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	export const MemberStatus = {
@@ -160,22 +161,14 @@ export namespace ContentServicePrisma {
 		plays24h: number;
 		uniquePlays24h: number;
 	};
-	export type CurrencyPayoutRequest = {
-		id: string;
-		currencyType: ContentServicePrisma.CurrencyType;
-		amount: number;
-		state: ContentServicePrisma.CurrencyPayoutRequestState;
-		processedBy: string | undefined;
-		processedAt: string | undefined;
-		createdAt: string;
-		organizationId: string;
-	};
-	export type CurrencyPayoutInfo = {
-		organizationId: string;
-		email: string;
-		fullName: string;
-		createdAt: string;
-	};
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	export const CurrencyPayoutRequestState = {
+		PROCESSING: "PROCESSING",
+		PAID: "PAID",
+		REJECTED: "REJECTED",
+	} as const;
+	export type CurrencyPayoutRequestState =
+		(typeof CurrencyPayoutRequestState)[keyof typeof CurrencyPayoutRequestState];
 	export type Webhook = {
 		id: string;
 		url: string;
@@ -267,6 +260,7 @@ export namespace ContentServiceArtifacts {
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	export const ArtifactType = {
 		MICRO_PROFILE: "MICRO_PROFILE",
+		CLIENT_DEBUG_ARCHIVE: "CLIENT_DEBUG_ARCHIVE",
 	} as const;
 	export type ArtifactType = (typeof ArtifactType)[keyof typeof ArtifactType];
 	export type GetArtifactsArgs = {
@@ -288,6 +282,9 @@ export namespace ContentServiceArtifacts {
 	export type GetSignedUrlArgs = {
 		data: SignedArtifactUploadUrlDto;
 	};
+	export type GetPlatformSignedUrlArgs = {
+		data: SignedArtifactUploadUrlDto;
+	};
 	export type DownloadArtifactArgs = {
 		params: {
 			artifactId: string;
@@ -300,6 +297,10 @@ export namespace ContentServiceArtifacts {
 			options?: RequestOptions,
 		): Promise<{ results: ContentServicePrisma.Artifact[]; cursor?: string }>;
 		getSignedUrl(args: GetSignedUrlArgs["data"], options?: RequestOptions): Promise<{ id: string; url: string }>;
+		getPlatformSignedUrl(
+			args: GetPlatformSignedUrlArgs["data"],
+			options?: RequestOptions,
+		): Promise<{ id: string; url: string }>;
 		downloadArtifact(args: DownloadArtifactArgs["params"], options?: RequestOptions): Promise<{ url: string }>;
 	}
 
@@ -336,6 +337,18 @@ export namespace ContentServiceArtifacts {
 				body: args,
 			});
 		}
+		async getPlatformSignedUrl(
+			args: GetPlatformSignedUrlArgs["data"],
+			options?: RequestOptions,
+		): Promise<{ id: string; url: string }> {
+			return await this.makeRequest({
+				method: "POST",
+				routeId: "ContentService:Artifacts:getPlatformSignedUrl",
+				path: `/artifacts/platform/signed-url`,
+				retryKey: options?.retryKey ?? "ContentService:Artifacts:getPlatformSignedUrl",
+				body: args,
+			});
+		}
 		async downloadArtifact(
 			args: DownloadArtifactArgs["params"],
 			options?: RequestOptions,
@@ -369,6 +382,17 @@ export namespace ContentServiceCurrency {
 			cursor?: string;
 		};
 	};
+	export interface GetGameEarningsDto {
+		limit?: number;
+		skip?: number;
+	}
+	export type GetGameEarningsArgs = {
+		query?: GetGameEarningsDto;
+		params: {
+			orgId: string;
+			gameId: string;
+		};
+	};
 	export type GetSummaryArgs = {
 		params: {
 			orgId: string;
@@ -394,6 +418,10 @@ export namespace ContentServiceCurrency {
 			args: GetOrgEarningsArgs,
 			options?: RequestOptions,
 		): Promise<{ cursor: string | undefined; results: ContentServicePrisma.CurrencyEarningsSummary[] }>;
+		getGameEarnings(
+			args: GetGameEarningsArgs,
+			options?: RequestOptions,
+		): Promise<{ summaries: ContentServicePrisma.CurrencyEarningsSummary[] }>;
 		getSummary(
 			args: GetSummaryArgs["params"],
 			options?: RequestOptions,
@@ -446,6 +474,20 @@ export namespace ContentServiceCurrency {
 				routeId: "ContentService:Currency:getOrgEarnings",
 				path: `/currency/organization-id/${encodeURIComponent(args.params.orgId)}/summaries`,
 				retryKey: options?.retryKey ?? "ContentService:Currency:getOrgEarnings",
+				query: args.query,
+			});
+		}
+		async getGameEarnings(
+			args: GetGameEarningsArgs,
+			options?: RequestOptions,
+		): Promise<{ summaries: ContentServicePrisma.CurrencyEarningsSummary[] }> {
+			return await this.makeRequest({
+				method: "GET",
+				routeId: "ContentService:Currency:getGameEarnings",
+				path: `/currency/organization-id/${encodeURIComponent(args.params.orgId)}/game/${encodeURIComponent(
+					args.params.gameId,
+				)}/summaries`,
+				retryKey: options?.retryKey ?? "ContentService:Currency:getGameEarnings",
 				query: args.query,
 			});
 		}
@@ -594,9 +636,6 @@ export namespace ContentServiceGames {
 	export type GetGameSortsArgs = {
 		query?: GameSortsDto;
 	};
-	export type GetAdminGameSortsArgs = {
-		query?: GameSortsDto;
-	};
 	export type GetGameBySlugArgs = {
 		params: {
 			slug: string;
@@ -620,9 +659,6 @@ export namespace ContentServiceGames {
 		platform?: DeploymentPlatform;
 	}
 	export type AutocompleteGameArgs = {
-		query: AutocompleteDto;
-	};
-	export type AdminAutocompleteGameArgs = {
 		query: AutocompleteDto;
 	};
 	// eslint-disable-next-line @typescript-eslint/naming-convention
@@ -683,31 +719,6 @@ export namespace ContentServiceGames {
 			namespace: ImageNamespace;
 		};
 		query: UploadImageQuery;
-	};
-	export type AddGameToFeaturedListArgs = {
-		params: {
-			id: string;
-		};
-	};
-	export type RemoveGameFromFeaturedListArgs = {
-		params: {
-			id: string;
-		};
-	};
-	export type AdminGetGameStatusArgs = {
-		params: {
-			id: string;
-		};
-	};
-	export interface AdminUpdateStatusDto {
-		forceVisibility?: ContentServicePrisma.GameVisibility | undefined;
-		hideUntilNextPublish?: boolean;
-	}
-	export type AdminSetGameStatusArgs = {
-		params: {
-			id: string;
-		};
-		data: AdminUpdateStatusDto;
 	};
 	export interface GameLink {
 		type: GameLinkType;
@@ -782,14 +793,6 @@ export namespace ContentServiceGames {
 			featured: PublicGameWithLiveStatsAndOrg[];
 			recentlyUpdated: PublicGameWithLiveStatsAndOrg[];
 		}>;
-		getAdminGameSorts(
-			args?: GetAdminGameSortsArgs["query"],
-			options?: RequestOptions,
-		): Promise<{
-			popular: PublicGameWithLiveStatsAndOrg[];
-			featured: PublicGameWithLiveStatsAndOrg[];
-			recentlyUpdated: PublicGameWithLiveStatsAndOrg[];
-		}>;
 		getGameBySlug(
 			args: GetGameBySlugArgs,
 			options?: RequestOptions,
@@ -799,29 +802,9 @@ export namespace ContentServiceGames {
 			args: AutocompleteGameArgs["query"],
 			options?: RequestOptions,
 		): Promise<AutocompleteSearchGame[]>;
-		adminAutocompleteGame(
-			args: AdminAutocompleteGameArgs["query"],
-			options?: RequestOptions,
-		): Promise<AutocompleteSearchGame[]>;
 		patchGame(args: PatchGameArgs, options?: RequestOptions): Promise<{ game: PublicGameWithOrg }>;
 		createGame(args: CreateGameArgs["data"], options?: RequestOptions): Promise<{ game: PublicGameWithOrg }>;
 		getSignedGameImage(args: GetSignedGameImageArgs, options?: RequestOptions): Promise<SignedImageUrl>;
-		addGameToFeaturedList(
-			args: AddGameToFeaturedListArgs["params"],
-			options?: RequestOptions,
-		): Promise<{ featured: PublicGameWithOrg[] }>;
-		removeGameFromFeaturedList(
-			args: RemoveGameFromFeaturedListArgs["params"],
-			options?: RequestOptions,
-		): Promise<{ featured: PublicGameWithOrg[] }>;
-		adminGetGameStatus(
-			args: AdminGetGameStatusArgs["params"],
-			options?: RequestOptions,
-		): Promise<{ forceVisibility: ContentServicePrisma.GameVisibility | undefined }>;
-		adminSetGameStatus(
-			args: AdminSetGameStatusArgs,
-			options?: RequestOptions,
-		): Promise<{ forceVisibility: ContentServicePrisma.GameVisibility | undefined }>;
 	}
 
 	export class Client implements ClientSpec {
@@ -844,22 +827,6 @@ export namespace ContentServiceGames {
 				routeId: "ContentService:Games:getGameSorts",
 				path: `/games/`,
 				retryKey: options?.retryKey ?? "ContentService:Games:getGameSorts",
-				query: args,
-			});
-		}
-		async getAdminGameSorts(
-			args?: GetAdminGameSortsArgs["query"],
-			options?: RequestOptions,
-		): Promise<{
-			popular: PublicGameWithLiveStatsAndOrg[];
-			featured: PublicGameWithLiveStatsAndOrg[];
-			recentlyUpdated: PublicGameWithLiveStatsAndOrg[];
-		}> {
-			return await this.makeRequest({
-				method: "GET",
-				routeId: "ContentService:Games:getAdminGameSorts",
-				path: `/games/admin/sorts`,
-				retryKey: options?.retryKey ?? "ContentService:Games:getAdminGameSorts",
 				query: args,
 			});
 		}
@@ -899,18 +866,6 @@ export namespace ContentServiceGames {
 				query: args,
 			});
 		}
-		async adminAutocompleteGame(
-			args: AdminAutocompleteGameArgs["query"],
-			options?: RequestOptions,
-		): Promise<AutocompleteSearchGame[]> {
-			return await this.makeRequest({
-				method: "GET",
-				routeId: "ContentService:Games:adminAutocompleteGame",
-				path: `/games/admin/autocomplete`,
-				retryKey: options?.retryKey ?? "ContentService:Games:adminAutocompleteGame",
-				query: args,
-			});
-		}
 		async patchGame(args: PatchGameArgs, options?: RequestOptions): Promise<{ game: PublicGameWithOrg }> {
 			return await this.makeRequest({
 				method: "PATCH",
@@ -938,51 +893,6 @@ export namespace ContentServiceGames {
 				)}/signed-url`,
 				retryKey: options?.retryKey ?? "ContentService:Games:getSignedGameImage",
 				query: args.query,
-			});
-		}
-		async addGameToFeaturedList(
-			args: AddGameToFeaturedListArgs["params"],
-			options?: RequestOptions,
-		): Promise<{ featured: PublicGameWithOrg[] }> {
-			return await this.makeRequest({
-				method: "PUT",
-				routeId: "ContentService:Games:addGameToFeaturedList",
-				path: `/games/game-id/${encodeURIComponent(args.id)}/featured`,
-				retryKey: options?.retryKey ?? "ContentService:Games:addGameToFeaturedList",
-			});
-		}
-		async removeGameFromFeaturedList(
-			args: RemoveGameFromFeaturedListArgs["params"],
-			options?: RequestOptions,
-		): Promise<{ featured: PublicGameWithOrg[] }> {
-			return await this.makeRequest({
-				method: "DELETE",
-				routeId: "ContentService:Games:removeGameFromFeaturedList",
-				path: `/games/game-id/${encodeURIComponent(args.id)}/featured`,
-				retryKey: options?.retryKey ?? "ContentService:Games:removeGameFromFeaturedList",
-			});
-		}
-		async adminGetGameStatus(
-			args: AdminGetGameStatusArgs["params"],
-			options?: RequestOptions,
-		): Promise<{ forceVisibility: ContentServicePrisma.GameVisibility | undefined }> {
-			return await this.makeRequest({
-				method: "GET",
-				routeId: "ContentService:Games:adminGetGameStatus",
-				path: `/games/admin-status/game-id/${encodeURIComponent(args.id)}`,
-				retryKey: options?.retryKey ?? "ContentService:Games:adminGetGameStatus",
-			});
-		}
-		async adminSetGameStatus(
-			args: AdminSetGameStatusArgs,
-			options?: RequestOptions,
-		): Promise<{ forceVisibility: ContentServicePrisma.GameVisibility | undefined }> {
-			return await this.makeRequest({
-				method: "PATCH",
-				routeId: "ContentService:Games:adminSetGameStatus",
-				path: `/games/admin-status/game-id/${encodeURIComponent(args.params.id)}`,
-				retryKey: options?.retryKey ?? "ContentService:Games:adminSetGameStatus",
-				body: args.data,
 			});
 		}
 	}
@@ -1683,12 +1593,13 @@ export namespace ContentServicePayments {
 			orderId: string;
 		};
 	};
+	export interface XsollaPaymentData {
+		token: string;
+		order_id: string;
+	}
 
 	export interface ClientSpec {
-		createPayment(
-			args: CreatePaymentArgs["data"],
-			options?: RequestOptions,
-		): Promise<{ token: string; order_id: string }>;
+		createPayment(args: CreatePaymentArgs["data"], options?: RequestOptions): Promise<XsollaPaymentData>;
 		xsollaWebhook(args: XsollaWebhookArgs["data"], options?: RequestOptions): Promise<void>;
 		initSteamPurchase(args: InitSteamPurchaseArgs["data"], options?: RequestOptions): Promise<void>;
 		executeSteamPurchase(args: ExecuteSteamPurchaseArgs["params"], options?: RequestOptions): Promise<void>;
@@ -1701,10 +1612,7 @@ export namespace ContentServicePayments {
 			this.makeRequest = makeRequest;
 		}
 
-		async createPayment(
-			args: CreatePaymentArgs["data"],
-			options?: RequestOptions,
-		): Promise<{ token: string; order_id: string }> {
+		async createPayment(args: CreatePaymentArgs["data"], options?: RequestOptions): Promise<XsollaPaymentData> {
 			return await this.makeRequest({
 				method: "POST",
 				routeId: "ContentService:Payments:createPayment",
@@ -1743,12 +1651,6 @@ export namespace ContentServicePayments {
 }
 // ====+==== Payouts TYPES ====+====
 export namespace ContentServicePayouts {
-	export type GetPayoutsArgs = {
-		query: {
-			cursor?: string;
-			state: ContentServicePrisma.CurrencyPayoutRequestState;
-		};
-	};
 	export type GetRecentOrgPayoutRequestArgs = {
 		params: {
 			orgId: string;
@@ -1761,15 +1663,6 @@ export namespace ContentServicePayouts {
 	export type CreatePayoutRequestArgs = {
 		data: ReqeustPayoutDto;
 	};
-	export interface UpdatePayoutDto {
-		state: ContentServicePrisma.CurrencyPayoutRequestState;
-	}
-	export type UpdatePayoutArgs = {
-		params: {
-			payoutId: string;
-		};
-		data: UpdatePayoutDto;
-	};
 	export interface UpdateContactDto {
 		email: string;
 		fullName: string;
@@ -1780,11 +1673,6 @@ export namespace ContentServicePayouts {
 		};
 		data: UpdateContactDto;
 	};
-	export interface CurrentPayoutRequestWithOrgCurrencyInfo extends ContentServicePrisma.CurrencyPayoutRequest {
-		organization: ContentServicePrisma.Organization & {
-			currencyPayoutInfo: ContentServicePrisma.CurrencyPayoutInfo | undefined;
-		};
-	}
 	export interface PublicCurrencyPayoutRequestData {
 		id: string;
 		currencyType: ContentServicePrisma.CurrencyType;
@@ -1796,10 +1684,6 @@ export namespace ContentServicePayouts {
 	}
 
 	export interface ClientSpec {
-		getPayouts(
-			args: GetPayoutsArgs["query"],
-			options?: RequestOptions,
-		): Promise<{ results: CurrentPayoutRequestWithOrgCurrencyInfo[]; cursor?: string }>;
 		getRecentOrgPayoutRequest(
 			args: GetRecentOrgPayoutRequestArgs["params"],
 			options?: RequestOptions,
@@ -1808,10 +1692,6 @@ export namespace ContentServicePayouts {
 			args: CreatePayoutRequestArgs["data"],
 			options?: RequestOptions,
 		): Promise<PublicCurrencyPayoutRequestData>;
-		updatePayout(
-			args: UpdatePayoutArgs,
-			options?: RequestOptions,
-		): Promise<ContentServicePrisma.CurrencyPayoutRequest>;
 		updateOrgContact(args: UpdateOrgContactArgs, options?: RequestOptions): Promise<void>;
 	}
 
@@ -1822,18 +1702,6 @@ export namespace ContentServicePayouts {
 			this.makeRequest = makeRequest;
 		}
 
-		async getPayouts(
-			args: GetPayoutsArgs["query"],
-			options?: RequestOptions,
-		): Promise<{ results: CurrentPayoutRequestWithOrgCurrencyInfo[]; cursor?: string }> {
-			return await this.makeRequest({
-				method: "GET",
-				routeId: "ContentService:Payouts:getPayouts",
-				path: `/payouts/`,
-				retryKey: options?.retryKey ?? "ContentService:Payouts:getPayouts",
-				query: args,
-			});
-		}
 		async getRecentOrgPayoutRequest(
 			args: GetRecentOrgPayoutRequestArgs["params"],
 			options?: RequestOptions,
@@ -1855,18 +1723,6 @@ export namespace ContentServicePayouts {
 				path: `/payouts/request`,
 				retryKey: options?.retryKey ?? "ContentService:Payouts:createPayoutRequest",
 				body: args,
-			});
-		}
-		async updatePayout(
-			args: UpdatePayoutArgs,
-			options?: RequestOptions,
-		): Promise<ContentServicePrisma.CurrencyPayoutRequest> {
-			return await this.makeRequest({
-				method: "PUT",
-				routeId: "ContentService:Payouts:updatePayout",
-				path: `/payouts/payout-id/${encodeURIComponent(args.params.payoutId)}`,
-				retryKey: options?.retryKey ?? "ContentService:Payouts:updatePayout",
-				body: args.data,
 			});
 		}
 		async updateOrgContact(args: UpdateOrgContactArgs, options?: RequestOptions): Promise<void> {
@@ -1985,47 +1841,10 @@ export namespace ContentServiceWebhooks {
 }
 // ====+==== Gear TYPES ====+====
 export namespace ContentServiceGear {
-	export interface CreateItemClassDto {
-		name: string;
-		description: string;
-		imageId: string;
-		tags?: string[];
-		default?: boolean;
-		tradable?: boolean;
-		marketable?: boolean;
-		archived?: boolean;
-	}
-	export interface CreateGearDto extends CreateItemClassDto {
-		airAssets?: string[];
-		category: string;
-		subcategory?: string;
-	}
-	export type CreateGearClassForResourceArgs = {
-		data: CreateGearDto;
-		params: {
-			resourceId: string;
-		};
-	};
-	export interface UpdateItemClassDto {
-		name?: string;
-		description?: string;
-		imageId?: string;
-		tags?: string[];
-		default?: boolean;
-		tradable?: boolean;
-		marketable?: boolean;
-		archived?: boolean;
-	}
-	export interface UpdateGearDto extends UpdateItemClassDto {
-		airAssets?: string[];
-		category?: string;
-		subcategory?: string | undefined;
-	}
-	export type UpdateGearClassForResourceArgs = {
+	export type GetGearFromClassIdArgs = {
 		params: {
 			classId: string;
 		};
-		data: UpdateGearDto;
 	};
 	export type GetGearArgs = {
 		params: {
@@ -2045,17 +1864,6 @@ export namespace ContentServiceGear {
 			uid: string;
 		};
 		query?: GetItemsDto;
-	};
-	export type GrantGearArgs = {
-		params: {
-			uid: string;
-			classId: string;
-		};
-	};
-	export type DeleteGearArgs = {
-		params: {
-			itemId: string;
-		};
 	};
 	export interface SelectedItemClass {
 		resourceType: ContentServicePrisma.ResourceType;
@@ -2086,19 +1894,13 @@ export namespace ContentServiceGear {
 	}
 
 	export interface ClientSpec {
-		createGearClassForResource(
-			args: CreateGearClassForResourceArgs,
+		getGearFromClassId(
+			args: GetGearFromClassIdArgs["params"],
 			options?: RequestOptions,
-		): Promise<SelectedGear>;
-		updateGearClassForResource(
-			args: UpdateGearClassForResourceArgs,
-			options?: RequestOptions,
-		): Promise<SelectedGear>;
+		): Promise<{ gear: SelectedGear | undefined }>;
 		getGear(args: GetGearArgs["params"], options?: RequestOptions): Promise<SelectedGear[]>;
 		getUserGear(args?: GetUserGearArgs["query"], options?: RequestOptions): Promise<SelectedGearItem[]>;
 		getUserGearForResource(args: GetUserGearForResourceArgs, options?: RequestOptions): Promise<SelectedGearItem[]>;
-		grantGear(args: GrantGearArgs["params"], options?: RequestOptions): Promise<SelectedGearItem>;
-		deleteGear(args: DeleteGearArgs["params"], options?: RequestOptions): Promise<SelectedGearItem>;
 	}
 
 	export class Client implements ClientSpec {
@@ -2108,28 +1910,15 @@ export namespace ContentServiceGear {
 			this.makeRequest = makeRequest;
 		}
 
-		async createGearClassForResource(
-			args: CreateGearClassForResourceArgs,
+		async getGearFromClassId(
+			args: GetGearFromClassIdArgs["params"],
 			options?: RequestOptions,
-		): Promise<SelectedGear> {
+		): Promise<{ gear: SelectedGear | undefined }> {
 			return await this.makeRequest({
-				method: "POST",
-				routeId: "ContentService:Gear:createGearClassForResource",
-				path: `/gear/resource-id/${encodeURIComponent(args.params.resourceId)}`,
-				retryKey: options?.retryKey ?? "ContentService:Gear:createGearClassForResource",
-				body: args.data,
-			});
-		}
-		async updateGearClassForResource(
-			args: UpdateGearClassForResourceArgs,
-			options?: RequestOptions,
-		): Promise<SelectedGear> {
-			return await this.makeRequest({
-				method: "PATCH",
-				routeId: "ContentService:Gear:updateGearClassForResource",
-				path: `/gear/class-id/${encodeURIComponent(args.params.classId)}`,
-				retryKey: options?.retryKey ?? "ContentService:Gear:updateGearClassForResource",
-				body: args.data,
+				method: "GET",
+				routeId: "ContentService:Gear:getGearFromClassId",
+				path: `/gear/class-id/${encodeURIComponent(args.classId)}`,
+				retryKey: options?.retryKey ?? "ContentService:Gear:getGearFromClassId",
 			});
 		}
 		async getGear(args: GetGearArgs["params"], options?: RequestOptions): Promise<SelectedGear[]> {
@@ -2159,22 +1948,6 @@ export namespace ContentServiceGear {
 				path: `/gear/uid/${encodeURIComponent(args.params.uid)}`,
 				retryKey: options?.retryKey ?? "ContentService:Gear:getUserGearForResource",
 				query: args.query,
-			});
-		}
-		async grantGear(args: GrantGearArgs["params"], options?: RequestOptions): Promise<SelectedGearItem> {
-			return await this.makeRequest({
-				method: "POST",
-				routeId: "ContentService:Gear:grantGear",
-				path: `/gear/uid/${encodeURIComponent(args.uid)}/class-id/${encodeURIComponent(args.classId)}`,
-				retryKey: options?.retryKey ?? "ContentService:Gear:grantGear",
-			});
-		}
-		async deleteGear(args: DeleteGearArgs["params"], options?: RequestOptions): Promise<SelectedGearItem> {
-			return await this.makeRequest({
-				method: "DELETE",
-				routeId: "ContentService:Gear:deleteGear",
-				path: `/gear/item-id/${encodeURIComponent(args.itemId)}`,
-				retryKey: options?.retryKey ?? "ContentService:Gear:deleteGear",
 			});
 		}
 	}
@@ -2451,8 +2224,16 @@ export namespace ContentServiceItems {
 			uid: string;
 			classId: string;
 		};
+		query?: {
+			ignoreIfHasInstance?: boolean;
+		};
 	};
 	export type DeleteItemForResourceArgs = {
+		params: {
+			itemId: string;
+		};
+	};
+	export type GetItemByInstanceIdArgs = {
 		params: {
 			itemId: string;
 		};
@@ -2494,11 +2275,15 @@ export namespace ContentServiceItems {
 	}
 
 	export interface ClientSpec {
-		grantItemForResource(args: GrantItemForResourceArgs["params"], options?: RequestOptions): Promise<SelectedItem>;
+		grantItemForResource(args: GrantItemForResourceArgs, options?: RequestOptions): Promise<SelectedItem>;
 		deleteItemForResource(
 			args: DeleteItemForResourceArgs["params"],
 			options?: RequestOptions,
 		): Promise<SelectedItem>;
+		getItemByInstanceId(
+			args: GetItemByInstanceIdArgs["params"],
+			options?: RequestOptions,
+		): Promise<{ item: SelectedItem | undefined }>;
 		getUserInventory(args?: GetUserInventoryArgs["query"], options?: RequestOptions): Promise<SelectedItem[]>;
 		getUserInventoryForResource(
 			args: GetUserInventoryForResourceArgs,
@@ -2513,15 +2298,15 @@ export namespace ContentServiceItems {
 			this.makeRequest = makeRequest;
 		}
 
-		async grantItemForResource(
-			args: GrantItemForResourceArgs["params"],
-			options?: RequestOptions,
-		): Promise<SelectedItem> {
+		async grantItemForResource(args: GrantItemForResourceArgs, options?: RequestOptions): Promise<SelectedItem> {
 			return await this.makeRequest({
 				method: "POST",
 				routeId: "ContentService:Items:grantItemForResource",
-				path: `/items/uid/${encodeURIComponent(args.uid)}/class-id/${encodeURIComponent(args.classId)}`,
+				path: `/items/uid/${encodeURIComponent(args.params.uid)}/class-id/${encodeURIComponent(
+					args.params.classId,
+				)}`,
 				retryKey: options?.retryKey ?? "ContentService:Items:grantItemForResource",
+				query: args.query,
 			});
 		}
 		async deleteItemForResource(
@@ -2533,6 +2318,17 @@ export namespace ContentServiceItems {
 				routeId: "ContentService:Items:deleteItemForResource",
 				path: `/items/item-id/${encodeURIComponent(args.itemId)}`,
 				retryKey: options?.retryKey ?? "ContentService:Items:deleteItemForResource",
+			});
+		}
+		async getItemByInstanceId(
+			args: GetItemByInstanceIdArgs["params"],
+			options?: RequestOptions,
+		): Promise<{ item: SelectedItem | undefined }> {
+			return await this.makeRequest({
+				method: "GET",
+				routeId: "ContentService:Items:getItemByInstanceId",
+				path: `/items/item-id/${encodeURIComponent(args.itemId)}`,
+				retryKey: options?.retryKey ?? "ContentService:Items:getItemByInstanceId",
 			});
 		}
 		async getUserInventory(

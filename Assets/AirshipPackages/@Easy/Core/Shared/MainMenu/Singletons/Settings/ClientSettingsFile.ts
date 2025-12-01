@@ -18,7 +18,7 @@ export interface ClientSettingsFile {
 	voiceToggleEnabled: boolean;
 	vsync: boolean;
 	shadowLevel: number;
-	antiAliasing: number;
+	msaaSamples: number;
 	limitFps: number;
 	coreKeybindOverrides: { [key in CoreAction]?: SerializableAction } | undefined;
 	gameKeybindOverrides: { [key: string]: { [key: string]: SerializableAction } };
