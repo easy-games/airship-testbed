@@ -12,6 +12,7 @@ export default class ColorPicker extends AirshipBehaviour {
 	public canvas: CanvasGroup;
 	public closeBtn: Button;
 	public colorImage: Image;
+	public colorImageHue: Image;
 	public headerTxt: TextMeshProUGUI;
 	public hexInput: TMP_InputField;
 	public currentColorImg: Image;
@@ -19,6 +20,9 @@ export default class ColorPicker extends AirshipBehaviour {
 	public hueSlide: Slider;
 	public saturationSlide: Slider;
 	public valueSlide: Slider;
+
+    @Header("Variables")
+    public useHSVImage = false;
 
 	public OnNewColor = new Signal<[color: Color, hex: string]>();
 	public OnClose = new Signal();
@@ -50,6 +54,9 @@ export default class ColorPicker extends AirshipBehaviour {
 		this.initialColor = initialColor;
 		this.initialColorBtn.image.color = initialColor;
 		this.SetColor(initialColor);
+
+        this.colorImage.gameObject.SetActive(this.useHSVImage);
+        this.colorImageHue.gameObject.SetActive(!this.useHSVImage);
 
 		if (this.isOpen) {
 			return;
@@ -170,6 +177,7 @@ export default class ColorPicker extends AirshipBehaviour {
 		this.currentColorHex = ColorUtil.ColorToHex(color);
 		this.hexInput.SetTextWithoutNotify(this.currentColorHex);
 		this.currentHvs = ColorUtil.RgbToHsv(color);
+        this.colorImageHue.material.SetFloat("_Hue", this.currentHvs.x);
 		this.hueSlide.SetValueWithoutNotify(this.currentHvs.x);
 		this.valueSlide.SetValueWithoutNotify(this.currentHvs.y);
 		this.saturationSlide.SetValueWithoutNotify(this.currentHvs.z);
@@ -181,7 +189,9 @@ export default class ColorPicker extends AirshipBehaviour {
 		this.currentColor = ColorUtil.HsvToRgb(hsv);
 		this.currentColorImg.color = this.currentColor;
 		this.currentColorHex = ColorUtil.ColorToHex(this.currentColor);
+        this.colorImageHue.material.SetFloat("_Hue", hsv.x);
 		this.hexInput.SetTextWithoutNotify(this.currentColorHex);
+
 		this.OnNewColor.Fire(this.currentColor, this.currentColorHex);
 	}
 
@@ -190,10 +200,17 @@ export default class ColorPicker extends AirshipBehaviour {
 	}
 
 	public GetColorFromUV(uv: Vector2) {
-		const hue = math.clamp01(uv.x);
-		const value = math.clamp01(uv.y);
-		const saturation = math.clamp01(1 - (value * 2 - 1));
-		return ColorUtil.HsvToRgb(new Vector3(hue, saturation, value));
+        if(this.useHSVImage) {
+            const hue = math.clamp01(uv.x);
+            const value = math.clamp01(uv.y);
+            const saturation = math.clamp01(1 - (value * 2 - 1));
+            return ColorUtil.HsvToRgb(new Vector3(hue, saturation, value));
+        } else {
+            const hue = this.currentHvs.x;
+            const value = math.clamp01(uv.y);
+            const saturation = math.sqrt(math.clamp01(uv.x));
+            return ColorUtil.HsvToRgb(new Vector3(hue, saturation, value));
+        }
 	}
 
 	private ResetToInitialColor() {
