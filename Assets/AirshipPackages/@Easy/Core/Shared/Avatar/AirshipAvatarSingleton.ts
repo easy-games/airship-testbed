@@ -140,11 +140,6 @@ export class AirshipAvatarSingleton {
 				new Promise((resolve) => {
 					if (clothingDto.class.gear.airAssets.size() === 0) return resolve();
 
-					// todo: why are we returning if first person?
-					if (builder.firstPerson) {
-						return resolve();
-					}
-
 					try {
 						const clothing = PlatformGear.DownloadYielding(
 							clothingDto.class.classId,
