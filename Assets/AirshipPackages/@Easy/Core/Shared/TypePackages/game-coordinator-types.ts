@@ -180,6 +180,12 @@ export namespace GameCoordinatorFriends {
 	export type RequestFriendshipArgs = {
 		data: RequestFriendDto;
 	};
+	export interface RequestSteamFriendDto {
+		steamAccountId: string;
+	}
+	export type RequestSteamFriendshipArgs = {
+		data: RequestSteamFriendDto;
+	};
 	export interface PublicUser {
 		uid: string;
 		username: string;
@@ -203,6 +209,10 @@ export namespace GameCoordinatorFriends {
 		getRequests(options?: RequestOptions): Promise<FriendRequests>;
 		requestFriendship(
 			args: RequestFriendshipArgs["data"],
+			options?: RequestOptions,
+		): Promise<{ result: FriendshipRequestResult }>;
+		requestSteamFriendship(
+			args: RequestSteamFriendshipArgs["data"],
 			options?: RequestOptions,
 		): Promise<{ result: FriendshipRequestResult }>;
 	}
@@ -258,6 +268,18 @@ export namespace GameCoordinatorFriends {
 				routeId: "GameCoordinator:Friends:requestFriendship",
 				path: `/friends/requests/self`,
 				retryKey: options?.retryKey ?? "GameCoordinator:Friends:requestFriendship",
+				body: args,
+			});
+		}
+		async requestSteamFriendship(
+			args: RequestSteamFriendshipArgs["data"],
+			options?: RequestOptions,
+		): Promise<{ result: FriendshipRequestResult }> {
+			return await this.makeRequest({
+				method: "POST",
+				routeId: "GameCoordinator:Friends:requestSteamFriendship",
+				path: `/friends/requests/self/steam`,
+				retryKey: options?.retryKey ?? "GameCoordinator:Friends:requestSteamFriendship",
 				body: args,
 			});
 		}
@@ -1050,6 +1072,13 @@ export namespace GameCoordinatorTransfers {
 	export type RequestSelfTransferArgs = {
 		data: ClientTransferRequestDto;
 	};
+	export interface ClientTransferRequestPlayerDto {
+		targetUserId: string;
+		withParty?: boolean;
+	}
+	export type RequestSelfTransferToPlayerArgs = {
+		data: ClientTransferRequestPlayerDto;
+	};
 	export interface TransferSuccessResult {
 		transfersRequested: true;
 		pendingTransfer: boolean;
@@ -1177,6 +1206,10 @@ export namespace GameCoordinatorTransfers {
 		sendToServer(args: SendToServerArgs["data"], options?: RequestOptions): Promise<TransferResult>;
 		validateTransfer(args: ValidateTransferArgs["data"], options?: RequestOptions): Promise<ServerTransferData>;
 		requestSelfTransfer(args: RequestSelfTransferArgs["data"], options?: RequestOptions): Promise<TransferResult>;
+		requestSelfTransferToPlayer(
+			args: RequestSelfTransferToPlayerArgs["data"],
+			options?: RequestOptions,
+		): Promise<TransferResult>;
 		requestSelfToPartyTransfer(options?: RequestOptions): Promise<TransferResult>;
 		requestTransferPartyToSelf(options?: RequestOptions): Promise<TransferResult>;
 		requestCurrentTransfer(options?: RequestOptions): Promise<{ transfer: ClientTransferData | undefined }>;
@@ -1250,6 +1283,18 @@ export namespace GameCoordinatorTransfers {
 				routeId: "GameCoordinator:Transfers:requestSelfTransfer",
 				path: `/transfers/transfer/self`,
 				retryKey: options?.retryKey ?? "GameCoordinator:Transfers:requestSelfTransfer",
+				body: args,
+			});
+		}
+		async requestSelfTransferToPlayer(
+			args: RequestSelfTransferToPlayerArgs["data"],
+			options?: RequestOptions,
+		): Promise<TransferResult> {
+			return await this.makeRequest({
+				method: "POST",
+				routeId: "GameCoordinator:Transfers:requestSelfTransferToPlayer",
+				path: `/transfers/transfer/self/target/player`,
+				retryKey: options?.retryKey ?? "GameCoordinator:Transfers:requestSelfTransferToPlayer",
 				body: args,
 			});
 		}
@@ -1732,6 +1777,12 @@ export namespace GameCoordinatorMMQueue {
 			teams?: boolean;
 		};
 	};
+	export type GetQueueStatsArgs = {
+		params: {
+			gameId: string;
+			queueId: string;
+		};
+	};
 	export type GetGameConfigurationsArgs = {
 		params: {
 			gameId: string;
@@ -1855,12 +1906,23 @@ export namespace GameCoordinatorMMQueue {
 		enabled: boolean;
 		createdAt: string;
 	}
+	export interface MatchmakingQueueStats {
+		queueId: string;
+		gameId: string;
+		timestamp: number;
+		groupCount: number;
+		playerCount: number;
+	}
 
 	export interface ClientSpec {
 		getQueueConfiguration(
 			args: GetQueueConfigurationArgs,
 			options?: RequestOptions,
 		): Promise<{ queueConfig: MatchmakingQueueConfig | undefined }>;
+		getQueueStats(
+			args: GetQueueStatsArgs["params"],
+			options?: RequestOptions,
+		): Promise<{ queueStats: MatchmakingQueueStats | undefined }>;
 		getGameConfigurations(
 			args: GetGameConfigurationsArgs["params"],
 			options?: RequestOptions,
@@ -1891,6 +1953,19 @@ export namespace GameCoordinatorMMQueue {
 				)}/queue-id/${encodeURIComponent(args.params.queueId)}/configuration`,
 				retryKey: options?.retryKey ?? "GameCoordinator:MMQueue:getQueueConfiguration",
 				query: args.query,
+			});
+		}
+		async getQueueStats(
+			args: GetQueueStatsArgs["params"],
+			options?: RequestOptions,
+		): Promise<{ queueStats: MatchmakingQueueStats | undefined }> {
+			return await this.makeRequest({
+				method: "GET",
+				routeId: "GameCoordinator:MMQueue:getQueueStats",
+				path: `/matchmaking/queues/game-id/${encodeURIComponent(args.gameId)}/queue-id/${encodeURIComponent(
+					args.queueId,
+				)}/stats`,
+				retryKey: options?.retryKey ?? "GameCoordinator:MMQueue:getQueueStats",
 			});
 		}
 		async getGameConfigurations(

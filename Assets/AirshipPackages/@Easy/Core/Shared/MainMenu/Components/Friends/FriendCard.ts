@@ -61,7 +61,7 @@ export default class FriendCard extends AirshipBehaviour {
 					", serverId=" +
 					userData.serverId,
 			);
-			Dependency<TransferController>().TransferToGameAsync(userData.gameId, userData.serverId);
+			Dependency<TransferController>().TransferToFriendOrPartyMember(userData.userId);
 		};
 
 		const OpenMenu = () => {
