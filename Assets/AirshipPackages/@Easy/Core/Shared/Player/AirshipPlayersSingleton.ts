@@ -206,6 +206,7 @@ export class AirshipPlayersSingleton {
 		// These remotes only come through in prot context
 		if (Game.IsProtectedLuauContext()) {
 			CoreNetwork.ServerToClient.AllPlayers.client.OnServerEvent((playerDtos) => {
+				CoreLogger.Log("Received AllPlayers remote with " + playerDtos.size() + " players.");
 				contextbridge.broadcast<(clients: PlayerDto[]) => void>("ProtectedPlayers:AddClients", playerDtos);
 				for (let dto of playerDtos) {
 					this.AddPlayerClient(dto);
