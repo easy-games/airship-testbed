@@ -921,8 +921,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 314.10333, y: -1126.1799}
-  m_SizeDelta: {x: 628.20667, y: 0}
+  m_AnchoredPosition: {x: 713.13965, y: -1126.1799}
+  m_SizeDelta: {x: 1426.2793, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &3168718122354516225
 CanvasRenderer:
@@ -2152,8 +2152,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 314.10333, y: -0}
-  m_SizeDelta: {x: 628.20667, y: 0}
+  m_AnchoredPosition: {x: 713.13965, y: -0}
+  m_SizeDelta: {x: 1426.2793, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &3826648253571390289
 CanvasRenderer:
@@ -3944,8 +3944,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5851182451793476457}
   m_HandleRect: {fileID: 6796106799109526970}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.6820314
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5475,7 +5475,7 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 3325142649434242684}
+      serializedObject: {fileID: 656960605089800632}
       modified: 1
     - name: orientation
       type: IntEnum
@@ -5493,6 +5493,42 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 2
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: platforms
+      type: FlagEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipScreenSafeArea@SafeAreaPlatform
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 2
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: axis
+      type: IntEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipScreenSafeArea@SafeAreaAxis
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 1
       serializedObject: {fileID: 0}
       modified: 1
     displayIcon: {fileID: 0}
@@ -7169,8 +7205,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 314.10333, y: -175.397}
-  m_SizeDelta: {x: 628.20667, y: 0}
+  m_AnchoredPosition: {x: 713.13965, y: -175.397}
+  m_SizeDelta: {x: 1426.2793, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6066180839881580518
 MonoBehaviour:
@@ -8439,8 +8475,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 314.10333, y: -51}
-  m_SizeDelta: {x: 598.20667, y: 0}
+  m_AnchoredPosition: {x: 713.13965, y: -51}
+  m_SizeDelta: {x: 1396.2793, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &1801530218407316483
 CanvasRenderer:
@@ -8758,8 +8794,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 314.10333, y: -41}
-  m_SizeDelta: {x: 598.20667, y: 0}
+  m_AnchoredPosition: {x: 713.13965, y: -41}
+  m_SizeDelta: {x: 1396.2793, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &5559755116640386248
 MonoBehaviour:
@@ -12919,8 +12955,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 314.10333, y: -173.8}
-  m_SizeDelta: {x: 598.20667, y: 0}
+  m_AnchoredPosition: {x: 713.13965, y: -173.8}
+  m_SizeDelta: {x: 1396.2793, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &5741386937936449230
 MonoBehaviour:
@@ -15242,8 +15278,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 314.10333, y: -653.194}
-  m_SizeDelta: {x: 628.20667, y: 0}
+  m_AnchoredPosition: {x: 713.13965, y: -653.194}
+  m_SizeDelta: {x: 1426.2793, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &642745066133410698
 MonoBehaviour:
@@ -16243,8 +16279,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 314.10333, y: -827.594}
-  m_SizeDelta: {x: 628.20667, y: 0}
+  m_AnchoredPosition: {x: 713.13965, y: -827.594}
+  m_SizeDelta: {x: 1426.2793, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &3094863560797415960
 MonoBehaviour:
