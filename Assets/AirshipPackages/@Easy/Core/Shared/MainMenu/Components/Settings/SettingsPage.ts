@@ -34,6 +34,7 @@ export default class SettingsPage extends AirshipBehaviour {
 	public desktopCloseButtonWrapper: RectTransform;
 	public mobileCloseButtonWrapper: RectTransform;
 	public gamePageSettingsContainer: Transform;
+	public gamePageSubtitleText: TMP_Text;
 	public mobileHeaderTitle: TMP_Text;
 	public sidebarVersionText: TMP_Text;
 
@@ -217,7 +218,15 @@ export default class SettingsPage extends AirshipBehaviour {
 			}),
 		);
 
-		this.gamePageSettingsContainer.gameObject.ClearChildren();
+		// Destroy all children except the title
+		let toRemove: GameObject[] = [];
+		for (let i = 2; i < this.gamePageSettingsContainer.childCount; i++) {
+			toRemove.push(this.gamePageSettingsContainer.GetChild(i).gameObject);
+		}
+		for (let obj of toRemove) {
+			Destroy(obj);
+		}
+
 		if (Protected.Settings.gameSettings.size() > 0) {
 			for (let gameSetting of Protected.Settings.gameSettingsOrdered) {
 				if (gameSetting === "space") {
@@ -258,6 +267,10 @@ export default class SettingsPage extends AirshipBehaviour {
 				}
 			}
 		}
+		task.spawn(() => {
+			Game.WaitForGameData();
+			this.gamePageSubtitleText.text = `These settings only apply to ${Game.gameData?.name ?? "In-dev Game"}.`;
+		});
 
 		// Version
 		if (Game.deviceType === AirshipDeviceType.Phone) {
