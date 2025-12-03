@@ -41,11 +41,7 @@ export default class AirshipScreenSafeArea extends AirshipBehaviour {
 	protected UpdateSafeArea() {
 		if (!Game.IsMobile()) return;
 
-		let platform = Game.platform;
-		if (Game.IsEditor()) {
-			platform = AirshipPlatform.Android;
-		}
-
+		const platform = Game.platform;
 		switch (platform) {
 			case AirshipPlatform.Android: {
 				if ((this.platforms & SafeAreaPlatform.Android) === 0) {
