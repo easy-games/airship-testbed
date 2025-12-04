@@ -179,6 +179,11 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		}
 	}
 
+	/**
+	 * Opens the backpack with an external inventory example a chest
+	 * @param inventory The inventory to open alongside the backpack
+	 * @returns A bin to clean up the connections
+	 */
 	public OpenBackpackWithExternalInventory(inventory: Inventory) {
 		const closed = this.SetupExternalInventory(inventory);
 		if (!closed) return;
@@ -191,6 +196,11 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 		Airship.Inventory.onInventoryOpened.Fire(new InventoryEvent(inventory));
 		return this.backpackOpenBin;
+	}
+
+	public CloseBackpack(): void {
+		if (!this.IsBackpackShown()) return;
+		AppManager.Close();
 	}
 
 	public GetHotbarSlotCount(): number {
