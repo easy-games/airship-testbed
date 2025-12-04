@@ -1,4 +1,4 @@
-import DynamicBoneColliderBase from "./DynamicBoneColliderBase";
+import DynamicBoneColliderBase from "./DynamicBoneColliderBase"
 
 enum UpdateMode {
     Normal,
@@ -45,7 +45,6 @@ class ParticleTree {
     public m_RootWorldToLocalMatrix: Matrix4x4 = Matrix4x4.identity
     public m_BoneTotalLength: number = 0
     public m_Particles: Particle[] = []
-
     public m_RestGravity: Vector3 = Vector3.zero
 
     constructor(root: Transform) {
@@ -95,7 +94,7 @@ export default class DynamicBones extends AirshipBehaviour {
     public m_ReferenceObject: Transform | undefined = undefined
     public m_DistanceToObject: number = 20
 
-    public m_Multithread: boolean = true
+    public m_Multithread: boolean = false
 
     private m_ObjectMove: Vector3 = Vector3.zero
     private m_ObjectPrevPosition: Vector3 = Vector3.zero
@@ -111,12 +110,8 @@ export default class DynamicBones extends AirshipBehaviour {
     private m_DeltaTime: number = 0
     private m_EffectiveColliders: DynamicBoneColliderBase[] | undefined = undefined
 
-    private m_WorkAdded: boolean = false
-
     private static s_UpdateCount: number = 0
     private static s_PrepareFrame: number = 0
-
-    private static s_PendingWorks: DynamicBones[] = []
 
     public Start(): void {
         this.SetupParticles()
@@ -132,12 +127,6 @@ export default class DynamicBones extends AirshipBehaviour {
         if (this.m_UpdateMode !== UpdateMode.AnimatePhysics) {
             this.PreUpdate()
         }
-
-        if (this.m_PreUpdateCount > 0 && this.m_Multithread) {
-            DynamicBones.AddPendingWork(this)
-            this.m_WorkAdded = true
-        }
-
         DynamicBones.s_UpdateCount++
     }
 
@@ -153,16 +142,11 @@ export default class DynamicBones extends AirshipBehaviour {
 
         this.SetWeight(this.m_BlendWeight)
 
-        if (this.m_WorkAdded) {
-            this.m_WorkAdded = false
-            DynamicBones.ExecuteWorks()
-        } else {
-            this.CheckDistance()
-            if (this.IsNeedUpdate()) {
-                this.Prepare()
-                this.UpdateParticles()
-                this.ApplyParticlesToTransforms()
-            }
+        this.CheckDistance()
+        if (this.IsNeedUpdate()) {
+            this.Prepare()
+            this.UpdateParticles()
+            this.ApplyParticlesToTransforms()
         }
 
         this.m_PreUpdateCount = 0
@@ -195,7 +179,7 @@ export default class DynamicBones extends AirshipBehaviour {
         }
 
         if (this.m_EffectiveColliders) {
-            this.m_EffectiveColliders.clear();
+            this.m_EffectiveColliders.clear()
         }
 
         if (this.m_Colliders) {
@@ -572,7 +556,6 @@ export default class DynamicBones extends AirshipBehaviour {
         for (let i = 0; i < this.m_ParticleTrees.size(); ++i) {
             this.ResetParticlesPositionForTree(this.m_ParticleTrees[i])
         }
-
         this.m_ObjectPrevPosition = this.transform.position
     }
 
@@ -700,7 +683,6 @@ export default class DynamicBones extends AirshipBehaviour {
                 p.m_Position = p.m_Position.sub(movePlane.normal.mul(dist))
             }
 
-
             const dd = p0.m_Position.sub(p.m_Position)
             const leng = dd.magnitude
 
@@ -709,7 +691,6 @@ export default class DynamicBones extends AirshipBehaviour {
             }
         }
     }
-
 
     private SkipUpdateParticles(): void {
         for (let i = 0; i < this.m_ParticleTrees.size(); ++i) {
@@ -821,8 +802,8 @@ export default class DynamicBones extends AirshipBehaviour {
 
             if (p0.m_ChildCount <= 1) {
                 let localPos: Vector3
-                if (p.m_TransformNotNull) {
-                    localPos = p.m_Transform!.localPosition
+                if (p.m_TransformNotNull && p.m_Transform) {
+                    localPos = p.m_Transform.localPosition
                 } else {
                     localPos = p.m_EndOffset
                 }
@@ -840,11 +821,12 @@ export default class DynamicBones extends AirshipBehaviour {
                 }
 
                 const rot = Quaternion.FromToRotation(v0, v1)
-                p0.m_Transform!.rotation = rot.mul(p0.m_Transform!.rotation)
+                p0.m_Transform!.rotation = p0.m_Transform!.rotation.mul(rot)
+
             }
 
-            if (p.m_TransformNotNull) {
-                p.m_Transform!.position = p.m_Position
+            if (p.m_TransformNotNull && p.m_Transform) {
+                p.m_Transform.position = p.m_Position
             }
         }
     }
@@ -853,54 +835,19 @@ export default class DynamicBones extends AirshipBehaviour {
         m.SetColumn(index, new Vector4(v.x, v.y, v.z, 1))
         return m
     }
-
-    private static AddPendingWork(db: DynamicBones): void {
-        DynamicBones.s_PendingWorks.push(db)
-    }
-
-    private static ExecuteWorks(): void {
-        if (DynamicBones.s_PendingWorks.size() <= 0) {
-            return
-        }
-
-        const effective: DynamicBones[] = []
-
-        for (let i = 0; i < DynamicBones.s_PendingWorks.size(); ++i) {
-            const db = DynamicBones.s_PendingWorks[i]
-            if (db && db.enabled) {
-                db.CheckDistance()
-                if (db.IsNeedUpdate()) {
-                    effective.push(db)
-                }
-            }
-        }
-
-        DynamicBones.s_PendingWorks.clear();
-
-        if (effective.size() <= 0) {
-            return
-        }
-
-        for (let i = 0; i < effective.size(); ++i) {
-            const db = effective[i]
-            db.Prepare()
-            db.UpdateParticles()
-            db.ApplyParticlesToTransforms()
-        }
-    }
 }
 
 class PlaneFake {
-    normal: Vector3 = Vector3.zero;
-    point: Vector3 = Vector3.zero;
+    normal: Vector3 = Vector3.zero
+    point: Vector3 = Vector3.zero
 
     SetNormalAndPosition(n: Vector3, p: Vector3): void {
-        this.normal = new Vector3(n.x, n.y, n.z).normalized;
-        this.point = new Vector3(p.x, p.y, p.z);
+        this.normal = new Vector3(n.x, n.y, n.z).normalized
+        this.point = new Vector3(p.x, p.y, p.z)
     }
 
     GetDistanceToPoint(pos: Vector3): number {
-        const v = pos.sub(this.point);
-        return Vector3.Dot(v, this.normal);
+        const v = pos.sub(this.point)
+        return Vector3.Dot(v, this.normal)
     }
 }
