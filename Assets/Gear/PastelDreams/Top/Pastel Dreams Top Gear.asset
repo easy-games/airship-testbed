@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0832818dd13c4fcaa31b988d657c7d46, type: 3}
-  m_Name: Gear Bundle Manifest
+  m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
+  m_Name: Pastel Dreams Top Gear
   m_EditorClassIdentifier: 
-  gearList:
-  - {fileID: 11400000, guid: 83f6afc1f2c166f41942e69d7ac0bbd7, type: 2}
-  airId: ef931631-4024-45fc-9974-95631e377d81
+  classId: b713b180-5f68-4bc9-97ad-08b43a7f36fd
+  accessoryPrefabs:
+  - {fileID: -1918125106971268749, guid: 8710f0bf440cae447b0c3ad42040f43f, type: 3}
+  face: {fileID: 0}
