@@ -223,6 +223,6 @@ MonoBehaviour:
   skinnedToCharacter: 0
   meshLods: []
   canMeshCombine: 0
-  bodyMask: 0
+  bodyMask: 19
   serverClassId: 
   serverClassIdStaging: 
