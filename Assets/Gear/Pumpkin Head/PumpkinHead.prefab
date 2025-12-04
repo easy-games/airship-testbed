@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 571542675887076674}
   - component: {fileID: 1250750854766370020}
   - component: {fileID: 1565964972202952542}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Ppkface_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
