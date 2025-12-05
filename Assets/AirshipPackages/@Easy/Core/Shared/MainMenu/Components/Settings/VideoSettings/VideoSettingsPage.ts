@@ -5,7 +5,7 @@ import SettingsToggle from "../Controls/SettingsToggle";
 
 export default class VideoSettingsPage extends AirshipBehaviour {
 	public msaaBtnGroup: SettingsButtonGroup;
-	public hdShadowsToggle: SettingsToggle;
+	public shadowsBtnGroup: SettingsButtonGroup;
 	public vsyncToggle: SettingsToggle;
 
 	override Start(): void {
@@ -32,9 +32,13 @@ export default class VideoSettingsPage extends AirshipBehaviour {
 			Protected.Settings.MarkAsDirty();
 		});
 
-		this.hdShadowsToggle.Init("HD Shadows", Protected.Settings.data.shadowLevel === 1);
-		this.hdShadowsToggle.toggle.onValueChanged.Connect((val) => {
-			Protected.Settings.SetShadowLevel(val ? 1 : 0);
+		this.shadowsBtnGroup.Init("Shadow Quality", Protected.Settings.data.shadowTier, [
+			{ text: "None", value: 0, },
+			{ text: "Low", value: 1, },
+			{ text: "High", value: 2, }
+		]);
+		this.shadowsBtnGroup.onChanged.Connect((val) => {
+			Protected.Settings.SetShadowLevel(val as number);
 			Protected.Settings.MarkAsDirty();
 		});
 

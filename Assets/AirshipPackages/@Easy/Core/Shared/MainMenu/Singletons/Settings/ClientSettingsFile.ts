@@ -17,7 +17,7 @@ export interface ClientSettingsFile {
 	microphoneEnabled: boolean;
 	voiceToggleEnabled: boolean;
 	vsync: boolean;
-	shadowLevel: number;
+	shadowTier: number;
 	msaaSamples: number;
 	limitFps: number;
 	coreKeybindOverrides: { [key in CoreAction]?: SerializableAction } | undefined;

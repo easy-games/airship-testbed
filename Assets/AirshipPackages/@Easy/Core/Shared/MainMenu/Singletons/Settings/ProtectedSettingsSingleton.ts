@@ -30,7 +30,7 @@ const defaultData: ClientSettingsFile = {
 	coreKeybindOverrides: undefined,
 	gameKeybindOverrides: {},
 	vsync: false,
-	shadowLevel: 0,
+	shadowTier: 1,
 	msaaSamples: 2,
 	voiceToggleEnabled: false,
 	limitFps: -1,
@@ -264,6 +264,12 @@ export class ProtectedSettingsSingleton {
 		const savedContents = DiskManager.ReadFileAsync("ClientSettings.json");
 		if (savedContents && savedContents !== "") {
 			this.data = json.decode(savedContents);
+
+			// Default to low quality on low end devices
+			if (this.data.shadowTier === undefined) {
+				this.data.shadowTier = Bridge.IsLowEndDevice() ? 1 : 2;
+			}
+
 			this.data = { ...defaultData, ...this.data };
 
 			// simple reconcile logic
@@ -280,23 +286,15 @@ export class ProtectedSettingsSingleton {
 				this.data.limitFps = 60;
 			}
 
-			const platform = Game.platform;
-			let lowEndDevice = platform === AirshipPlatform.iOS || platform === AirshipPlatform.Android;
-			try {
-				// try catch because of non required c# update
-				if (Bridge.IsLowEndDevice()) {
-					lowEndDevice = true;
-				}
-			} catch (err) {}
-			if (!lowEndDevice) {
+			if (!Bridge.IsLowEndDevice()) {
 				this.data.msaaSamples = 1;
-				this.data.shadowLevel = 1;
+				this.data.shadowTier = 2;
 			}
 		}
 
 		this.SetGlobalVolume(this.GetGlobalVolume());
 		this.SetMSAASamples(this.data.msaaSamples);
-		this.SetShadowLevel(this.data.shadowLevel);
+		this.SetShadowLevel(this.data.shadowTier);
 		this.SetVsync(this.data.vsync);
 		this.SetLimitFPS(this.data.limitFps);
 
@@ -383,17 +381,22 @@ export class ProtectedSettingsSingleton {
 	}
 
 	public SetShadowLevel(level: number): void {
-		this.data.shadowLevel = level;
 		const pipelineAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
-
-		if (level === 1) {
-			// High Quality Settings
-			QualitySettings.shadows = ShadowQuality.All;
-			QualitySettings.shadowResolution = ShadowResolution.VeryHigh;
-			QualitySettings.shadowDistance = 120;
-		} else {
-			QualitySettings.shadowResolution = ShadowResolution.Low;
-			QualitySettings.shadowDistance = 100;
+		const clampedLevel = math.clamp(level, 0, 2);
+		this.data.shadowTier = clampedLevel;
+		
+		switch (clampedLevel) {
+			case 2: // High Quality
+				pipelineAsset.mainLightShadowmapResolution = 4096;
+				pipelineAsset.shadowDistance = 120;
+				break;
+			case 1: // Low Quality
+				pipelineAsset.mainLightShadowmapResolution = 1024;
+				pipelineAsset.shadowDistance = 70;
+				break;
+			case 0: // No Shadows
+				pipelineAsset.shadowDistance = 0; // is there a better way to disable shadows?
+				break;
 		}
 	}
 
