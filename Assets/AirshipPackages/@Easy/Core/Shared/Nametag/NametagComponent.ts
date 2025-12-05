@@ -15,6 +15,8 @@ export default class NametagComponent extends AirshipBehaviour {
 
 	@NonSerialized() public character: Character | undefined;
 	private currentSpeakingLevel: number = 0;
+	/** Set to add a cooldown to next update check (for performance) */
+	private timeUntilNextUpdate = 0;
 
 	private bin = new Bin();
 
@@ -53,6 +55,10 @@ export default class NametagComponent extends AirshipBehaviour {
 		if (!Game.IsClient()) return;
 		if (this.maxDistance < 0) return;
 
+		// Cooldown for performance
+		this.timeUntilNextUpdate -= dt;
+		if (this.timeUntilNextUpdate > 0) return;
+
 		// If this is slow, we should move to a manager to do the check. and less frequently.
 		if (this.cameraTransform) {
 			const camPos = this.cameraTransform.position;
@@ -67,6 +73,8 @@ export default class NametagComponent extends AirshipBehaviour {
 					this.isCanvasEnabled = false;
 					this.canvas.enabled = false;
 				}
+				this.timeUntilNextUpdate = 1; // 1s cooldown on check if out of range
+				return;
 			}
 		}
 
@@ -80,19 +88,34 @@ export default class NametagComponent extends AirshipBehaviour {
 
 			// Smooth the the volume level for UI
 			const smoothingSpeed = 10; // Higher = snappier, lower = smoother
-			this.currentSpeakingLevel = math.lerpClamped(
+
+			const newLerpedSpeakingLevel = math.lerpClamped(
 				this.currentSpeakingLevel,
 				speakingLevel,
 				Time.deltaTime * smoothingSpeed,
 			);
 
-			// print("speaking level: " + speakingLevel);
-			if (this.currentSpeakingLevel > 0.01) {
-				this.microphoneWrapper.SetActive(true);
-				this.microphoneFillMask.padding = new Vector4(0, 0, 0, 400 - this.currentSpeakingLevel * 400);
-			} else {
-				this.microphoneWrapper.SetActive(false);
+			const prevIsEnabled = this.currentSpeakingLevel > 0.01;
+			const newIsEnabled = newLerpedSpeakingLevel > 0.01;
+
+			// If we're not speaking currently then delay 0.1s before checking again
+			if (!newIsEnabled) this.timeUntilNextUpdate += 0.1;
+
+			this.currentSpeakingLevel = newLerpedSpeakingLevel;
+
+			// Only toggle wrapper if state changes
+			if (newIsEnabled !== prevIsEnabled) {
+				this.ToggleMicrophoneWrapper(newIsEnabled);
 			}
+		}
+	}
+
+	private ToggleMicrophoneWrapper(enabled: boolean) {
+		if (enabled) {
+			this.microphoneWrapper.SetActive(true);
+			this.microphoneFillMask.padding = new Vector4(0, 0, 0, 400 - this.currentSpeakingLevel * 400);
+		} else {
+			this.microphoneWrapper.SetActive(false);
 		}
 	}
 
