@@ -278,6 +278,24 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		for (let i = 0; i < this.hotbarSlots; i++) {
 			const itemStack = character.inventory?.GetItem(i);
 			this.UpdateHotbarSlot(i, character.GetHeldSlot(), itemStack, init, true);
+			
+			// Sets up item stacks that may exist before the hotbar is setup (e.g. from spectating a character)
+			if (itemStack) {
+				slotBinMap.get(i)?.Clean();
+				const slotBin = new Bin();
+				slotBinMap.set(i, slotBin);
+
+				slotBin.Add(
+					itemStack.amountChanged.Connect((e) => {
+						this.UpdateHotbarSlot(i, character.GetHeldSlot(), itemStack);
+					}),
+				);
+				slotBin.Add(
+					itemStack.itemTypeChanged.Connect((e) => {
+						this.UpdateHotbarSlot(i, character.GetHeldSlot(), itemStack);
+					}),
+				);
+			}
 		}
 		this.prevHeldSlot = character.GetHeldSlot();
 
