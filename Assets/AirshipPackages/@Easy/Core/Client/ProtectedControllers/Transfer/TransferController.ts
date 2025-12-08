@@ -117,6 +117,15 @@ export class TransferController {
 		});
 	}
 
+	public async TransferToFriendOrPartyMember(targetUserId: string) {
+		let isPartyLeader = Dependency<MainMenuPartyController>().IsPartyLeader();
+
+		return await client.transfers.requestSelfTransferToPlayer({
+			targetUserId,
+			withParty: isPartyLeader,
+		});
+	}
+
 	/**
 	 * Submits a request to transfer to the current party leader. If the party leader is not in a game,
 	 * or the client is not in a party, this function will have no effect.

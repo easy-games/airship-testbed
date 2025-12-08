@@ -2,13 +2,13 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { NetworkUtil } from "@Easy/Core/Shared/Util/NetworkUtil";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import Character from "../Character/Character";
 import { Game } from "../Game";
 import { NetworkSignal } from "../Network/NetworkSignal";
 import { OnUpdate } from "../Util/Timer";
 import { CanClientDamageInfo } from "./CanClientDamageInfo";
 import { DamageInfo, DamageInfoCustomData } from "./DamageInfo";
 import { HealInfo, HealInfoCustomData } from "./HealInfo";
-import Character from "../Character/Character";
 
 @Singleton()
 export class DamageSingleton {
@@ -135,15 +135,6 @@ export class DamageSingleton {
 		if (this.IsAlreadyDestroyed(gameObject, healInfo.character)) return healInfo;
 		this.onHeal.Fire(healInfo);
 		if (healInfo.IsCancelled()) return healInfo;
-
-		// Clamp the heal amount to return if player is max health after the event.
-		if (healInfo.character) {
-			healInfo.healAmount = math.clamp(
-				healInfo.healAmount,
-				0,
-				healInfo.character.GetMaxHealth() - healInfo.character.GetHealth(),
-			);
-		}
 
 		if (this.autoNetwork) {
 			const nob = healInfo.gameObject.GetComponentInParent<NetworkIdentity>();

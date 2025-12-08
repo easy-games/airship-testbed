@@ -1,7 +1,7 @@
 import {
+	AirshipInventoryTransaction,
 	AirshipItem,
 	AirshipItemQueryParameters,
-	AirshipInventoryTransaction,
 } from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -16,7 +16,11 @@ export const enum PlatformInventoryServiceBridgeTopics {
 	PerformTrade = "PlatformInventoryService:PerformTrade",
 }
 
-export type ServerBridgeApiGrantItem = (userId: string, classId: string) => AirshipItem;
+export type ServerBridgeApiGrantItem = (
+	userId: string,
+	classId: string,
+	options?: { ignoreIfHasInstance?: boolean },
+) => AirshipItem;
 export type ServerBridgeApiDeleteItem = (instanceId: string) => AirshipItem;
 export type ServerBridgeApiGetItems = (userId: string, query?: AirshipItemQueryParameters) => AirshipItem[];
 export type ServerBridgeApiPerformTrade = (
@@ -33,8 +37,8 @@ export class ProtectedPlatformInventoryService {
 
 		contextbridge.callback<ServerBridgeApiGrantItem>(
 			PlatformInventoryServiceBridgeTopics.GrantItem,
-			(_, userId, classId) => {
-				return this.GrantItem(userId, classId).expect();
+			(_, userId, classId, options) => {
+				return this.GrantItem(userId, classId, options).expect();
 			},
 		);
 
@@ -60,15 +64,27 @@ export class ProtectedPlatformInventoryService {
 		);
 	}
 
-	public async GrantItem(userId: string, classId: string): Promise<ReturnType<ServerBridgeApiGrantItem>> {
-		return await client.items.grantItemForResource({ uid: userId, classId });
+	public async GrantItem(
+		userId: string,
+		classId: string,
+		options?: {
+			ignoreIfHasInstance?: boolean;
+		},
+	): Promise<ReturnType<ServerBridgeApiGrantItem>> {
+		return await client.items.grantItemForResource({
+			params: { uid: userId, classId },
+			query: { ignoreIfHasInstance: options?.ignoreIfHasInstance },
+		});
 	}
 
 	public async DeleteItem(instanceId: string): Promise<ReturnType<ServerBridgeApiDeleteItem>> {
 		return await client.items.deleteItemForResource({ itemId: instanceId });
 	}
 
-	public async GetItems(userId: string, query?: AirshipItemQueryParameters): Promise<ReturnType<ServerBridgeApiGetItems>> {
+	public async GetItems(
+		userId: string,
+		query?: AirshipItemQueryParameters,
+	): Promise<ReturnType<ServerBridgeApiGetItems>> {
 		return await client.items.getUserInventoryForResource({
 			params: {
 				uid: userId,
@@ -91,5 +107,5 @@ export class ProtectedPlatformInventoryService {
 		});
 	}
 
-	protected OnStart(): void { }
+	protected OnStart(): void {}
 }

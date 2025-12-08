@@ -1,3 +1,4 @@
+import { Game } from "@Easy/Core/Shared/Game";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Theme } from "@Easy/Core/Shared/Util/Theme";
 
@@ -18,6 +19,7 @@ export default class SettingsButton extends AirshipBehaviour {
 					return;
 				}
 
+				if (Game.IsMobile()) VibrationManager.Play(VibrationFeedbackType.Medium);
 				onSelected();
 			}),
 		);

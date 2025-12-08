@@ -1,4 +1,5 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
+import Character from "@Easy/Core/Shared/Character/Character";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
@@ -74,6 +75,9 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	private backpackOpenBin = new Bin();
 
 	private isSetup = false;
+
+	// Track current hotbar cleanup function
+	private currentHotbarCleanup?: () => void;
 
 	override Awake() {
 		this.hotbarCanvas.enabled = false;
@@ -175,6 +179,11 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		}
 	}
 
+	/**
+	 * Opens the backpack with an external inventory example a chest
+	 * @param inventory The inventory to open alongside the backpack
+	 * @returns A bin to clean up the connections
+	 */
 	public OpenBackpackWithExternalInventory(inventory: Inventory) {
 		const closed = this.SetupExternalInventory(inventory);
 		if (!closed) return;
@@ -189,6 +198,11 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		return this.backpackOpenBin;
 	}
 
+	public CloseBackpack(): void {
+		if (!this.IsBackpackShown()) return;
+		AppManager.Close();
+	}
+
 	public GetHotbarSlotCount(): number {
 		return this.hotbarSlots;
 	}
@@ -201,69 +215,113 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			if (!character) {
 				return;
 			}
-			// for (let i = 0; i < this.hotbarSlots; i++) {
-			// 	this.UpdateHotbarSlot(i, character.GetHeldSlot() ?? 0, undefined, true);
-			// }
 
-			const invBin = new Bin();
-			const slotBinMap = new Map<number, Bin>();
-			if (character.inventory) {
-				invBin.Add(
-					character.inventory.onSlotChanged.Connect((slot, itemStack) => {
-						slotBinMap.get(slot)?.Clean();
-						if (slot < this.hotbarSlots) {
-							const slotBin = new Bin();
-							slotBinMap.set(slot, slotBin);
+			return this.SetupHotbarForCharacter(character, init);
+		});
+	}
 
-							this.UpdateHotbarSlot(slot, character.GetHeldSlot(), itemStack);
+	/**
+	 * Sets up the hotbar to display inventory for any character. This will disconnect the current hotbar setup connections.
+	 * @param character The character whose inventory to display
+	 * @param init Whether this is the initial setup
+	 * @returns Cleanup function
+	 */
+	private SetupHotbarForCharacter(character: Character, init: boolean = false): () => void {
+		const invBin = new Bin();
+		const slotBinMap = new Map<number, Bin>();
 
-							if (itemStack) {
-								slotBin.Add(
-									itemStack.amountChanged.Connect((e) => {
-										this.UpdateHotbarSlot(slot, character.GetHeldSlot(), itemStack);
-									}),
-								);
-								slotBin.Add(
-									itemStack.itemTypeChanged.Connect((e) => {
-										this.UpdateHotbarSlot(slot, character.GetHeldSlot(), itemStack);
-									}),
-								);
-							}
+		if (character.inventory) {
+			invBin.Add(
+				character.inventory.onSlotChanged.Connect((slot, itemStack) => {
+					slotBinMap.get(slot)?.Clean();
+					if (slot < this.hotbarSlots) {
+						const slotBin = new Bin();
+						slotBinMap.set(slot, slotBin);
+
+						this.UpdateHotbarSlot(slot, character.GetHeldSlot(), itemStack);
+
+						if (itemStack) {
+							slotBin.Add(
+								itemStack.amountChanged.Connect((e) => {
+									this.UpdateHotbarSlot(slot, character.GetHeldSlot(), itemStack);
+								}),
+							);
+							slotBin.Add(
+								itemStack.itemTypeChanged.Connect((e) => {
+									this.UpdateHotbarSlot(slot, character.GetHeldSlot(), itemStack);
+								}),
+							);
 						}
+					}
+				}),
+			);
+		}
+
+		invBin.Add(() => {
+			for (const pair of slotBinMap) {
+				pair[1].Clean();
+			}
+			slotBinMap.clear();
+		});
+
+		invBin.Add(
+			character.onHeldSlotChanged.Connect((slot) => {
+				for (let i = 0; i < this.hotbarSlots; i++) {
+					const itemStack = character.inventory?.GetItem(i);
+					this.UpdateHotbarSlot(i, slot, itemStack);
+				}
+				this.prevHeldSlot = slot;
+			}),
+		);
+
+		// Initial setup of all hotbar slots
+		for (let i = 0; i < this.hotbarSlots; i++) {
+			const itemStack = character.inventory?.GetItem(i);
+			this.UpdateHotbarSlot(i, character.GetHeldSlot(), itemStack, init, true);
+			
+			// Sets up item stacks that may exist before the hotbar is setup (e.g. from spectating a character)
+			if (itemStack) {
+				slotBinMap.get(i)?.Clean();
+				const slotBin = new Bin();
+				slotBinMap.set(i, slotBin);
+
+				slotBin.Add(
+					itemStack.amountChanged.Connect((e) => {
+						this.UpdateHotbarSlot(i, character.GetHeldSlot(), itemStack);
+					}),
+				);
+				slotBin.Add(
+					itemStack.itemTypeChanged.Connect((e) => {
+						this.UpdateHotbarSlot(i, character.GetHeldSlot(), itemStack);
 					}),
 				);
 			}
+		}
+		this.prevHeldSlot = character.GetHeldSlot();
 
+		return () => {
+			invBin.Clean();
+		};
+	}
 
-			invBin.Add(() => {
-				for (const pair of slotBinMap) {
-					pair[1].Clean();
-				}
-				slotBinMap.clear();
-			});
+	/**
+	 * Switches the hotbar to display a different character's inventory
+	 * @param character The character whose inventory to display
+	 */
+	public SwitchHotbarToCharacter(character: Character | undefined): void {
+		// Clean up existing connections
+		if (this.currentHotbarCleanup) {
+			this.currentHotbarCleanup();
+			this.currentHotbarCleanup = undefined;
+		}
 
-			invBin.Add(
-				character.onHeldSlotChanged.Connect((slot) => {
-					for (let i = 0; i < this.hotbarSlots; i++) {
-						const itemStack = character.inventory?.GetItem(i);
-
-						this.UpdateHotbarSlot(i, slot, itemStack);
-					}
-					this.prevHeldSlot = slot;
-				}),
-			);
-
+		if (character) {
+			this.currentHotbarCleanup = this.SetupHotbarForCharacter(character, true);
+		} else {
 			for (let i = 0; i < this.hotbarSlots; i++) {
-				const itemStack = character.inventory?.GetItem(i);
-				this.UpdateHotbarSlot(i, character.GetHeldSlot(), itemStack, init, true);
+				this.UpdateHotbarSlot(i, 0, undefined, true, true);
 			}
-			this.prevHeldSlot = character.GetHeldSlot();
-			init = false;
-
-			return () => {
-				invBin.Clean();
-			};
-		});
+		}
 	}
 
 	private UpdateTile(tile: GameObject, slot: number, itemStack: ItemStack | undefined): void {

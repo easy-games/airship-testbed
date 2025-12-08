@@ -64,14 +64,15 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		this.addedDiscordHero = false;
 
 		const hour = 60 * 60;
+		const day = hour * 24;
 		this.CreateFeaturedEvent(
 			"47c5fdbd-bf3f-4a5b-9ad3-dea11a52a762",
 			Game.deviceType === AirshipDeviceType.Phone
-				? "The first mobile playtest!\nPlay on Mac, Windows, iOS, and Android!"
-				: "The first mobile playtest of BedWars 2.\nPlay on Mac, Windows, iOS, and Android!",
-			AirshipUrl.CDN + "/airship/Barbarian.png",
-			1758992400,
-			1758992400 + 3 * hour,
+				? "Unlock the limited edition Victory Crown by winning a match!"
+				: "Unlock the Victory Crown by winning a match!",
+			AirshipUrl.CDN + "/airship/CrownRender.png",
+			1764788400,
+			1764788400 + 3 * day,
 		);
 
 		this.CreateSort(SortId.Popular, "Popular");

@@ -186,21 +186,13 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public OnEnable(): void {
+		if (Game.IsServer()) this.OnEnableServer();
+
 		if (this.model === undefined) {
 			this.model = this.gameObject;
 		}
 
 		this.despawned = false;
-		this.bin.Add(
-			Airship.Damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
-				if (damageInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
-					if (this.IsDead()) return;
-					let newHealth = math.max(0, this.health - damageInfo.damage);
-
-					this.SetHealth(newHealth, true, true);
-				}
-			}),
-		);
 		this.bin.Add(
 			Airship.Damage.onDeath.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
 				if (damageInfo.gameObject === this.gameObject) {
@@ -208,17 +200,6 @@ export default class Character extends AirshipBehaviour {
 						this.movement.enabled = false;
 					}
 					this.onDeath.Fire();
-				}
-			}),
-		);
-
-		this.bin.Add(
-			Airship.Damage.onHeal.ConnectWithPriority(SignalPriority.MONITOR, (healInfo) => {
-				if (healInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
-					if (this.IsDead()) return;
-					let newHealth = math.min(this.maxHealth, this.health + healInfo.healAmount);
-
-					this.SetHealth(newHealth, true, true);
 				}
 			}),
 		);
@@ -231,6 +212,37 @@ export default class Character extends AirshipBehaviour {
 			// have opted not to use our networked movement.
 			this.SetupHeldItemSignalNetworking();
 		}
+	}
+
+	private OnEnableServer() {
+		this.bin.Add(
+			Airship.Damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
+				if (damageInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
+					if (this.IsDead()) return;
+					let newHealth = math.max(0, this.health - damageInfo.damage);
+
+					this.SetHealth(newHealth, true);
+				}
+			}),
+		);
+
+		// Listen for heals on this character's game object
+		this.bin.Add(
+			Airship.Damage.onHeal.ConnectWithPriority(SignalPriority.MONITOR, (healInfo) => {
+				if (healInfo.character !== this) return;
+
+				// Clamp the heal amount to return if player is max health after the event.
+				healInfo.healAmount = math.clamp(
+					healInfo.healAmount,
+					0,
+					healInfo.character.GetMaxHealth() - healInfo.character.GetHealth(),
+				);
+
+				if (this.IsDead()) return;
+				
+				this.SetHealth(this.health + healInfo.healAmount);
+			}),
+		);
 	}
 
 	public OnDisable(): void {

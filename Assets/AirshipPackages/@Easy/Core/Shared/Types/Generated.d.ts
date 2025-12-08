@@ -39724,6 +39724,7 @@ interface MaterialColorURP extends MonoBehaviour {
     DoUpdate(): void;
     EditorFirstTimeSetup(): void;
     GetColorSettingByMaterial(mat: Material): ColorSetting;
+    GetSharedMaterials(): Readonly<Material[]>;
     InitializeColorsFromCurrentMaterials(): void;
     SetColor(indx: number, newColor: Color): void;
     SetColorOnAll(newColor: Color): void;
@@ -42713,11 +42714,22 @@ interface Mask extends UIBehaviour, IMaterialModifier, ICanvasRaycastFilter {
 
 }
     
-interface ImageWithRoundedCorners extends MonoBehaviour {
+interface BaseMeshEffect extends UIBehaviour, IMeshModifier {
+
+
+
+    ModifyMesh(mesh: Mesh): void;
+    ModifyMesh(vh: VertexHelper): void;
+
+
+}
+    
+interface ImageWithRoundedCorners extends BaseMeshEffect {
     radius: number;
 
 
 
+    ModifyMesh(vh: VertexHelper): void;
     Refresh(): void;
     Validate(): void;
 
@@ -54743,7 +54755,6 @@ declare const AnimationEventData: AnimationEventDataConstructor;
     
 interface VoxelWorld extends MonoBehaviour {
     useSimplifiedVoxels: boolean;
-    doVisuals: boolean;
     useCameraAsFocusPosition: boolean;
     autoLoad: boolean;
     voxelWorldFile: WorldSaveFile;
@@ -54764,6 +54775,7 @@ interface VoxelWorld extends MonoBehaviour {
     renderingDisabled: boolean;
     hasUnsavedChanges: boolean;
     loadingStatus: LoadingStatus;
+    readonly doVisuals: boolean;
     focusPosition: Vector3;
 
     readonly BeforeVoxelChunkUpdated: MonoSignal<Chunk>;
@@ -55001,9 +55013,9 @@ interface VoxelRaycastResult {
 interface VoxelWorldConstructor {
     runThreaded: boolean;
     chunkSize: number;
-    maxActiveThreads: number;
     maxMainThreadMeshMillisecondsPerFrame: number;
     maxMainThreadThreadKickoffMillisecondsPerFrame: number;
+    maxMainThreadMillisecondsPerFrame: number;
     showDebugBounds: boolean;
     flipNames: Readonly<string[]>;
     allFlips: Readonly<number[]>;

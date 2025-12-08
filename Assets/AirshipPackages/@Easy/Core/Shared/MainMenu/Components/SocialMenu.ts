@@ -35,7 +35,9 @@ export default class SocialMenu extends AirshipBehaviour {
 
 	override Start(): void {
 		if (Game.deviceType === AirshipDeviceType.Phone) {
-			this.liveStats.gameObject.SetActive(false);
+			// this.liveStats.gameObject.SetActive(false);
+			this.playerCountText.gameObject.SetActive(false);
+			this.serverCountText.transform.parent.GetComponent<LayoutElement>()!.preferredHeight = 19;
 		}
 		if (Game.IsMobile()) {
 			this.scrollRect.movementType = MovementType.Elastic;
@@ -106,8 +108,12 @@ export default class SocialMenu extends AirshipBehaviour {
 	private FetchLiveStats(): void {
 		try {
 			const result = client.stats.getStats().expect();
-			this.playerCountText.text = `${result.players.online} Players Connected`;
-			this.serverCountText.text = `${result.servers.active} Servers Online`;
+			if (Game.deviceType === AirshipDeviceType.Phone) {
+				this.serverCountText.text = `${result.players.online} Players Connected. ${result.servers.active} Servers Online.`;
+			} else {
+				this.playerCountText.text = `${result.players.online} Players Connected.`;
+				this.serverCountText.text = `${result.servers.active} Servers Online`;
+			}
 		} catch {
 			return;
 		}

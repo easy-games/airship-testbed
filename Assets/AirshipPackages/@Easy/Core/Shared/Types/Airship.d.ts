@@ -186,6 +186,16 @@ interface CharacterMovement extends Component {
 	// Functions
 	GetLookVector(): Vector3;
 	GetMoveDir(): Vector3;
+	/**
+	 * Transforms an intended relative move direction into a world space move direction based on the move direction mode.
+	 */
+	TransformMoveDirection(direction: Vector3, moveDirMode: number): Vector3;
+	/**
+	 * Sets the move input for the next frame
+	 * @param direction World space direction to move in
+	 */
+	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouch: boolean): void;
+	/** @deprecated */
 	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouch: boolean, moveDirMode: number): void;
 	SetMovementEnabled(isEnabled: boolean): void;
 	SetLookVector(lookVector: Vector3): void;

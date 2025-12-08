@@ -1,4 +1,6 @@
+import { AuthController } from "@Easy/Core/Client/ProtectedControllers/Auth/AuthController";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
+import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
@@ -30,7 +32,7 @@ export default class GearUnlockManager extends AirshipBehaviour {
 				if (e.IsCancelled()) return;
 
 				this.ShowRewardYielding("test", {
-					classId: "ffbc21f2-f977-4452-bb98-43064890f0b8",
+					classId: "39c9c35b-d849-448b-8554-e919f3e26e01",
 					messageTitle: "Unlocked BETA Chain!",
 					messageBody:
 						"Thank you for playing the Airship Beta. As a thank you, enjoy this exclusive avatar item.",
@@ -38,7 +40,10 @@ export default class GearUnlockManager extends AirshipBehaviour {
 			});
 		}
 
-		this.CheckNotifications();
+		task.spawn(() => {
+			Dependency<AuthController>().WaitForAuthed();
+			this.CheckNotifications();
+		});
 	}
 
 	public async CheckNotifications(): Promise<void> {

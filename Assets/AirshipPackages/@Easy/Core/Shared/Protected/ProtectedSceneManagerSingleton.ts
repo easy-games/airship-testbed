@@ -140,6 +140,6 @@ export class ProtectedSceneManagerSingleton {
 
 	public IsProtectedSceneName(sceneName: string): boolean {
 		const s = sceneName.lower();
-		return this.protectedSceneNames.includes(sceneName);
+		return this.protectedSceneNames.includes(s);
 	}
 }

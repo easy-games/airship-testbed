@@ -481,6 +481,15 @@ interface Vector4 {
 	/** Calculates the distance between two vectors. */
 	Distance(to: Vector4): number;
 
+	/** Returns vector with provided x value */
+	WithX(x: number): Vector4;
+	/** Returns vector with provided y value */
+	WithY(y: number): Vector4;
+	/** Returns vector with provided z value */
+	WithZ(z: number): Vector4;
+	/** Returns vector with provided w value */
+	WithW(w: number): Vector4;
+
 	/**
 	 * Check if the two vectors are approximately equal, using `epsilon` as
 	 * the threshold. The default epsilon value is `0.00001`.
@@ -596,6 +605,11 @@ interface Vector2 {
 
 	/** Returns the vector moved towards `target` a maximum of `maxDistanceDelta`. */
 	MoveTowards(target: Vector2, maxDistanceDelta: number): Vector2;
+
+	/** Returns vector with provided x value */
+	WithX(x: number): Vector2;
+	/** Returns vector with provided y value */
+	WithY(y: number): Vector2;
 
 	/**
 	 * Check if the two vectors are approximately equal, using `epsilon` as

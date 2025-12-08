@@ -15,9 +15,9 @@ import { InternalGameSetting, InternalGameSettingType, InternalSliderGameSetting
 
 const defaultData: ClientSettingsFile = {
 	sprintToggleEnabled: false,
-	mouseSensitivity: 2,
+	mouseSensitivity: 0.7,
 	mouseSmoothing: 0,
-	touchSensitivity: 0.5,
+	touchSensitivity: 0.4,
 	mobileDynamicJoystick: true,
 	globalVolume: 1,
 	ambientVolume: 0.1,
@@ -30,8 +30,8 @@ const defaultData: ClientSettingsFile = {
 	coreKeybindOverrides: undefined,
 	gameKeybindOverrides: {},
 	vsync: false,
-	shadowLevel: 0,
-	antiAliasing: 0,
+	shadowTier: 1,
+	msaaSamples: 2,
 	voiceToggleEnabled: false,
 	limitFps: -1,
 };
@@ -264,6 +264,12 @@ export class ProtectedSettingsSingleton {
 		const savedContents = DiskManager.ReadFileAsync("ClientSettings.json");
 		if (savedContents && savedContents !== "") {
 			this.data = json.decode(savedContents);
+
+			// Default to low quality on low end devices
+			if (this.data.shadowTier === undefined) {
+				this.data.shadowTier = Bridge.IsLowEndDevice() ? 1 : 2;
+			}
+
 			this.data = { ...defaultData, ...this.data };
 
 			// simple reconcile logic
@@ -280,23 +286,15 @@ export class ProtectedSettingsSingleton {
 				this.data.limitFps = 60;
 			}
 
-			const platform = Game.platform;
-			let lowEndDevice = platform === AirshipPlatform.iOS || platform === AirshipPlatform.Android;
-			try {
-				// try catch because of non required c# update
-				if (Bridge.IsLowEndDevice()) {
-					lowEndDevice = true;
-				}
-			} catch (err) {}
-			if (!lowEndDevice) {
-				this.data.antiAliasing = 1;
-				this.data.shadowLevel = 1;
+			if (!Bridge.IsLowEndDevice()) {
+				this.data.msaaSamples = 1;
+				this.data.shadowTier = 2;
 			}
 		}
 
 		this.SetGlobalVolume(this.GetGlobalVolume());
-		this.SetAntiAliasing(this.data.antiAliasing);
-		this.SetShadowLevel(this.data.shadowLevel);
+		this.SetMSAASamples(this.data.msaaSamples);
+		this.SetShadowLevel(this.data.shadowTier);
 		this.SetVsync(this.data.vsync);
 		this.SetLimitFPS(this.data.limitFps);
 
@@ -375,34 +373,30 @@ export class ProtectedSettingsSingleton {
 		}
 	}
 
-	public SetAntiAliasing(level: number): void {
-		this.data.antiAliasing = level;
-		if (Game.IsEditor()) return;
-		const pipelineAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
-		if (level === 1) {
-			pipelineAsset.msaaSampleCount = 2;
-		} else {
-			pipelineAsset.msaaSampleCount = 0;
+	public SetMSAASamples(samples: number): void {
+		this.data.msaaSamples = samples;
+		if (!Game.IsEditor()) {
+			Screen.SetMSAASamples(samples);
 		}
 	}
 
 	public SetShadowLevel(level: number): void {
-		this.data.shadowLevel = level;
 		const pipelineAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
-
-		if (level === 1) {
-			// High Quality Settings
-			QualitySettings.shadows = ShadowQuality.All;
-			QualitySettings.shadowResolution = ShadowResolution.VeryHigh;
-			QualitySettings.shadowDistance = 120;
-
-			pipelineAsset.shadowCascadeCount = 4;
-			pipelineAsset.cascade4Split = new Vector3(0.067, 0.2, 0.467);
-		} else {
-			QualitySettings.shadowResolution = ShadowResolution.Low;
-			QualitySettings.shadowDistance = 100;
-
-			pipelineAsset.shadowCascadeCount = 1;
+		const clampedLevel = math.clamp(level, 0, 2);
+		this.data.shadowTier = clampedLevel;
+		
+		switch (clampedLevel) {
+			case 2: // High Quality
+				pipelineAsset.mainLightShadowmapResolution = 4096;
+				pipelineAsset.shadowDistance = 120;
+				break;
+			case 1: // Low Quality
+				pipelineAsset.mainLightShadowmapResolution = 1024;
+				pipelineAsset.shadowDistance = 70;
+				break;
+			case 0: // No Shadows
+				pipelineAsset.shadowDistance = 0; // is there a better way to disable shadows?
+				break;
 		}
 	}
 

@@ -55,9 +55,9 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 		this.popoutImage.color = new Color(1, 1, 1, 0);
 
 		if (Game.deviceType === AirshipDeviceType.Phone) {
-			this.popoutImage.transform.localScale = new Vector3(0.85, 0.85, 0.85);
+			this.popoutImage.transform.localScale = new Vector3(0.9, 0.9, 0.9);
 			const rect = this.popoutImage.transform as RectTransform;
-			rect.anchoredPosition = new Vector2(24, 0);
+			// rect.anchoredPosition = new Vector2(24, 0);
 		}
 
 		if (eventCache) {
@@ -99,7 +99,7 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 		let postEvent = os.time() > this.endTime;
 		let gamePublic = eventCache?.visibility === ContentServicePrisma.GameVisibility.PUBLIC;
 
-		if (preEvent) {
+		if (preEvent || !gamePublic) {
 			this.startCountdownText.gameObject.SetActive(true);
 			this.endCountdownText.gameObject.SetActive(false);
 			this.playerCountWrapper.SetActive(false);
@@ -127,19 +127,19 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 			this.startCountdownText.text = `Event has ended.`;
 		} else if (gamePublic) {
 			this.startCountdownText.gameObject.SetActive(false);
-			this.endCountdownText.gameObject.SetActive(true);
+			this.endCountdownText.gameObject.SetActive(false);
 			this.playerCountWrapper.SetActive(true);
 			this.playBtn.gameObject.SetActive(true);
 
-			let timeLeft = math.round(this.endTime - os.time());
-			let countdown = TimeUtil.FormatCountdown(timeLeft, {
-				seconds: true,
-				minutes: true,
-				hours: true,
-				days: true,
-				seperator: " : ",
-			});
-			this.endCountdownText.text = `Ends in ${countdown}`;
+			// let timeLeft = math.round(this.endTime - os.time());
+			// let countdown = TimeUtil.FormatCountdown(timeLeft, {
+			// 	seconds: true,
+			// 	minutes: true,
+			// 	hours: true,
+			// 	days: true,
+			// 	seperator: " : ",
+			// });
+			// this.endCountdownText.text = `Ends in ${countdown}`;
 		}
 	}
 
@@ -201,7 +201,7 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 
 		// Event BG
 		task.spawn(async () => {
-			const url = "https://cdn.airship.gg/images/dabcaa58-99aa-4eda-9f25-8adff43fc3de";
+			const url = AirshipUrl.CDN + "/airship/Topology3.png";
 			const tex = await Protected.Cache.DownloadImage(url);
 			if (tex) {
 				this.eventImg.texture = tex;

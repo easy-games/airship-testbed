@@ -61,7 +61,7 @@ export default class FriendCard extends AirshipBehaviour {
 					", serverId=" +
 					userData.serverId,
 			);
-			Dependency<TransferController>().TransferToGameAsync(userData.gameId, userData.serverId);
+			Dependency<TransferController>().TransferToFriendOrPartyMember(userData.userId);
 		};
 
 		const OpenMenu = () => {
@@ -93,8 +93,12 @@ export default class FriendCard extends AirshipBehaviour {
 
 				options.push({
 					text: "Invite to Party",
-					onClick: () => {
-						Dependency<ProtectedPartyController>().InviteToParty(userData.userId);
+					onClick: async () => {
+						try {
+							await Dependency<ProtectedPartyController>().InviteToParty(userData.userId);
+						} catch (err) {
+							Debug.LogError(err);
+						}
 					},
 				});
 			}

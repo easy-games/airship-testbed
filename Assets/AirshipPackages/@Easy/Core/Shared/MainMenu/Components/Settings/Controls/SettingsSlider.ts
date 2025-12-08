@@ -1,4 +1,5 @@
 import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
@@ -9,6 +10,7 @@ export default class SettingsSlider extends AirshipBehaviour {
 	public slider: GameObject;
 
 	public onChange = new Signal<[val: number]>();
+	private lastValue: number;
 
 	private bin = new Bin();
 
@@ -19,28 +21,32 @@ export default class SettingsSlider extends AirshipBehaviour {
 
 		const slider = this.slider.GetComponent<Slider>()!;
 		let ignoreNextSliderChange = false;
-		let ignoreNextInputFieldChange = false;
+		let ignoreNextFieldChange = false;
 
 		let valRounded = this.ValidateIncrement(math.floor(startingValue * 100) / 100, increment);
-		let textValue = string.format("%.2f", valRounded);
+
+		let textValue = this.FormatValueForDisplay(valRounded, increment);
 
 		slider.maxValue = max;
 		slider.minValue = min;
 		slider.value = valRounded;
+		this.lastValue = valRounded;
 		this.inputField.text = textValue;
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnValueChangeEvent(this.inputField.gameObject, () => {
-				if (ignoreNextInputFieldChange) {
-					ignoreNextInputFieldChange = false;
+				if (ignoreNextFieldChange) {
+					ignoreNextFieldChange = false;
 					return;
 				}
+
 				const value = tonumber(this.inputField.text);
 				if (value === undefined) return;
+
 				let newValue = this.ValidateIncrement(math.floor(value * 100) / 100, increment);
+				this.onChange.Fire(newValue);
 
 				ignoreNextSliderChange = true;
-				this.onChange.Fire(value);
 				slider.value = newValue;
 			}),
 		);
@@ -54,8 +60,13 @@ export default class SettingsSlider extends AirshipBehaviour {
 					return;
 				}
 
+				if (Game.IsMobile() && this.lastValue !== newValue) VibrationManager.Play(VibrationFeedbackType.Selection);
+				this.lastValue = newValue;
+				
 				this.onChange.Fire(newValue);
-				this.inputField.text = string.format("%.2f", newValue);
+
+				ignoreNextFieldChange = true;
+				this.inputField.text = this.FormatValueForDisplay(newValue, increment);
 			}),
 		);
 
@@ -66,6 +77,13 @@ export default class SettingsSlider extends AirshipBehaviour {
 				}
 			}),
 		);
+	}
+
+	private FormatValueForDisplay(value: number, increment: number) {
+		let sigDigits = 3;
+		if (increment > 0) sigDigits = math.ceil(math.log10(1 / increment));
+
+		return string.format(`%.${sigDigits}f`, value);
 	}
 
 	private PlaySelectSound() {
