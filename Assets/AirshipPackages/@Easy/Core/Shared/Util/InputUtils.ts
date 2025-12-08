@@ -66,6 +66,27 @@ export class InputUtils {
 		// Modifier
 		[Key.LeftCtrl]: "Left Control",
 		[Key.LeftShift]: "Left Shift",
+
+		// Numpad numbers
+		[Key.Numpad0]: "Numpad 0",
+		[Key.Numpad1]: "Numpad 1",
+		[Key.Numpad2]: "Numpad 2",
+		[Key.Numpad3]: "Numpad 3",
+		[Key.Numpad4]: "Numpad 4",
+		[Key.Numpad5]: "Numpad 5",
+		[Key.Numpad6]: "Numpad 6",
+		[Key.Numpad7]: "Numpad 7",
+		[Key.Numpad8]: "Numpad 8",
+		[Key.Numpad9]: "Numpad 9",
+
+		// Numpad operators
+		[Key.NumpadEnter]: "Numpad Enter",
+		[Key.NumpadDivide]: "Numpad /",
+		[Key.NumpadMultiply]: "Numpad *",
+		[Key.NumpadPlus]: "Numpad +",
+		[Key.NumpadMinus]: "Numpad -",
+		[Key.NumpadPeriod]: "Numpad .",
+		[Key.NumpadEquals]: "Numpad =",
 	};
 
 	public static mouseButtonMap: Record<MouseButton, string> = {
@@ -135,6 +156,27 @@ export class InputUtils {
 
 		[Key.LeftCtrl]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_ctrl.png.sprite",
 		[Key.LeftShift]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_shift.png.sprite",
+
+		// Numpad numbers
+		[Key.Numpad0]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_0.png.sprite",
+		[Key.Numpad1]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_1.png.sprite",
+		[Key.Numpad2]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_2.png.sprite",
+		[Key.Numpad3]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_3.png.sprite",
+		[Key.Numpad4]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_4.png.sprite",
+		[Key.Numpad5]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_5.png.sprite",
+		[Key.Numpad6]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_6.png.sprite",
+		[Key.Numpad7]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_7.png.sprite",
+		[Key.Numpad8]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_8.png.sprite",
+		[Key.Numpad9]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_9.png.sprite",
+
+		// Numpad operators
+		[Key.NumpadEnter]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_enter.png.sprite",
+		[Key.NumpadDivide]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_slash_forward.png.sprite",
+		[Key.NumpadMultiply]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_asterisk.png.sprite",
+		[Key.NumpadPlus]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_plus.png.sprite",
+		[Key.NumpadMinus]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_minus.png.sprite",
+		[Key.NumpadPeriod]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_period.png.sprite",
+		[Key.NumpadEquals]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_equals.png.sprite",
 	};
 
 	public static mouseButtonSpritePathMap: Record<MouseButton, string> = {
