@@ -15,7 +15,7 @@ import { InternalGameSetting, InternalGameSettingType, InternalSliderGameSetting
 
 const defaultData: ClientSettingsFile = {
 	sprintToggleEnabled: false,
-	mouseSensitivity: 2,
+	mouseSensitivity: 0.7,
 	mouseSmoothing: 0,
 	touchSensitivity: 0.4,
 	mobileDynamicJoystick: true,
