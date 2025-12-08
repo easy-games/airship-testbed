@@ -33356,10 +33356,12 @@ interface NetworkConnectionToClient extends NetworkConnection {
     remoteTimeline: number;
     remoteTimescale: number;
     bufferTimeMultiplier: number;
+    inputBufferTime: number;
     snapshotBufferSizeLimit: number;
     readonly address: string;
     readonly bufferTime: number;
     readonly rtt: number;
+    readonly rttVariance: number;
 
 
 
@@ -38834,7 +38836,7 @@ interface BridgeConstructor {
     SetParentToSceneRoot(transform: Transform): void;
     SetSkyboxMaterial(material: Material): void;
     SetVolume(volume: number): void;
-    StartMicRecording(frequency: number, sampleLength: number): void;
+    StartMicRecording(): void;
     StopMicRecording(): void;
     UnloadGlobalSceneByName(sceneName: string): void;
     UnloadScene(sceneName: string): void;

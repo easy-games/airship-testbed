@@ -57,9 +57,6 @@ export class ProtectedSettingsSingleton {
 	private settingsLoaded = false;
 	private onSettingsLoaded = new Signal<ClientSettingsFile>();
 
-	public micFrequency = 16_000;
-	public micSampleLength = 100;
-
 	public gameSettings = new Map<string, InternalGameSetting>();
 	public gameSettingsOrdered: (InternalGameSetting | "space")[] = [];
 	private savedGameSettings: SavedGameSettings = {
@@ -356,7 +353,16 @@ export class ProtectedSettingsSingleton {
 	}
 
 	public StartMicRecording(): void {
-		Bridge.StartMicRecording(this.micFrequency, this.micSampleLength);
+		// TODO Old version support:
+		if (!Game.playerFlags.has("CompressVOIPAudio")) {
+			(Bridge as {
+				StartMicRecording(frequency: number, sampleLength: number): void;
+			}).StartMicRecording(16_000, 100); // OLD FORMAT, this function no longer takes args when flag exists
+			return;
+		}
+		// End old version support
+
+		Bridge.StartMicRecording();
 	}
 
 	public SetLimitFPS(limit: number): void {
