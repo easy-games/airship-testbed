@@ -6,7 +6,6 @@ import inspect from "@Easy/Core/Shared/Util/Inspect";
 
 export default class Test extends AirshipBehaviour {
 	testScriptableObject: TestScriptableObject;
-	testSerializable: TestSerializable;
 
 	protected Start(): void {
 		print("The text is", this.testScriptableObject.textToDisplay);
@@ -20,9 +19,4 @@ export default class Test extends AirshipBehaviour {
 	@Server()
 	@Client()
 	public CantBeBoth() {}
-}
-
-@Serializable()
-export class TestSerializable {
-	public value: number;
 }

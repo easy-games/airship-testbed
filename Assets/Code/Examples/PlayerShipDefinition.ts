@@ -4,7 +4,10 @@ export const enum ShipClass {
 	Large,
 }
 
-@CreateAssetMenu("PlayerShipDefinition.asset", "Assets/Create/Player Ship Definition")
+// export abstract class AbstractComponent extends AirshipBehaviour {}
+// export abstract class AbstractComponent2 extends AbstractComponent {}
+
+@CreateAssetMenu("Player Ship Definition", "PlayerShipDefinition.asset")
 export default class PlayerShipDefinition extends AirshipScriptableObject {
 	public name = "Ship name";
 	public shipClass: ShipClass;

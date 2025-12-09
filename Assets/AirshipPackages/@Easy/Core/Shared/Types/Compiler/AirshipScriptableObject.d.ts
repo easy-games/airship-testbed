@@ -34,8 +34,8 @@ declare abstract class AirshipScriptableObject {
 	public static CreateInstance<T extends AirshipScriptableObject>(): T;
 }
 
-type AirshipScriptableClassDecorator<T extends ReadonlyArray<unknown>> = (
+type AirshipScriptableObjectDecorator<T extends ReadonlyArray<unknown>> = (
 	...args: T
 ) => AirshipDecorator<(target: typeof AirshipScriptableObject) => void>;
 
-declare const CreateAssetMenu: AirshipScriptableClassDecorator<[menuName?: string, fileName?: string, order?: number]>;
+declare const CreateAssetMenu: AirshipScriptableObjectDecorator<[menuName?: string, fileName?: string, order?: number]>;
