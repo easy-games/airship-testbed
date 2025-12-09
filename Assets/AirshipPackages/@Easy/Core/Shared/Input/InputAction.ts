@@ -28,7 +28,7 @@ export interface SerializableAction {
 	/**
 	 * The category this action belongs to.
 	 */
-	category: string;
+	category: InputActionCategory;
 }
 
 export interface InputActionSchema {
@@ -47,7 +47,13 @@ export interface InputActionSchema {
 	/**
 	 * The category this action is associated with, if it exists.
 	 */
-	category?: string;
+	category?: InputActionCategory;
+}
+
+export enum InputActionCategory {
+	Movement = "Movement",
+	Inventory = "Inventory",
+	General = "General",
 }
 
 export enum InputActionContext {
@@ -69,7 +75,7 @@ export class InputActionConfig {
 	/**
 	 * The category action is assigned to.
 	 */
-	category?: string;
+	category?: InputActionCategory;
 }
 
 export class InputAction {
@@ -104,7 +110,7 @@ export class InputAction {
 	/**
 	 * The category **this** binding belongs to.
 	 */
-	public category: string;
+	public category: InputActionCategory;
 	/**
 	 * Whether or not this is a secondary binding.
 	 */
@@ -118,7 +124,13 @@ export class InputAction {
 	 */
 	public internalName: string;
 
-	constructor(name: string, binding: Binding, isSecondary: boolean, category = "General", isCore = false) {
+	constructor(
+		name: string,
+		binding: Binding,
+		isSecondary: boolean,
+		category = InputActionCategory.General,
+		isCore = false,
+	) {
 		this.id = InputAction.InputActionId++;
 		this.name = name;
 		this.internalName = name.lower();

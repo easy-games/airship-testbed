@@ -6,6 +6,7 @@ import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Asset } from "../Asset";
 import { Game } from "../Game";
 import { Binding } from "../Input/Binding";
+import { InputActionCategory } from "../Input/InputAction";
 import { ItemDef } from "../Item/ItemDefinitionTypes";
 import { NetworkFunction } from "../Network/NetworkFunction";
 import { Bin } from "../Util/Bin";
@@ -99,6 +100,7 @@ export class AirshipInventorySingleton {
 	public uiVisibility = InventoryUIVisibility.WhenHasItems;
 
 	private isUISetup = false;
+	private isHotbarActionsSetup = false;
 
 	private inventoryUIPrefab: GameObject | undefined;
 
@@ -139,6 +141,10 @@ export class AirshipInventorySingleton {
 			Game.localPlayer.ObserveCharacter((character) => {
 				if (!character || this.isUISetup) return;
 				if (character.inventory === undefined) return;
+				if (!this.isHotbarActionsSetup) {
+					this.CreateHotbarActions();
+					this.isHotbarActionsSetup = true;
+				}
 
 				if (
 					this.uiVisibility === InventoryUIVisibility.Always ||
@@ -936,17 +942,53 @@ export class AirshipInventorySingleton {
 	/**
 	 * Creates the actions for the hotbar slots
 	 */
-	public CreateHotbarActions(): void {
+	private CreateHotbarActions(): void {
 		Airship.Input.CreateActions([
-			{ name: InventoryHotbarAction.HotbarSlot1, binding: Binding.Key(Key.Digit1) },
-			{ name: InventoryHotbarAction.HotbarSlot2, binding: Binding.Key(Key.Digit2) },
-			{ name: InventoryHotbarAction.HotbarSlot3, binding: Binding.Key(Key.Digit3) },
-			{ name: InventoryHotbarAction.HotbarSlot4, binding: Binding.Key(Key.Digit4) },
-			{ name: InventoryHotbarAction.HotbarSlot5, binding: Binding.Key(Key.Digit5) },
-			{ name: InventoryHotbarAction.HotbarSlot6, binding: Binding.Key(Key.Digit6) },
-			{ name: InventoryHotbarAction.HotbarSlot7, binding: Binding.Key(Key.Digit7) },
-			{ name: InventoryHotbarAction.HotbarSlot8, binding: Binding.Key(Key.Digit8) },
-			{ name: InventoryHotbarAction.HotbarSlot9, binding: Binding.Key(Key.Digit9) },
+			{
+				name: InventoryHotbarAction.HotbarSlot1,
+				binding: Binding.Key(Key.Digit1),
+				category: InputActionCategory.Inventory,
+			},
+			{
+				name: InventoryHotbarAction.HotbarSlot2,
+				binding: Binding.Key(Key.Digit2),
+				category: InputActionCategory.Inventory,
+			},
+			{
+				name: InventoryHotbarAction.HotbarSlot3,
+				binding: Binding.Key(Key.Digit3),
+				category: InputActionCategory.Inventory,
+			},
+			{
+				name: InventoryHotbarAction.HotbarSlot4,
+				binding: Binding.Key(Key.Digit4),
+				category: InputActionCategory.Inventory,
+			},
+			{
+				name: InventoryHotbarAction.HotbarSlot5,
+				binding: Binding.Key(Key.Digit5),
+				category: InputActionCategory.Inventory,
+			},
+			{
+				name: InventoryHotbarAction.HotbarSlot6,
+				binding: Binding.Key(Key.Digit6),
+				category: InputActionCategory.Inventory,
+			},
+			{
+				name: InventoryHotbarAction.HotbarSlot7,
+				binding: Binding.Key(Key.Digit7),
+				category: InputActionCategory.Inventory,
+			},
+			{
+				name: InventoryHotbarAction.HotbarSlot8,
+				binding: Binding.Key(Key.Digit8),
+				category: InputActionCategory.Inventory,
+			},
+			{
+				name: InventoryHotbarAction.HotbarSlot9,
+				binding: Binding.Key(Key.Digit9),
+				category: InputActionCategory.Inventory,
+			},
 		]);
 	}
 }

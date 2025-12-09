@@ -14,7 +14,13 @@ import { MapUtil } from "../Util/MapUtil";
 import { Signal } from "../Util/Signal";
 import { CoreAction } from "./AirshipCoreAction";
 import { Binding, KeyBindingConfig, MouseBindingConfig } from "./Binding";
-import { InputAction, InputActionConfig, InputActionSchema, SerializableAction } from "./InputAction";
+import {
+	InputAction,
+	InputActionCategory,
+	InputActionConfig,
+	InputActionSchema,
+	SerializableAction,
+} from "./InputAction";
 import { InputActionEvent } from "./InputActionEvent";
 import { ActionInputType, InputUtil, KeyType, ModifierKey } from "./InputUtil";
 import AirshipMobileButton from "./Mobile/AirshipMobileButton";
@@ -321,7 +327,7 @@ export class AirshipInputSingleton {
 	public CreateActions(actions: InputActionSchema[]): void {
 		for (const action of actions) {
 			this.CreateAction(action.name, action.binding, {
-				category: action.category ?? "General",
+				category: action.category ?? InputActionCategory.General,
 				secondaryBinding: action.secondaryBinding,
 			});
 		}
@@ -334,7 +340,7 @@ export class AirshipInputSingleton {
 				action.name,
 				action.binding,
 				{
-					category: action.category ?? "General",
+					category: action.category ?? InputActionCategory.General,
 					secondaryBinding: action.secondaryBinding,
 				},
 				true,
@@ -375,7 +381,7 @@ export class AirshipInputSingleton {
 
 	/** Same as CreateAction (except it won't broadcast over context bridge) */
 	private RegisterAction(name: string, binding: Binding, config?: InputActionConfig, isCore = false): InputAction {
-		const action = new InputAction(name, binding, false, config?.category ?? "General", isCore);
+		const action = new InputAction(name, binding, false, config?.category ?? InputActionCategory.General, isCore);
 		this.AddActionToTable(action);
 		this.onActionBound.Fire(action);
 		return action;
