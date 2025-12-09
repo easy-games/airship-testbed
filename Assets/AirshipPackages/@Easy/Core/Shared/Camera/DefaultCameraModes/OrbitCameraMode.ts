@@ -3,6 +3,7 @@ import { ControlScheme, Mouse, Preferred } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { MoveDirectionMode } from "../../Character/LocalCharacter/MoveDirectionMode";
 import { Binding } from "../../Input/Binding";
+import { InputKeybindCategory } from "../../Input/InputAction";
 import ObjectUtils from "../../Util/ObjectUtils";
 import { OnUpdate } from "../../Util/Timer";
 import { CameraConstants, OrbitCameraConfig } from "../CameraConstants";
@@ -66,10 +67,18 @@ export class OrbitCameraMode extends CameraMode {
 			this.config.shouldOcclusionBump ?? CameraConstants.DefaultFixedCameraConfig.shouldOcclusionBump,
 		);
 
-		Airship.Input.CreateAction(OrbitArrowKey.Left, Binding.Key(Key.LeftArrow));
-		Airship.Input.CreateAction(OrbitArrowKey.Right, Binding.Key(Key.RightArrow));
-		Airship.Input.CreateAction(OrbitArrowKey.Down, Binding.Key(Key.DownArrow));
-		Airship.Input.CreateAction(OrbitArrowKey.Up, Binding.Key(Key.UpArrow));
+		Airship.Input.CreateAction(OrbitArrowKey.Left, Binding.Key(Key.LeftArrow), {
+			category: InputKeybindCategory.Camera,
+		});
+		Airship.Input.CreateAction(OrbitArrowKey.Right, Binding.Key(Key.RightArrow), {
+			category: InputKeybindCategory.Camera,
+		});
+		Airship.Input.CreateAction(OrbitArrowKey.Down, Binding.Key(Key.DownArrow), {
+			category: InputKeybindCategory.Camera,
+		});
+		Airship.Input.CreateAction(OrbitArrowKey.Up, Binding.Key(Key.UpArrow), {
+			category: InputKeybindCategory.Camera,
+		});
 	}
 
 	private BindArrowKeyAxis(axis: OrbitArrowKey) {

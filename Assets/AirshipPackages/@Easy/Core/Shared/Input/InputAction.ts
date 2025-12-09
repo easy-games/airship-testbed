@@ -28,7 +28,7 @@ export interface SerializableAction {
 	/**
 	 * The category this action belongs to.
 	 */
-	category: InputActionCategory;
+	category: string;
 }
 
 export interface InputActionSchema {
@@ -47,14 +47,16 @@ export interface InputActionSchema {
 	/**
 	 * The category this action is associated with, if it exists.
 	 */
-	category?: InputActionCategory;
+	category?: string;
 }
 
-export enum InputActionCategory {
-	Movement = "Movement",
-	Inventory = "Inventory",
-	General = "General",
-}
+export const InputKeybindCategory = {
+	Movement: "Movement",
+	Actions: "Actions",
+	Camera: "Camera",
+	Hotbar: "Hotbar",
+	Misc: "Misc",
+};
 
 export enum InputActionContext {
 	/**
@@ -75,7 +77,7 @@ export class InputActionConfig {
 	/**
 	 * The category action is assigned to.
 	 */
-	category?: InputActionCategory;
+	category?: string;
 }
 
 export class InputAction {
@@ -110,7 +112,7 @@ export class InputAction {
 	/**
 	 * The category **this** binding belongs to.
 	 */
-	public category: InputActionCategory;
+	public category: string;
 	/**
 	 * Whether or not this is a secondary binding.
 	 */
@@ -128,7 +130,7 @@ export class InputAction {
 		name: string,
 		binding: Binding,
 		isSecondary: boolean,
-		category = InputActionCategory.General,
+		category: string = InputKeybindCategory.Misc,
 		isCore = false,
 	) {
 		this.id = InputAction.InputActionId++;

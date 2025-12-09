@@ -6,7 +6,7 @@ import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Asset } from "../Asset";
 import { Game } from "../Game";
 import { Binding } from "../Input/Binding";
-import { InputActionCategory } from "../Input/InputAction";
+import { InputKeybindCategory } from "../Input/InputAction";
 import { ItemDef } from "../Item/ItemDefinitionTypes";
 import { NetworkFunction } from "../Network/NetworkFunction";
 import { Bin } from "../Util/Bin";
@@ -943,52 +943,53 @@ export class AirshipInventorySingleton {
 	 * Creates the actions for the hotbar slots
 	 */
 	private CreateHotbarActions(): void {
-		Airship.Input.CreateActions([
+		const hotbarActions = [
 			{
 				name: InventoryHotbarAction.HotbarSlot1,
 				binding: Binding.Key(Key.Digit1),
-				category: InputActionCategory.Inventory,
+				category: InputKeybindCategory.Hotbar,
 			},
 			{
 				name: InventoryHotbarAction.HotbarSlot2,
 				binding: Binding.Key(Key.Digit2),
-				category: InputActionCategory.Inventory,
+				category: InputKeybindCategory.Hotbar,
 			},
 			{
 				name: InventoryHotbarAction.HotbarSlot3,
 				binding: Binding.Key(Key.Digit3),
-				category: InputActionCategory.Inventory,
+				category: InputKeybindCategory.Hotbar,
 			},
 			{
 				name: InventoryHotbarAction.HotbarSlot4,
 				binding: Binding.Key(Key.Digit4),
-				category: InputActionCategory.Inventory,
+				category: InputKeybindCategory.Hotbar,
 			},
 			{
 				name: InventoryHotbarAction.HotbarSlot5,
 				binding: Binding.Key(Key.Digit5),
-				category: InputActionCategory.Inventory,
+				category: InputKeybindCategory.Hotbar,
 			},
 			{
 				name: InventoryHotbarAction.HotbarSlot6,
 				binding: Binding.Key(Key.Digit6),
-				category: InputActionCategory.Inventory,
+				category: InputKeybindCategory.Hotbar,
 			},
 			{
 				name: InventoryHotbarAction.HotbarSlot7,
 				binding: Binding.Key(Key.Digit7),
-				category: InputActionCategory.Inventory,
+				category: InputKeybindCategory.Hotbar,
 			},
 			{
 				name: InventoryHotbarAction.HotbarSlot8,
 				binding: Binding.Key(Key.Digit8),
-				category: InputActionCategory.Inventory,
+				category: InputKeybindCategory.Hotbar,
 			},
 			{
 				name: InventoryHotbarAction.HotbarSlot9,
 				binding: Binding.Key(Key.Digit9),
-				category: InputActionCategory.Inventory,
+				category: InputKeybindCategory.Hotbar,
 			},
-		]);
+		];
+		Airship.Input.CreateActions(hotbarActions);
 	}
 }

@@ -1,22 +1,17 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { InputAction, InputActionCategory } from "@Easy/Core/Shared/Input/InputAction";
+import { InputAction, InputKeybindCategory } from "@Easy/Core/Shared/Input/InputAction";
 import { ActionInputType, InputUtil, KeyType } from "@Easy/Core/Shared/Input/InputUtil";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import SettingsKeybind from "./SettingsKeybind";
 
-// Define the categories in the order they should be displayed
-const INPUT_CATEGORIES: Array<InputActionCategory> = [
-	InputActionCategory.Movement,
-	InputActionCategory.Inventory,
-	InputActionCategory.General,
-];
 export default class SettingsKeybindPage extends AirshipBehaviour {
 	public keybindPrefab!: GameObject;
 	public categoryPrefab!: GameObject;
 	public resetToDefaultBtn?: GameObject;
-	private categoryContents = new Map<InputActionCategory, GameObject>();
+	private categoryContents = new Map<string, GameObject>();
 	private keybinds = new Set<SettingsKeybind>();
+	private addedBindingIds = new Set<number>();
 
 	private bin = new Bin();
 
@@ -35,23 +30,23 @@ export default class SettingsKeybindPage extends AirshipBehaviour {
 			}
 		}
 
-		const categoriesWithBindings = new Set<InputActionCategory>();
+		const categoriesWithBindings = new Set<string>();
 		for (const binding of validBindings) {
-			print(`${binding.name} - ${binding.category}`);
-			const category = binding.category ?? InputActionCategory.General;
+			const category = binding.category ?? InputKeybindCategory.Misc;
 			categoriesWithBindings.add(category);
 		}
 
-		// Only create categories that have bindings, in the defined order
+		// Create category game Objects in the registered order if they have bindings
+		// and they don't already have a game Object
+		const allRegisteredCategories = Airship.Input.GetRegisteredKeybindCategories();
 		let categoryIndex = 1;
-		for (const category of INPUT_CATEGORIES) {
-			if (categoriesWithBindings.has(category)) {
+		for (const category of allRegisteredCategories) {
+			if (categoriesWithBindings.has(category) && !this.categoryContents.has(category)) {
 				const go = Object.Instantiate(this.categoryPrefab, this.transform);
 				go.transform.SetSiblingIndex(categoryIndex);
 				categoryIndex++;
 				const categoryText = go.GetComponentInChildren<TMP_Text>()!;
 				categoryText.text = category.upper();
-
 				this.categoryContents.set(category, go);
 			}
 		}
@@ -72,15 +67,25 @@ export default class SettingsKeybindPage extends AirshipBehaviour {
 	}
 
 	public AddKeybind(action: InputAction): void {
-		const category = action.category ?? InputActionCategory.General;
+		// Prevent duplicate keybinds from being added
+		if (this.addedBindingIds.has(action.id)) {
+			return;
+		}
+		this.addedBindingIds.add(action.id);
+
+		const category = action.category ?? InputKeybindCategory.Misc;
 		const categoryContent = this.categoryContents.get(category);
 
 		if (!categoryContent) {
-			const generalContent = this.categoryContents.get(InputActionCategory.General);
-			if (!generalContent) {
+			const availableCategories: string[] = [];
+			for (const [cat] of this.categoryContents) {
+				availableCategories.push(cat);
+			}
+			const miscContent = this.categoryContents.get(InputKeybindCategory.Misc);
+			if (!miscContent) {
 				return;
 			}
-			const go = Object.Instantiate(this.keybindPrefab, generalContent.transform);
+			const go = Object.Instantiate(this.keybindPrefab, miscContent.transform);
 			const keybind = go.GetAirshipComponent<SettingsKeybind>()!;
 			this.keybinds.add(keybind);
 			keybind.Init(action);
