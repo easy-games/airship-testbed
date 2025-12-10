@@ -153,11 +153,6 @@ export class AirshipPlayersSingleton {
 	}
 
 	protected OnStart(): void {
-		if (Game.IsServer() && !Game.IsEditor()) {
-			InternalHttpManager.SetAuthToken("");
-			// HttpManager.SetLoggingEnabled(true);
-		}
-
 		task.spawn(() => {
 			if (Game.IsClient()) {
 				this.InitClient();

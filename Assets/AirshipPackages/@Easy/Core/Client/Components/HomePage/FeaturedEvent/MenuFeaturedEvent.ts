@@ -1,10 +1,11 @@
 import { TransferController } from "@Easy/Core/Client/ProtectedControllers/Transfer/TransferController";
+import { AirshipGameVisibility } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { TweenEasingFunction } from "@Easy/Core/Shared/Tween/EasingFunctions";
 import { Tween } from "@Easy/Core/Shared/Tween/Tween";
-import { ContentServiceGames, ContentServicePrisma } from "@Easy/Core/Shared/TypePackages/content-service-types";
+import { ContentServiceGames } from "@Easy/Core/Shared/TypePackages/content-service-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -97,7 +98,7 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 
 		let preEvent = os.time() < this.startTime;
 		let postEvent = os.time() > this.endTime;
-		let gamePublic = eventCache?.visibility === ContentServicePrisma.GameVisibility.PUBLIC;
+		let gamePublic = eventCache?.visibility === AirshipGameVisibility.PUBLIC;
 
 		if (preEvent || !gamePublic) {
 			this.startCountdownText.gameObject.SetActive(true);
