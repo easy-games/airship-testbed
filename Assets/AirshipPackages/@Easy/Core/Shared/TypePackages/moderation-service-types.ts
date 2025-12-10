@@ -1,3 +1,5 @@
+import { encodeURIComponent } from "./UnityMakeRequest";
+
 export type AuthenticationProvider = string | (() => string | Promise<string>);
 export type AllowedQueryTypes =
     | string
@@ -24,99 +26,97 @@ export interface RequestOptions {
 }
 export type MakeRequest = <T, Query extends QueryRecord<keyof Query>>(request: HttpRequestParams<Query>) => Promise<T>;
 
-// ====+==== PRISMA TYPES ====+====
-export namespace ModerationServicePrisma {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    export const ModerationSeverity = {
-        IMMEDIATE_ACTION: 5,
-        HIGH: 3,
-        MEDIUM: 2,
-        LOW: 1,
-        NONE: 0,
-    } as const;
-    export type ModerationSeverity = (typeof ModerationSeverity)[keyof typeof ModerationSeverity];
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    export const ModerationCategories = {
-        HATE: "HATE",
-        HARASSMENT: "HARASSMENT",
-        LANGUAGE: "LANGUAGE",
-        SELF_HARM: "SELF_HARM",
-        ILLICIT: "ILLICIT",
-        VIOLENCE: "VIOLENCE",
-        SEXUAL: "SEXUAL",
-        UNDER_AGE: "UNDER_AGE",
-    } as const;
-    export type ModerationCategories = (typeof ModerationCategories)[keyof typeof ModerationCategories];
-}
-// ====+==== Moderation TYPES ====+====
+// ====+==== Moderation Types ====+====
 export namespace ModerationServiceModeration {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    export const PlatformCommunicationMethods = {
-        DirectMessage: "DM",
-        Party: "PARTY",
-        GameServerChat: "GAME_SERVER_CHAT",
-    } as const;
-    export type PlatformCommunicationMethods =
-        (typeof PlatformCommunicationMethods)[keyof typeof PlatformCommunicationMethods];
-    export interface ModerateTextDto {
+    export interface BaseModerateTextResponse {
+        censored: boolean;
         text: string;
     }
-    export type ModerateTextArgs = {
-        data: ModerateTextDto;
+
+    export interface BaseModerationResponse {
+        conversationId: string;
+        messageId: string;
+        messageBlocked: boolean;
+        transformedMessage: string;
+    }
+
+    export interface BlockedModerateTextResponse extends ModerationServiceModeration.BaseModerateTextResponse {
+        blocked: true;
+        blockedReasons: Array<ModerationServiceModeration.ModerationCategories | string>;
+    }
+
+    export interface BlockedModerationResponse extends ModerationServiceModeration.BaseModerationResponse {
+        messageBlocked: true;
+        messageBlockedReasons: Array<ModerationServiceModeration.ModerationCategories | string>;
+    }
+
+    export type ModerateChatArgs = {
+        data: ModerationServiceModeration.ModerateChatDto;
     };
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    export const ModerationCategories = {
-        HATE: "HATE",
-        HARASSMENT: "HARASSMENT",
-        LANGUAGE: "LANGUAGE",
-        SELF_HARM: "SELF_HARM",
-        ILLICIT: "ILLICIT",
-        VIOLENCE: "VIOLENCE",
-        SEXUAL: "SEXUAL",
-        UNDER_AGE: "UNDER_AGE",
-    } as const;
-    export type ModerationCategories = (typeof ModerationCategories)[keyof typeof ModerationCategories];
+
     export interface ModerateChatDto {
         conversationId: string;
-        conversationMethod: PlatformCommunicationMethods;
+        conversationMethod: ModerationServiceModeration.PlatformCommunicationMethods;
         messageId?: string;
         senderId: string;
         message: string;
         sentTimestamp?: string;
     }
-    export type ModerateChatArgs = {
-        data: ModerateChatDto;
+
+    export type ModerateTextArgs = {
+        data: ModerationServiceModeration.ModerateTextDto;
     };
-    export interface BaseModerationResponse {
-        conversationId: string;
-        messageId: string;
-        messageBlocked: boolean;
-        transformedMessage?: string;
-    }
-    export interface BlockedModerationResponse extends BaseModerationResponse {
-        messageBlocked: true;
-        messageBlockedReasons: Array<ModerationCategories | string>;
-    }
-    export interface UnblockedModerationResponse extends BaseModerationResponse {
-        messageBlocked: false;
-    }
-    export type ModerationResponse = BlockedModerationResponse | UnblockedModerationResponse;
-    export interface BaseModerateTextResponse {
-        censored: boolean;
+
+    export interface ModerateTextDto {
         text: string;
     }
-    export interface BlockedModerateTextResponse extends BaseModerateTextResponse {
-        blocked: true;
-        blockedReasons: Array<ModerationCategories | string>;
-    }
-    export interface UnblockedModerateTextResponse extends BaseModerateTextResponse {
+
+    export type ModerateTextResponse =
+        | ModerationServiceModeration.BlockedModerateTextResponse
+        | ModerationServiceModeration.UnblockedModerateTextResponse;
+
+    export const ModerationCategories = {
+        HATE: "HATE",
+        HARASSMENT: "HARASSMENT",
+        LANGUAGE: "LANGUAGE",
+        SELF_HARM: "SELF_HARM",
+        ILLICIT: "ILLICIT",
+        VIOLENCE: "VIOLENCE",
+        SEXUAL: "SEXUAL",
+        UNDER_AGE: "UNDER_AGE",
+    } as const;
+    export type ModerationCategories = (typeof ModerationCategories)[keyof typeof ModerationCategories];
+
+    export type ModerationResponse =
+        | ModerationServiceModeration.BlockedModerationResponse
+        | ModerationServiceModeration.UnblockedModerationResponse;
+
+    export const PlatformCommunicationMethods = {
+        DirectMessage: "DM",
+        Party: "PARTY",
+        GameServerChat: "GAME_SERVER_CHAT",
+        ModerateText: "MODERATE_TEXT",
+    } as const;
+    export type PlatformCommunicationMethods =
+        (typeof PlatformCommunicationMethods)[keyof typeof PlatformCommunicationMethods];
+
+    export interface UnblockedModerateTextResponse extends ModerationServiceModeration.BaseModerateTextResponse {
         blocked: false;
     }
-    export type ModerateTextResponse = BlockedModerateTextResponse | UnblockedModerateTextResponse;
+
+    export interface UnblockedModerationResponse extends ModerationServiceModeration.BaseModerationResponse {
+        messageBlocked: false;
+    }
 
     export interface ClientSpec {
-        moderateChat(args: ModerateChatArgs["data"], options?: RequestOptions): Promise<ModerationResponse>;
-        moderateText(args: ModerateTextArgs["data"], options?: RequestOptions): Promise<ModerateTextResponse>;
+        moderateChat(
+            args: ModerateChatArgs["data"],
+            options?: RequestOptions,
+        ): Promise<ModerationServiceModeration.ModerationResponse>;
+        moderateText(
+            args: ModerateTextArgs["data"],
+            options?: RequestOptions,
+        ): Promise<ModerationServiceModeration.ModerateTextResponse>;
     }
 
     export class Client implements ClientSpec {
@@ -126,7 +126,10 @@ export namespace ModerationServiceModeration {
             this.makeRequest = makeRequest;
         }
 
-        async moderateChat(args: ModerateChatArgs["data"], options?: RequestOptions): Promise<ModerationResponse> {
+        async moderateChat(
+            args: ModerateChatArgs["data"],
+            options?: RequestOptions,
+        ): Promise<ModerationServiceModeration.ModerationResponse> {
             return await this.makeRequest({
                 method: "POST",
                 routeId: "ModerationService:Moderation:moderateChat",
@@ -135,8 +138,10 @@ export namespace ModerationServiceModeration {
                 body: args,
             });
         }
-
-        async moderateText(args: ModerateTextArgs["data"], options?: RequestOptions): Promise<ModerateTextResponse> {
+        async moderateText(
+            args: ModerateTextArgs["data"],
+            options?: RequestOptions,
+        ): Promise<ModerationServiceModeration.ModerateTextResponse> {
             return await this.makeRequest({
                 method: "POST",
                 routeId: "ModerationService:Moderation:moderateText",
