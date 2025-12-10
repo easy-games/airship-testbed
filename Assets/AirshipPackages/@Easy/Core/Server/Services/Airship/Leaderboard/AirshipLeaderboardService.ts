@@ -45,7 +45,7 @@ export class AirshipLeaderboardService {
 	 */
 	public InEditorCreateLeaderboard(options: {
 		id: string;
-		operator: "SET" | "ADD" | "SUB" | "USE_LATEST";
+		operator: "SET" | "ADD" | "USE_LATEST";
 		sortOrder: "ASC" | "DESC";
 	}) {
 		if (!Game.IsEditor()) {

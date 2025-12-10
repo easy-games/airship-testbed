@@ -2,7 +2,7 @@ import {
 	ContentServiceGear,
 	ContentServiceItems,
 	ContentServiceOutfits,
-	ContentServicePrisma,
+	ContentServiceDatabaseTypes,
 } from "../../TypePackages/content-service-types";
 
 interface ItemBaseQueryParameters<T extends "tag" | "class"> {
@@ -68,4 +68,4 @@ export type AirshipItem = ContentServiceItems.SelectedItem;
 export type AirshipGearItem = ContentServiceGear.SelectedGearItem;
 export type AirshipOutfit = ContentServiceOutfits.SelectedOutfit;
 
-export type AirshipInventoryTransaction = ContentServicePrisma.Transaction;
+export type AirshipInventoryTransaction = ContentServiceDatabaseTypes.Transaction;
