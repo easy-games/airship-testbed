@@ -2,7 +2,6 @@ import { OnStart, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 import { Game } from "../../Game";
-import inspect from "../../Util/Inspect";
 
 interface SpeakingLevelEntry {
 	speakingLevel: number;
@@ -69,8 +68,6 @@ export class ProtectedVoiceChatSingleton implements OnStart {
 		if (!Game.IsInGame()) return;
 
 		AirshipUniVoice.OnSpeakingLevelChanged.Connect((connectionId, speakingLevel) => {
-			print(inspect(connectionId));
-			print("New speaking level for " + connectionId + ": " + speakingLevel);
 			this.connectionIdToSpeakingLevel.set(connectionId, {
 				speakingLevel: this.NormalizeSpeakingLevel(speakingLevel),
 				time: Time.time,
