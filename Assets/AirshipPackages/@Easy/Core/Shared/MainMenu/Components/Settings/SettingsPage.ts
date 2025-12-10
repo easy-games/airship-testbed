@@ -294,18 +294,12 @@ export default class SettingsPage extends AirshipBehaviour {
 	protected Start(): void {
 		const settings = Protected.Settings;
 
-		let voiceChat = Bridge.GetAirshipVoiceChatNetwork();
 		this.voiceToggle.Init("Toggle Mute", settings.IsVoiceToggleEnabled());
 		this.voiceToggle.toggle.onValueChanged.Connect((val) => {
 			settings.SetVoiceToggleEnabled(val);
 
 			if (!val) {
-				if (!voiceChat.agent) {
-					voiceChat = Bridge.GetAirshipVoiceChatNetwork();
-					task.unscaledWait();
-				}
-
-				voiceChat.agent.MuteSelf = true;
+				Bridge.SetMicInputEnabled(false);
 			}
 		});
 

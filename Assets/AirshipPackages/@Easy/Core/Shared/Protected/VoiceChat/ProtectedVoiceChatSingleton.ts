@@ -11,15 +11,12 @@ interface SpeakingLevelEntry {
 @Singleton()
 export class ProtectedVoiceChatSingleton implements OnStart {
 	public connectionIdToSpeakingLevel = new Map<number, SpeakingLevelEntry>();
-	public uniVoiceNetwork: AirshipUniVoiceNetwork;
 
 	private mutedUserIds = new Set<string>();
 	private deafened = false;
 
 	constructor() {
 		Protected.VoiceChat = this;
-
-		this.uniVoiceNetwork = Bridge.GetAirshipVoiceChatNetwork();
 
 		contextbridge.callback("VoiceChat:GetSpeakingLevel", (from, connectionId: number) => {
 			// if (Game.IsEditor()) {
@@ -46,16 +43,13 @@ export class ProtectedVoiceChatSingleton implements OnStart {
 
 		const player = Protected.ProtectedPlayers.FindByUserId(userId);
 		if (player) {
-			this.uniVoiceNetwork.SetConnectionMuted(player.connectionId, muted);
+			AirshipUniVoice.ServerMute(player.connectionId, muted);
 		}
 	}
 
 	public SetDeafened(deafen: boolean): void {
 		this.deafened = deafen;
-		// backwards compat
-		try {
-			this.uniVoiceNetwork.SetDeafened(deafen);
-		} catch (err) {}
+		AirshipUniVoice.ClientSetDeafened(this.deafened);
 	}
 
 	public IsDeafened(): boolean {
@@ -73,19 +67,20 @@ export class ProtectedVoiceChatSingleton implements OnStart {
 	OnStart(): void {
 		if (!Game.IsInGame()) return;
 
-		this.uniVoiceNetwork.onPlayerSpeakingLevel.Connect((connectionId, speakingLevel) => {
-			// print(`Player speaking connectionId=${connectionId} speakingLevel=${speakingLevel}`);
-			this.connectionIdToSpeakingLevel.set(connectionId, {
-				speakingLevel: this.NormalizeSpeakingLevel(speakingLevel),
-				time: Time.time,
-			});
-		});
-		this.uniVoiceNetwork.onLocalSpeakingLevel.Connect((speakingLevel) => {
-			this.connectionIdToSpeakingLevel.set(Game.localPlayer.connectionId, {
-				speakingLevel: this.NormalizeSpeakingLevel(speakingLevel),
-				time: Time.time,
-			});
-		});
+		// TODO ADD BACK
+		// this.uniVoiceNetwork.onPlayerSpeakingLevel.Connect((connectionId, speakingLevel) => {
+		// 	// print(`Player speaking connectionId=${connectionId} speakingLevel=${speakingLevel}`);
+		// 	this.connectionIdToSpeakingLevel.set(connectionId, {
+		// 		speakingLevel: this.NormalizeSpeakingLevel(speakingLevel),
+		// 		time: Time.time,
+		// 	});
+		// });
+		// this.uniVoiceNetwork.onLocalSpeakingLevel.Connect((speakingLevel) => {
+		// 	this.connectionIdToSpeakingLevel.set(Game.localPlayer.connectionId, {
+		// 		speakingLevel: this.NormalizeSpeakingLevel(speakingLevel),
+		// 		time: Time.time,
+		// 	});
+		// });
 
 		// Cleanup mics stuck at a non zero volume
 		SetInterval(0.5, () => {

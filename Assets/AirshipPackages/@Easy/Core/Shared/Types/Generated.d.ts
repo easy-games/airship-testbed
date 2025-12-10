@@ -2899,11 +2899,6 @@ declare const enum EaseType {
     BounceOut = 101,
     BounceInOut = 102,
 }
-declare const enum ChatroomAgentMode {
-    Unconnected = 0,
-    Host = 1,
-    Guest = 2,
-}
 declare const enum StereoScreenCaptureMode {
     LeftEye = 1,
     RightEye = 2,
@@ -37862,129 +37857,6 @@ interface Bridge {
 
 }
     
-interface IChatroomNetwork {
-    readonly LocalPeerId: number;
-    readonly PeerIDs: Readonly<number[]>;
-
-    readonly OnCreatedChatroom: MonoSignal<void>;
-    readonly OnChatroomCreationFailed: MonoSignal<Exception>;
-    readonly OnClosedChatroom: MonoSignal<void>;
-    readonly OnJoinedChatroom: MonoSignal<number>;
-    readonly OnChatroomJoinFailed: MonoSignal<Exception>;
-    readonly OnLeftChatroom: MonoSignal<void>;
-    readonly OnPeerJoinedChatroom: MonoSignal<number, number, AudioSource>;
-    readonly OnPeerLeftChatroom: MonoSignal<number>;
-    readonly OnAudioReceived: MonoSignal<number, ChatroomAudioSegment>;
-    readonly OnAudioBroadcasted: MonoSignal<ChatroomAudioSegment>;
-
-
-    BroadcastAudioSegment(data: ChatroomAudioSegment): void;
-    CloseChatroom(data: unknown): void;
-    CloseChatroom(): void;
-    HostChatroom(data: unknown): void;
-    HostChatroom(): void;
-    JoinChatroom(data: unknown): void;
-    JoinChatroom(): void;
-    LeaveChatroom(data: unknown): void;
-    LeaveChatroom(): void;
-
-
-}
-    
-interface ChatroomAudioSegment {
-    segmentIndex: number;
-    frequency: number;
-    channelCount: number;
-    samples: Readonly<number[]>;
-
-
-
-
-
-}
-    
-    
-interface ChatroomAgent {
-    PeerOutputs: CSDictionary<number, IAudioOutput>;
-    OnModeChanged: Action<ChatroomAgentMode>;
-    PeerSettings: CSDictionary<number, ChatroomPeerSettings>;
-    readonly Network: IChatroomNetwork;
-    readonly AudioInput: IAudioInput;
-    readonly AudioOutputFactory: IAudioOutputFactory;
-    readonly CurrentMode: ChatroomAgentMode;
-    MuteOthers: boolean;
-    MuteSelf: boolean;
-
-
-
-    Dispose(): void;
-
-
-}
-    
-interface IAudioOutput {
-    ID: string;
-
-
-
-    Feed(segmentIndex: number, frequency: number, channelCount: number, audioSamples: Readonly<number[]>): void;
-    Feed(segment: ChatroomAudioSegment): void;
-
-
-}
-    
-interface ChatroomPeerSettings {
-    muteThem: boolean;
-    muteSelf: boolean;
-
-
-
-
-
-}
-    
-interface ChatroomPeerSettingsConstructor {
-
-
-    new(): ChatroomPeerSettings;
-
-
-
-}
-declare const ChatroomPeerSettings: ChatroomPeerSettingsConstructor;
-    
-interface IAudioInput {
-    readonly Frequency: number;
-    readonly ChannelCount: number;
-    readonly SegmentRate: number;
-
-    readonly OnSegmentReady: MonoSignal<number, Readonly<number[]>>;
-
-
-
-
-}
-    
-interface IAudioOutputFactory {
-
-
-
-    Create(frequency: number, channelCount: number, samplesLen: number, audioSource: AudioSource): IAudioOutput;
-
-
-}
-    
-interface ChatroomAgentConstructor {
-
-
-    new(chatroomNetwork: IChatroomNetwork, audioInput: IAudioInput, audioOutputFactory: IAudioOutputFactory): ChatroomAgent;
-
-
-
-}
-declare const ChatroomAgent: ChatroomAgentConstructor;
-    
-    
 interface Texture2DArray extends Texture {
     /**
      * Number of elements in a texture array (Read Only).
@@ -38791,7 +38663,6 @@ interface BridgeConstructor {
     CopyToClipboard(text: string): void;
     DownloadTexture2DYielding(url: string): Texture2D;
     GetActiveScene(): Scene;
-    GetAirshipVoiceChatNetwork(): AirshipUniVoiceNetwork;
     GetAllocatedRam(): number;
     GetAverageFPS(): number;
     GetCurrentFPS(): number;
@@ -38805,8 +38676,10 @@ interface BridgeConstructor {
     HasMicrophonePermission(): boolean;
     IsFullScreen(): boolean;
     IsLowEndDevice(): boolean;
+    IsMicInputEnabled(): boolean;
     IsMicRecording(): boolean;
     IsSceneLoading(): boolean;
+    IsVoiceSetup(): boolean;
     LoadGlobalSceneByName(sceneName: string): void;
     LoadScene(sceneName: string, restartLuau: boolean, loadSceneMode: LoadSceneMode): void;
     LoadSceneAsyncFromAssetBundle(sceneName: string, loadSceneMode: LoadSceneMode): void;
@@ -38833,6 +38706,7 @@ interface BridgeConstructor {
     SetDefaultAudioSourceValues(source: AudioSource): void;
     SetFullScreen(value: boolean): void;
     SetMicDeviceIndex(i: number): void;
+    SetMicInputEnabled(enabled: boolean): void;
     SetParentToSceneRoot(transform: Transform): void;
     SetSkyboxMaterial(material: Material): void;
     SetVolume(volume: number): void;
@@ -55475,6 +55349,232 @@ interface VibrationManagerConstructor {
 
 }
 declare const VibrationManager: VibrationManagerConstructor;
+    
+interface AirshipUniVoice extends MonoBehaviour {
+
+
+
+
+
+}
+    
+interface IAudioServer<T> {
+    readonly ClientIDs: Readonly<T[]>;
+    readonly ClientVoiceSettings: CSDictionary<T, VoiceSettings>;
+
+    readonly OnServerStart: MonoSignal<void>;
+    readonly OnServerStop: MonoSignal<void>;
+    readonly OnClientVoiceSettingsUpdated: MonoSignal<void>;
+
+
+
+
+}
+    
+interface VoiceSettings {
+    muteAll: boolean;
+    mutedPeers: Readonly<number[]>;
+    deafenAll: boolean;
+    deafenedPeers: Readonly<number[]>;
+    myTags: Readonly<string[]>;
+    mutedTags: Readonly<string[]>;
+    deafenedTags: Readonly<string[]>;
+
+
+
+    SetDeaf(peerId: number, state: boolean): void;
+    SetMute(peerId: number, state: boolean): void;
+
+
+}
+    
+interface VoiceSettingsConstructor {
+
+
+    new(): VoiceSettings;
+
+
+
+}
+declare const VoiceSettings: VoiceSettingsConstructor;
+    
+interface MirrorServer extends IAudioServer<number> {
+    ServerMutedClientIDs: Readonly<number[]>;
+    readonly ClientIDs: Readonly<number[]>;
+    readonly ClientVoiceSettings: CSDictionary<number, VoiceSettings>;
+
+    readonly OnServerStart: MonoSignal<void>;
+    readonly OnServerStop: MonoSignal<void>;
+    readonly OnClientVoiceSettingsUpdated: MonoSignal<void>;
+
+
+    Dispose(): void;
+
+
+}
+    
+interface MirrorServerConstructor {
+
+
+    new(): MirrorServer;
+
+
+
+}
+declare const MirrorServer: MirrorServerConstructor;
+    
+interface ClientSession<T> {
+    OutputsEnabled: boolean;
+    readonly PeerOutputs: CSDictionary<T, IAudioOutput>;
+    InputEnabled: boolean;
+    InputFilters: Readonly<IAudioFilter[]>;
+    Client: IAudioClient<T>;
+    Input: IAudioInput;
+    OutputProvider: Func<IAudioOutput>;
+    OutputFactory: IAudioOutputFactory;
+
+
+
+    AddOutputFilter<TFilter extends IAudioFilter>(filterFactory: Func<IAudioFilter>): void;
+    Dispose(): void;
+    HasInputFilter<TFilter extends IAudioFilter>(): boolean;
+    HasOutputFilter<TFilter extends IAudioFilter>(): boolean;
+    RemoveOutputFilter<TFilter extends IAudioFilter>(): void;
+
+
+}
+    
+interface IAudioOutput {
+
+
+
+    Feed(frame: AudioFrame): void;
+
+
+}
+    
+interface AudioFrame {
+    timestamp: number;
+    frequency: number;
+    channelCount: number;
+    samples: Readonly<number[]>;
+
+
+
+
+
+}
+    
+interface IAudioFilter {
+
+
+
+    Run(input: AudioFrame): AudioFrame;
+
+
+}
+    
+interface IAudioClient<T> {
+    readonly ID: T;
+    readonly PeerIDs: Readonly<T[]>;
+    readonly YourVoiceSettings: VoiceSettings;
+
+    readonly OnJoined: MonoSignal<T, Readonly<T[]>>;
+    readonly OnLeft: MonoSignal<void>;
+    readonly OnPeerJoined: MonoSignal<T>;
+    readonly OnPeerLeft: MonoSignal<T>;
+    readonly OnReceivedPeerAudioFrame: MonoSignal<T, AudioFrame>;
+
+
+    SendAudioFrame(frame: AudioFrame): void;
+    SubmitVoiceSettings(): void;
+
+
+}
+    
+interface IAudioInput {
+
+    readonly OnFrameReady: MonoSignal<AudioFrame>;
+
+
+
+
+}
+    
+interface IAudioOutputFactory {
+
+
+
+    Create(): IAudioOutput;
+
+
+}
+    
+interface ClientSessionConstructor {
+
+
+    new(client: IAudioClient<T>, input: IAudioInput, outputProvider: Func<IAudioOutput>): ClientSession<T>;
+    new(client: IAudioClient<T>, input: IAudioInput, outputFactory: IAudioOutputFactory): ClientSession<T>;
+
+
+
+}
+declare const ClientSession: ClientSessionConstructor;
+    
+interface Device {
+    readonly Name: string;
+    readonly MaxFrequency: number;
+    readonly MinFrequency: number;
+    readonly SupportsAnyFrequency: boolean;
+    VolumeMultiplier: number;
+    readonly SamplingFrequency: number;
+    readonly FrameDurationMS: number;
+    readonly FrameLength: number;
+    readonly ChannelCount: number;
+    readonly IsRecording: boolean;
+
+    readonly OnStartRecording: MonoSignal<void>;
+    readonly OnFrameCollected: MonoSignal<number, number, Readonly<number[]>>;
+    readonly OnStopRecording: MonoSignal<void>;
+
+
+    StartRecording(frameDurationMS: number): void;
+    StartRecording(): void;
+    StartRecording(samplingFrequency: number, frameDurationMS: number): void;
+    StartRecording(samplingFrequency: number): void;
+    StopRecording(): void;
+
+
+}
+    
+interface DeviceConstructor {
+    DEFAULT_FRAME_DURATION_MS: number;
+    DEFAULT_SAMPLING_FREQUENCY: number;
+
+
+
+
+
+}
+declare const Device: DeviceConstructor;
+    
+interface AirshipUniVoiceConstructor {
+    readonly HasSetUp: boolean;
+    readonly AudioServer: MirrorServer;
+    readonly ClientSession: ClientSession<number>;
+
+
+    new(): AirshipUniVoice;
+
+
+    ClientSetDeafened(deafened: boolean): void;
+    IsRecording(): boolean;
+    ServerMute(connectionId: number, muted: boolean): void;
+    StartRecording(mic: Device): void;
+    StopRecording(): void;
+
+}
+declare const AirshipUniVoice: AirshipUniVoiceConstructor;
     
 interface AirshipSteamFriendInfo {
     playingAirship: boolean;

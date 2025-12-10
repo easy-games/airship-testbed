@@ -153,7 +153,7 @@ export class AirshipPlayersSingleton {
 	}
 
 	protected OnStart(): void {
-		if (Game.IsServer() && !Game.IsEditor()) {
+		if (Game.IsServer() && !Game.IsEditor() && Game.IsProtectedLuauContext()) {
 			InternalHttpManager.SetAuthToken("");
 			// HttpManager.SetLoggingEnabled(true);
 		}
