@@ -4572,7 +4572,7 @@ interface AsyncOperation extends YieldInstruction {
      */
     allowSceneActivation: boolean;
 
-    readonly completed: MonoSignal<AsyncOperation>;
+    readonly completed: MonoSignal<[AsyncOperation]>;
 
 
 
@@ -19235,8 +19235,8 @@ interface ReflectionProbeConstructor {
     BlendCubemap(src: Texture, dst: Texture, blend: number, target: RenderTexture): boolean;
     UpdateCachedState(): void;
 
-    readonly reflectionProbeChanged: MonoSignal<ReflectionProbe, ReflectionProbeEvent>;
-    readonly defaultReflectionTexture: MonoSignal<Texture>;
+    readonly reflectionProbeChanged: MonoSignal<[ReflectionProbe, ReflectionProbeEvent]>;
+    readonly defaultReflectionTexture: MonoSignal<[Texture]>;
 }
 declare const ReflectionProbe: ReflectionProbeConstructor;
     
@@ -25999,7 +25999,7 @@ interface TMP_Text extends MaskableGraphic {
     readonly renderedHeight: number;
     readonly layoutPriority: number;
 
-    readonly OnPreRenderText: MonoSignal<TMP_TextInfo>;
+    readonly OnPreRenderText: MonoSignal<[TMP_TextInfo]>;
 
 
     ClearMesh(): void;
@@ -26424,7 +26424,7 @@ interface FontConstructor {
     GetOSInstalledFontNames(): Readonly<string[]>;
     GetPathsToOSFonts(): Readonly<string[]>;
 
-    readonly textureRebuilt: MonoSignal<Font>;
+    readonly textureRebuilt: MonoSignal<[Font]>;
 }
 declare const Font: FontConstructor;
     
@@ -27423,8 +27423,8 @@ interface TMP_TextConstructor {
 
 
 
-    readonly OnFontAssetRequest: MonoSignal<number, string, TMP_FontAsset>;
-    readonly OnSpriteAssetRequest: MonoSignal<number, string, TMP_SpriteAsset>;
+    readonly OnFontAssetRequest: MonoSignal<[number, string, TMP_FontAsset]>;
+    readonly OnSpriteAssetRequest: MonoSignal<[number, string, TMP_SpriteAsset]>;
     readonly OnMissingCharacter: MonoSignal<void>;
 }
 declare const TMP_Text: TMP_TextConstructor;
@@ -27436,7 +27436,7 @@ interface TextMeshProUGUI extends TMP_Text, ILayoutElement {
     readonly canvasRenderer: CanvasRenderer;
     maskOffset: Vector4;
 
-    readonly OnPreRenderText: MonoSignal<TMP_TextInfo>;
+    readonly OnPreRenderText: MonoSignal<[TMP_TextInfo]>;
 
 
     CalculateLayoutInputHorizontal(): void;
@@ -33827,7 +33827,7 @@ declare const GizmoUtils: GizmoUtilsConstructor;
     
 interface CollisionWatcher extends MonoBehaviour {
 
-    readonly OnCollide: MonoSignal<Collision>;
+    readonly OnCollide: MonoSignal<[Collision]>;
 
 
 
@@ -33983,7 +33983,7 @@ declare const CollisionWatcher: CollisionWatcherConstructor;
     
 interface TriggerWatcher extends MonoBehaviour {
 
-    readonly OnEnter: MonoSignal<Collider>;
+    readonly OnEnter: MonoSignal<[Collider]>;
 
 
 
@@ -34507,9 +34507,9 @@ interface ApplicationConstructor {
     readonly logMessageReceived: MonoSignal<void>;
     readonly logMessageReceivedThreaded: MonoSignal<void>;
     readonly onBeforeRender: MonoSignal<void>;
-    readonly focusChanged: MonoSignal<boolean>;
-    readonly deepLinkActivated: MonoSignal<string>;
-    readonly wantsToQuit: MonoSignal<boolean>;
+    readonly focusChanged: MonoSignal<[boolean]>;
+    readonly deepLinkActivated: MonoSignal<[string]>;
+    readonly wantsToQuit: MonoSignal<[boolean]>;
     readonly quitting: MonoSignal<void>;
     readonly unloading: MonoSignal<void>;
 }
@@ -40987,8 +40987,8 @@ interface DevConsoleConstructor {
 
     readonly OnConsoleEnabled: MonoSignal<void>;
     readonly OnConsoleDisabled: MonoSignal<void>;
-    readonly OnConsoleOpened: MonoSignal<boolean>;
-    readonly OnConsoleClosed: MonoSignal<boolean>;
+    readonly OnConsoleOpened: MonoSignal<[boolean]>;
+    readonly OnConsoleClosed: MonoSignal<[boolean]>;
     readonly OnConsoleFocused: MonoSignal<void>;
     readonly OnConsoleFocusLost: MonoSignal<void>;
 }
@@ -41002,7 +41002,7 @@ interface CloudImage extends MonoBehaviour {
     hideErrors: boolean;
     readonly loadedUrl: string;
 
-    readonly OnFinishedLoading: MonoSignal<unknown>;
+    readonly OnFinishedLoading: MonoSignal<[unknown]>;
 
 
     ReleaseImage(notifyCache: boolean): void;
@@ -43560,7 +43560,7 @@ interface Scroller extends VisualElement {
      */
     direction: SliderDirection;
 
-    readonly valueChanged: MonoSignal<number>;
+    readonly valueChanged: MonoSignal<[number]>;
 
 
     /**
@@ -43744,7 +43744,7 @@ interface AirshipLongPress extends MonoBehaviour, IBeginDragHandler, IDragHandle
     holdTime: number;
 
     readonly OnClick: MonoSignal<void>;
-    readonly OnLongPress: MonoSignal<unknown>;
+    readonly OnLongPress: MonoSignal<[unknown]>;
 
 
     OnBeginDrag(eventData: PointerEventData): void;
@@ -48525,7 +48525,7 @@ interface QualitySettingsConstructor {
     SetQualityLevel(index: number, applyExpensiveChanges: boolean): void;
     SetTextureMipmapLimitSettings(groupName: string, textureMipmapLimitSettings: TextureMipmapLimitSettings): void;
 
-    readonly activeQualityLevelChanged: MonoSignal<number, number>;
+    readonly activeQualityLevelChanged: MonoSignal<[number, number]>;
 }
 declare const QualitySettings: QualitySettingsConstructor;
     
@@ -49432,7 +49432,7 @@ interface Panel extends IContainer {
     readonly children: Readonly<Widget[]>;
     documentationUrl: string;
 
-    readonly onSetDirty: MonoSignal<Panel>;
+    readonly onSetDirty: MonoSignal<[Panel]>;
 
 
     GetHashCode(): number;
@@ -51118,7 +51118,7 @@ interface NetworkClientConstructor {
     UnregisterPrefab(prefab: GameObject): void;
     UnregisterSpawnHandler(assetId: number): void;
 
-    readonly onConnectionQualityChanged: MonoSignal<ConnectionQuality, ConnectionQuality>;
+    readonly onConnectionQualityChanged: MonoSignal<[ConnectionQuality, ConnectionQuality]>;
 }
 declare const NetworkClient: NetworkClientConstructor;
     
@@ -54346,7 +54346,7 @@ interface SplineConstructor {
 
 
 
-    readonly Changed: MonoSignal<Readonly<BezierKnot[]>, number, SplineModification>;
+    readonly Changed: MonoSignal<[Readonly<BezierKnot[]>, number, SplineModification]>;
 }
 declare const Spline: SplineConstructor;
     
@@ -54374,7 +54374,7 @@ interface SplineAnimate extends SplineComponent {
     StartOffset: number;
     readonly IsPlaying: boolean;
 
-    readonly Updated: MonoSignal<Vector3, Quaternion>;
+    readonly Updated: MonoSignal<[Vector3, Quaternion]>;
     readonly Completed: MonoSignal<void>;
 
 
@@ -54490,9 +54490,9 @@ interface SplineContainerConstructor {
 
 
 
-    readonly SplineAdded: MonoSignal<SplineContainer, number>;
-    readonly SplineRemoved: MonoSignal<SplineContainer, number>;
-    readonly SplineReordered: MonoSignal<SplineContainer, number, number>;
+    readonly SplineAdded: MonoSignal<[SplineContainer, number]>;
+    readonly SplineRemoved: MonoSignal<[SplineContainer, number]>;
+    readonly SplineReordered: MonoSignal<[SplineContainer, number, number]>;
 }
 declare const SplineContainer: SplineContainerConstructor;
     
@@ -54654,10 +54654,10 @@ interface VoxelWorld extends MonoBehaviour {
     readonly doVisuals: boolean;
     focusPosition: Vector3;
 
-    readonly BeforeVoxelChunkUpdated: MonoSignal<Chunk>;
-    readonly VoxelChunkUpdated: MonoSignal<Chunk>;
-    readonly BeforeVoxelPlaced: MonoSignal<number, Vector3>;
-    readonly VoxelPlaced: MonoSignal<unknown, unknown, unknown, unknown>;
+    readonly BeforeVoxelChunkUpdated: MonoSignal<[Chunk]>;
+    readonly VoxelChunkUpdated: MonoSignal<[Chunk]>;
+    readonly BeforeVoxelPlaced: MonoSignal<[number, Vector3]>;
+    readonly VoxelPlaced: MonoSignal<[unknown, unknown, unknown, unknown]>;
     readonly OnFinishedLoading: MonoSignal<void>;
     readonly OnFinishedReplicatingChunksFromServer: MonoSignal<void>;
 
@@ -55479,11 +55479,11 @@ interface IAudioClient<T> {
     readonly PeerIDs: Readonly<T[]>;
     readonly YourVoiceSettings: VoiceSettings;
 
-    readonly OnJoined: MonoSignal<T, Readonly<T[]>>;
+    readonly OnJoined: MonoSignal<[T, Readonly<T[]>]>;
     readonly OnLeft: MonoSignal<void>;
-    readonly OnPeerJoined: MonoSignal<T>;
-    readonly OnPeerLeft: MonoSignal<T>;
-    readonly OnReceivedPeerAudioFrame: MonoSignal<T, AudioFrame>;
+    readonly OnPeerJoined: MonoSignal<[T]>;
+    readonly OnPeerLeft: MonoSignal<[T]>;
+    readonly OnReceivedPeerAudioFrame: MonoSignal<[T, AudioFrame]>;
 
 
     SendAudioFrame(frame: AudioFrame): void;
@@ -55494,7 +55494,7 @@ interface IAudioClient<T> {
     
 interface IAudioInput {
 
-    readonly OnFrameReady: MonoSignal<AudioFrame>;
+    readonly OnFrameReady: MonoSignal<[AudioFrame]>;
 
 
 
@@ -55534,7 +55534,7 @@ interface Device {
     readonly IsRecording: boolean;
 
     readonly OnStartRecording: MonoSignal<void>;
-    readonly OnFrameCollected: MonoSignal<number, number, Readonly<number[]>>;
+    readonly OnFrameCollected: MonoSignal<[number, number, Readonly<number[]>]>;
     readonly OnStopRecording: MonoSignal<void>;
 
 
