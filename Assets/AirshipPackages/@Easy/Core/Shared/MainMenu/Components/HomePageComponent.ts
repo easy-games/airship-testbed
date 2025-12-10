@@ -19,6 +19,7 @@ import { ProtectedUtil } from "../../Util/ProtectedUtil";
 import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 import DiscordHero from "./DiscordHero";
 import MainMenuPageComponent from "./MainMenuPageComponent";
+import { AirshipDeploymentPlatform } from "../../Airship/Types/AirshipGame";
 
 const gamesClient = new ContentServiceGames.Client(UnityMakeRequest(AirshipUrl.ContentService));
 
@@ -177,7 +178,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		try {
 			res = gamesClient
 				.getGameSorts({
-					platform: ProtectedUtil.GetLocalPlatformString() as ContentServiceGames.DeploymentPlatform,
+					platform: ProtectedUtil.GetLocalPlatformString() as AirshipDeploymentPlatform,
 				})
 				.expect();
 		} catch {
@@ -209,7 +210,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 
 				const developerGames = searchSingleton.myGames.filter((f) =>
 					f.platforms.includes(
-						ProtectedUtil.GetLocalPlatformString() as ContentServiceGames.DeploymentPlatform,
+						ProtectedUtil.GetLocalPlatformString() as AirshipDeploymentPlatform,
 					),
 				);
 				sortComponent.SetGames(developerGames, indexCounter);
