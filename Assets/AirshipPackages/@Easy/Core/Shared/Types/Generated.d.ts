@@ -55431,7 +55431,7 @@ interface ClientSession<T> {
     Client: IAudioClient<T>;
     Input: IAudioInput;
     OutputProvider: Func<IAudioOutput>;
-    OutputFactory: IAudioOutputFactory;
+    OutputFactory: IAudioOutputFactory<T>;
 
 
 
@@ -55501,11 +55501,11 @@ interface IAudioInput {
 
 }
     
-interface IAudioOutputFactory {
+interface IAudioOutputFactory<T> {
 
 
 
-    Create(): IAudioOutput;
+    Create(peerId: T): IAudioOutput;
 
 
 }
@@ -55514,7 +55514,7 @@ interface ClientSessionConstructor {
 
 
     new(client: IAudioClient<T>, input: IAudioInput, outputProvider: Func<IAudioOutput>): ClientSession<T>;
-    new(client: IAudioClient<T>, input: IAudioInput, outputFactory: IAudioOutputFactory): ClientSession<T>;
+    new(client: IAudioClient<T>, input: IAudioInput, outputFactory: IAudioOutputFactory<T>): ClientSession<T>;
 
 
 
@@ -55559,7 +55559,8 @@ interface DeviceConstructor {
 declare const Device: DeviceConstructor;
     
 interface AirshipUniVoiceConstructor {
-    readonly HasSetUp: boolean;
+    readonly HasSetUpServer: boolean;
+    readonly HasSetUpClient: boolean;
     readonly AudioServer: MirrorServer;
     readonly ClientSession: ClientSession<number>;
 
@@ -55573,6 +55574,7 @@ interface AirshipUniVoiceConstructor {
     StartRecording(mic: Device): void;
     StopRecording(): void;
 
+    readonly OnSpeakingLevelChanged: MonoSignal<[number, number]>;
 }
 declare const AirshipUniVoice: AirshipUniVoiceConstructor;
     
