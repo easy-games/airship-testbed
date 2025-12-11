@@ -429,6 +429,15 @@ export class Player {
 		}
 	}
 
+	/**
+	 * Mutes client voice chat for the remainder of this session. Can be run on the
+	 * server (muting the player for everyone) or on the client (for a local mute).
+	 */
+	public MuteVoiceChat(muted: boolean) {
+		if (Game.IsServer()) AirshipUniVoice.ServerMute(this.connectionId, muted);
+		else AirshipUniVoice.MutePeer(this.connectionId, muted);
+	}
+
 	public Kick(message: string): void {
 		if (Game.IsHosting()) {
 			error("Unable to kick host.");

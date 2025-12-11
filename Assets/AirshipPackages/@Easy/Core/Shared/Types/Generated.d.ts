@@ -55478,6 +55478,7 @@ interface IAudioClient<T> {
     readonly ID: T;
     readonly PeerIDs: Readonly<T[]>;
     readonly YourVoiceSettings: VoiceSettings;
+    OnPostProcessedPeerAudioFrame: Action<T, AudioFrame>;
 
     readonly OnJoined: MonoSignal<[T, Readonly<T[]>]>;
     readonly OnLeft: MonoSignal<void>;
@@ -55569,7 +55570,9 @@ interface AirshipUniVoiceConstructor {
 
 
     ClientSetDeafened(deafened: boolean): void;
+    IsPeerMuted(peerConnectionId: number): boolean;
     IsRecording(): boolean;
+    MutePeer(peerConnectionId: number, muted: boolean): void;
     ServerMute(connectionId: number, muted: boolean): void;
     StartRecording(mic: Device): void;
     StopRecording(): void;

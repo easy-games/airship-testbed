@@ -35,6 +35,8 @@ export class ProtectedVoiceChatSingleton implements OnStart {
 	}
 
 	public SetMuted(userId: string, muted: boolean): void {
+		if (!Game.playerFlags.has("CompressVOIPAudio")) return;
+
 		if (muted) {
 			this.mutedUserIds.add(userId);
 		} else {
@@ -43,11 +45,13 @@ export class ProtectedVoiceChatSingleton implements OnStart {
 
 		const player = Protected.ProtectedPlayers.FindByUserId(userId);
 		if (player) {
-			AirshipUniVoice.ServerMute(player.connectionId, muted);
+			AirshipUniVoice.MutePeer(player.connectionId, muted);
 		}
 	}
 
 	public SetDeafened(deafen: boolean): void {
+		if (!Game.playerFlags.has("CompressVOIPAudio")) return;
+		
 		this.deafened = deafen;
 		AirshipUniVoice.ClientSetDeafened(this.deafened);
 	}
