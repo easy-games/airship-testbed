@@ -66,6 +66,7 @@ export class ProtectedVoiceChatSingleton implements OnStart {
 
 	OnStart(): void {
 		if (!Game.IsInGame()) return;
+		if (!Game.playerFlags.has("CompressVOIPAudio")) return;
 
 		AirshipUniVoice.OnSpeakingLevelChanged.Connect((connectionId, speakingLevel) => {
 			this.connectionIdToSpeakingLevel.set(connectionId, {

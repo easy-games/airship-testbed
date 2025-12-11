@@ -30,6 +30,13 @@ export default class MicIndicator extends AirshipBehaviour {
 		}
 
 		this.microphoneWrapper.SetActive(false);
+
+		// Disable voice entirely without this flag
+		if (!Game.playerFlags.has("CompressVOIPAudio")) {
+			this.enabled = false;
+			return;
+		}
+
 		task.spawn(() => {
 			while (!Bridge.IsVoiceSetup()) {
 				task.unscaledWait();
@@ -52,6 +59,7 @@ export default class MicIndicator extends AirshipBehaviour {
 					return;
 				};
 
+				
 				if (!Protected.Settings.data.voiceToggleEnabled) {
 					// If the user wants Push-To-Talk
 					Bridge.SetMicInputEnabled(true);
@@ -69,6 +77,8 @@ export default class MicIndicator extends AirshipBehaviour {
 	}
 
 	public Update(dt: number): void {
+		if (!Game.playerFlags.has("CompressVOIPAudio")) return;
+
 		if (Bridge.IsMicInputEnabled()) {
 			this.SetState("talking");
 		} else {
