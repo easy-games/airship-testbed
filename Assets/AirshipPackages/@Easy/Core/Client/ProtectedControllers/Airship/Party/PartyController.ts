@@ -1,11 +1,11 @@
+import { AirshipPartyInternalSnapshot } from "@Easy/Core/Shared/Airship/Types/AirshipParty";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SocketController } from "../../Socket/SocketController";
-import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
-import { AirshipPartyInternalSnapshot } from "@Easy/Core/Shared/Airship/Types/AirshipParty";
 
 export const enum PartyControllerBridgeTopics {
 	GetParty = "PartyController:GetParty",
@@ -22,7 +22,8 @@ const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordin
 
 @Controller({})
 export class ProtectedPartyController {
-	public readonly onPartyChange = new Signal<AirshipPartyInternalSnapshot>();
+	public readonly onPartyChange = new Signal<[newParty: AirshipPartyInternalSnapshot, oldParty?: AirshipPartyInternalSnapshot]>();
+	private currentParty: AirshipPartyInternalSnapshot | undefined;
 
 	constructor(private readonly socketController: SocketController) {
 		if (!Game.IsClient()) return;
@@ -58,7 +59,9 @@ export class ProtectedPartyController {
 
 	protected OnStart(): void {
 		this.socketController.On<AirshipPartyInternalSnapshot>("game-coordinator/party-update", (data) => {
-			this.onPartyChange.Fire(data);
+			const previous = this.currentParty;
+			this.currentParty = data;
+			this.onPartyChange.Fire(data, previous);
 
 			// We only invoke when in-game because it's the only time a callback is registered.
 			if (Game.IsInGame()) {
