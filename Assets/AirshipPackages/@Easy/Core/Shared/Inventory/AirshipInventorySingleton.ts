@@ -141,10 +141,6 @@ export class AirshipInventorySingleton {
 			Game.localPlayer.ObserveCharacter((character) => {
 				if (!character || this.isUISetup) return;
 				if (character.inventory === undefined) return;
-				if (!this.isHotbarActionsSetup) {
-					this.CreateHotbarActions();
-					this.isHotbarActionsSetup = true;
-				}
 
 				if (
 					this.uiVisibility === InventoryUIVisibility.Always ||
@@ -719,6 +715,10 @@ export class AirshipInventorySingleton {
 
 	public SetInventoryUIPrefab(prefab: GameObject): void {
 		this.inventoryUIPrefab = prefab;
+		if (Game.IsClient() && !this.isHotbarActionsSetup) {
+			this.CreateHotbarActions();
+			this.isHotbarActionsSetup = true;
+		}
 	}
 
 	public SetLocalInventory(inventory: Inventory): void {
