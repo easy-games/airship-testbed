@@ -593,7 +593,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			const gear = PlatformGear.DownloadYielding(clothingDto.class.classId, clothingDto.class.gear.airAssets[0]);
 			if (!gear) error("failed to download clothing.");
 			if (gear?.accessoryPrefabs === undefined) error("empty accessory prefabs.");
-
+			if (!this.selectedAccessories.has(clothingDto.instanceId)) {
+				// Item downloaded after user selected a different item
+				return;
+			}
 			for (let accessoryPrefab of gear.accessoryPrefabs) {
 				this.accessoryBuilder.Add(accessoryPrefab);
 			}
