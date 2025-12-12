@@ -416,7 +416,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (clothing && clothing.size() > 0) {
 			clothing.forEach((c) => {
 				this.AddItemButton(c, async () => {
-					print(`Equipping ${c.class.name} (${c.class.classId})`);
+					print(`Clicking ${c.class.name} (${c.class.classId})`);
 					await this.SelectItem(c);
 					this.accessoryBuilder.UpdateCombinedMesh();
 				});
