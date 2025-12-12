@@ -5,6 +5,7 @@ import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { RunUtil } from "@Easy/Core/Shared/Util/RunUtil";
 import { Asset } from "../Asset";
 import { Game } from "../Game";
+import { CoreAction } from "../Input/AirshipCoreAction";
 import { Binding } from "../Input/Binding";
 import { InputKeybindCategory } from "../Input/InputAction";
 import { ItemDef } from "../Item/ItemDefinitionTypes";
@@ -716,7 +717,7 @@ export class AirshipInventorySingleton {
 	public SetInventoryUIPrefab(prefab: GameObject): void {
 		this.inventoryUIPrefab = prefab;
 		if (Game.IsClient() && !this.isHotbarActionsSetup) {
-			this.CreateHotbarActions();
+			this.CreateInventoryActions();
 			this.isHotbarActionsSetup = true;
 		}
 	}
@@ -942,8 +943,9 @@ export class AirshipInventorySingleton {
 	/**
 	 * Creates the actions for the hotbar slots
 	 */
-	private CreateHotbarActions(): void {
+	private CreateInventoryActions(): void {
 		const hotbarActions = [
+			{ name: CoreAction.Inventory, binding: Binding.Key(Key.E), category: InputKeybindCategory.Actions },
 			{
 				name: InventoryHotbarAction.HotbarSlot1,
 				binding: Binding.Key(Key.Digit1),

@@ -142,12 +142,12 @@ export class AirshipInputSingleton {
 		if (Game.IsProtectedLuauContext()) {
 			contextbridge.subscribe(
 				"ProtectedKeybind:CreateAction",
-				(from: LuauContext, name: string, id: number, binding: Binding, category?: string) => {
+				(from: LuauContext, name: string, id: number, binding: Binding, category?: string, hidden?: boolean) => {
 					if (from !== LuauContext.Game) return;
 					const action = this.RegisterAction(
 						name,
 						Binding.Clone(binding),
-						category ? { category: category } : undefined,
+						category ? { category: category, hidden: hidden } : undefined,
 					);
 					this.TryOverrideGameKeybind(action);
 				},
@@ -194,7 +194,6 @@ export class AirshipInputSingleton {
 			{ name: CoreAction.Interact, binding: Binding.Key(Key.F), category: InputKeybindCategory.Actions },
 			{ name: CoreAction.PushToTalk, binding: Binding.Key(Key.V), category: InputKeybindCategory.Actions },
 			{ name: CoreAction.Emote, binding: Binding.Key(Key.B), category: InputKeybindCategory.Actions },
-			{ name: CoreAction.Inventory, binding: Binding.Key(Key.E), category: InputKeybindCategory.Actions },
 		]);
 
 		if (Game.IsProtectedLuauContext()) {
@@ -344,6 +343,7 @@ export class AirshipInputSingleton {
 			this.CreateAction(action.name, action.binding, {
 				category: category,
 				secondaryBinding: action.secondaryBinding,
+				hidden: action.hidden,
 			});
 		}
 	}
@@ -357,6 +357,7 @@ export class AirshipInputSingleton {
 				{
 					category: action.category ?? InputKeybindCategory.Misc,
 					secondaryBinding: action.secondaryBinding,
+					hidden: action.hidden,
 				},
 				true,
 			);
@@ -396,7 +397,14 @@ export class AirshipInputSingleton {
 
 	/** Same as CreateAction (except it won't broadcast over context bridge) */
 	private RegisterAction(name: string, binding: Binding, config?: InputActionConfig, isCore = false): InputAction {
-		const action = new InputAction(name, binding, false, config?.category ?? InputKeybindCategory.Misc, isCore);
+		const action = new InputAction(
+			name,
+			binding,
+			false,
+			config?.category ?? InputKeybindCategory.Misc,
+			isCore,
+			config?.hidden ?? false,
+		);
 		this.AddActionToTable(action);
 		this.onActionBound.Fire(action);
 		return action;
@@ -443,6 +451,7 @@ export class AirshipInputSingleton {
 					action.id,
 					action.binding,
 					action.category,
+					action.hidden,
 				);
 			});
 		}

@@ -20,6 +20,9 @@ export default class SettingsKeybindPage extends AirshipBehaviour {
 		const validBindings: Array<InputAction> = [];
 
 		for (const binding of allBindings) {
+			if (binding.hidden) {
+				continue;
+			}
 			const inputType = InputUtil.GetInputTypeFromBinding(binding.binding, KeyType.Primary);
 			if (
 				inputType === ActionInputType.Keyboard ||
