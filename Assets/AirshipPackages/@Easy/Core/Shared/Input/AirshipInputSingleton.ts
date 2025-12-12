@@ -142,12 +142,12 @@ export class AirshipInputSingleton {
 		if (Game.IsProtectedLuauContext()) {
 			contextbridge.subscribe(
 				"ProtectedKeybind:CreateAction",
-				(from: LuauContext, name: string, id: number, binding: Binding, category?: string, hidden?: boolean) => {
+				(from: LuauContext, name: string, id: number, binding: Binding, config?: InputActionConfig) => {
 					if (from !== LuauContext.Game) return;
 					const action = this.RegisterAction(
 						name,
 						Binding.Clone(binding),
-						category ? { category: category, hidden: hidden } : undefined,
+						config,
 					);
 					this.TryOverrideGameKeybind(action);
 				},
@@ -395,13 +395,29 @@ export class AirshipInputSingleton {
 		}
 	}
 
+	private IsBuiltInCategory(categoryName: string): boolean {
+		return (
+			categoryName === InputKeybindCategory.Movement ||
+			categoryName === InputKeybindCategory.Actions ||
+			categoryName === InputKeybindCategory.Camera ||
+			categoryName === InputKeybindCategory.Hotbar ||
+			categoryName === InputKeybindCategory.Misc
+		);
+	}
+	
 	/** Same as CreateAction (except it won't broadcast over context bridge) */
 	private RegisterAction(name: string, binding: Binding, config?: InputActionConfig, isCore = false): InputAction {
+		const category = config?.category ?? InputKeybindCategory.Misc;
+		
+		if (!this.IsBuiltInCategory(category) && !this.registeredKeybindCategories.includes(category)) {
+			this.registeredKeybindCategories.push(category);
+		}
+		
 		const action = new InputAction(
 			name,
 			binding,
 			false,
-			config?.category ?? InputKeybindCategory.Misc,
+			category,
 			isCore,
 			config?.hidden ?? false,
 		);
@@ -434,7 +450,7 @@ export class AirshipInputSingleton {
 	 * @param name The name of this action.
 	 * @param binding The `Binding` associated with this action. Use `Binding.Key` to bind this action to
 	 * a keyboard key, use `Binding.MouseButton` to bind this action to a mouse button.
-	 * @param category The category this action belongs to.
+	 * @param category places a keybind in the ui category in the settings menu.  Defaults to misc, and creates a new category if it doesn't exist.
 	 */
 	public CreateAction(name: string, binding: Binding, config?: InputActionConfig): void {
 		const action = this.RegisterAction(name, binding, config);
@@ -450,8 +466,7 @@ export class AirshipInputSingleton {
 					name,
 					action.id,
 					action.binding,
-					action.category,
-					action.hidden,
+					config,
 				);
 			});
 		}
@@ -882,32 +897,6 @@ export class AirshipInputSingleton {
 			}
 		}
 		return flatActions.sort((a, b) => a.id < b.id);
-	}
-
-	/**
-	 * Registers a keybind category name to use when creating actions. This is used for
-	 * displaying custom keybind categories in the settings menu UI.
-	 * @param categoryName The name of the category to add
-	 *
-	 * @example ```ts
-	 * Airship.Input.RegisterKeybindCategory("Combat");
-	 * Airship.Input.CreateAction("Attack", Binding.Key(Key.MouseButton0), {
-	 *   category: "Combat"
-	 * });
-	 * ```
-	 */
-	public RegisterKeybindCategory(categoryName: string): void {
-		if (
-			categoryName === InputKeybindCategory.Movement ||
-			categoryName === InputKeybindCategory.Actions ||
-			categoryName === InputKeybindCategory.Camera ||
-			categoryName === InputKeybindCategory.Hotbar ||
-			categoryName === InputKeybindCategory.Misc ||
-			this.registeredKeybindCategories.includes(categoryName)
-		) {
-			return;
-		}
-		this.registeredKeybindCategories.push(categoryName);
 	}
 
 	/**
