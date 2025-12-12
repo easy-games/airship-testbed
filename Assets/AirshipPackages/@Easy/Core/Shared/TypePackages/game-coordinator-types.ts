@@ -230,6 +230,18 @@ export namespace GameCoordinatorFriends {
 
     export type FriendsStatus = { areFriends: boolean };
 
+    export type FriendWithStatus = GameCoordinatorUsers.PublicUser & {
+        online: boolean;
+        inGame?: string;
+        inServer?: string;
+    };
+
+    export type GetFriendsArgs<T extends boolean = false> = {
+        query?: {
+            status?: T;
+        };
+    };
+
     export interface RequestFriendDto {
         username: string;
     }
@@ -259,7 +271,10 @@ export namespace GameCoordinatorFriends {
     };
 
     export interface ClientSpec {
-        getFriends(options?: RequestOptions): Promise<GameCoordinatorUsers.PublicUser[]>;
+        getFriends<T extends boolean = false>(
+            args?: GetFriendsArgs<T>["query"],
+            options?: RequestOptions,
+        ): Promise<T extends true ? GameCoordinatorFriends.FriendWithStatus[] : GameCoordinatorUsers.PublicUser[]>;
         getRequests(options?: RequestOptions): Promise<GameCoordinatorFriends.FriendRequests>;
         requestFriendship(
             args: RequestFriendshipArgs["data"],
@@ -283,12 +298,16 @@ export namespace GameCoordinatorFriends {
             this.makeRequest = makeRequest;
         }
 
-        async getFriends(options?: RequestOptions): Promise<GameCoordinatorUsers.PublicUser[]> {
+        async getFriends<T extends boolean = false>(
+            args?: GetFriendsArgs<T>["query"],
+            options?: RequestOptions,
+        ): Promise<T extends true ? GameCoordinatorFriends.FriendWithStatus[] : GameCoordinatorUsers.PublicUser[]> {
             return await this.makeRequest({
                 method: "GET",
                 routeId: "GameCoordinator:Friends:getFriends",
                 path: `/friends/self`,
                 retryKey: options?.retryKey ?? "GameCoordinator:Friends:getFriends",
+                query: args,
             });
         }
         async getRequests(options?: RequestOptions): Promise<GameCoordinatorFriends.FriendRequests> {
