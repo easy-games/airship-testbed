@@ -65,6 +65,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 	private slotToBackpackTileMap = new Map<number, GameObject>();
 	private slotToExternalInventoryTileMap = new Map<number, GameObject>();
+	private slotToHotbarTileMap = new Map<number, GameObject>();
 
 	private inventoryEnabled = true;
 	private visible = false;
@@ -474,6 +475,8 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	 * Updates the slot number text for a hotbar slot based on its keybind
 	 */
 	private UpdateHotbarSlotKeybindText(tileComponent: AirshipInventoryTile, slot: number): void {
+		if (!tileComponent.slotNumberText) return;
+		
 		const hotbarActionName = `Hotbar Slot ${slot + 1}` as InventoryHotbarAction;
 		const actions = Airship.Input.GetActions(hotbarActionName);
 		
@@ -487,16 +490,17 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			const key = action.binding.GetKey();
 			if (key !== undefined) {
 				const keyString = InputUtils.GetStringForKeyCode(key);
-				if (!tileComponent.slotNumberText) return;
 				// Only use the key string if it's a single character
 				if (keyString && keyString.size() === 1) {
-					tileComponent.slotNumberText!.text = keyString;
+					tileComponent.slotNumberText.text = keyString;
 				} else {
-					tileComponent.slotNumberText!.text = `${slot + 1}`;
+					tileComponent.slotNumberText.text = `${slot + 1}`;
 				}
 			} else {
-				tileComponent.slotNumberText!.text = `${slot + 1}`;
+				tileComponent.slotNumberText.text = `${slot + 1}`;
 			}
+		} else {
+			tileComponent.slotNumberText.text = `${slot + 1}`;
 		}
 	}
 
@@ -510,8 +514,8 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			
 			this.keybindBin.Add(Airship.Input.onActionBound.Connect((action) => {
 				if (action.internalName === lowerActionName) {
-					if (slot < this.hotbarContent.childCount) {
-						const tile = this.hotbarContent.GetChild(slot).gameObject;
+					const tile = this.slotToHotbarTileMap.get(slot);
+					if (tile) {
 						const tileComponent = tile.GetAirshipComponent<AirshipInventoryTile>();
 						if (tileComponent && tileComponent.slotNumberText) {
 							this.UpdateHotbarSlotKeybindText(tileComponent, slot);
@@ -531,10 +535,11 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		reset = false,
 	): void {
 		let go: GameObject;
-		if (slot >= this.hotbarContent.childCount) {
+		if (!this.slotToHotbarTileMap.has(slot)) {
 			go = Object.Instantiate(this.hotbarTileTemplate, this.hotbarContent);
+			this.slotToHotbarTileMap.set(slot, go);
 		} else {
-			go = this.hotbarContent.GetChild(slot).gameObject;
+			go = this.slotToHotbarTileMap.get(slot)!;
 		}
 
 		this.UpdateTile(go, slot, itemStack);
