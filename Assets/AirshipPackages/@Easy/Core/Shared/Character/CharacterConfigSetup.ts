@@ -6,6 +6,7 @@ import { OrbitCameraMode } from "../Camera/DefaultCameraModes/OrbitCameraMode";
 import { Dependency } from "../Flamework";
 import { Game } from "../Game";
 import { CoreMobileButton } from "../Input/Mobile/MobileButton";
+import Inventory from "../Inventory/Inventory";
 import { InventoryUIVisibility } from "../Inventory/InventoryUIVisibility";
 import { CharacterCameraMode } from "./LocalCharacter/CharacterCameraMode";
 
@@ -67,6 +68,10 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 		//Set the default prefab to use whenever a character is spawned
 		Airship.Characters.instantiateViewmodel = this.instantiateViewmodel;
 		Airship.Characters.SetDefaultCharacterPrefab(this.customCharacterPrefab);
+		if (Game.IsClient() && Airship.Characters.GetDefaultCharacterTemplate()?.GetAirshipComponents<Inventory>() !== undefined)
+		{
+			Airship.Inventory.CreateInventoryActions();
+		}
 		Airship.Characters.SetDefaultViewmodelPrefab(this.customViewmodelPrefab);
 		if (this.customViewmodelPrefab !== undefined && Airship.Characters.viewmodel !== undefined) {
 			Airship.Characters.viewmodel.InstantiateFromPrefab(this.customViewmodelPrefab);

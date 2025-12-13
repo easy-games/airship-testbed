@@ -716,10 +716,6 @@ export class AirshipInventorySingleton {
 
 	public SetInventoryUIPrefab(prefab: GameObject): void {
 		this.inventoryUIPrefab = prefab;
-		if (Game.IsClient() && !this.isHotbarActionsSetup) {
-			this.CreateInventoryActions();
-			this.isHotbarActionsSetup = true;
-		}
 	}
 
 	public SetLocalInventory(inventory: Inventory): void {
@@ -943,7 +939,7 @@ export class AirshipInventorySingleton {
 	/**
 	 * Creates the actions for the hotbar slots
 	 */
-	private CreateInventoryActions(): void {
+	public CreateInventoryActions(): void {
 		const hotbarActions = [
 			{ name: CoreAction.Inventory, binding: Binding.Key(Key.E), category: InputKeybindCategory.Actions },
 			{
