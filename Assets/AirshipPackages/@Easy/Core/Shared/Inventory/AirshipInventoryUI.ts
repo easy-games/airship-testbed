@@ -65,7 +65,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 	private slotToBackpackTileMap = new Map<number, GameObject>();
 	private slotToExternalInventoryTileMap = new Map<number, GameObject>();
-	private slotToHotbarTileMap = new Map<number, GameObject>();
 
 	private inventoryEnabled = true;
 	private visible = false;
@@ -514,8 +513,8 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			
 			this.keybindBin.Add(Airship.Input.onActionBound.Connect((action) => {
 				if (action.internalName === lowerActionName) {
-					const tile = this.slotToHotbarTileMap.get(slot);
-					if (tile) {
+					if (slot < this.hotbarContent.childCount) {
+						const tile = this.hotbarContent.GetChild(slot).gameObject;
 						const tileComponent = tile.GetAirshipComponent<AirshipInventoryTile>();
 						if (tileComponent && tileComponent.slotNumberText) {
 							this.UpdateHotbarSlotKeybindText(tileComponent, slot);
@@ -535,11 +534,10 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		reset = false,
 	): void {
 		let go: GameObject;
-		if (!this.slotToHotbarTileMap.has(slot)) {
+		if (slot >= this.hotbarContent.childCount) {
 			go = Object.Instantiate(this.hotbarTileTemplate, this.hotbarContent);
-			this.slotToHotbarTileMap.set(slot, go);
 		} else {
-			go = this.slotToHotbarTileMap.get(slot)!;
+			go = this.hotbarContent.GetChild(slot).gameObject;
 		}
 
 		this.UpdateTile(go, slot, itemStack);
