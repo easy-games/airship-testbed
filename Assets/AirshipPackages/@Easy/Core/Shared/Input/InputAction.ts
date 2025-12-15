@@ -48,7 +48,19 @@ export interface InputActionSchema {
 	 * The category this action is associated with, if it exists.
 	 */
 	category?: string;
+	/**
+	 * Whether or not this action should be hidden from the settings page.
+	 */
+	hidden?: boolean;
 }
+
+export const InputKeybindCategory = {
+	Movement: "Movement",
+	Actions: "Actions",
+	Camera: "Camera",
+	Hotbar: "Hotbar",
+	Misc: "Misc",
+};
 
 export enum InputActionContext {
 	/**
@@ -70,6 +82,10 @@ export class InputActionConfig {
 	 * The category action is assigned to.
 	 */
 	category?: string;
+	/**
+	 * Whether or not this action should be hidden from the settings page.
+	 */
+	hidden?: boolean;
 }
 
 export class InputAction {
@@ -110,6 +126,10 @@ export class InputAction {
 	 */
 	public isSecondary: boolean;
 	/**
+	 * Whether or not this action should be hidden from the settings page.
+	 */
+	public hidden: boolean;
+	/**
 	 * The capitalized version of this binding's name.
 	 */
 	private properlyCapitalizedName: string;
@@ -118,7 +138,14 @@ export class InputAction {
 	 */
 	public internalName: string;
 
-	constructor(name: string, binding: Binding, isSecondary: boolean, category = "General", isCore = false) {
+	constructor(
+		name: string,
+		binding: Binding,
+		isSecondary: boolean,
+		category: string = InputKeybindCategory.Misc,
+		isCore = false,
+		hidden = false,
+	) {
 		this.id = InputAction.InputActionId++;
 		this.name = name;
 		this.internalName = name.lower();
@@ -129,6 +156,7 @@ export class InputAction {
 		this.binding = binding;
 		this.context = Game.IsProtectedLuauContext() ? InputActionContext.Protected : InputActionContext.Game;
 		this.category = category;
+		this.hidden = hidden;
 	}
 
 	/**

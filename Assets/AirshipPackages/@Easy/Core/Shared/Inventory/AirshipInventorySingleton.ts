@@ -16,9 +16,9 @@ import { ItemStack } from "./ItemStack";
 import { InventoryMovingToSlotEvent } from "./Signal/MovingToSlotEvent";
 import {
 	CancellableInventorySlotInteractionEvent,
-	SlotDragEndedEvent,
-	InventorySlotMouseClickEvent as InventorySlotMouseClickEvent,
 	InventoryEvent,
+	InventorySlotMouseClickEvent,
+	SlotDragEndedEvent,
 } from "./Signal/SlotInteractionEvent";
 
 interface InventoryEntry {
@@ -97,6 +97,7 @@ export class AirshipInventorySingleton {
 	public uiVisibility = InventoryUIVisibility.WhenHasItems;
 
 	private isUISetup = false;
+	private isHotbarActionsSetup = false;
 
 	private inventoryUIPrefab: GameObject | undefined;
 
@@ -251,7 +252,7 @@ export class AirshipInventorySingleton {
 		});
 
 		CoreNetwork.ClientToServer.Inventory.SwapSlots.server.OnClientEvent(
-			(player, fromInvId, fromSlot, toInvId, toSlot) => { },
+			(player, fromInvId, fromSlot, toInvId, toSlot) => {},
 		);
 
 		CoreNetwork.ClientToServer.Inventory.MoveToSlot.server.OnClientEvent(
@@ -834,8 +835,8 @@ export class AirshipInventorySingleton {
 		if (val === undefined) {
 			error(
 				'ItemType "' +
-				itemType +
-				'" was missing an ItemDefinition. Please register the ItemType with Airship.Inventory.RegisterItem()',
+					itemType +
+					'" was missing an ItemDefinition. Please register the ItemType with Airship.Inventory.RegisterItem()',
 			);
 		}
 		return val;

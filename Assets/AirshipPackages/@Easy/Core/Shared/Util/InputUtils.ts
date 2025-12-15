@@ -62,6 +62,7 @@ export class InputUtils {
 		[Key.Enter]: "Enter",
 		[Key.Escape]: "Escape",
 		[Key.Space]: "Space",
+		[Key.Tab]: "Tab",
 
 		// Modifier
 		[Key.LeftCtrl]: "Left Control",
@@ -153,6 +154,7 @@ export class InputUtils {
 		[Key.Enter]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_enter.png.sprite",
 		[Key.Escape]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_escape.png.sprite",
 		[Key.Space]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_space.png.sprite",
+		[Key.Tab]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_tab.png.sprite",
 
 		[Key.LeftCtrl]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_ctrl.png.sprite",
 		[Key.LeftShift]: "Assets/AirshipPackages/@Easy/Core/Prefabs/UI/InputIcons/keyboard_shift.png.sprite",
