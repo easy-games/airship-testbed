@@ -10,6 +10,7 @@ import { InputUtils } from "@Easy/Core/Shared/Util/InputUtils";
 import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Asset } from "../Asset";
 import { Game } from "../Game";
+import { CoreAction } from "../Input/AirshipCoreAction";
 import ProximityPrompt from "../Input/ProximityPrompts/ProximityPrompt";
 import StringUtils from "../Types/StringUtil";
 import { DraggingState } from "./AirshipDraggingState";
@@ -103,7 +104,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				bp.Clean();
 			};
 		});
-		Airship.Input.OnDown("Inventory").Connect((event) => {
+		Airship.Input.OnDown(CoreAction.Inventory).Connect((event) => {
 			if (event.uiProcessed || !this.inventoryEnabled || !this.isSetup) return;
 			if (this.IsBackpackShown() || AppManager.IsOpen()) {
 				AppManager.Close();
