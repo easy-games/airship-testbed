@@ -23,7 +23,11 @@ export type ServerBridgeApiDataDeleteKey<T> = (
 	key: string,
 	etag?: string,
 ) => DataStoreServiceData.BlobDataRecord<T> | undefined;
-export type ServerBridgeApiDataSetLock = (key: string, mode?: AirshipDataStoreLockMode, stealFromOwnerId?: string) => boolean;
+export type ServerBridgeApiDataSetLock = (
+	key: string,
+	mode?: AirshipDataStoreLockMode,
+	stealFromOwnerId?: string,
+) => boolean;
 export type ServerBridgeApiDataGetLockData = (key: string) => AirshipDataStoreLockInfo;
 
 const client = new DataStoreServiceData.Client(UnityMakeRequest(AirshipUrl.DataStoreService));
@@ -78,6 +82,24 @@ export class ProtectedDataStoreService {
 		return result.record;
 	}
 
+	public async SetVoxelWorldKey(
+		key: string,
+		voxelWorld: VoxelWorld,
+		etag?: string,
+	): Promise<ReturnType<ServerBridgeApiDataDeleteKey<string>>> {
+		return this.SetKey<string>(key, buffer.toz85(buffer.compress(voxelWorld.ToBuffer())), etag);
+	}
+
+	public async GetVoxelWorldKey(key: string, voxelWorld: VoxelWorld): Promise<boolean> {
+		const data = await this.GetKey<string>(key);
+		const stringData = data?.value;
+		if (stringData === undefined || stringData === "") {
+			return false;
+		}
+		voxelWorld.FromBuffer(buffer.decompress(buffer.fromz85(stringData)));
+		return true;
+	}
+
 	public async SetLockForKey(
 		key: string,
 		lockMode?: AirshipDataStoreLockMode,
@@ -94,5 +116,5 @@ export class ProtectedDataStoreService {
 		return await client.getLock({ key });
 	}
 
-	protected OnStart(): void { }
+	protected OnStart(): void {}
 }
