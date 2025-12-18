@@ -5,7 +5,7 @@ import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { CanvasAPI, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { CanvasAPI, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { InputUtils } from "@Easy/Core/Shared/Util/InputUtils";
 import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Asset } from "../Asset";
@@ -13,13 +13,14 @@ import { Game } from "../Game";
 import { CoreAction } from "../Input/AirshipCoreAction";
 import ProximityPrompt from "../Input/ProximityPrompts/ProximityPrompt";
 import StringUtils from "../Types/StringUtil";
-import { DraggingState } from "./AirshipDraggingState";
+import { ClickPickupState, DraggingState } from "./AirshipDraggingState";
 import AirshipInventoryTile from "./AirshipInventoryTile";
 import Inventory from "./Inventory";
 import { InventoryUIVisibility } from "./InventoryUIVisibility";
 import {
 	CancellableInventorySlotInteractionEvent,
 	InventoryEvent,
+	InventorySlotClickPickupEvent,
 	InventorySlotMouseClickEvent,
 	SlotDragEndedEvent,
 } from "./Signal/SlotInteractionEvent";
@@ -74,6 +75,9 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	@NonSerialized() public draggingState: DraggingState | undefined;
 	private draggingBin = new Bin();
 
+	private clickPickupState: ClickPickupState | undefined;
+	private clickPickupBin = new Bin();
+
 	private bin = new Bin();
 	private backpackOpenBin = new Bin();
 	private keybindBin = new Bin();
@@ -89,6 +93,21 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	}
 
 	override Start(): void {
+		if (Game.IsEditor()) {
+			Airship.Inventory.RegisterItem("TestItem", {
+				displayName: "Test Item",
+				maxStackSize: 10000,
+				image: "Assets/AirshipPackages/@Easy/Core/Prefabs/EmoteImages/HandsUp.png",
+			});
+			Airship.Characters.ObserveCharacters((character) => {
+				character.inventory?.AddItem(new ItemStack("TestItem", 999));
+			});
+
+			task.delay(2, () => {
+				this.TestMergeFunctionality();
+			});
+		}
+
 		this.backpackLabel?.gameObject.SetActive(false);
 		this.externalInventoryContent?.gameObject.SetActive(false);
 		this.externalInventoryLabel?.gameObject.SetActive(false);
@@ -137,6 +156,48 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		);
 	}
 
+	private TestMergeFunctionality(): void {
+		const inventory = Airship.Inventory.localInventory;
+		if (!inventory) {
+			warn("[Inventory Test] No local inventory found");
+			return;
+		}
+
+		print("[Inventory Test] Starting merge functionality tests...");
+
+		print("[Inventory Test] Test 1: Adding items to merge with existing stacks");
+		inventory.AddItem(new ItemStack("TestItem", 500));
+		task.wait(2);
+
+		print("[Inventory Test] Test 2: Adding items that exceed max stack size");
+		inventory.AddItem(new ItemStack("TestItem", 15000));
+		task.wait(2);
+
+		print("[Inventory Test] Test 3: Adding items to partially filled slots");
+		inventory.AddItem(new ItemStack("TestItem", 2000));
+		task.wait(2);
+
+		print("[Inventory Test] Test 4: Testing MoveToSlot with merge");
+		const slot0 = inventory.GetItem(0);
+		const slot1 = inventory.GetItem(1);
+		if (slot0 && slot1 && slot0.itemType === slot1.itemType) {
+			const amountToMove = math.min(1000, slot0.amount);
+			Airship.Inventory.MoveToSlot(inventory, 0, inventory, 1, amountToMove);
+		}
+		task.wait(2);
+		print("[Inventory Test] Test 5: Testing QuickMoveSlot merge");
+		if (inventory.GetItem(0)) {
+			Airship.Inventory.QuickMoveSlot(inventory, 0, 9);
+		}
+		task.wait(2);
+
+		print("[Inventory Test] Test 6: Testing excess handling with full inventory");
+		for (let i = 0; i < 10; i++) {
+			inventory.AddItem(new ItemStack("TestItem", 10000));
+			task.wait(0.5);
+		}
+	}
+
 	public SetHotbarVisible(visible: boolean) {
 		this.hotbarContent.gameObject.SetActive(visible);
 	}
@@ -181,6 +242,11 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				Airship.Inventory.onInventoryClosed.Fire(new InventoryEvent(Airship.Inventory.localInventory!)),
 			);
 		}
+
+		// Clean up click pickup state when backpack closes
+		this.backpackOpenBin.Add(() => {
+			this.clickPickupBin.Clean();
+		});
 	}
 
 	/**
@@ -283,7 +349,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		for (let i = 0; i < this.hotbarSlots; i++) {
 			const itemStack = character.inventory?.GetItem(i);
 			this.UpdateHotbarSlot(i, character.GetHeldSlot(), itemStack, init, true);
-			
+
 			// Sets up item stacks that may exist before the hotbar is setup (e.g. from spectating a character)
 			if (itemStack) {
 				slotBinMap.get(i)?.Clean();
@@ -379,11 +445,81 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			tileComponent.itemAmount.text = "";
 		}
 	}
+	private BindDragEventsOnButton(button: Button, inventory: Inventory, slotIndex: number): EngineEventConnection[] {
+		return [
+			CanvasAPI.OnPointerEvent(button.gameObject, (direction, pointerButton) => {
+				if (inventory.GetItem(slotIndex) === undefined) return;
+				if (!this.IsBackpackShown()) return;
+				if (direction === PointerDirection.DOWN) {
+					if (this.clickPickupState) return;
+					const clickPickupEvent = Airship.Inventory.onInventorySlotClickPickup.Fire(
+						new InventorySlotClickPickupEvent(inventory, slotIndex),
+					);
+					if (clickPickupEvent.IsCancelled()) return;
+
+					const itemStack = inventory.GetItem(slotIndex);
+					if (!itemStack) return;
+
+					const visual = button.transform.GetChild(0).gameObject;
+					const clone = Object.Instantiate(visual, this.backpackCanvas.transform);
+
+					clone.transform.SetAsLastSibling();
+					const cloneRect = clone.GetComponent<RectTransform>()!;
+					cloneRect.sizeDelta = new Vector2(100, 100);
+					const cloneImage = clone.transform.GetChild(0).GetComponent<Image>()!;
+					cloneImage.raycastTarget = false;
+
+					const cloneTransform = clone.GetComponent<RectTransform>()!;
+					cloneTransform.position = Mouse.GetPositionVector3();
+
+					this.clickPickupBin.Add(
+						OnUpdate.Connect((dt) => {
+							cloneTransform.position = Mouse.GetPositionVector3();
+						}),
+					);
+
+					// If the backpack is closed, we need to move picked up item stacks back to the inventory
+					this.clickPickupBin.Add(() => {
+						if (this.clickPickupState) {
+							this.clickPickupState.inventory.AddItem(this.clickPickupState.itemStack);
+							if (this.clickPickupState) {
+								Object.Destroy(this.clickPickupState.clonedTransform.gameObject);
+								this.clickPickupState = undefined;
+							}
+						}
+					});
+
+					if (
+						pointerButton === PointerButton.LEFT ||
+						(pointerButton === PointerButton.RIGHT && itemStack.amount <= 1)
+					) {
+						inventory.Decrement(itemStack.itemType, itemStack.amount);
+						this.clickPickupState = {
+							inventory,
+							itemStack,
+							consumed: false,
+							clonedTransform: cloneRect,
+						};
+					} else if (pointerButton === PointerButton.RIGHT) {
+						inventory.Decrement(itemStack.itemType, math.floor(itemStack.amount / 2));
+						// Implement stack split
+						const newItemStack = new ItemStack(itemStack.itemType, math.ceil(itemStack.amount / 2));
+						this.clickPickupState = {
+							inventory,
+							itemStack: newItemStack,
+							consumed: false,
+							clonedTransform: cloneRect,
+						};
+					}
+				}
+			}),
+		];
+	}
 
 	/**
 	 * Binds the dragging events for the given {@link button} to the given {@link inventory}, with the slot index {@link slotIndex}
 	 */
-	private BindDragEventsOnButton(button: Button, inventory: Inventory, slotIndex: number): EngineEventConnection[] {
+	private BindDragEventsOnButtons(button: Button, inventory: Inventory, slotIndex: number): EngineEventConnection[] {
 		return [
 			CanvasAPI.OnBeginDragEvent(button.gameObject, () => {
 				this.draggingBin.Clean();
@@ -476,16 +612,16 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	 */
 	private UpdateHotbarSlotKeybindText(tileComponent: AirshipInventoryTile, slot: number): void {
 		if (!tileComponent.slotNumberText) return;
-		
+
 		const hotbarActionName = `Hotbar Slot ${slot + 1}` as InventoryHotbarAction;
 		const actions = Airship.Input.GetActions(hotbarActionName);
-		
+
 		const action = actions.find((a) => {
 			const key = a.binding.GetKey();
 			const mouseButton = a.binding.GetMouseButton();
 			return key !== undefined || mouseButton !== undefined;
 		});
-		
+
 		if (action) {
 			const key = action.binding.GetKey();
 			if (key !== undefined) {
@@ -511,18 +647,20 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		for (let slot = 0; slot < this.hotbarSlots; slot++) {
 			const hotbarActionName = `Hotbar Slot ${slot + 1}` as InventoryHotbarAction;
 			const lowerActionName = hotbarActionName.lower();
-			
-			this.keybindBin.Add(Airship.Input.onActionBound.Connect((action) => {
-				if (action.internalName === lowerActionName) {
-					if (slot < this.hotbarContent.childCount) {
-						const tile = this.hotbarContent.GetChild(slot).gameObject;
-						const tileComponent = tile.GetAirshipComponent<AirshipInventoryTile>();
-						if (tileComponent && tileComponent.slotNumberText) {
-							this.UpdateHotbarSlotKeybindText(tileComponent, slot);
+
+			this.keybindBin.Add(
+				Airship.Input.onActionBound.Connect((action) => {
+					if (action.internalName === lowerActionName) {
+						if (slot < this.hotbarContent.childCount) {
+							const tile = this.hotbarContent.GetChild(slot).gameObject;
+							const tileComponent = tile.GetAirshipComponent<AirshipInventoryTile>();
+							if (tileComponent && tileComponent.slotNumberText) {
+								this.UpdateHotbarSlotKeybindText(tileComponent, slot);
+							}
 						}
 					}
-				}
-			}));
+				}),
+			);
 		}
 	}
 
@@ -572,7 +710,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			if (!stack) return;
 			const freeSlot = Keyboard.IsKeyDown(Key.LeftShift)
 				? this.externalInventory.FindMergeableSlotWithItemType(stack.itemType) ??
-				this.externalInventory.GetFirstOpenSlot()
+				  this.externalInventory.GetFirstOpenSlot()
 				: this.externalInventory.GetFirstOpenSlot();
 			if (freeSlot === -1) return;
 

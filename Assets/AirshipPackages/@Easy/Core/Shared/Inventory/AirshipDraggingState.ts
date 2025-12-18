@@ -8,3 +8,10 @@ export type DraggingState = {
 	transform: RectTransform;
 	consumed: boolean;
 };
+
+export type ClickPickupState = {
+	inventory: Inventory;
+	itemStack: ItemStack;
+	clonedTransform: RectTransform;
+	consumed: boolean;
+};
