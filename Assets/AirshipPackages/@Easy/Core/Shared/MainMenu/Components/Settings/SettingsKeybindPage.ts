@@ -42,14 +42,14 @@ export default class SettingsKeybindPage extends AirshipBehaviour {
 		// Create category game Objects in the registered order if they have bindings
 		// and they don't already have a game Object
 		const allRegisteredCategories = Airship.Input.GetRegisteredKeybindCategories();
-		let categoryIndex = 1;
+		let categoryIndex = 0;
 		for (const category of allRegisteredCategories) {
 			if (categoriesWithBindings.has(category) && !this.categoryContents.has(category)) {
 				const go = Object.Instantiate(this.categoryPrefab, this.transform);
 				go.transform.SetSiblingIndex(categoryIndex);
 				categoryIndex++;
 				const categoryText = go.GetComponentInChildren<TMP_Text>()!;
-				categoryText.text = category.upper();
+				categoryText.text = category;
 				this.categoryContents.set(category, go);
 			}
 		}

@@ -1,5 +1,6 @@
 import {
-	ProtectedModerationService,
+	ModerationServiceBridgeTopics,
+	ServerBridgeApiModerateChat,
 } from "@Easy/Core/Server/ProtectedServices/Airship/Moderation/ModerationService";
 import { AddInventoryCommand } from "@Easy/Core/Server/Services/Chat/Commands/AddInventoryCommand";
 import { BotCommand } from "@Easy/Core/Server/Services/Chat/Commands/BotCommand";
@@ -23,7 +24,6 @@ import { ChatCommand } from "../Commands/ChatCommand";
 import { ChatMessageNetworkEvent, CoreNetwork } from "../CoreNetwork";
 import { Game } from "../Game";
 import { Player } from "../Player/Player";
-import { ModerationServiceModeration } from "../TypePackages/moderation-service-types";
 import StringUtils from "../Types/StringUtil";
 import { Cancellable } from "../Util/Cancellable";
 import { ChatColor } from "../Util/ChatColor";
@@ -52,9 +52,7 @@ class ChatMessageEvent extends Cancellable {
 export class AirshipChatSingleton {
 	private messageIdCounter: number = 1;
 	private commands = new Map<string, ChatCommand>();
-	private commandPermissions = new Map<string, Set<string>>(); 	// ChatCommand Label, Player Id
-	private readonly moderationService: ProtectedModerationService;
-
+	private commandPermissions = new Map<string, Set<string>>(); // ChatCommand Label, Player Id
 	public readonly canUseRichText = true;
 	/**
 	 * Event fired when a player chats.
@@ -67,7 +65,6 @@ export class AirshipChatSingleton {
 
 	constructor() {
 		Airship.Chat = this;
-		this.moderationService = new ProtectedModerationService();
 	}
 
 	protected OnStart(): void {
@@ -110,7 +107,9 @@ export class AirshipChatSingleton {
 							if (command.requiresPermission && !Game.IsEditor()) {
 								// todo: add easy employee check
 								const isGameOrgMember = !!player.orgRoleName;
-								const hasChatCommandPermission = !!this.commandPermissions.get(commandData.label)?.has(player.userId);
+								const hasChatCommandPermission = !!this.commandPermissions
+									.get(commandData.label)
+									?.has(player.userId);
 								if (!isGameOrgMember && !hasChatCommandPermission) {
 									player.SendMessage(
 										ChatColor.Red(
@@ -144,26 +143,29 @@ export class AirshipChatSingleton {
 				});
 
 				if (!Game.IsEditor()) {
-					this.moderationService
-						.ModerateChatMessage("public_chat", player.userId, result.message)
-						.then((moderationResult: ModerationServiceModeration.ModerationResponse) => {
-							if (moderationResult.messageBlocked) {
-								CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients({
-									type: "remove",
-									internalMessageId: messageId,
-								});
-								player.SendMessage(
-									"Your message was blocked.",
-								);
-								return;
-							} else if (moderationResult.transformedMessage) {
-								CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients({
-									type: "update",
-									internalMessageId: messageId,
-									message: moderationResult.transformedMessage,
-								});
-							}
-						});
+					task.spawn(() => {
+						const moderationResult = contextbridge.invoke<ServerBridgeApiModerateChat>(
+							ModerationServiceBridgeTopics.ModerateChat,
+							LuauContext.Protected,
+							"public_chat",
+							player.userId,
+							result.message,
+						);
+						if (moderationResult.messageBlocked) {
+							CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients({
+								type: "remove",
+								internalMessageId: messageId,
+							});
+							player.SendMessage("Your message was blocked.");
+							return;
+						} else if (moderationResult.transformedMessage) {
+							CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients({
+								type: "update",
+								internalMessageId: messageId,
+								message: moderationResult.transformedMessage,
+							});
+						}
+					});
 				}
 			},
 		);
@@ -227,8 +229,8 @@ export class AirshipChatSingleton {
 		if (!Game.IsServer()) {
 			error(
 				"Error trying to call RegisterCommand " +
-				command.commandLabel +
-				": Can only register command on server.",
+					command.commandLabel +
+					": Can only register command on server.",
 			);
 		}
 
@@ -251,9 +253,7 @@ export class AirshipChatSingleton {
 	public GiveCommandPermission(commandLabel: string, playerId: string) {
 		if (!Game.IsServer()) {
 			error(
-				"Error trying to call GiveCommandPermission " +
-				commandLabel +
-				": Can only register command on server.",
+				"Error trying to call GiveCommandPermission " + commandLabel + ": Can only register command on server.",
 			);
 		}
 
@@ -275,8 +275,8 @@ export class AirshipChatSingleton {
 		if (!Game.IsServer()) {
 			error(
 				"Error trying to call RemoveCommandPermission " +
-				commandLabel +
-				": Can only register command on server.",
+					commandLabel +
+					": Can only register command on server.",
 			);
 		}
 

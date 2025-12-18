@@ -1469,3 +1469,11 @@ interface RectTransformUtilityConstructor {
 		screenPoint: Vector2,
 	): LuaTuple<[hitPlaneOfRect: boolean, worldPoint: Vector3]>;
 }
+
+interface NativeAlertManager {
+	ShowAsync(title: string, message: string, primaryButton: string, secondaryButton: string): boolean;
+}
+/**
+ * Only works in airship-player. Will be undefined in other cases.
+ */
+declare const NativeAlertManager: NativeAlertManager;

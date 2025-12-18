@@ -22,4 +22,6 @@ export interface ClientSettingsFile {
 	limitFps: number;
 	coreKeybindOverrides: { [key in CoreAction]?: SerializableAction } | undefined;
 	gameKeybindOverrides: { [key: string]: { [key: string]: SerializableAction } };
+	lastPushNotifPromptTime: number;
+	firstLoginTime: number;
 }

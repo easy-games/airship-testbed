@@ -34,6 +34,8 @@ const defaultData: ClientSettingsFile = {
 	msaaSamples: 2,
 	voiceToggleEnabled: false,
 	limitFps: -1,
+	lastPushNotifPromptTime: 0,
+	firstLoginTime: os.time(),
 };
 
 interface SavedGameSettings {
@@ -277,6 +279,12 @@ export class ProtectedSettingsSingleton {
 					this.data.limitFps = -1;
 				}
 			}
+			if (this.data.lastPushNotifPromptTime === undefined) {
+				this.data.lastPushNotifPromptTime = 0;
+			}
+			if (this.data.firstLoginTime === undefined) {
+				this.data.firstLoginTime = os.time();
+			}
 		} else {
 			this.data = defaultData;
 			if (Game.IsMobile()) {
@@ -355,9 +363,11 @@ export class ProtectedSettingsSingleton {
 	public StartMicRecording(): void {
 		// TODO Old version support:
 		if (!Game.playerFlags.has("CompressVOIPAudio")) {
-			(Bridge as {
-				StartMicRecording(frequency: number, sampleLength: number): void;
-			}).StartMicRecording(16_000, 100); // OLD FORMAT, this function no longer takes args when flag exists
+			(
+				Bridge as {
+					StartMicRecording(frequency: number, sampleLength: number): void;
+				}
+			).StartMicRecording(16_000, 100); // OLD FORMAT, this function no longer takes args when flag exists
 			return;
 		}
 		// End old version support
@@ -390,7 +400,7 @@ export class ProtectedSettingsSingleton {
 		const pipelineAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
 		const clampedLevel = math.clamp(level, 0, 2);
 		this.data.shadowTier = clampedLevel;
-		
+
 		switch (clampedLevel) {
 			case 2: // High Quality
 				pipelineAsset.mainLightShadowmapResolution = 4096;
