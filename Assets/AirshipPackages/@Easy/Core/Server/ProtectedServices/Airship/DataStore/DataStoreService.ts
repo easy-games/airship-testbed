@@ -82,24 +82,6 @@ export class ProtectedDataStoreService {
 		return result.record;
 	}
 
-	public async SetVoxelWorldKey(
-		key: string,
-		voxelWorld: VoxelWorld,
-		etag?: string,
-	): Promise<ReturnType<ServerBridgeApiDataDeleteKey<string>>> {
-		return this.SetKey<string>(key, buffer.toz85(buffer.compress(voxelWorld.ToBuffer())), etag);
-	}
-
-	public async GetVoxelWorldKey(key: string, voxelWorld: VoxelWorld): Promise<boolean> {
-		const data = await this.GetKey<string>(key);
-		const stringData = data?.value;
-		if (stringData === undefined || stringData === "") {
-			return false;
-		}
-		voxelWorld.FromBuffer(buffer.decompress(buffer.fromz85(stringData)));
-		return true;
-	}
-
 	public async SetLockForKey(
 		key: string,
 		lockMode?: AirshipDataStoreLockMode,

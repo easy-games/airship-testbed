@@ -4183,6 +4183,16 @@ declare const enum LoadingStatus {
     Loading = 1,
     Loaded = 2,
 }
+declare const enum Flips {
+    Flip_0Deg = 0,
+    Flip_90Deg = 1,
+    Flip_180Deg = 2,
+    Flip_270Deg = 3,
+    Flip_0DegVertical = 4,
+    Flip_90DegVertical = 5,
+    Flip_180DegVertical = 6,
+    Flip_270DegVertical = 7,
+}
 declare const enum CrouchEdgeDetection {
     None = 0,
     UseMeshNormals = 1,
@@ -54667,13 +54677,15 @@ interface VoxelWorld extends MonoBehaviour {
     CalculatePlaneIntersection(origin: Vector3, dir: Vector3, planeNormal: Vector3, planePoint: Vector3): Vector3;
     CanSeePoint(pos: Vector3, dest: Vector3, destNormal: Vector3): boolean;
     ColorVoxelAt(pos: Vector3, color: Color, priority: boolean): void;
-    CreateSingleStarterBlock(): void;
+    CreateSingleStarterVoxel(): void;
     DamageVoxelAt(pos: Vector3, damage: number, priority: boolean): void;
+    DecodeFromString(stringData: string): void;
     DeleteRenderedGameObjects(): void;
     DirtyMesh(voxel: Vector3, dirtyCollisions: boolean, priority: boolean): void;
     DirtyMesh(voxel: Vector3, dirtyCollisions: boolean): void;
     DirtyNeighborMeshes(voxel: Vector3, dirtyCollision: boolean, priority: boolean): void;
     DirtyNeighborMeshes(voxel: Vector3, dirtyCollision: boolean): void;
+    EncodeToString(): string;
     FillFlatGround(): void;
     FillRandomTerrain(): void;
     FillSingleBlock(): void;
@@ -54694,7 +54706,7 @@ interface VoxelWorld extends MonoBehaviour {
     LoadEmptyWorld(): void;
     LoadWorldFromSaveFile(file: WorldSaveFile): void;
     OnRenderObject(): void;
-    RaycastVoxel(pos: Vector3, direction: Vector3, maxDistance: number): VoxelRaycastResult;
+    RaycastVoxel(localPos: Vector3, localDirection: Vector3, maxDistance: number): VoxelRaycastResult;
     RaycastVoxel_Internal(pos: Vector3, direction: Vector3, maxDistance: number, debug: boolean): ValueTuple<boolean, number, Vector3, Vector3>;
     RaycastVoxel_Internal(pos: Vector3, direction: Vector3, maxDistance: number): ValueTuple<boolean, number, Vector3, Vector3>;
     RaycastVoxelForLighting(pos: Vector3, direction: Vector3, maxDistance: number, debug: boolean): number;
@@ -54717,7 +54729,7 @@ interface VoxelWorld extends MonoBehaviour {
     WaitForChunkToLoad(voxel: Vector3): void;
     WriteTemporaryVoxelCollisionAt(pos: Vector3, num: number): void;
     WriteVoxelAt(pos: Vector3, num: number, priority: boolean): void;
-    WriteVoxelGroupAt(positions: Readonly<Vector3[]>, nums: Readonly<number[]>, priority: boolean): void;
+    WriteVoxelGroupAt(positions: Readonly<Vector3[]>, voxelData: Readonly<number[]>, priority: boolean): void;
 
 
 }
@@ -54794,7 +54806,7 @@ interface VoxelWorldNetworker extends NetworkBehaviour {
     RpcFinishedSendingWorld(conn: NetworkConnection): void;
     RpcWriteChunks(conn: NetworkConnection, positions: Readonly<Vector3[]>, chunks: Readonly<Chunk[]>): void;
     RpcWriteVoxel(pos: Vector3, voxel: number): void;
-    RpcWriteVoxelGroup(positions: Readonly<Vector3[]>, nums: Readonly<number[]>, priority: boolean): void;
+    RpcWriteVoxelGroup(positions: Readonly<Vector3[]>, voxelData: Readonly<number[]>, priority: boolean): void;
     Weaved(): boolean;
 
 
@@ -54805,7 +54817,6 @@ interface Chunk {
     color: Readonly<number[]>;
     damageMap: CSDictionary<number, number>;
     keysWithVoxels: Readonly<number[]>;
-    materialPropertiesDirty: boolean;
     world: VoxelWorld;
     bottomLeftInt: Vector3;
     bounds: Bounds;
@@ -54816,20 +54827,20 @@ interface Chunk {
 
 
 
-    Busy(): boolean;
-    Clear(): void;
-    Free(): void;
+    DestroyAllMeshes(): void;
+    GetAllPrefabs(): Readonly<GameObject[]>;
     GetGameObject(): GameObject;
     GetKey(): Vector3;
     GetLocalColorAt(localX: number, localY: number, localZ: number): Color32;
-    GetLocalVoxelAt(localPos: Vector3): number;
-    GetLocalVoxelAt(localX: number, localY: number, localZ: number): number;
+    GetLocalVoxelDataAt(localPos: Vector3): number;
+    GetLocalVoxelDataAt(localX: number, localY: number, localZ: number): number;
     GetPrefabAt(worldPos: Vector3): GameObject;
     GetPriorityUpdate(): boolean;
     GetRandomOccupiedVoxelPosition(): Vector3;
-    GetVoxelAt(worldPos: Vector3): number;
     GetVoxelColorAt(worldPos: Vector3): Color32;
+    GetVoxelDataAt(worldPos: Vector3): number;
     HasVoxels(): boolean;
+    IsBusy(): boolean;
     IsGeometryDirty(): boolean;
     IsLoaded(): boolean;
     MainthreadForceCollisionRebuild(): void;
@@ -54843,7 +54854,7 @@ interface Chunk {
     SetWorld(world: VoxelWorld): void;
     WaitForLoaded(): void;
     WriteTemporaryCollision(position: Vector3, hasCollision: boolean): void;
-    WriteVoxel(worldPos: Vector3, num: number): void;
+    WriteVoxelAt(worldPos: Vector3, voxelData: number): void;
     WriteVoxelColor(worldPos: Vector3, col: Color32): void;
     WriteVoxelDamage(worldPos: Vector3, dmg: number): void;
 
@@ -54904,20 +54915,22 @@ interface VoxelWorldConstructor {
     CardinalVector(normal: Vector3): Vector3;
     CreateChunk(key: Vector3): Chunk;
     DeleteChildGameObjects(parent: GameObject): void;
-    FlipBitsToQuaternion(flipBits: number): Quaternion;
     Floor(input: Vector3): Vector3;
     FloorInt(input: Vector3): Vector3;
+    GetAllInstances(findObjectsInactive: FindObjectsInactive): Readonly<VoxelWorld[]>;
     GetFirstInstance(): VoxelWorld;
-    GetScaleFromFlipBits(flipBits: number): Vector3;
-    GetVoxelFlippedBits(voxel: number): number;
+    GetVoxelDataExtraBits(voxelData: number): number;
+    GetVoxelDataFlippedBits(voxelData: number): number;
+    GetVoxelDataFlips(voxelData: number): Flips;
+    GetVoxelDataId(voxelData: number): number;
+    GetVoxelDataId(voxelData: number): number;
+    GetVoxelDataIsSolid(voxelData: number): boolean;
+    GetVoxelDataRotation(voxelData: number): Quaternion;
+    GetVoxelDataScale(voxelData: number): Vector3;
+    GetVoxelDataWithFlippedBits(voxel: number, flippedBits: number): number;
+    GetVoxelDataWithSolidBit(voxelData: number, solid: boolean): number;
     HashCoordinates(x: number, y: number, z: number): number;
-    SetVoxelFlippedBits(voxel: number, flippedBits: number): number;
-    SetVoxelSolidBit(voxel: number, solid: boolean): number;
     Sign(input: Vector3): Vector3;
-    VoxelDataToBlockId(block: number): number;
-    VoxelDataToBlockId(block: number): number;
-    VoxelDataToExtraBits(block: number): number;
-    VoxelIsSolid(voxel: number): boolean;
 
 }
 declare const VoxelWorld: VoxelWorldConstructor;
