@@ -1,3 +1,4 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
 import {
 	AirshipGearCategory,
 	AirshipGearItem,
@@ -726,38 +727,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		});
 	}
 
-	private RemoveAllAccessories() {
-		this.accessoryBuilder.RemoveAll();
-		this.selectedAccessories.clear();
-		this.activeAccessories.clear();
-	}
-
 	private async LoadCurrentOutfit() {
 		if (!this.viewedOutfit) {
 			return;
 		}
-
-		this.RemoveAllAccessories();
-
-		// Download all accessories in parallel with Promise.all
-		// We won't mesh combine until after all this is done.
-		let promises: Promise<void>[] = [];
-		for (let gearDto of this.viewedOutfit.gear) {
-			promises.push(
-				new Promise(async (resolve) => {
-					if (gearDto.class.gear.airAssets.size() === 0) return resolve();
-
-					if (gearDto.class.gear.category === AirshipGearCategory.FaceDecal) {
-						await this.SelectFaceItem(gearDto);
-						return resolve();
-					}
-
-					await this.SelectItem(gearDto);
-					resolve();
-				}),
-			);
-		}
-		await Promise.all(promises);
 
 		const charTransform = this.mainMenu.avatarView?.humanEntityGo?.transform!;
 		if (!this.hasMeshCombinedOnce) {
@@ -768,11 +741,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			});
 		}
 
-		this.SelectSkinColor(ColorUtil.HexToColor(this.viewedOutfit.skinColor));
-
-		this.UpdateButtonGraphics();
 		this.SetDirty(false);
-		this.accessoryBuilder.UpdateCombinedMesh();
+		Airship.Avatar.LoadOutfit(this.accessoryBuilder, this.viewedOutfit, {
+			removeOldClothingAccessories: true,
+		});
+
 		this.finishedFirstOutfitLoad = true;
 	}
 
