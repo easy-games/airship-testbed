@@ -8,14 +8,15 @@ import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import { OnLateUpdate } from "@Easy/Core/Shared/Util/Timer";
+import TabList from "./TabList";
+import TabListEntry from "./TabListEntry";
 
 @Controller({})
 export class TabListController {
-	private tablistGO: GameObject;
+	private tablistGo: GameObject;
 	private tablistCanvas: Canvas;
-	private tablistRefs;
-	private tablistContentGO;
-	private tablistEntryPrefab;
+	private tablist: TabList;
+	private tablistEntryPrefab: GameObject;
 	private wrapperRect: RectTransform;
 	private canvasGroup: CanvasGroup;
 
@@ -35,16 +36,15 @@ export class TabListController {
 	public tablistEnabled = true;
 
 	constructor() {
-		this.tablistGO = Object.Instantiate(
+		this.tablistGo = Object.Instantiate(
 			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/TabList.prefab"),
 			CoreRefs.rootTransform,
 		);
-		this.tablistCanvas = this.tablistGO.GetComponent<Canvas>()!;
-		this.tablistRefs = this.tablistGO.GetComponent<GameObjectReferences>()!;
-		this.tablistContentGO = this.tablistRefs.GetValue("UI", "Content");
-		this.tablistEntryPrefab = this.tablistRefs.GetValue<Object>("UI", "TabListEntry");
-		this.wrapperRect = this.tablistGO.transform.GetChild(0) as RectTransform;
-		this.canvasGroup = this.tablistGO.GetComponent<CanvasGroup>()!;
+		this.tablistCanvas = this.tablistGo.GetComponent<Canvas>()!;
+		this.tablist = this.tablistGo.GetAirshipComponent<TabList>()!;
+		this.tablistEntryPrefab = Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/TabListEntry.prefab");
+		this.wrapperRect = this.tablistGo.transform.GetChild(0) as RectTransform;
+		this.canvasGroup = this.tablistGo.GetComponent<CanvasGroup>()!;
 
 		this.Hide(true, true);
 	}
@@ -140,19 +140,21 @@ export class TabListController {
 			if (i < players.size()) {
 				player = players[i];
 
-				let entry: GameObject | undefined;
+				let entry: TabListEntry | undefined;
 				let init = this.init;
-				if (i < this.tablistContentGO.transform.childCount) {
-					entry = this.tablistContentGO.transform.GetChild(i).gameObject;
+				if (i < this.tablist.content.childCount) {
+					entry = this.tablist.content.GetChild(i).gameObject.GetAirshipComponent<TabListEntry>()!;
 				} else {
-					entry = Object.Instantiate(this.tablistEntryPrefab, this.tablistContentGO.transform) as GameObject;
+					entry = Instantiate(
+						this.tablistEntryPrefab,
+						this.tablist.content,
+					).GetAirshipComponent<TabListEntry>()!;
 					init = true;
 				}
-
-				this.UpdateEntry(entry, player, init);
+				entry.UpdateEntry(player);
 			} else {
-				if (i < this.tablistContentGO.transform.childCount) {
-					let entry = this.tablistContentGO.transform.GetChild(i).gameObject;
+				if (i < this.tablist.content.childCount) {
+					let entry = this.tablist.content.GetChild(i).gameObject;
 					Object.Destroy(entry);
 				}
 			}
@@ -186,8 +188,7 @@ export class TabListController {
 	}
 
 	public SetTitleText(title: string): void {
-		let textLabel = this.tablistRefs.GetValue("UI", "TitleText") as TMP_Text;
-		textLabel.text = title;
+		this.tablist.titleText.text = title;
 	}
 
 	public Show(): void {

@@ -14,7 +14,13 @@ import { MapUtil } from "../Util/MapUtil";
 import { Signal } from "../Util/Signal";
 import { CoreAction } from "./AirshipCoreAction";
 import { Binding, KeyBindingConfig, MouseBindingConfig } from "./Binding";
-import { InputAction, InputActionConfig, InputActionSchema, SerializableAction } from "./InputAction";
+import {
+	InputAction,
+	InputActionConfig,
+	InputActionSchema,
+	InputKeybindCategory,
+	SerializableAction,
+} from "./InputAction";
 import { InputActionEvent } from "./InputActionEvent";
 import { ActionInputType, InputUtil, KeyType, ModifierKey } from "./InputUtil";
 import AirshipMobileButton from "./Mobile/AirshipMobileButton";
@@ -102,6 +108,10 @@ export class AirshipInputSingleton {
 	 * Sensitivty multiplier maintained by game.
 	 */
 	private gameSensitivityMultiplier = 1;
+	/**
+	 * Registry of custom input action categories in registration order.
+	 */
+	private registeredKeybindCategories: Array<string> = [];
 
 	/*
 	 * Core mobile inputs
@@ -132,9 +142,13 @@ export class AirshipInputSingleton {
 		if (Game.IsProtectedLuauContext()) {
 			contextbridge.subscribe(
 				"ProtectedKeybind:CreateAction",
-				(from: LuauContext, name: string, id: number, binding: Binding) => {
+				(from: LuauContext, name: string, id: number, binding: Binding, config?: InputActionConfig) => {
 					if (from !== LuauContext.Game) return;
-					const action = this.RegisterAction(name, Binding.Clone(binding));
+					const action = this.RegisterAction(
+						name,
+						Binding.Clone(binding),
+						config,
+					);
 					this.TryOverrideGameKeybind(action);
 				},
 			);
@@ -155,26 +169,31 @@ export class AirshipInputSingleton {
 		});
 
 		Airship.Input.RegisterActions([
-			{ name: CoreAction.Forward, binding: Binding.Key(Key.W) },
-			{ name: CoreAction.Left, binding: Binding.Key(Key.A) },
-			{ name: CoreAction.Back, binding: Binding.Key(Key.S) },
-			{ name: CoreAction.Right, binding: Binding.Key(Key.D) },
-			{ name: CoreAction.Jump, binding: Binding.Key(Key.Space) },
-			{ name: CoreAction.Sprint, binding: Binding.Key(Key.LeftShift) },
+			{ name: CoreAction.Forward, binding: Binding.Key(Key.W), category: InputKeybindCategory.Movement },
+			{ name: CoreAction.Left, binding: Binding.Key(Key.A), category: InputKeybindCategory.Movement },
+			{ name: CoreAction.Back, binding: Binding.Key(Key.S), category: InputKeybindCategory.Movement },
+			{ name: CoreAction.Right, binding: Binding.Key(Key.D), category: InputKeybindCategory.Movement },
+			{ name: CoreAction.Jump, binding: Binding.Key(Key.Space), category: InputKeybindCategory.Movement },
+			{ name: CoreAction.Sprint, binding: Binding.Key(Key.LeftShift), category: InputKeybindCategory.Movement },
 			{
 				name: CoreAction.Crouch,
 				binding: Binding.Key(Key.LeftCtrl),
 				secondaryBinding: Binding.Key(Key.C),
+				category: InputKeybindCategory.Movement,
 			},
-			{ name: CoreAction.PrimaryAction, binding: Binding.MouseButton(MouseButton.LeftButton) },
+			{
+				name: CoreAction.PrimaryAction,
+				binding: Binding.MouseButton(MouseButton.LeftButton),
+				category: InputKeybindCategory.Actions,
+			},
 			{
 				name: CoreAction.SecondaryAction,
 				binding: Binding.MouseButton(MouseButton.RightButton),
+				category: InputKeybindCategory.Actions,
 			},
-			{ name: CoreAction.Inventory, binding: Binding.Key(Key.E) },
-			{ name: CoreAction.Interact, binding: Binding.Key(Key.F) },
-			{ name: CoreAction.PushToTalk, binding: Binding.Key(Key.V) },
-			{ name: CoreAction.Emote, binding: Binding.Key(Key.B) },
+			{ name: CoreAction.Interact, binding: Binding.Key(Key.F), category: InputKeybindCategory.Actions },
+			{ name: CoreAction.PushToTalk, binding: Binding.Key(Key.V), category: InputKeybindCategory.Actions },
+			{ name: CoreAction.Emote, binding: Binding.Key(Key.B), category: InputKeybindCategory.Actions },
 		]);
 
 		if (Game.IsProtectedLuauContext()) {
@@ -320,9 +339,11 @@ export class AirshipInputSingleton {
 	 */
 	public CreateActions(actions: InputActionSchema[]): void {
 		for (const action of actions) {
+			const category = action.category ?? InputKeybindCategory.Misc;
 			this.CreateAction(action.name, action.binding, {
-				category: action.category ?? "General",
+				category: category,
 				secondaryBinding: action.secondaryBinding,
+				hidden: action.hidden,
 			});
 		}
 	}
@@ -334,8 +355,9 @@ export class AirshipInputSingleton {
 				action.name,
 				action.binding,
 				{
-					category: action.category ?? "General",
+					category: action.category ?? InputKeybindCategory.Misc,
 					secondaryBinding: action.secondaryBinding,
+					hidden: action.hidden,
 				},
 				true,
 			);
@@ -373,9 +395,32 @@ export class AirshipInputSingleton {
 		}
 	}
 
+	private IsBuiltInCategory(categoryName: string): boolean {
+		return (
+			categoryName === InputKeybindCategory.Movement ||
+			categoryName === InputKeybindCategory.Actions ||
+			categoryName === InputKeybindCategory.Camera ||
+			categoryName === InputKeybindCategory.Hotbar ||
+			categoryName === InputKeybindCategory.Misc
+		);
+	}
+	
 	/** Same as CreateAction (except it won't broadcast over context bridge) */
 	private RegisterAction(name: string, binding: Binding, config?: InputActionConfig, isCore = false): InputAction {
-		const action = new InputAction(name, binding, false, config?.category ?? "General", isCore);
+		const category = config?.category ?? InputKeybindCategory.Misc;
+		
+		if (!this.IsBuiltInCategory(category) && !this.registeredKeybindCategories.includes(category)) {
+			this.registeredKeybindCategories.push(category);
+		}
+		
+		const action = new InputAction(
+			name,
+			binding,
+			false,
+			category,
+			isCore,
+			config?.hidden ?? false,
+		);
 		this.AddActionToTable(action);
 		this.onActionBound.Fire(action);
 		return action;
@@ -405,7 +450,7 @@ export class AirshipInputSingleton {
 	 * @param name The name of this action.
 	 * @param binding The `Binding` associated with this action. Use `Binding.Key` to bind this action to
 	 * a keyboard key, use `Binding.MouseButton` to bind this action to a mouse button.
-	 * @param category The category this action belongs to.
+	 * @param category places a keybind in the ui category in the settings menu.  Defaults to misc, and creates a new category if it doesn't exist.
 	 */
 	public CreateAction(name: string, binding: Binding, config?: InputActionConfig): void {
 		const action = this.RegisterAction(name, binding, config);
@@ -416,7 +461,13 @@ export class AirshipInputSingleton {
 		// Tell protected context of new action
 		if (Game.IsGameLuauContext()) {
 			task.defer(() => {
-				contextbridge.broadcast("ProtectedKeybind:CreateAction", name, action.id, action.binding);
+				contextbridge.broadcast(
+					"ProtectedKeybind:CreateAction",
+					name,
+					action.id,
+					action.binding,
+					config,
+				);
 			});
 		}
 	}
@@ -846,6 +897,21 @@ export class AirshipInputSingleton {
 			}
 		}
 		return flatActions.sort((a, b) => a.id < b.id);
+	}
+
+	/**
+	 * Gets Registered Keybind Categories in registration order
+	 * @returns Array of category names with built-in categories first, then custom categories
+	 */
+	public GetRegisteredKeybindCategories(): Array<string> {
+		return [
+			InputKeybindCategory.Movement,
+			InputKeybindCategory.Actions,
+			InputKeybindCategory.Camera,
+			InputKeybindCategory.Hotbar,
+			InputKeybindCategory.Misc,
+			...this.registeredKeybindCategories,
+		];
 	}
 
 	/**

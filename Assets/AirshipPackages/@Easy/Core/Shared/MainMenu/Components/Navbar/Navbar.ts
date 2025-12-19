@@ -1,3 +1,4 @@
+import { MainMenuNavbarController } from "@Easy/Core/Client/ProtectedControllers/MainMenuNavbarController";
 import { Dependency } from "../../../Flamework";
 import { Game } from "../../../Game";
 import { Bin } from "../../../Util/Bin";
@@ -17,6 +18,7 @@ export default class Navbar extends AirshipBehaviour {
 	public left!: RectTransform;
 	public quitGameBtn!: RectTransform;
 	public searchWrapper: RectTransform;
+	public smallSearchBtn: Button;
 	public logoBtn: RectTransform;
 
 	private bin = new Bin();
@@ -61,24 +63,21 @@ export default class Navbar extends AirshipBehaviour {
 			}),
 		);
 
-		if (Game.IsMobile() && !Game.IsInGame() && Game.IsPortrait()) {
-			this.left.offsetMax = new Vector2(-15, this.left.offsetMax.y);
-			const layout = this.searchWrapper.GetComponent<LayoutElement>()!;
-			layout.minWidth = 0;
-			layout.preferredWidth = 0;
-			layout.flexibleWidth = 1;
-		}
-
 		if (Game.IsMobile()) {
-			this.logoBtn.gameObject.SetActive(false);
+			// this.logoBtn.gameObject.SetActive(false);
+			this.searchWrapper.gameObject.SetActive(false);
+			this.smallSearchBtn.gameObject.SetActive(true);
+			this.bin.Add(
+				this.smallSearchBtn.onClick.Connect(() => {
+					Dependency<MainMenuNavbarController>().FocusSearchbar();
+				}),
+			);
+		} else {
+			this.smallSearchBtn.gameObject.SetActive(false);
 		}
 
 		// this.quitGameBtn.gameObject.SetActive(Screen.fullScreen);
 		this.quitGameBtn.gameObject.SetActive(false);
-
-		if (Game.deviceType !== AirshipDeviceType.Phone || Game.IsPortrait()) {
-			this.scrollRect.enabled = false;
-		}
 
 		if (Game.IsMobile()) {
 			this.creditsWrapper.SetActive(false);

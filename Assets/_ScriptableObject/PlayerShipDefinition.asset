@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 242626de727c4fe4ab54046da100263e, type: 3}
+  m_Name: PlayerShipDefinition
+  m_EditorClassIdentifier: 
+  _scriptPath: Assets/Code/Examples/PlayerShipDefinition.lua
+  _script: {fileID: -6623312736580233389, guid: f2147b1e651ba5d428ca06348f28903e, type: 3}
+  metadata:
+    name: 
+    singleton: 0
+    decorators: []
+    properties: []
+    displayIcon: {fileID: 0}
+    displayName: 

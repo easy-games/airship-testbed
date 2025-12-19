@@ -4,7 +4,6 @@ import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
 import PartyCard from "@Easy/Core/Shared/MainMenu/Components/Party/PartyCard";
 import PartyMember from "@Easy/Core/Shared/MainMenu/Components/PartyMember";
 import { Protected } from "@Easy/Core/Shared/Protected";
@@ -59,6 +58,7 @@ export class MainMenuPartyController {
 
 	protected OnStart(): void {
 		this.socketController.On<AirshipPartyInternalSnapshot>("game-coordinator/party-update", (data) => {
+			if (!Game.IsInGame()) print("game-coordinator/party-member-status-update-multi:", data);
 			this.partyUpdateReceived = true;
 			let oldParty = this.party;
 			this.party = data;
@@ -73,6 +73,7 @@ export class MainMenuPartyController {
 		this.socketController.On<AirshipUserStatusData[]>(
 			"game-coordinator/party-member-status-update-multi",
 			(data) => {
+				if (!Game.IsInGame()) print("game-coordinator/party-member-status-update-multi:", data);
 				if (!this.party) return;
 
 				this.partyLeaderStatusReceived = true;
@@ -87,7 +88,12 @@ export class MainMenuPartyController {
 				const data = extraData as AirshipPartyInternalSnapshot;
 				if (result) {
 					try {
-						client.party.joinParty({ partyId: data.partyId }).expect();
+						print("Requesting to join party id=" + data.partyId);
+						const [success, result] = client.party.joinParty({ partyId: data.partyId }).await();
+						if (!success) {
+							Debug.LogError("Failed to join party: " + result);
+							return;
+						}
 						Dependency<ProtectedFriendsController>().FireNotificationKey("party-invite:" + data.leader);
 					} catch {
 						// empty
@@ -191,7 +197,7 @@ export class MainMenuPartyController {
 			leaveButton.SetActive(true);
 		}
 
-		CoreLogger.Log("party: " + json.encode(this.party));
+		// CoreLogger.Log("party: " + json.encode(this.party));
 
 		// Remove old
 		let membersToRemove: GameObject[] = [];

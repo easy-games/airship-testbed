@@ -1,5 +1,7 @@
-import { Service } from "@Easy/Core/Shared/Flamework";
+import { Airship } from "@Easy/Core/Shared/Airship";
+import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { ProtectedPlayersSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/ProtectedPlayersSingleton";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 
@@ -58,18 +60,27 @@ function calculateDelay(attempts: number): number {
 	return math.min(MAX_DELAY_SECONDS, jitteredDelay);
 }
 
+
+interface KickUserEvent {
+	type: "KICK_USER";
+	uid: string;
+	messageToUser: string;
+}
+type AirshipMultiplexEvent = KickUserEvent;
+
 @Service({})
 export class MessagingService {
 	private subscriptionCounts = new Map<string, { topic: TopicDescription; count: number }>();
 	private onEvent = new Signal<[topic: TopicDescription, data: string]>();
-	private airshipGameEvents = new Signal<[data: any]>();
-	private airshipServerEvents = new Signal<[data: any]>();
+	private airshipGameEvents = new Signal<[data: AirshipMultiplexEvent]>();
+	private airshipServerEvents = new Signal<[data: AirshipMultiplexEvent]>();
 	public onSocketConnectionChanged = new Signal<[connected: boolean]>();
 	public doReconnect = true;
 	private customMessagesSent: number = 0;
 	private customMessagesReceived: number = 0;
 	private unsuccessfulReconnectAttempts: number = 0;
 	private lastReconnectAttempt: number = 0;
+	private protectedPlayers: ProtectedPlayersSingleton;
 
 	constructor() {
 		if (!Game.IsServer()) return;
@@ -129,6 +140,7 @@ export class MessagingService {
 	}
 
 	protected OnStart(): void {
+		this.protectedPlayers = Dependency<ProtectedPlayersSingleton>();
 		this.Subscribe(
 			{
 				scope: Scope.Game,
@@ -150,6 +162,14 @@ export class MessagingService {
 				this.airshipServerEvents.Fire(json.decode(data));
 			},
 		);
+
+		this.airshipGameEvents.Connect((data) => {
+			if (data.type === "KICK_USER") {
+				const player = this.protectedPlayers.FindByUserId(data.uid);
+				if (!player) return;
+				TransferManager.Instance.KickClient(player.connectionId, data.messageToUser || "You have been kicked");
+			}
+		});
 
 		MessagingManager.Instance.OnEvent((topic, data) => {
 			this.onEvent.Fire(topic, data);

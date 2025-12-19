@@ -1,11 +1,11 @@
-import { GameCoordinatorServers, GameCoordinatorTransfers } from "../../TypePackages/game-coordinator-types";
+import { ExternalGameCoordinatorTypes, GameCoordinatorAgones, GameCoordinatorServers, GameCoordinatorTransfers } from "../../TypePackages/game-coordinator-types";
 import { AirshipUser } from "./AirshipUser";
 
 export const AirshipServerAccessMode = GameCoordinatorServers.AccessMode;
 export type AirshipServerAccessMode = GameCoordinatorServers.AccessMode;
 
-export const AirshipServerFleet = GameCoordinatorServers.AgonesFleet;
-export type AirshipServerFleet = GameCoordinatorServers.AgonesFleet;
+export const AirshipServerFleet = GameCoordinatorAgones.AgonesFleet;
+export type AirshipServerFleet = GameCoordinatorAgones.AgonesFleet;
 
 /** Configuration for an Airship server. */
 export interface AirshipServerConfig {
@@ -27,7 +27,7 @@ export interface AirshipServerConfig {
 	fleet?: AirshipServerFleet;
 }
 
-export type AirshipGameServerConnectionInfo = GameCoordinatorTransfers.GameServer;
+export type AirshipGameServerConnectionInfo = GameCoordinatorAgones.GameServer;
 export type AirshipServer = GameCoordinatorServers.PublicServerData;
 export type AirshipServerWithFriends = AirshipServer & { friends: AirshipUser[] };
 

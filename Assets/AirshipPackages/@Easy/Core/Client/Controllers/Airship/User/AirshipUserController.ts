@@ -8,7 +8,7 @@ import {
 	UserControllerBridgeTopics,
 } from "@Easy/Core/Client/ProtectedControllers/Airship/User/UserController";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { AirshipUser } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
+import { AirshipFriendWithStatus, AirshipUser } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 
@@ -130,8 +130,8 @@ export class AirshipUserController {
 	 * Gets the users friends list.
 	 * @returns A list of friends.
 	 */
-	public async GetFriends(): Promise<AirshipUser[]> {
-		return contextbridge.invoke<BridgeApiGetFriends>(UserControllerBridgeTopics.GetFriends, LuauContext.Protected);
+	public async GetFriends<T extends boolean = false>(includeStatus: T = false as T): Promise<T extends true ? AirshipFriendWithStatus[] : AirshipUser[]> {
+		return contextbridge.invoke<BridgeApiGetFriends<T>>(UserControllerBridgeTopics.GetFriends, LuauContext.Protected, includeStatus);
 	}
 
 	/**

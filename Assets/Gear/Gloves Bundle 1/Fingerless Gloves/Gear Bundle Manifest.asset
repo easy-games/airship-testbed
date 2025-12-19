@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Gear Bundle Manifest
   m_EditorClassIdentifier: 
   gearList:
-  - {fileID: 0}
-  airId: 
+  - {fileID: 11400000, guid: c847b869f0f2b474e88b4fa632d6efee, type: 2}
+  airId: b85d9e57-672f-429d-9c7e-9acb475fd13a

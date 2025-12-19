@@ -1,5 +1,5 @@
 import { Airship } from "../Airship";
-import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
+import { AirshipGearCategory, AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
 import { Singleton } from "../Flamework";
 import { Game } from "../Game";
 import { DecodeJSON, EncodeJSON } from "../json";
@@ -138,6 +138,29 @@ export class AirshipAvatarSingleton {
 			builder.RemoveClothingAccessories();
 		}
 
+		// Fallback for outfits that use a face that has been archived
+		let gearToDownload: ContentServiceGear.SelectedGearItem[] = [...outfit.gear];
+		{
+			let foundFace = false;
+			for (let clothingDto of gearToDownload) {
+				if (clothingDto.class.gear.category === AirshipGearCategory.FaceDecal) {
+					foundFace = true;
+				}
+			}
+			if (!foundFace) {
+				// Note: This is hacky because the gear we are inserting doesn't have all fields.
+				// We only insert the fields we need in the promise array below.
+				gearToDownload.push({
+					class: {
+						classId: "27bc229f-c1fb-45d0-a1d6-0d24f99c93ec",
+						gear: {
+							airAssets: ["004d744b-663f-40b3-a0f8-95fa86b55d0b"],
+						},
+					},
+				} as ContentServiceGear.SelectedGearItem);
+			}
+		}
+
 		// Download clothing in parallel with Promise.all
 		const start = Time.time;
 		let promises: Promise<void>[] = [];
@@ -153,7 +176,7 @@ export class AirshipAvatarSingleton {
 			}
 		}
 
-		for (let clothingDto of outfit.gear) {
+		for (let clothingDto of gearToDownload) {
 			promises.push(
 				new Promise((resolve) => {
 					if (clothingDto.class.gear.airAssets.size() === 0) return resolve();

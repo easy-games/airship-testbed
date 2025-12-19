@@ -23,6 +23,8 @@ declare const unpack: (data: unknown, min: number, max: number) => unknown[];
 
 const MAX_QUEUE = 10000;
 
+// Maps from remote identifier hash back to remote name (for debugging)
+const idToName = new Map<number, string>();
 const callbacksByIdServer = new Map<string, Array<CallbackItem>>();
 const callbacksByIdClient = new Map<string, Array<CallbackItem>>();
 const queuedDataById = new Map<string, Array<BlobData>>();
@@ -78,6 +80,7 @@ export function InitNet() {
 				addToQueue(msg);
 				return;
 			}
+			Profiler.BeginSample(idToName.get(id) ?? "unknown");
 			for (const callback of callbacks) {
 				let maxIndex = 1
 				for (const [k, _] of pairs(data)) {
@@ -86,6 +89,7 @@ export function InitNet() {
 
 				task.spawn(callback.callback, unpack(data, 1, maxIndex));
 			}
+			Profiler.EndSample();
 		});
 	}
 }
@@ -174,6 +178,11 @@ function connect(asServer: boolean, id: number, callback: Callback): () => void 
 	};
 }
 
+/** Adds an entry to id -> name map (used for debugging) */
+function registerNewId(id: number, remoteIdentifierString: string) {
+	idToName.set(id,  remoteIdentifierString);
+}
+
 const NetworkAPI = {
 	fireServer,
 	fireAllClients,
@@ -181,6 +190,7 @@ const NetworkAPI = {
 	fireClients,
 	fireExcept,
 	connect,
+	registerNewId,
 };
 
 export default NetworkAPI;

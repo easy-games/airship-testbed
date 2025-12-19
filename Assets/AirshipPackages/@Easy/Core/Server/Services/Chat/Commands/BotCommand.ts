@@ -2,6 +2,7 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { MoveDirectionMode } from "@Easy/Core/Shared/Character/LocalCharacter/MoveDirectionMode";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
@@ -56,13 +57,24 @@ export class BotCommand extends ChatCommand {
 			if (!character.movement) return;
 
 			let direction = new Vector3(randDirectionComponent(), 0, randDirectionComponent());
-			character.movement.SetMoveInput(
-				direction,
-				math.random() < 0.2,
-				math.random() < 0.5,
-				math.random() < 0.2,
-				MoveDirectionMode.Character,
-			);
+
+			if (Game.playerFlags.has("HasTransformMoveDirection")) {
+				direction = character.movement.TransformMoveDirection(direction, MoveDirectionMode.Character);
+				character.movement.SetMoveInput(
+					direction,
+					math.random() < 0.2,
+					math.random() < 0.5,
+					math.random() < 0.2,
+				);
+			} else {
+				character.movement.SetMoveInput(
+					direction,
+					math.random() < 0.2,
+					math.random() < 0.5,
+					math.random() < 0.2,
+					MoveDirectionMode.Character,
+				);
+			}
 			let lookVec = new Vector3(
 				randDirectionComponent() * math.random(),
 				randDirectionComponent() * math.random(),

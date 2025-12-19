@@ -9,10 +9,11 @@ import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import AirshipEmoteSingleton from "../Emote/AirshipEmoteSingleton";
 import { Dependency } from "../Flamework";
+import { InventoryHotbarAction } from "../Inventory/InventoryHotbarAction";
 import { ItemStack } from "../Inventory/ItemStack";
 import { BeforeLocalInventoryHeldSlotChanged } from "../Inventory/Signal/BeforeLocalInventoryHeldSlotChanged";
 import NametagComponent from "../Nametag/NametagComponent";
-import { Keyboard, Mouse } from "../UserInput";
+import { Mouse } from "../UserInput";
 import ObjectUtils from "../Util/ObjectUtils";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
@@ -870,21 +871,21 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	private SetupHotbarControls() {
-		// Controls
-		const hotbarKeys = [
-			Key.Digit1,
-			Key.Digit2,
-			Key.Digit3,
-			Key.Digit4,
-			Key.Digit5,
-			Key.Digit6,
-			Key.Digit7,
-			Key.Digit8,
-			Key.Digit9,
+		// Controls using registered inventory actions
+		const hotbarActions = [
+			InventoryHotbarAction.HotbarSlot1,
+			InventoryHotbarAction.HotbarSlot2,
+			InventoryHotbarAction.HotbarSlot3,
+			InventoryHotbarAction.HotbarSlot4,
+			InventoryHotbarAction.HotbarSlot5,
+			InventoryHotbarAction.HotbarSlot6,
+			InventoryHotbarAction.HotbarSlot7,
+			InventoryHotbarAction.HotbarSlot8,
+			InventoryHotbarAction.HotbarSlot9,
 		];
-		for (const hotbarIndex of $range(0, hotbarKeys.size() - 1)) {
+		for (const hotbarIndex of $range(0, hotbarActions.size() - 1)) {
 			this.bin.Add(
-				Keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
+				Airship.Input.OnDown(hotbarActions[hotbarIndex]).Connect((event) => {
 					if (event.uiProcessed) return;
 					this.SetHeldSlot(hotbarIndex);
 				}),
@@ -913,14 +914,14 @@ export default class Character extends AirshipBehaviour {
 				let trySlot = selectedSlot;
 
 				// Find the next available item in the hotbar:
-				for (const _ of $range(1, hotbarKeys.size())) {
+				for (const _ of $range(1, hotbarActions.size())) {
 					trySlot += inc;
 
 					// Clamp index to hotbar items:
-					if (inc === 1 && trySlot >= hotbarKeys.size()) {
+					if (inc === 1 && trySlot >= hotbarActions.size()) {
 						trySlot = 0;
 					} else if (inc === -1 && trySlot < 0) {
-						trySlot = hotbarKeys.size() - 1;
+						trySlot = hotbarActions.size() - 1;
 					}
 
 					this.SetHeldSlot(trySlot);

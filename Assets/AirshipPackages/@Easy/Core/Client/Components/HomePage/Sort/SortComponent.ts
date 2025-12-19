@@ -106,7 +106,7 @@ export default class SortComponent extends AirshipBehaviour {
 			}
 			return;
 		}
-		let rows = math.ceil(this.content.childCount / this.gridLayoutGroup.constraintCount);
+		let rows = math.ceil(this.games.size() / this.gridLayoutGroup.constraintCount);
 
 		this.layoutElement.preferredHeight =
 			rows * (this.gridLayoutGroup.cellSize.y + this.gridLayoutGroup.spacing.y) +

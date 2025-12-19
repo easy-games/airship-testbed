@@ -926,6 +926,7 @@ MonoBehaviour:
   maxServerCommandPrediction: 1
   serverAuth: 0
   serverGeneratesCommands: 0
+  maximumLagCompensation: 0.5
 --- !u!114 &7877576865563315073
 MonoBehaviour:
   m_ObjectHideFlags: 0

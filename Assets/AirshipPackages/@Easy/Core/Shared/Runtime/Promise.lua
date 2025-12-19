@@ -1798,7 +1798,7 @@ function Promise.prototype:_reject(...)
 		-- synchronously. We'll wait one tick, and if there are still no
 		-- observers, then we should put a message in the console.
 
-		local err = tostring((...))
+		local err = (...)
 
 		task.spawn(function()
 			-- Promise._timeEvent:Wait()
@@ -1809,9 +1809,6 @@ function Promise.prototype:_reject(...)
 				return
 			end
 
-			-- Build a reasonable message
-			local message = string.format("Unhandled Promise rejection:\n\n%s\n\n%s", err, self._source)
-
 			for _, callback in ipairs(Promise._unhandledRejectionCallbacks) do
 				task.spawn(callback, self, unpack(self._values, 1, self._valuesLength))
 			end
@@ -1821,7 +1818,7 @@ function Promise.prototype:_reject(...)
 				return
 			end
 
-			warn(message)
+			warn("Unhandled Promise rejection:\n\n", err, `\n\n{self._source}`)
 		end)
 	end
 

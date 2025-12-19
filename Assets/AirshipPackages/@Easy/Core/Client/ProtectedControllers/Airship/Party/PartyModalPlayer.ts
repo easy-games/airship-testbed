@@ -1,5 +1,4 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { Player } from "@Easy/Core/Shared/Player/Player";
 import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
@@ -14,17 +13,18 @@ export default class PartyModalPlayer extends AirshipBehaviour {
 	public username: TMP_Text;
 	public checkmark: GameObject;
 	public button: Button;
+	private invited = false;
 
 	private bin = new Bin();
 
-	public Init(player: Player): void {
+	public Init(username: string, uid: string): void {
 		this.checkmark.SetActive(false);
 
 		task.spawn(async () => {
-			const tex = await Airship.Players.GetProfilePictureAsync(player.userId);
+			const tex = await Airship.Players.GetProfilePictureAsync(uid);
 			this.avatarImg.texture = tex;
 		});
-		this.username.text = player.username;
+		this.username.text = username;
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnHoverEvent(this.button.gameObject, (hov) => {
@@ -36,9 +36,18 @@ export default class PartyModalPlayer extends AirshipBehaviour {
 
 		this.bin.Add(
 			this.button.onClick.Connect(async () => {
+				if (this.invited) return;
+
+				this.invited = true;
 				ProtectedUtil.PlayClickSound();
 				this.checkmark.SetActive(true);
-				await client.party.inviteUser({ userToAdd: player.userId });
+				try {
+					await client.party.inviteUser({ userToAdd: uid });
+				} catch (err) {
+					Debug.LogError(err);
+					this.invited = false;
+					this.checkmark.SetActive(false);
+				}
 			}),
 		);
 	}

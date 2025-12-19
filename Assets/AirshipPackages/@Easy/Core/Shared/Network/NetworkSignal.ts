@@ -80,6 +80,7 @@ export class NetworkSignal<T extends unknown[] | unknown = []> {
 			);
 		}
 
+		NetworkAPI.registerNewId(id, remoteIdentifier);
 		this.server = new NetworkSignalServer(id, channel);
 		this.client = new NetworkSignalClient(id, channel);
 	}

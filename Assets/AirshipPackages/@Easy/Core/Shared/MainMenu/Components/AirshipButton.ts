@@ -23,6 +23,10 @@ export default class AirshipButton extends AirshipBehaviour {
 	public underlineOnHover = false;
 	public sounds = false;
 
+	@Spacing()
+	public vibration = false;
+	public vibrationType: VibrationFeedbackType = VibrationFeedbackType.Medium;
+
 	@Header("Optional Variables")
 	public disabledColorHex = "#2E3035";
 	public loadingIndicator?: GameObject;
@@ -60,6 +64,9 @@ export default class AirshipButton extends AirshipBehaviour {
 			this.button.onClick.ConnectWithPriority(SignalPriority.HIGHEST, () => {
 				if (this.sounds) {
 					ProtectedUtil.PlayClickSound();
+				}
+				if (this.vibration) {
+					VibrationManager.Play(this.vibrationType);
 				}
 			}),
 		);

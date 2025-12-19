@@ -134,6 +134,7 @@ export class NetworkFunction<TX extends unknown[] | unknown, RX extends unknown[
 			);
 		}
 
+		NetworkAPI.registerNewId(id, remoteIdentifier);
 		this.server = new NetworkFunctionServer(id);
 		this.client = new NetworkFunctionClient(id);
 	}

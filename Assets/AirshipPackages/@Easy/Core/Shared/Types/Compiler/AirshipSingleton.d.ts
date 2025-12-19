@@ -11,8 +11,8 @@
  * 	}
  * }
  * ```
- * 
- * The singleton can then be retrieved via 
+ *
+ * The singleton can then be retrieved via
  * ```ts
  * import ExampleSingleton from "./ExampleSingleton";
  * export default class SomeRequiringComponent extends AirshipBehaviour {
@@ -24,6 +24,9 @@
  * ```
  */
 declare abstract class AirshipSingleton extends AirshipBehaviour {
+	/**@internal @hidden Internal Nominal Marker for Singleton - Do not use  */
+	private _nominal_AirshipSingleton: never;
+
 	/**
 	 * Resolves a single instance of this Singleton object statically
 	 */

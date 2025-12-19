@@ -1,3 +1,4 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
 import {
 	AirshipGearCategory,
 	AirshipGearItem,
@@ -788,15 +789,14 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			});
 		}
 
-		await Airship.Avatar.LoadOutfit(this.accessoryBuilder, this.viewedOutfit, {
-			removeOldClothingAccessories: true,
-		});
-
 		this.SelectSkinColor(ColorUtil.HexToColor(this.viewedOutfit.skinColor));
 
 		this.UpdateButtonGraphics();
 		this.SetDirty(false);
-		this.accessoryBuilder.UpdateCombinedMesh();
+		Airship.Avatar.LoadOutfit(this.accessoryBuilder, this.viewedOutfit, {
+			removeOldClothingAccessories: true,
+		});
+
 		this.finishedFirstOutfitLoad = true;
 	}
 

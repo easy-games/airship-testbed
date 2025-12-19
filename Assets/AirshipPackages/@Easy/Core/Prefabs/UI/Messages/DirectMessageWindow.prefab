@@ -580,7 +580,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1041,7 +1041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 0.039215688}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1423,7 +1423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
   m_Color: {r: 0.14117648, g: 0.14509805, b: 0.14901961, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1797,7 +1797,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -2887,7 +2887,7 @@ PrefabInstance:
     - target: {fileID: 8334253223504247279, guid: f40526bf7cbbb46618f82d5c36d3f6c9, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2953,7 +2953,7 @@ PrefabInstance:
     - target: {fileID: 3434740417217620355, guid: 52584e96aaab146a08c15d805ade15a7, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
     - target: {fileID: 4565060854978363812, guid: 52584e96aaab146a08c15d805ade15a7, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -3041,7 +3041,7 @@ PrefabInstance:
     - target: {fileID: 6546706110253849395, guid: 52584e96aaab146a08c15d805ade15a7, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
     - target: {fileID: 7619552700445121168, guid: 52584e96aaab146a08c15d805ade15a7, type: 3}
       propertyPath: m_Color.a
       value: 0.23529412
@@ -3107,7 +3107,7 @@ PrefabInstance:
     - target: {fileID: 1230187047497112255, guid: c2e02c9b6586c490eb10bdab0b067663, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
     - target: {fileID: 1685579118445714766, guid: c2e02c9b6586c490eb10bdab0b067663, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -3195,7 +3195,7 @@ PrefabInstance:
     - target: {fileID: 6091327394017951777, guid: c2e02c9b6586c490eb10bdab0b067663, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
     - target: {fileID: 6886587796065662318, guid: c2e02c9b6586c490eb10bdab0b067663, type: 3}
       propertyPath: bundledReferences.Array.data[0].keyValuePairs.Array.data[4].value
       value: 
@@ -3349,7 +3349,7 @@ PrefabInstance:
     - target: {fileID: 4585739257689474129, guid: 803c74c404ff04c5c822cc0b8aba3929, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
     - target: {fileID: 5034983360769412108, guid: 803c74c404ff04c5c822cc0b8aba3929, type: 3}
       propertyPath: m_Name
       value: ProfilePicture

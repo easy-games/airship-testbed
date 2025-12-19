@@ -7,12 +7,22 @@ import {
 } from "@Easy/Core/Server/ProtectedServices/Airship/PlatformInventory/PlatformInventoryService";
 import { Platform } from "@Easy/Core/Shared/Airship";
 import {
+	AirshipInventoryTransaction,
 	AirshipItem,
 	AirshipItemQueryParameters,
-	AirshipInventoryTransaction,
 } from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+
+/**
+ * Options for granting an item to a user.
+ */
+export interface GrantItemOptions {
+	/**
+	 * If true, the item will not be granted if the user already has an instance of this item class.
+	 */
+	ignoreIfHasInstance?: boolean;
+}
 
 /**
  * Allows management of platform inventory for a player. These functions manipluate a persistent inventory
@@ -39,17 +49,19 @@ export class AirshipPlatformInventoryService {
 		Platform.Server.Inventory = this;
 	}
 
-	protected OnStart(): void { }
+	protected OnStart(): void {}
 
 	/**
 	 * Grants a user the provided item.
+	 * @param options Additional options
 	 */
-	public async GrantItem(userId: string, classId: string): Promise<AirshipItem> {
+	public async GrantItem(userId: string, classId: string, options?: GrantItemOptions): Promise<AirshipItem> {
 		return contextbridge.invoke<ServerBridgeApiGrantItem>(
 			PlatformInventoryServiceBridgeTopics.GrantItem,
 			LuauContext.Protected,
 			userId,
 			classId,
+			options,
 		);
 	}
 

@@ -6,12 +6,12 @@ import { TransferController } from "@Easy/Core/Client/ProtectedControllers/Trans
 import { RightClickMenuButton } from "@Easy/Core/Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuButton";
 import { RightClickMenuController } from "@Easy/Core/Client/ProtectedControllers/UI/RightClickMenu/RightClickMenuController";
 import { Airship } from "@Easy/Core/Shared/Airship";
+import { AirshipPartyMode } from "@Easy/Core/Shared/Airship/Types/AirshipParty";
 import { AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import {
 	GameCoordinatorClient,
-	GameCoordinatorUserStatus,
 } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
@@ -61,7 +61,7 @@ export default class FriendCard extends AirshipBehaviour {
 					", serverId=" +
 					userData.serverId,
 			);
-			Dependency<TransferController>().TransferToGameAsync(userData.gameId, userData.serverId);
+			Dependency<TransferController>().TransferToFriendOrPartyMember(userData.userId);
 		};
 
 		const OpenMenu = () => {
@@ -78,8 +78,8 @@ export default class FriendCard extends AirshipBehaviour {
 				}
 
 				if (
-					userData.partyMode === GameCoordinatorUserStatus.PartyMode.FRIENDS_ONLY ||
-					userData.partyMode === GameCoordinatorUserStatus.PartyMode.OPEN
+					userData.partyMode === AirshipPartyMode.FRIENDS_ONLY ||
+					userData.partyMode === AirshipPartyMode.OPEN
 				) {
 					options.push({
 						text: "Join Party",
@@ -93,8 +93,12 @@ export default class FriendCard extends AirshipBehaviour {
 
 				options.push({
 					text: "Invite to Party",
-					onClick: () => {
-						Dependency<ProtectedPartyController>().InviteToParty(userData.userId);
+					onClick: async () => {
+						try {
+							await Dependency<ProtectedPartyController>().InviteToParty(userData.userId);
+						} catch (err) {
+							Debug.LogError(err);
+						}
 					},
 				});
 			}
