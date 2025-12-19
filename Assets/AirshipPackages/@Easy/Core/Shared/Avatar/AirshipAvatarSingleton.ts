@@ -1,9 +1,9 @@
 import { Airship } from "../Airship";
 import { AirshipGearCategory, AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
 import { Singleton } from "../Flamework";
-import { Game } from "../Game";
-import { DecodeJSON, EncodeJSON } from "../json";
+import { EncodeJSON } from "../json";
 import { Protected } from "../Protected";
+import { ContentServiceGear } from "../TypePackages/content-service-types";
 import { ColorUtil } from "../Util/ColorUtil";
 import inspect from "../Util/Inspect";
 import { Signal } from "../Util/Signal";

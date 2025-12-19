@@ -1,4 +1,3 @@
-import { Airship } from "@Easy/Core/Shared/Airship";
 import {
 	AirshipGearCategory,
 	AirshipGearItem,
@@ -28,7 +27,6 @@ import OutfitButton from "./Outfit/OutfitButtonComponent";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
 import AvatarCustomizationPanel from "./AvatarCustomizationMenu/AvatarCustomizationPanel";
 import { Airship } from "@Easy/Core/Shared/Airship";
-import { TimeUtil } from "@Easy/Core/Shared/Util/TimeUtil";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
