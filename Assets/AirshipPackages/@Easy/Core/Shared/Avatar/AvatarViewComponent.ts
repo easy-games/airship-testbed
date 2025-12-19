@@ -148,15 +148,6 @@ export default class AvatarViewComponent extends AirshipBehaviour {
 			}),
 		);
 
-		// Skybox
-		if (!Game.IsInGame()) {
-			const skyboxMat = Resources.Load("AvatarEditorSkybox") as Material;
-			if (skyboxMat !== undefined) {
-				task.spawn(() => {
-					Bridge.SetSkyboxMaterial(skyboxMat);
-				});
-			}
-		}
 		if (Game.IsInGame()) {
 			this.inGameVolume.gameObject.SetActive(true);
 			this.mainMenuVolume.gameObject.SetActive(false);

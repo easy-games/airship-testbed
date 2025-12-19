@@ -4,66 +4,62 @@ import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coord
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
+import GearUnlockCanvas from "./GearUnlockCanvas";
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
 export default class GearUnlockUI extends AirshipBehaviour {
 	public camera: Camera;
 	public targetGearParent: Transform;
-	public accessory: AccessoryComponent;
-	@NonSerialized()
-	public renderTexture: RenderTexture;
-	public rawImage: RawImage;
+	@NonSerialized() public accessory: AccessoryComponent;
+	@NonSerialized() public renderTexture: RenderTexture;
 
-	public continueBtn: Button;
-	public verticalList: VerticalLayoutGroup;
-	public titleText: TMP_Text;
-	public messageText: TMP_Text;
-	public messageLayoutElement: LayoutElement;
-	public wrapper: RectTransform;
+	// public wrapper: RectTransform;
+
+	public portraitCanvas: GearUnlockCanvas;
+	public landscapeCanvas: GearUnlockCanvas;
+	private activeCanvas: GearUnlockCanvas;
 
 	@Header("Dummy")
 	public dummy: Transform;
 	public dummyBodyMesh: SkinnedMeshRenderer;
+	public dummyAccessoryBuilder: AccessoryBuilder;
 
 	private targetGearCenter = Vector3.zero;
 	private bin = new Bin();
 	private openTime = 0;
 
 	override OnEnable(): void {
+		if (Game.IsMobile() && Game.IsPortrait()) {
+			this.activeCanvas = this.portraitCanvas;
+		} else {
+			this.activeCanvas = this.landscapeCanvas;
+		}
+		this.landscapeCanvas.gameObject.SetActive(false);
+		this.portraitCanvas.gameObject.SetActive(false);
+
 		this.openTime = Time.time;
-		this.wrapper.localScale = Vector3.one.mul(1.1);
-		NativeTween.LocalScale(this.wrapper, Vector3.one, 0.2).SetEaseQuadOut();
+		// this.wrapper.localScale = Vector3.one.mul(1.1);
+		// NativeTween.LocalScale(this.wrapper, Vector3.one, 0.2).SetEaseQuadOut();
 
 		if (this.renderTexture) {
 			this.camera.targetTexture = undefined as unknown as RenderTexture;
 			this.renderTexture.Release();
 			Destroy(this.renderTexture);
 		}
-		this.rawImage.enabled = false;
 		this.renderTexture = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32);
 		this.camera.targetTexture = this.renderTexture;
-		this.rawImage.texture = this.renderTexture;
-
-		if (Game.deviceType !== AirshipDeviceType.Phone) {
-			const rect = this.verticalList.transform as RectTransform;
-			rect.anchoredPosition = new Vector2(0, 150);
-
-			this.messageLayoutElement.preferredWidth = 700;
-		}
 	}
 
 	public Init(gearNotificationId: string): void {
-		this.bin.Add(
-			this.continueBtn.onClick.Connect(() => {
-				task.spawnDetached(async () => {
-					await client.userNotifications.deleteNotifications({
-						notificationIds: [gearNotificationId],
-					});
+		this.activeCanvas.continueBtn.onClick.Connect(() => {
+			task.spawnDetached(async () => {
+				await client.userNotifications.deleteNotifications({
+					notificationIds: [gearNotificationId],
 				});
-				this.gameObject.SetActive(false);
-			}),
-		);
+			});
+			this.gameObject.SetActive(false);
+		});
 	}
 
 	protected OnDisable(): void {
@@ -76,19 +72,16 @@ export default class GearUnlockUI extends AirshipBehaviour {
 	}
 
 	public SetGear(gear: PlatformGear, title: string, message: string): void {
-		this.titleText.text = title;
-		this.messageText.text = message;
+		this.activeCanvas.gameObject.SetActive(true);
+		this.activeCanvas.Init(gear, title, message, this.renderTexture);
 
-		this.rawImage.enabled = true;
 		this.targetGearParent.gameObject.ClearChildren();
-		const acc = Instantiate(gear.accessoryPrefabs[0], this.targetGearParent);
-		acc.gameObject.SetLayerRecursive(17);
-		acc.transform.localPosition = Vector3.zero;
-		acc.transform.localRotation = Quaternion.Euler(-90, 70, 0);
-		this.accessory = acc;
+
+		const activeAccessory = this.dummyAccessoryBuilder.Add(gear.accessoryPrefabs[0]);
+		this.dummyAccessoryBuilder.UpdateCombinedMesh();
+		this.accessory = activeAccessory!.AccessoryComponent;
 
 		// Starting rotation
-		this.targetGearParent.localRotation = Quaternion.Euler(0, 180, 0);
 		this.dummy.localRotation = Quaternion.Euler(0, 250, 0);
 
 		const meshRenderers = this.accessory.gameObject.GetComponentsInChildren<MeshRenderer>();
@@ -109,9 +102,6 @@ export default class GearUnlockUI extends AirshipBehaviour {
 			this.targetGearCenter = skinnedMeshRenderers[0].bounds.center;
 
 			for (let smr of skinnedMeshRenderers) {
-				smr.rootBone = this.dummyBodyMesh.rootBone;
-				smr.bones = this.dummyBodyMesh.bones;
-
 				for (let mat of smr.sharedMaterials) {
 					if (!mat.shader.isSupported) {
 						mat.shader = Shader.Find("Universal Render Pipeline/Lit");
@@ -129,11 +119,11 @@ export default class GearUnlockUI extends AirshipBehaviour {
 		if (timeSinceStart <= 1) {
 			zOffset = TweenEasingFunction.OutQuad(timeSinceStart, 1, -1, 1);
 		}
-		cameraTransform.position = this.targetGearCenter.add(new Vector3(0, 0, -3.5 - zOffset));
+		cameraTransform.position = this.targetGearCenter.add(new Vector3(0, 1, -4 - zOffset));
 		cameraTransform.LookAt(this.targetGearCenter);
 
 		// Static Renderers
-		this.targetGearParent.RotateAround(this.targetGearCenter, Vector3.up, -35 * dt);
+		// this.targetGearParent.RotateAround(this.targetGearCenter, Vector3.up, -35 * dt);
 
 		// Skinned Mesh Renderers
 		this.dummy.RotateAround(this.targetGearCenter, Vector3.up, -35 * dt);
