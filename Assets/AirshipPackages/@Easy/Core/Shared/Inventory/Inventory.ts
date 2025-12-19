@@ -87,6 +87,16 @@ export default class Inventory extends AirshipBehaviour {
 		// 		}
 		// 	});
 		// }
+		Airship.Inventory.RegisterItem("TestItem", {
+			displayName: "Test Item",
+			maxStackSize: 10000,
+			image: "Assets/AirshipPackages/@Easy/Core/Prefabs/EmoteImages/HandsUp.png",
+		});
+		Airship.Inventory.RegisterItem("TestItem2", {
+			displayName: "Test Item 2",
+			maxStackSize: 10000,
+			image: "Assets/AirshipPackages/@Easy/Core/Prefabs/EmoteImages/EmoteWave.png",
+		});
 
 		const StartClient = () => {
 			// print("NetID (OnStartClient): " + this.networkIdentity.netId);
@@ -100,6 +110,19 @@ export default class Inventory extends AirshipBehaviour {
 		};
 
 		const StartServer = () => {
+			if (Game.IsEditor() && Game.IsServer()) {
+				Airship.Characters.ObserveCharacters((character) => {
+					character.inventory?.AddItem(new ItemStack("TestItem", 10000));
+					character.inventory?.AddItem(new ItemStack("TestItem2", 10000));
+					character.inventory?.AddItem(new ItemStack("TestItem", 10000));
+					character.inventory?.AddItem(new ItemStack("TestItem2", 1000));
+					character.inventory?.AddItem(new ItemStack("TestItem", 1000));
+				});
+
+				// task.delay(2, () => {
+				// 	this.TestMergeFunctionality();
+				// });
+			}
 			// print("NetID (OnStartServer): " + this.networkIdentity.netId);
 			this.id = this.networkIdentity.netId;
 			Airship.Inventory.RegisterInventory(this);
@@ -481,6 +504,47 @@ export default class Inventory extends AirshipBehaviour {
 				: this.networkIdentity.connectionToClient?.connectionId === player.connectionId;
 		} else {
 			return true;
+		}
+	}
+	private TestMergeFunctionality(): void {
+		const inventory = Airship.Inventory.localInventory;
+		if (!inventory) {
+			warn("[Inventory Test] No local inventory found");
+			return;
+		}
+
+		print("[Inventory Test] Starting merge functionality tests...");
+
+		print("[Inventory Test] Test 1: Adding items to merge with existing stacks");
+		inventory.AddItem(new ItemStack("TestItem", 500));
+		task.wait(2);
+
+		print("[Inventory Test] Test 2: Adding items that exceed max stack size");
+		inventory.AddItem(new ItemStack("TestItem", 17000));
+		task.wait(2);
+
+		print("[Inventory Test] Test 3: Adding items to partially filled slots");
+		inventory.AddItem(new ItemStack("TestItem", 2000));
+		task.wait(2);
+
+		print("[Inventory Test] Test 4: Testing MoveToSlot with merge");
+		const slot0 = inventory.GetItem(0);
+		const slot1 = inventory.GetItem(1);
+		if (slot0 && slot1 && slot0.itemType === slot1.itemType) {
+			const amountToMove = math.min(10000, slot0.amount);
+			Airship.Inventory.MoveToSlot(inventory, 0, inventory, 1, amountToMove);
+		}
+		task.wait(2);
+		print("[Inventory Test] Test 5: Testing QuickMoveSlot merge");
+		if (inventory.GetItem(0)) {
+			Airship.Inventory.QuickMoveSlot(inventory, 0, 9);
+		}
+		task.wait(2);
+
+		print("[Inventory Test] Test 6: Testing excess handling with full inventory");
+		for (let i = 0; i < 100; i++) {
+			inventory.AddItem(new ItemStack("TestItem", 10000));
+			task.wait(0.1);
 		}
 	}
 }

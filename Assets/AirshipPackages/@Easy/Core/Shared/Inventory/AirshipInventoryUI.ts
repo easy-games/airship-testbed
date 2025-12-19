@@ -13,6 +13,7 @@ import { Game } from "../Game";
 import { CoreAction } from "../Input/AirshipCoreAction";
 import ProximityPrompt from "../Input/ProximityPrompts/ProximityPrompt";
 import StringUtils from "../Types/StringUtil";
+import ObjectUtils from "../Util/ObjectUtils";
 import { ClickPickupState, DraggingState } from "./AirshipDraggingState";
 import AirshipInventoryTile from "./AirshipInventoryTile";
 import Inventory from "./Inventory";
@@ -94,27 +95,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	}
 
 	override Start(): void {
-		if (Game.IsEditor()) {
-			Airship.Inventory.RegisterItem("TestItem", {
-				displayName: "Test Item",
-				maxStackSize: 10000,
-				image: "Assets/AirshipPackages/@Easy/Core/Prefabs/EmoteImages/HandsUp.png",
-			});
-			Airship.Inventory.RegisterItem("TestItem2", {
-				displayName: "Test Item 2",
-				maxStackSize: 10000,
-				image: "Assets/AirshipPackages/@Easy/Core/Prefabs/EmoteImages/EmoteWave.png",
-			});
-			Airship.Characters.ObserveCharacters((character) => {
-				character.inventory?.AddItem(new ItemStack("TestItem", 1001));
-				character.inventory?.AddItem(new ItemStack("TestItem2", 1001));
-			});
-
-			// task.delay(2, () => {
-			// 	this.TestMergeFunctionality();
-			// });
-		}
-
 		this.backpackLabel?.gameObject.SetActive(false);
 		this.externalInventoryContent?.gameObject.SetActive(false);
 		this.externalInventoryLabel?.gameObject.SetActive(false);
@@ -163,48 +143,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		);
 	}
 
-	private TestMergeFunctionality(): void {
-		const inventory = Airship.Inventory.localInventory;
-		if (!inventory) {
-			warn("[Inventory Test] No local inventory found");
-			return;
-		}
-
-		print("[Inventory Test] Starting merge functionality tests...");
-
-		print("[Inventory Test] Test 1: Adding items to merge with existing stacks");
-		inventory.AddItem(new ItemStack("TestItem", 500));
-		task.wait(2);
-
-		print("[Inventory Test] Test 2: Adding items that exceed max stack size");
-		inventory.AddItem(new ItemStack("TestItem", 17000));
-		task.wait(2);
-
-		print("[Inventory Test] Test 3: Adding items to partially filled slots");
-		inventory.AddItem(new ItemStack("TestItem", 2000));
-		task.wait(2);
-
-		print("[Inventory Test] Test 4: Testing MoveToSlot with merge");
-		const slot0 = inventory.GetItem(0);
-		const slot1 = inventory.GetItem(1);
-		if (slot0 && slot1 && slot0.itemType === slot1.itemType) {
-			const amountToMove = math.min(10000, slot0.amount);
-			Airship.Inventory.MoveToSlot(inventory, 0, inventory, 1, amountToMove);
-		}
-		task.wait(2);
-		print("[Inventory Test] Test 5: Testing QuickMoveSlot merge");
-		if (inventory.GetItem(0)) {
-			Airship.Inventory.QuickMoveSlot(inventory, 0, 9);
-		}
-		task.wait(2);
-
-		print("[Inventory Test] Test 6: Testing excess handling with full inventory");
-		for (let i = 0; i < 100; i++) {
-			inventory.AddItem(new ItemStack("TestItem", 10000));
-			task.wait(0.1);
-		}
-	}
-
 	public SetHotbarVisible(visible: boolean) {
 		this.hotbarContent.gameObject.SetActive(visible);
 	}
@@ -251,8 +189,16 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		}
 
 		// Clean up click pickup state when backpack closes
+		// If in pickup state add the item back to the first open slot or merge with an existing stack
 		this.backpackOpenBin.Add(() => {
-			this.clickPickupBin.Clean();
+			if (this.clickPickupState) {
+				Airship.Inventory.MoveToInventory(
+					this.clickPickupState.inventory,
+					this.clickPickupState.slot,
+					this.clickPickupState.inventory,
+				);
+			}
+			this.CleanupClickPickupState();
 		});
 	}
 
@@ -407,11 +353,9 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	 */
 	private CleanupClickPickupState(): void {
 		if (this.clickPickupState) {
-			if (this.clickPickupState && this.clickPickupState.clonedTransform) {
-				Object.Destroy(this.clickPickupState.clonedTransform.gameObject);
-			}
-			this.clickPickupState = undefined;
 			this.clickPickupBin.Clean();
+			Object.Destroy(this.clickPickupState.clonedTransform.gameObject);
+			this.clickPickupState = undefined;
 		}
 	}
 
@@ -494,10 +438,8 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		}
 	}
 
-	//TODO: Need to fix this to use MoveToSlot or MoveToInventory so the server can see it.  Just leaving this for now to remind me tomorrow.
 	private BindDragEventsOnButton(button: Button, inventory: Inventory, slotIndex: number): EngineEventConnection[] {
 		return [
-			// Unified handler for both pickup and placement
 			CanvasAPI.OnPointerEvent(button.gameObject, (direction, pointerButton) => {
 				if (!this.IsBackpackShown()) return;
 				if (direction !== PointerDirection.UP) return;
@@ -509,97 +451,123 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				// What happens when we have an item picked up already
 				if (this.clickPickupState) {
 					if (pointerButton === PointerButton.LEFT) {
-						if (existingItemStack) {
-							// If the item type is the same, we can merge them
-							if (existingItemStack.itemType === this.clickPickupState.itemStack.itemType) {
+						if (existingItemStack && targetSlotIndex !== this.clickPickupState.slot) {
+							if (existingItemStack.itemType === this.clickPickupState.itemType) {
 								const maxStackSize = existingItemStack.GetMaxStackSize();
 								const spaceAvailable = maxStackSize - existingItemStack.amount;
-								const amountToAdd = math.min(spaceAvailable, this.clickPickupState.itemStack.amount);
+								const amountToAdd = math.min(spaceAvailable, this.clickPickupState.amount);
 
-								if (amountToAdd > 0) {
-									existingItemStack.SetAmount(existingItemStack.amount + amountToAdd);
-									this.clickPickupState.itemStack.Decrement(amountToAdd);
-								}
-
-								// If pickup stack is now empty, clean up
-								if (
-									this.clickPickupState.itemStack.IsDestroyed() ||
-									this.clickPickupState.itemStack.amount <= 0
-								) {
-									this.CleanupClickPickupState();
-								}
-							} else {
-								// Different item type - swap them
-								// Create an item stack copy so we can set the inventory
-								const pickupItemStack = new ItemStack(
-									this.clickPickupState.itemStack.itemType,
-									this.clickPickupState.itemStack.amount,
-								);
-
-								const newCloneRect = this.CreatePickupVisual(button);
-								this.clickPickupState = {
-									inventory,
-									slot: this.clickPickupState.slot,
-									itemStack: existingItemStack,
-									clonedTransform: newCloneRect,
-								};
-								Airship.Inventory.MoveToInventory(
-									inventory,
-									this.clickPickupState.slot,
-									inventory,
-									pickupItemStack.amount,
-								);
-							}
-						} else {
-							// Empty slot - place the entire picked-up item into the slot and clear pickup state
-							const pickupItemStack = new ItemStack(
-								this.clickPickupState.itemStack.itemType,
-								this.clickPickupState.itemStack.amount,
-							);
-							Airship.Inventory.MoveToSlot(
-								inventory,
-								this.clickPickupState.slot,
-								inventory,
-								targetSlotIndex,
-								pickupItemStack.amount,
-							);
-							this.CleanupClickPickupState();
-						}
-					} else if (pointerButton === PointerButton.RIGHT) {
-						if (existingItemStack) {
-							// Slot has an item - check if we can merge then decrement by 1
-							if (existingItemStack.itemType === this.clickPickupState.itemStack.itemType) {
-								const maxStackSize = existingItemStack.GetMaxStackSize();
-								if (existingItemStack.amount < maxStackSize) {
-									existingItemStack.SetAmount(existingItemStack.amount + 1);
-									this.clickPickupState.itemStack.Decrement(1);
-								}
-							} else {
-								// Different item type - swap entire pickup stack with existing item
-								const pickupItemStack = new ItemStack(
-									this.clickPickupState.itemStack.itemType,
-									this.clickPickupState.itemStack.amount,
-								);
-
-								// Create new pickup state with the existing item
-								const newCloneRect = this.CreatePickupVisual(button);
-								this.clickPickupState = {
-									inventory,
-									slot: this.clickPickupState.slot,
-									itemStack: existingItemStack,
-									clonedTransform: newCloneRect,
-								};
 								Airship.Inventory.MoveToSlot(
 									inventory,
 									this.clickPickupState.slot,
 									inventory,
 									targetSlotIndex,
-									pickupItemStack.amount,
+									amountToAdd,
 								);
+
+								this.clickPickupState.amount -= amountToAdd;
+
+								if (this.clickPickupState.halfStack) {
+									this.ShowButtonItemGameObject(this.clickPickupState.slot);
+								}
+
+								if (this.clickPickupState.amount <= 0) {
+									this.CleanupClickPickupState();
+								}
+							} else {
+								const clonedPickupState = this.clickPickupState;
+								const newCloneRect = this.CreatePickupVisual(button);
+
+								Airship.Inventory.MoveToSlot(
+									inventory,
+									clonedPickupState.slot,
+									inventory,
+									targetSlotIndex,
+									clonedPickupState.amount,
+								);
+
+								if (clonedPickupState.halfStack) {
+									this.ShowButtonItemGameObject(clonedPickupState.slot);
+								} else {
+									this.HideButtonItemGameObject(clonedPickupState.slot);
+								}
+
+								this.ShowButtonItemGameObject(targetSlotIndex);
+
+								this.clickPickupState = {
+									inventory,
+									slot: clonedPickupState.slot,
+									itemType: existingItemStack.itemType,
+									amount: existingItemStack.amount,
+									clonedTransform: newCloneRect,
+									halfStack: false,
+								};
+							}
+						} else {
+							// Empty slot - place the entire picked-up item into the slot and clear pickup state
+							Airship.Inventory.MoveToSlot(
+								inventory,
+								this.clickPickupState.slot,
+								inventory,
+								targetSlotIndex,
+								this.clickPickupState.amount,
+							);
+							this.CleanupClickPickupState();
+						}
+					} else if (pointerButton === PointerButton.RIGHT) {
+						if (existingItemStack && targetSlotIndex !== this.clickPickupState.slot) {
+							// Slot has an item - check if we can merge then decrement by 1
+							if (existingItemStack.itemType === this.clickPickupState.itemType) {
+								const maxStackSize = existingItemStack.GetMaxStackSize();
+								if (existingItemStack.amount < maxStackSize) {
+									Airship.Inventory.MoveToSlot(
+										inventory,
+										this.clickPickupState.slot,
+										inventory,
+										targetSlotIndex,
+										1,
+									);
+									this.clickPickupState.amount -= 1;
+
+									if (this.clickPickupState.halfStack) {
+										this.ShowButtonItemGameObject(this.clickPickupState.slot);
+									}
+
+									if (this.clickPickupState.amount <= 0) {
+										this.CleanupClickPickupState();
+									}
+								}
+							} else {
+								const clonedPickupState = this.clickPickupState;
+								const newCloneRect = this.CreatePickupVisual(button);
+
+								Airship.Inventory.MoveToSlot(
+									inventory,
+									clonedPickupState.slot,
+									inventory,
+									targetSlotIndex,
+									clonedPickupState.amount,
+								);
+
+								if (clonedPickupState.halfStack) {
+									this.ShowButtonItemGameObject(clonedPickupState.slot);
+								} else {
+									this.HideButtonItemGameObject(clonedPickupState.slot);
+								}
+								this.ShowButtonItemGameObject(targetSlotIndex);
+
+								this.clickPickupState = {
+									inventory,
+									slot: clonedPickupState.slot,
+									itemType: existingItemStack.itemType,
+									amount: existingItemStack.amount,
+									clonedTransform: newCloneRect,
+									halfStack: false,
+								};
 							}
 						} else {
 							// Create a new item stack with 1 and decrement current pickup by 1
-							const singleItemStack = new ItemStack(this.clickPickupState.itemStack.itemType, 1);
+							const singleItemStack = new ItemStack(this.clickPickupState.itemType, 1);
 							Airship.Inventory.MoveToSlot(
 								inventory,
 								this.clickPickupState.slot,
@@ -607,14 +575,10 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 								targetSlotIndex,
 								singleItemStack.amount,
 							);
-							this.clickPickupState.itemStack.Decrement(1);
-						}
+							this.clickPickupState.amount -= 1;
+							this.ShowButtonItemGameObject(this.clickPickupState.slot);
 
-						// If the cloned stack is now empty, clean up
-						if (this.clickPickupState) {
-							const isDestroyed = this.clickPickupState.itemStack.IsDestroyed();
-							const amount = this.clickPickupState.itemStack.amount;
-							if (isDestroyed || amount <= 0) {
+							if (this.clickPickupState.amount <= 0) {
 								this.CleanupClickPickupState();
 							}
 						}
@@ -624,13 +588,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				// What happens when we don't have an item picked up already
 				else {
 					if (existingItemStack) {
-						this.clickPickupBin.Add(() => {
-							if (this.clickPickupState) {
-								this.clickPickupState.inventory.AddItem(this.clickPickupState.itemStack);
-								this.CleanupClickPickupState();
-							}
-						});
-
 						if (
 							pointerButton === PointerButton.LEFT ||
 							(pointerButton === PointerButton.RIGHT && existingItemStack.amount <= 1)
@@ -638,35 +595,38 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							const clickPickupEvent = Airship.Inventory.onInventorySlotClickPickup.Fire(
 								new InventorySlotClickPickupEvent(inventory, slotIndex),
 							);
-							if (clickPickupEvent.IsCancelled()) return;
-							const cloneRect = this.CreatePickupVisual(button);
+							if (clickPickupEvent.IsCancelled()) {
+								return;
+							}
 
-							// Create a new ItemStack copy to avoid the reference being destroyed when inventory.Decrement is called
-							const pickupItemStack = new ItemStack(existingItemStack.itemType, existingItemStack.amount);
+							const cloneRect = this.CreatePickupVisual(button);
+							this.HideButtonItemGameObject(slotIndex);
+
 							this.clickPickupState = {
 								inventory,
 								slot: slotIndex,
-								itemStack: pickupItemStack,
+								itemType: existingItemStack.itemType,
+								amount: existingItemStack.amount,
 								clonedTransform: cloneRect,
+								halfStack: false,
 							};
-							inventory.Decrement(existingItemStack.itemType, existingItemStack.amount);
 						} else if (pointerButton === PointerButton.RIGHT) {
 							const clickPickupEvent = Airship.Inventory.onInventorySlotClickPickup.Fire(
 								new InventorySlotClickPickupEvent(inventory, slotIndex),
 							);
-							if (clickPickupEvent.IsCancelled()) return;
-							const newItemStack = new ItemStack(
-								existingItemStack.itemType,
-								math.ceil(existingItemStack.amount / 2),
-							);
+							if (clickPickupEvent.IsCancelled()) {
+								return;
+							}
 							const cloneRect = this.CreatePickupVisual(button);
+
 							this.clickPickupState = {
 								inventory,
 								slot: slotIndex,
-								itemStack: newItemStack,
+								itemType: existingItemStack.itemType,
+								amount: math.ceil(existingItemStack.amount / 2),
 								clonedTransform: cloneRect,
+								halfStack: true,
 							};
-							inventory.Decrement(existingItemStack.itemType, newItemStack.amount);
 						}
 					}
 				}
@@ -681,6 +641,27 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	 */
 	private GetSlotIndexFromButton(button: Button): number | undefined {
 		return this.buttonToSlotIndexMap.get(button);
+	}
+
+	private GetButtonFromSlotIndex(slotIndex: number): Button | undefined {
+		return ObjectUtils.entries(this.buttonToSlotIndexMap).find(([_, index]) => index === slotIndex)?.[0];
+	}
+
+	private HideButtonItemGameObject(slotIndex: number): void {
+		const button = this.GetButtonFromSlotIndex(slotIndex);
+		if (button) {
+			button.transform.GetChild(0).gameObject.SetActive(false);
+			this.clickPickupBin.Add(() => {
+				this.ShowButtonItemGameObject(slotIndex);
+			});
+		}
+	}
+
+	private ShowButtonItemGameObject(slotIndex: number): void {
+		const button = this.GetButtonFromSlotIndex(slotIndex);
+		if (button) {
+			button.transform.GetChild(0).gameObject.SetActive(true);
+		}
 	}
 
 	/**
@@ -1129,5 +1110,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	protected OnDestroy(): void {
 		this.bin.Clean();
 		this.keybindBin.Clean();
+		this.CleanupClickPickupState();
 	}
 }

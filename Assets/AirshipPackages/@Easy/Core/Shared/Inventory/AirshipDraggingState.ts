@@ -12,6 +12,8 @@ export type DraggingState = {
 export type ClickPickupState = {
 	inventory: Inventory;
 	slot: number;
-	itemStack: ItemStack;
+	itemType: string;
+	amount: number;
 	clonedTransform: RectTransform;
+	halfStack: boolean;
 };
