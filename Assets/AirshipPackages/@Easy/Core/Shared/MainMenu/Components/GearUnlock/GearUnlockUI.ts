@@ -35,6 +35,8 @@ export default class GearUnlockUI extends AirshipBehaviour {
 		} else {
 			this.activeCanvas = this.landscapeCanvas;
 		}
+		this.landscapeCanvas.gameObject.SetActive(false);
+		this.portraitCanvas.gameObject.SetActive(false);
 
 		this.openTime = Time.time;
 		// this.wrapper.localScale = Vector3.one.mul(1.1);
@@ -70,6 +72,7 @@ export default class GearUnlockUI extends AirshipBehaviour {
 	}
 
 	public SetGear(gear: PlatformGear, title: string, message: string): void {
+		this.activeCanvas.gameObject.SetActive(true);
 		this.activeCanvas.Init(gear, title, message, this.renderTexture);
 
 		this.targetGearParent.gameObject.ClearChildren();

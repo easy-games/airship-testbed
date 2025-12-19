@@ -17,11 +17,21 @@ export default class GearUnlockCanvas extends AirshipBehaviour {
 
 		if (this.canvasGroup) {
 			this.canvasGroup.alpha = 0;
-			NativeTween.CanvasGroupAlpha(this.canvasGroup, 1, 0.3).SetEaseQuadOut();
+			NativeTween.CanvasGroupAlpha(this.canvasGroup, 1, 0.5).SetEaseQuadOut();
 		}
 
 		this.wrapper.anchoredPosition = new Vector2(0, -60);
-		NativeTween.AnchoredPositionY(this.wrapper, 0, 0.4).SetEaseQuadOut();
+		NativeTween.AnchoredPositionY(this.wrapper, 0, 0.5).SetEaseQuadOut();
+
+		task.spawn(() => {
+			VibrationManager.Play(VibrationFeedbackType.Heavy);
+			task.wait(0.2);
+			VibrationManager.Play(VibrationFeedbackType.Heavy);
+			task.wait(0.2);
+			VibrationManager.Play(VibrationFeedbackType.Heavy);
+			task.wait(0.2);
+			VibrationManager.Play(VibrationFeedbackType.Heavy);
+		});
 	}
 
 	override OnDestroy(): void {}
