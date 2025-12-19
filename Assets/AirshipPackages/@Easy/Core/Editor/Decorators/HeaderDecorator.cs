@@ -1,5 +1,7 @@
 ﻿#if AIRSHIP_EDITOR_API
+using System.Linq;
 using UnityEditor;
+using UnityEngine;
 
 [CustomAirshipDecorator("Header")]
 internal class HeaderDecorator : AirshipPropertyDecorator {
