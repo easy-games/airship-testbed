@@ -80,7 +80,7 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 		let i = 0;
 		for (const defaultColor of gear.customizationColors) {
 			if (customization) {
-                // See if we have a color saved for this key
+				// See if we have a color saved for this key
 				for (const selectedColor of customization.colors) {
 					if (selectedColor.key === defaultColor.key) {
 						defaultColor.value = ColorUtil.HexToColor(selectedColor.colorHex);
@@ -91,12 +91,12 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 			i++;
 		}
 
-        // Process variant options
-        if(gear.customizationVariantNames.size() > 0) {
-            // See if we have a saved varient index
-            const currentIndex = customization?.variant??0;
-            this.SpawnVariantOptions(currentIndex, gear.customizationVariantNames);
-        }
+		// Process variant options
+		if (gear.customizationVariantNames.size() > 0) {
+			// See if we have a saved varient index
+			const currentIndex = customization?.variant ?? 0;
+			this.SpawnVariantOptions(currentIndex, gear.customizationVariantNames);
+		}
 
 		this.OnToggle.Fire(true);
 	}
@@ -124,13 +124,14 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 			}),
 		);
 
-        // Listen to color picker selections
+		// Listen to color picker selections
 		this.openBin.Add(
 			options.onClickActiveColor.Connect((option) => {
 				this.colorPickerBin.Clean();
 				this.colorPickerBin.Add(
 					this.colorPicker.OnNewColor.Connect((newColor, newHex) => {
 						this.SelectColorOption(option, newColor, newHex, colorKey, colorIndex);
+						this.menu.Dirty();
 					}),
 				);
 				this.colorPickerBin.Add(
@@ -160,27 +161,28 @@ export default class AvatarCustomizationPanel extends AirshipBehaviour {
 		option.SetActiveColor(newColor);
 	}
 
-    private SpawnVariantOptions(currentIndex: number, variantNames: string[]) {
+	private SpawnVariantOptions(currentIndex: number, variantNames: string[]) {
 		// Create the color option sub panel
 		const options = Instantiate(
 			this.variantOptionTemplate,
 			this.optionsHolder,
 		).GetAirshipComponent<AvatarCustomizationOption_Variant>()!;
-        options.Init(currentIndex, variantNames.size());
-        options.OnSelect.Connect((variantIndex) => {
-            this.SelectVariantOption(variantIndex);
-        })
-    }
+		options.Init(currentIndex, variantNames.size());
+		options.OnSelect.Connect((variantIndex) => {
+			this.SelectVariantOption(variantIndex);
+		});
+	}
 
-    private SelectVariantOption(variantIndex: number) {
+	private SelectVariantOption(variantIndex: number) {
 		for (const template of this.gear.accessoryPrefabs) {
 			if (template) {
-                this.accessoryBuilder.SetCustomVariant(template.accessorySlot, variantIndex);
+				this.accessoryBuilder.SetCustomVariant(template.accessorySlot, variantIndex);
 			}
 		}
-    }
+	}
 
 	public Close() {
+		this.colorPicker.Close();
 		this.openBin.Clean();
 		NativeTween.AnchoredPositionY(this.transform, -this.heightOffset, 0.5).SetEaseExpoIn();
 		this.OnToggle.Fire(false);

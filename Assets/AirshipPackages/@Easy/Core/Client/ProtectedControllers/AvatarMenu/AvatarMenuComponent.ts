@@ -888,6 +888,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private Revert() {
 		this.LoadCurrentOutfit().expect();
+		this.avatarCustomizationPanel.Close();
 	}
 
 	private SlideSaveButton(up: boolean) {

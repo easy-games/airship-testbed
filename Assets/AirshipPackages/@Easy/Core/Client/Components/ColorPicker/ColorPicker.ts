@@ -138,6 +138,7 @@ export default class ColorPicker extends AirshipBehaviour {
 			this.colorImage.rectTransform,
 			screenPosition,
 		);
+
 		if (hit) {
 			// Normalize the local coordinates to UV (0–1)
 			const rect = this.colorImage.rectTransform.rect;
