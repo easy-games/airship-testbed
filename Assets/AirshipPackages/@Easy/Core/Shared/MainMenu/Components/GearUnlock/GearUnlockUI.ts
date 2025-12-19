@@ -25,6 +25,7 @@ export default class GearUnlockUI extends AirshipBehaviour {
 	@Header("Dummy")
 	public dummy: Transform;
 	public dummyBodyMesh: SkinnedMeshRenderer;
+	public dummyAccessoryBuilder: AccessoryBuilder;
 
 	private targetGearCenter = Vector3.zero;
 	private bin = new Bin();
@@ -81,14 +82,19 @@ export default class GearUnlockUI extends AirshipBehaviour {
 
 		this.rawImage.enabled = true;
 		this.targetGearParent.gameObject.ClearChildren();
-		const acc = Instantiate(gear.accessoryPrefabs[0], this.targetGearParent);
-		acc.gameObject.SetLayerRecursive(17);
-		acc.transform.localPosition = Vector3.zero;
-		acc.transform.localRotation = Quaternion.Euler(-90, 70, 0);
-		this.accessory = acc;
+
+		const activeAccessory = this.dummyAccessoryBuilder.Add(gear.accessoryPrefabs[0]);
+		this.dummyAccessoryBuilder.UpdateCombinedMesh();
+		this.accessory = activeAccessory!.AccessoryComponent;
+
+		// const acc = Instantiate(gear.accessoryPrefabs[0], this.targetGearParent);
+		// acc.gameObject.SetLayerRecursive(17);
+		// acc.transform.localPosition = Vector3.zero;
+		// acc.transform.localRotation = Quaternion.Euler(-90, 70, 0);
+		// this.accessory = acc;
 
 		// Starting rotation
-		this.targetGearParent.localRotation = Quaternion.Euler(0, 180, 0);
+		// this.targetGearParent.localRotation = Quaternion.Euler(0, 180, 0);
 		this.dummy.localRotation = Quaternion.Euler(0, 250, 0);
 
 		const meshRenderers = this.accessory.gameObject.GetComponentsInChildren<MeshRenderer>();
@@ -109,8 +115,8 @@ export default class GearUnlockUI extends AirshipBehaviour {
 			this.targetGearCenter = skinnedMeshRenderers[0].bounds.center;
 
 			for (let smr of skinnedMeshRenderers) {
-				smr.rootBone = this.dummyBodyMesh.rootBone;
-				smr.bones = this.dummyBodyMesh.bones;
+				// smr.rootBone = this.dummyBodyMesh.rootBone;
+				// smr.bones = this.dummyBodyMesh.bones;
 
 				for (let mat of smr.sharedMaterials) {
 					if (!mat.shader.isSupported) {
@@ -129,7 +135,7 @@ export default class GearUnlockUI extends AirshipBehaviour {
 		if (timeSinceStart <= 1) {
 			zOffset = TweenEasingFunction.OutQuad(timeSinceStart, 1, -1, 1);
 		}
-		cameraTransform.position = this.targetGearCenter.add(new Vector3(0, 0, -3.5 - zOffset));
+		cameraTransform.position = this.targetGearCenter.add(new Vector3(0, 1, -4 - zOffset));
 		cameraTransform.LookAt(this.targetGearCenter);
 
 		// Static Renderers
