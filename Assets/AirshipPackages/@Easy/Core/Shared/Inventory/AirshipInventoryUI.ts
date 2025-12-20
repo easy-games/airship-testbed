@@ -364,10 +364,11 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	 * @param sourceButton The button to clone the visual from
 	 * @returns The RectTransform of the cloned visual
 	 */
-	private CreatePickupVisual(sourceButton: Button): RectTransform {
+	private CreatePickupVisual(sourceButton: Button): { rect: RectTransform; itemAmountText: TMP_Text | undefined } {
 		this.CleanupClickPickupState();
 		const visual = sourceButton.transform.GetChild(0).gameObject;
 		const clone = Object.Instantiate(visual, this.backpackCanvas.transform);
+		const itemAmount = clone.transform.GetChild(1).GetComponent<TMP_Text>();
 
 		clone.transform.SetAsLastSibling();
 		const cloneRect = clone.GetComponent<RectTransform>()!;
@@ -384,7 +385,39 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			}),
 		);
 
-		return cloneRect;
+		return { rect: cloneRect, itemAmountText: itemAmount };
+	}
+
+	private UpdatePickupAmount(newAmount: number): void {
+		if (!this.clickPickupState) return;
+
+		this.clickPickupState.amount = newAmount;
+
+		if (this.clickPickupState.itemAmountText) {
+			this.clickPickupState.itemAmountText.enabled = true;
+			if (newAmount > 1) {
+				this.clickPickupState.itemAmountText.text = newAmount + "";
+			} else {
+				this.clickPickupState.itemAmountText.text = "";
+			}
+		}
+	}
+
+	private SetSlotTileTextComponent(inventory: Inventory, slotIndex: number, amount: number): void {
+		// Get the tile from the appropriate map based on which inventory we're in
+		let tile: GameObject | undefined;
+		if (inventory === Airship.Inventory.localInventory) {
+			tile = this.slotToBackpackTileMap.get(slotIndex);
+		} else if (inventory === this.externalInventory) {
+			tile = this.slotToExternalInventoryTileMap.get(slotIndex);
+		}
+
+		const tileComponent = tile?.GetAirshipComponent<AirshipInventoryTile>();
+		if (!tileComponent) {
+			warn("Missing AirshipInventoryTile component when setting slot tile text");
+			return;
+		}
+		tileComponent.itemAmount.text = tostring(amount);
 	}
 
 	private UpdateTile(tile: GameObject, slot: number, itemStack: ItemStack | undefined): void {
@@ -438,11 +471,18 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		}
 	}
 
+	// TODO: When back from break
+	/** Fix image flickering
+	 * Add drag back so we can throw items out of the inventory
+	 * Add Dragging held item to split multiple stacks
+	 * Double check that everything is synced server/client
+	 * Double check if things are working with external inventory
+	 */
 	private BindDragEventsOnButton(button: Button, inventory: Inventory, slotIndex: number): EngineEventConnection[] {
 		return [
 			CanvasAPI.OnPointerEvent(button.gameObject, (direction, pointerButton) => {
 				if (!this.IsBackpackShown()) return;
-				if (direction !== PointerDirection.UP) return;
+				if (direction !== PointerDirection.DOWN) return;
 
 				const targetSlotIndex = this.GetSlotIndexFromButton(button);
 				if (targetSlotIndex === undefined) return;
@@ -465,7 +505,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 									amountToAdd,
 								);
 
-								this.clickPickupState.amount -= amountToAdd;
+								this.UpdatePickupAmount(this.clickPickupState.amount - amountToAdd);
 
 								if (this.clickPickupState.halfStack) {
 									this.ShowButtonItemGameObject(this.clickPickupState.slot);
@@ -476,7 +516,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 								}
 							} else {
 								const clonedPickupState = this.clickPickupState;
-								const newCloneRect = this.CreatePickupVisual(button);
+								const { rect: newCloneRect, itemAmountText } = this.CreatePickupVisual(button);
 
 								Airship.Inventory.MoveToSlot(
 									inventory,
@@ -500,6 +540,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 									itemType: existingItemStack.itemType,
 									amount: existingItemStack.amount,
 									clonedTransform: newCloneRect,
+									itemAmountText,
 									halfStack: false,
 								};
 							}
@@ -527,7 +568,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 										targetSlotIndex,
 										1,
 									);
-									this.clickPickupState.amount -= 1;
+									this.UpdatePickupAmount(this.clickPickupState.amount - 1);
 
 									if (this.clickPickupState.halfStack) {
 										this.ShowButtonItemGameObject(this.clickPickupState.slot);
@@ -539,7 +580,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 								}
 							} else {
 								const clonedPickupState = this.clickPickupState;
-								const newCloneRect = this.CreatePickupVisual(button);
+								const { rect: newCloneRect, itemAmountText } = this.CreatePickupVisual(button);
 
 								Airship.Inventory.MoveToSlot(
 									inventory,
@@ -562,21 +603,36 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 									itemType: existingItemStack.itemType,
 									amount: existingItemStack.amount,
 									clonedTransform: newCloneRect,
+									itemAmountText,
 									halfStack: false,
 								};
 							}
+						} else if (existingItemStack && targetSlotIndex === this.clickPickupState.slot) {
+							// Right-clicking the same slot - place 1 item and decrement pickup
+							this.ShowButtonItemGameObject(this.clickPickupState.slot);
+							this.UpdatePickupAmount(this.clickPickupState.amount - 1);
+
+							this.SetSlotTileTextComponent(
+								inventory,
+								this.clickPickupState.slot,
+								existingItemStack.amount - this.clickPickupState.amount,
+							);
 						} else {
-							// Create a new item stack with 1 and decrement current pickup by 1
-							const singleItemStack = new ItemStack(this.clickPickupState.itemType, 1);
+							// Right-clicking empty slot or same slot - place 1 item and decrement pickup
 							Airship.Inventory.MoveToSlot(
 								inventory,
 								this.clickPickupState.slot,
 								inventory,
 								targetSlotIndex,
-								singleItemStack.amount,
+								1,
 							);
-							this.clickPickupState.amount -= 1;
-							this.ShowButtonItemGameObject(this.clickPickupState.slot);
+							this.UpdatePickupAmount(this.clickPickupState.amount - 1);
+
+							// Only show the original slot if it's a half stack (still has items)
+							// If it's a full stack pickup, the slot is empty so keep it hidden
+							if (this.clickPickupState.halfStack) {
+								this.ShowButtonItemGameObject(this.clickPickupState.slot);
+							}
 
 							if (this.clickPickupState.amount <= 0) {
 								this.CleanupClickPickupState();
@@ -599,7 +655,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 								return;
 							}
 
-							const cloneRect = this.CreatePickupVisual(button);
+							const { rect: cloneRect, itemAmountText } = this.CreatePickupVisual(button);
 							this.HideButtonItemGameObject(slotIndex);
 
 							this.clickPickupState = {
@@ -608,6 +664,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 								itemType: existingItemStack.itemType,
 								amount: existingItemStack.amount,
 								clonedTransform: cloneRect,
+								itemAmountText,
 								halfStack: false,
 							};
 						} else if (pointerButton === PointerButton.RIGHT) {
@@ -617,16 +674,22 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							if (clickPickupEvent.IsCancelled()) {
 								return;
 							}
-							const cloneRect = this.CreatePickupVisual(button);
+							const halfAmount = math.ceil(existingItemStack.amount / 2);
+							const { rect: cloneRect, itemAmountText } = this.CreatePickupVisual(button);
 
 							this.clickPickupState = {
 								inventory,
 								slot: slotIndex,
 								itemType: existingItemStack.itemType,
-								amount: math.ceil(existingItemStack.amount / 2),
+								amount: halfAmount,
 								clonedTransform: cloneRect,
+								itemAmountText,
 								halfStack: true,
 							};
+							this.SetSlotTileTextComponent(inventory, slotIndex, halfAmount);
+
+							// Update the cloned visual's amount text to show the half amount
+							this.UpdatePickupAmount(halfAmount);
 						}
 					}
 				}
