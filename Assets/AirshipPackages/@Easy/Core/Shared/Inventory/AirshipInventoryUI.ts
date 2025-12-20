@@ -473,6 +473,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 	// TODO: When back from break
 	/** Fix image flickering
+	 * Fix the case where we split stack in half -> swap -> Click an empty slot
 	 * Add drag back so we can throw items out of the inventory
 	 * Add Dragging held item to split multiple stacks
 	 * Double check that everything is synced server/client
