@@ -10,15 +10,12 @@ import { AirshipPartyMode } from "@Easy/Core/Shared/Airship/Types/AirshipParty";
 import { AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import {
-	GameCoordinatorClient,
-} from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { CanvasAPI, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { CanvasAPI, HoverState, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
@@ -33,6 +30,7 @@ export default class FriendCard extends AirshipBehaviour {
 	public statusIndicator: Image;
 	public profileImage: RawImage;
 	public canvasGroup: CanvasGroup;
+	public hoverBG: GameObject;
 
 	@NonSerialized() public canvas?: Canvas;
 	@NonSerialized() public userId!: string;
@@ -133,10 +131,6 @@ export default class FriendCard extends AirshipBehaviour {
 					: undefined,
 			);
 		};
-
-		CoreUI.SetupButton(this.gameObject, {
-			noHoverSound: true,
-		});
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnPointerEvent(this.gameObject, (direction, button) => {
@@ -299,6 +293,16 @@ export default class FriendCard extends AirshipBehaviour {
 						Object.Destroy(cloneObject);
 						cloneObject = undefined;
 						cloneRect = undefined;
+					}
+				}),
+			);
+
+			this.bin.AddEngineEventConnection(
+				CanvasAPI.OnHoverEvent(this.gameObject, (hov, data) => {
+					if (hov === HoverState.ENTER) {
+						this.hoverBG.SetActive(true);
+					} else {
+						this.hoverBG.SetActive(false);
 					}
 				}),
 			);
