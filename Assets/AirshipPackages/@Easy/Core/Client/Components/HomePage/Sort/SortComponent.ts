@@ -36,21 +36,17 @@ export default class SortComponent extends AirshipBehaviour {
 		const mainMenu = Dependency<MainMenuSingleton>();
 		this.bin.Add(
 			mainMenu.ObserveScreenSize((sizeType, size) => {
-				if (sizeType === "sm") {
-					if (Game.IsPortrait()) {
-						this.gridLayoutGroup.cellSize = new Vector2(size.x * 0.97, size.x * 0.97 * 0.56 + 54);
-						this.gridLayoutGroup.constraintCount = 1;
-						this.titleText.GetComponent<TMP_Text>()!.margin = new Vector4(8, 0, 0, 0);
-						this.gridLayoutGroup.padding.left = 8;
-						this.gridLayoutGroup.padding.right = 4;
+				const parentTransform = this.transform.parent as RectTransform;
+				const parentWidth = parentTransform.sizeDelta.x;
 
-						//
-					} else {
-						this.gridLayoutGroup.cellSize = new Vector2(size.x * 0.28, size.x * 0.28 * 0.56 + 54);
-						this.gridLayoutGroup.constraintCount = 2;
-					}
+				if (Game.IsPortrait()) {
+					this.gridLayoutGroup.cellSize = new Vector2(size.x * 0.97, size.x * 0.97 * 0.56 + 54);
+					this.gridLayoutGroup.constraintCount = 1;
+					this.titleText.GetComponent<TMP_Text>()!.margin = new Vector4(8, 0, 0, 0);
+					this.gridLayoutGroup.padding.left = 8;
+					this.gridLayoutGroup.padding.right = 4;
 				} else {
-					this.gridLayoutGroup.cellSize = new Vector2(370, 270);
+					this.gridLayoutGroup.cellSize = new Vector2(parentWidth * 0.3, parentWidth * 0.3 * 0.56 + 54);
 					this.gridLayoutGroup.constraintCount = 3;
 				}
 				Bridge.UpdateLayout(this.content, true);
