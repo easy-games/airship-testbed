@@ -17,6 +17,7 @@ export default class Navbar extends AirshipBehaviour {
 	public searchWrapper: RectTransform;
 	public smallSearchBtn: Button;
 	public logoBtn: RectTransform;
+	public account: GameObject;
 
 	private bin = new Bin();
 
@@ -66,8 +67,10 @@ export default class Navbar extends AirshipBehaviour {
 					Dependency<MainMenuNavbarController>().FocusSearchbar();
 				}),
 			);
+			this.account.SetActive(true);
 		} else {
 			this.smallSearchBtn.gameObject.SetActive(false);
+			this.account.SetActive(false);
 		}
 
 		// this.quitGameBtn.gameObject.SetActive(Screen.fullScreen);

@@ -120,7 +120,6 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.navbarContentWrapper.offsetMax = new Vector2(0, 65);
 			this.navbarContentWrapper.offsetMin = new Vector2(0, 0);
 			this.navbarContentWrapper.anchoredPosition = new Vector2(0, 0);
-			this.navbarRight.offsetMin = new Vector2(-250, this.navbarRight.offsetMin.y);
 
 			this.mobileNav.gameObject.SetActive(true);
 			this.pages.offsetMin = new Vector2(0, this.pages.offsetMin.y);

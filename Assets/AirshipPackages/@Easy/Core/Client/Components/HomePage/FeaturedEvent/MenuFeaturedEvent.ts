@@ -218,9 +218,16 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 	override Start(): void {
 		const rect = this.transform as RectTransform;
 		const gameImgRect = this.gameThumbnailImg.transform as RectTransform;
-		this.rightSection.sizeDelta = this.rightSection.sizeDelta.WithX(
-			rect.sizeDelta.x - gameImgRect.sizeDelta.x - 20,
-		);
+		if (Game.IsLandscape()) {
+			this.rightSection.sizeDelta = this.rightSection.sizeDelta.WithX(
+				rect.sizeDelta.x - gameImgRect.sizeDelta.x - 20,
+			);
+		} else {
+			this.rightSection.anchorMin = Vector2.zero;
+			this.rightSection.anchorMax = Vector2.one;
+			this.rightSection.offsetMax = Vector2.zero;
+			this.rightSection.offsetMin = Vector2.zero;
+		}
 	}
 
 	override OnDestroy(): void {}
