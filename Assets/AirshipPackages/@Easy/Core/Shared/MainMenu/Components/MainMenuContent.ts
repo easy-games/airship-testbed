@@ -138,14 +138,14 @@ export default class MainMenuContent extends AirshipBehaviour {
 				.some((v) => v.hidden);
 
 			if (this.mainMenu.sizeType === "lg") {
-				this.contentWrapper.anchorMin = new Vector2(0.5, 1);
-				this.contentWrapper.anchorMax = new Vector2(0.5, 1);
-				this.contentWrapper.pivot = new Vector2(0.5, 1);
-				this.contentWrapper.anchoredPosition = new Vector2(socialMenuHidden ? 0 : -150, -67);
-				this.contentWrapper.sizeDelta = new Vector2(
-					math.min(screenSize.x - 400, 1050) + (socialMenuHidden ? 300 : 0),
-					screenSize.y - 67,
-				);
+				// this.contentWrapper.anchorMin = new Vector2(0.5, 1);
+				// this.contentWrapper.anchorMax = new Vector2(0.5, 1);
+				// this.contentWrapper.pivot = new Vector2(0.5, 1);
+				// this.contentWrapper.anchoredPosition = new Vector2(-50, 0);
+				// this.contentWrapper.sizeDelta = new Vector2(
+				// 	math.min(screenSize.x - 400, 1050) + (socialMenuHidden ? 300 : 0),
+				// 	screenSize.y - 67,
+				// );
 
 				this.navbarContentWrapper.sizeDelta = new Vector2(
 					math.min(screenSize.x - 400, 1050) + 40 + 301,
@@ -156,14 +156,14 @@ export default class MainMenuContent extends AirshipBehaviour {
 				this.navbarContentWrapper.pivot = new Vector2(0.5, 1);
 				this.navbarContentWrapper.anchoredPosition = new Vector2(20, 0);
 			} else {
-				this.contentWrapper.anchorMin = new Vector2(0, 1);
-				this.contentWrapper.anchorMax = new Vector2(0, 1);
-				this.contentWrapper.pivot = new Vector2(0, 1);
-				this.contentWrapper.anchoredPosition = new Vector2(Screen.safeArea.yMin, -67);
-				this.contentWrapper.sizeDelta = new Vector2(
-					screenSize.x + (socialMenuHidden ? -100 : -360) - notchHeight,
-					screenSize.y - 67,
-				);
+				// this.contentWrapper.anchorMin = new Vector2(0, 1);
+				// this.contentWrapper.anchorMax = new Vector2(0, 1);
+				// this.contentWrapper.pivot = new Vector2(0, 1);
+				// this.contentWrapper.anchoredPosition = new Vector2(Screen.safeArea.yMin, -67);
+				// this.contentWrapper.sizeDelta = new Vector2(
+				// 	screenSize.x + (socialMenuHidden ? -100 : -360) - notchHeight,
+				// 	screenSize.y - 67,
+				// );
 
 				this.navbarContentWrapper.sizeDelta = new Vector2(
 					this.contentWrapper.sizeDelta.x + (socialMenuHidden ? 81 : 341) - 110,

@@ -285,7 +285,7 @@ MonoBehaviour:
   m_MinHeight: -1
   m_PreferredWidth: -1
   m_PreferredHeight: -1
-  m_FlexibleWidth: 6
+  m_FlexibleWidth: 1
   m_FlexibleHeight: 1
   m_LayoutPriority: 1
 --- !u!1 &1153255547513482396
@@ -332,7 +332,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1050, y: 300}
+  m_SizeDelta: {x: 1200, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7660995307397550965
 MonoBehaviour:
@@ -1105,11 +1105,11 @@ GameObject:
   m_Component:
   - component: {fileID: 6467558694805406765}
   - component: {fileID: 1208068045483775999}
-  - component: {fileID: 185266327849562206}
   - component: {fileID: 2136831078803038783}
   - component: {fileID: 8521001614007481827}
   - component: {fileID: 7510780652970768913}
   - component: {fileID: 7629355882213748077}
+  - component: {fileID: 3164544473224778734}
   m_Layer: 5
   m_Name: Game Thumbnail
   m_TagString: Untagged
@@ -1131,10 +1131,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1339571171801493449}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 254.0909, y: -150}
-  m_SizeDelta: {x: 468.1818, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 20, y: 0}
+  m_SizeDelta: {x: 533.3333, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1208068045483775999
 CanvasRenderer:
@@ -1144,20 +1144,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3863671386913992655}
   m_CullTransparentMesh: 1
---- !u!114 &185266327849562206
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3863671386913992655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 1
-  m_AspectRatio: 1.7777778
 --- !u!114 &2136831078803038783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1246,9 +1232,23 @@ MonoBehaviour:
   m_MinHeight: -1
   m_PreferredWidth: -1
   m_PreferredHeight: -1
-  m_FlexibleWidth: 5
-  m_FlexibleHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: 1
   m_LayoutPriority: 1
+--- !u!114 &3164544473224778734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3863671386913992655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 2
+  m_AspectRatio: 1.7777778
 --- !u!1 &4096714101871987355
 GameObject:
   m_ObjectHideFlags: 0

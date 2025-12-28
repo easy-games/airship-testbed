@@ -335,8 +335,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 54.5, y: 10.9}
-  m_SizeDelta: {x: 167.47, y: 23.9025}
+  m_AnchoredPosition: {x: 60.3, y: 10.9}
+  m_SizeDelta: {x: 207.7747, y: 23.9025}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &5720486691167257079
 CanvasRenderer:
@@ -393,8 +393,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 19
+  m_fontSizeBase: 19
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -623,7 +623,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 114.51437, y: -28.197021}
-  m_SizeDelta: {x: 199.0287, y: 35}
+  m_SizeDelta: {x: 199.0287, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6678656062570326313
 MonoBehaviour:
@@ -1111,8 +1111,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 54.499954, y: -9.443489}
-  m_SizeDelta: {x: 167.4665, y: 16.7845}
+  m_AnchoredPosition: {x: 60.300003, y: -10.9826}
+  m_SizeDelta: {x: 193.3767, y: 19.8626}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &2599687432440366885
 CanvasRenderer:
@@ -1169,8 +1169,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 13
-  m_fontSizeBase: 13
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1341,7 +1341,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 14.200012, y: 0}
-  m_SizeDelta: {x: 34, y: 34}
+  m_SizeDelta: {x: 38, y: 38}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &2317602340220816864
 CanvasRenderer:
@@ -1363,7 +1363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec18a89aa0caf4669ae44f413c827581, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 17
+  radius: 19
   image: {fileID: 2327042405372721676}
 --- !u!114 &2327042405372721676
 MonoBehaviour:
