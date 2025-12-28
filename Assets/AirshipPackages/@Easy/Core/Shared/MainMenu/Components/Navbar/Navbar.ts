@@ -27,6 +27,12 @@ export default class Navbar extends AirshipBehaviour {
 			return;
 		}
 
+		if (Game.IsMobile()) {
+			this.myGamesBtn.gameObject.SetActive(false);
+		} else {
+			this.myGamesBtn.gameObject.SetActive(true);
+		}
+
 		const rect = this.transform as RectTransform;
 		const mainMenu = Dependency<MainMenuSingleton>();
 		this.bin.Add(
@@ -47,12 +53,10 @@ export default class Navbar extends AirshipBehaviour {
 					rect.offsetMax = new Vector2(-15, rect.offsetMax.y);
 
 					if (Game.IsInGame() && st === "sm") {
-						this.myGamesBtn.gameObject.SetActive(false);
 						this.searchWrapper.gameObject.SetActive(false);
 						this.homeBtn.gameObject.SetActive(false);
 						this.runningGameBtn.gameObject.SetActive(false);
 					} else {
-						this.myGamesBtn.gameObject.SetActive(true);
 					}
 				}
 			}),
