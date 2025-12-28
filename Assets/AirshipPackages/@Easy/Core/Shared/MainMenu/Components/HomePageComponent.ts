@@ -224,6 +224,11 @@ export default class HomePageComponent extends MainMenuPageComponent {
 
 					return true;
 				});
+				if (sortId === SortId.Popular) {
+					games = games.sort((a, b) => {
+						return a.liveStats.playerCount > b.liveStats.playerCount;
+					});
+				}
 
 				sortComponent!.SetGames(games, indexCounter);
 				indexCounter += games.size();
