@@ -50,7 +50,7 @@ export default class SortComponent extends AirshipBehaviour {
 						this.gridLayoutGroup.constraintCount = 2;
 					}
 				} else {
-					this.gridLayoutGroup.cellSize = new Vector2(320, 234);
+					this.gridLayoutGroup.cellSize = new Vector2(370, 270);
 					this.gridLayoutGroup.constraintCount = 3;
 				}
 				Bridge.UpdateLayout(this.content, true);

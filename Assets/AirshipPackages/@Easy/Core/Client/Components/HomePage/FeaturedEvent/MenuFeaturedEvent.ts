@@ -202,7 +202,8 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 
 		// Event BG
 		task.spawn(async () => {
-			const url = AirshipUrl.CDN + "/airship/Topology3.png";
+			// const url = AirshipUrl.CDN + "/airship/Topology3.png";
+			const url = "https://cdn.airship.gg/images/dabcaa58-99aa-4eda-9f25-8adff43fc3de";
 			const tex = await Protected.Cache.DownloadImage(url);
 			if (tex) {
 				this.eventImg.texture = tex;
