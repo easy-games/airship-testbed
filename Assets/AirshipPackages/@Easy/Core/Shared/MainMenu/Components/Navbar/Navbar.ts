@@ -58,7 +58,7 @@ export default class Navbar extends AirshipBehaviour {
 			}),
 		);
 
-		if (Game.IsMobile()) {
+		if (Game.IsPortrait()) {
 			// this.logoBtn.gameObject.SetActive(false);
 			this.searchWrapper.gameObject.SetActive(false);
 			this.smallSearchBtn.gameObject.SetActive(true);
@@ -68,6 +68,7 @@ export default class Navbar extends AirshipBehaviour {
 				}),
 			);
 			this.account.SetActive(true);
+			this.myGamesBtn.gameObject.SetActive(false);
 		} else {
 			this.smallSearchBtn.gameObject.SetActive(false);
 			this.account.SetActive(false);

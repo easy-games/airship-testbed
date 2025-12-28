@@ -9,6 +9,7 @@ import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";
 import { ChatColor } from "../../Util/ChatColor";
 import { SetInterval } from "../../Util/Timer";
+import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
@@ -17,8 +18,10 @@ export default class SocialMenu extends AirshipBehaviour {
 	public playerCountText!: TMP_Text;
 	public serverCountText!: TMP_Text;
 	public scrollRect: ScrollRect;
+	public roundedCorners: ImageWithIndependentRoundedCorners;
 
 	public verticalLayout: VerticalLayoutGroup;
+	public outline: UIOutline;
 
 	@Header("Lost Connection")
 	public lostConnectionNotice!: GameObject;
@@ -33,11 +36,23 @@ export default class SocialMenu extends AirshipBehaviour {
 		this.rectTransform = this.gameObject.GetComponent<RectTransform>()!;
 	}
 
+	protected OnEnable(): void {
+		if (Game.IsPortrait()) {
+			this.bin.Add(Dependency<MainMenuSingleton>().navbarModifier.Add({ hidden: true }));
+		}
+	}
+
 	override Start(): void {
-		if (Game.deviceType === AirshipDeviceType.Phone) {
-			// this.liveStats.gameObject.SetActive(false);
-			this.playerCountText.gameObject.SetActive(false);
-			this.serverCountText.transform.parent.GetComponent<LayoutElement>()!.preferredHeight = 19;
+		const rect = this.transform as RectTransform;
+		if (Game.IsPortrait()) {
+			rect.anchorMin = new Vector2(0, 0);
+			rect.anchorMax = new Vector2(1, 1);
+			rect.pivot = new Vector2(0.5, 1);
+			rect.offsetMin = new Vector2(0, 100);
+			rect.offsetMax = new Vector2(0, 50);
+			// this.roundedCorners.r = new Vector4(20, 20, 10, 10);
+			// this.roundedCorners.Refresh();
+			// this.outline.
 		}
 		if (Game.IsMobile()) {
 			this.scrollRect.movementType = MovementType.Elastic;
@@ -120,4 +135,8 @@ export default class SocialMenu extends AirshipBehaviour {
 	}
 
 	override OnDestroy(): void {}
+
+	protected OnDisable(): void {
+		this.bin.Clean();
+	}
 }

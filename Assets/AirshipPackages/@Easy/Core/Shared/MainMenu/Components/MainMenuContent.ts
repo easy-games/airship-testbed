@@ -94,11 +94,6 @@ export default class MainMenuContent extends AirshipBehaviour {
 		if (Game.IsPortrait()) {
 			this.canvasScalar.matchWidthOrHeight = 1;
 			this.socialMenu.SetParent(this.friendsPage);
-			this.socialMenu.anchorMin = new Vector2(0, 0);
-			this.socialMenu.anchorMax = new Vector2(1, 1);
-			this.socialMenu.pivot = new Vector2(0.5, 1);
-			this.socialMenu.offsetMin = new Vector2(0, 0);
-			this.socialMenu.offsetMax = new Vector2(0, 0);
 			this.socialMenu.gameObject.SetActive(true);
 
 			this.contentWrapper.sizeDelta = new Vector2(screenSize.x, screenSize.y - navigationHeight);
