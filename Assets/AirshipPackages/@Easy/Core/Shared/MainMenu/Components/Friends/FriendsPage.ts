@@ -21,8 +21,6 @@ export default class FriendsPage extends MainMenuPageComponent {
 				// }
 			}),
 		);
-		rect.anchoredPosition = new Vector2(0, -50);
-		NativeTween.AnchoredPositionY(rect, 0, 0.2).SetEaseQuadOut();
 
 		if (Game.IsPortrait()) {
 			this.bin.Add(Dependency<MainMenuSingleton>().navbarModifier.Add({ hidden: true }));

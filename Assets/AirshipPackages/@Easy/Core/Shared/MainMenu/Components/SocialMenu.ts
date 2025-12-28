@@ -9,7 +9,6 @@ import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";
 import { ChatColor } from "../../Util/ChatColor";
 import { SetInterval } from "../../Util/Timer";
-import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
@@ -36,11 +35,7 @@ export default class SocialMenu extends AirshipBehaviour {
 		this.rectTransform = this.gameObject.GetComponent<RectTransform>()!;
 	}
 
-	protected OnEnable(): void {
-		if (Game.IsPortrait()) {
-			this.bin.Add(Dependency<MainMenuSingleton>().navbarModifier.Add({ hidden: true }));
-		}
-	}
+	protected OnEnable(): void {}
 
 	override Start(): void {
 		const rect = this.transform as RectTransform;
@@ -48,8 +43,8 @@ export default class SocialMenu extends AirshipBehaviour {
 			rect.anchorMin = new Vector2(0, 0);
 			rect.anchorMax = new Vector2(1, 1);
 			rect.pivot = new Vector2(0.5, 1);
-			rect.offsetMin = new Vector2(0, 100);
-			rect.offsetMax = new Vector2(0, 50);
+			rect.offsetMin = new Vector2(0, 116);
+			rect.offsetMax = new Vector2(0, 40);
 			// this.roundedCorners.r = new Vector4(20, 20, 10, 10);
 			// this.roundedCorners.Refresh();
 			// this.outline.
