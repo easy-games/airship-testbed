@@ -15,6 +15,6 @@ export type ClickPickupState = {
 	itemType: string;
 	amount: number;
 	clonedTransform: RectTransform;
-	itemAmountText?: TMP_Text;
 	halfStack: boolean;
+	itemAmountText?: TMP_Text;
 };
