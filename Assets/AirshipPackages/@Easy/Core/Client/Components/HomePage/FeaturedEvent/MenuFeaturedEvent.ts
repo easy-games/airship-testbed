@@ -64,7 +64,7 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 		}
 
 		if (eventCache) {
-			this.LoadGameImages(eventCache);
+			// this.LoadGameImages(eventCache);
 		}
 		// this.LoadPopoutImages();
 
