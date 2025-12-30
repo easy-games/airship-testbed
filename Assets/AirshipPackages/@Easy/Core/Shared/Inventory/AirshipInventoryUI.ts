@@ -492,7 +492,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 								const amountToAdd = math.min(spaceAvailable, this.clickPickupState.amount);
 
 								Airship.Inventory.MoveToSlot(
-									inventory,
+									this.clickPickupState.inventory,
 									DESIGNATED_PICKUP_SLOT,
 									inventory,
 									targetSlotIndex,
@@ -507,22 +507,41 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							} else {
 								// If the item type is different, we need to swap the stacks
 								const originalAmount = this.clickPickupState.amount;
+								const swappedItemType = existingItemStack.itemType;
+								const swappedAmount = existingItemStack.amount;
+								const localInventory = Airship.Inventory.localInventory;
 								const { rect: newCloneRect, itemAmountText } = this.CreatePickupVisual(button);
 								
 								Airship.Inventory.MoveToSlot(
-									inventory,
+									this.clickPickupState.inventory,
 									DESIGNATED_PICKUP_SLOT,
 									inventory,
-									
 									targetSlotIndex,
 									originalAmount,
 								);
 
+								if (localInventory) {
+									if (this.clickPickupState.inventory !== localInventory) {
+										// Pickup was from external inventory, swapped item is in external's DESIGNATED_PICKUP_SLOT
+										// Move it to local inventory's DESIGNATED_PICKUP_SLOT
+										const swappedItem = this.clickPickupState.inventory.GetItem(DESIGNATED_PICKUP_SLOT);
+										if (swappedItem) {
+											Airship.Inventory.MoveToSlot(
+												this.clickPickupState.inventory,
+												DESIGNATED_PICKUP_SLOT,
+												localInventory,
+												DESIGNATED_PICKUP_SLOT,
+												swappedItem.amount,
+											);
+										}
+									}
+								}
+
 								this.clickPickupState = {
-									inventory,
-									slot: targetSlotIndex,
-									itemType: existingItemStack.itemType,
-									amount: existingItemStack.amount,
+									inventory: localInventory || this.clickPickupState.inventory, // Use local inventory for the swapped item
+									slot: DESIGNATED_PICKUP_SLOT, // The swapped item is in the local inventory's DESIGNATED_PICKUP_SLOT (pickup state)
+									itemType: swappedItemType,
+									amount: swappedAmount,
 									clonedTransform: newCloneRect,
 									itemAmountText: itemAmountText,
 									swapStack: true,
@@ -531,7 +550,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 						} else {
 							// Empty slot - place the entire picked-up item into the slot and clear pickup state
 							Airship.Inventory.MoveToSlot(
-								inventory,
+								this.clickPickupState.inventory,
 								DESIGNATED_PICKUP_SLOT,
 								inventory,
 								targetSlotIndex,
@@ -540,13 +559,13 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							this.CleanupClickPickupState();
 						}
 					} else if (pointerButton === PointerButton.RIGHT) {
-						if (existingItemStack && (targetSlotIndex !== this.clickPickupState.slot || this.clickPickupState.swapStack)) {
+						if (existingItemStack && (targetSlotIndex !== this.clickPickupState.slot || this.clickPickupState.swapStack || inventory !== this.clickPickupState.inventory)) {
 							// Slot has an item - check if we can merge then decrement by 1
 							if (existingItemStack.itemType === this.clickPickupState.itemType) {
 								const maxStackSize = existingItemStack.GetMaxStackSize();
 								if (existingItemStack.amount < maxStackSize) {
 									Airship.Inventory.MoveToSlot(
-										inventory,
+										this.clickPickupState.inventory,
 										DESIGNATED_PICKUP_SLOT,
 										inventory,
 										targetSlotIndex,
@@ -561,21 +580,39 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							} else {
 								// If the item type is different, we need to swap the stacks
 								const originalAmount = this.clickPickupState.amount;
+								const swappedItemType = existingItemStack.itemType;
+								const swappedAmount = existingItemStack.amount;
+								const localInventory = Airship.Inventory.localInventory;
 								const { rect: newCloneRect, itemAmountText } = this.CreatePickupVisual(button);
 								
 								Airship.Inventory.MoveToSlot(
-									inventory,
+									this.clickPickupState.inventory,
 									DESIGNATED_PICKUP_SLOT,
 									inventory,
 									targetSlotIndex,
 									originalAmount,
 								);
+								if (localInventory) {
+									if (this.clickPickupState.inventory !== localInventory) {
+										// Pickup was from external inventory, swapped item is in external's DESIGNATED_PICKUP_SLOT
+										const swappedItem = this.clickPickupState.inventory.GetItem(DESIGNATED_PICKUP_SLOT);
+										if (swappedItem) {
+											Airship.Inventory.MoveToSlot(
+												this.clickPickupState.inventory,
+												DESIGNATED_PICKUP_SLOT,
+												localInventory,
+												DESIGNATED_PICKUP_SLOT,
+												swappedItem.amount,
+											);
+										}
+									}
+								}
 
 								this.clickPickupState = {
-									inventory,
-									slot: targetSlotIndex,
-									itemType: existingItemStack.itemType,
-									amount: existingItemStack.amount,
+									inventory: localInventory || this.clickPickupState.inventory,
+									slot: DESIGNATED_PICKUP_SLOT,
+									itemType: swappedItemType,
+									amount: swappedAmount,
 									clonedTransform: newCloneRect,
 									itemAmountText: itemAmountText,
 									swapStack: true,
@@ -584,7 +621,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 						} else {
 							// Right-clicking empty slot
 							Airship.Inventory.MoveToSlot(
-								inventory,
+								this.clickPickupState.inventory,
 								DESIGNATED_PICKUP_SLOT,
 								inventory,
 								targetSlotIndex,
@@ -928,12 +965,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			bin.AddEngineEventConnection(
 				CanvasAPI.OnPointerEvent(tile.button.gameObject, (direction, button) => {
 					if (direction !== PointerDirection.UP || this.draggingState) return;
-
-					const openSlot = localInventory.GetFirstOpenSlot();
-					if (openSlot === -1) return;
-
-					const stack = inventory.GetItem(i);
-					if (!stack) return;
 
 					Airship.Inventory.onInventorySlotClicked.Fire(
 						new InventorySlotMouseClickEvent(inventory, i, button),
