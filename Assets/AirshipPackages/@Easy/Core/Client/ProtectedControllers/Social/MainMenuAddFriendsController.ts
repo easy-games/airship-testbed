@@ -19,8 +19,6 @@ export class MainMenuAddFriendsController {
 			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/Modals/AirshipAddFriendModal.prefab"),
 			Dependency<MainMenuController>().mainContentCanvas.transform,
 		);
-		AppManager.OpenModal(go, {
-			sortingOrderOffset: 100,
-		});
+		AppManager.OpenModal(go);
 	}
 }

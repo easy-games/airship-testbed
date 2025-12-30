@@ -1,10 +1,12 @@
 import { SocketController } from "@Easy/Core/Client/ProtectedControllers/Socket/SocketController";
+import { Asset } from "../../Asset";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
 import { Protected } from "../../Protected";
 import { GameCoordinatorClient } from "../../TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "../../TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "../../Util/AirshipUrl";
+import { AppManager } from "../../Util/AppManager";
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";
 import { ChatColor } from "../../Util/ChatColor";
@@ -18,6 +20,7 @@ export default class SocialMenu extends AirshipBehaviour {
 	public serverCountText!: TMP_Text;
 	public scrollRect: ScrollRect;
 	public roundedCorners: ImageWithIndependentRoundedCorners;
+	public addFriendBtn: Button;
 
 	public verticalLayout: VerticalLayoutGroup;
 	public outline: UIOutline;
@@ -64,6 +67,16 @@ export default class SocialMenu extends AirshipBehaviour {
 				},
 				true,
 			),
+		);
+
+		this.bin.Add(
+			this.addFriendBtn.onClick.Connect(() => {
+				VibrationManager.Play(VibrationFeedbackType.Heavy);
+				const go = Instantiate(
+					Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/Modals/AirshipAddFriendModal.prefab"),
+				);
+				AppManager.OpenModal(go);
+			}),
 		);
 
 		const socketController = Dependency<SocketController>();
@@ -129,9 +142,9 @@ export default class SocialMenu extends AirshipBehaviour {
 		}
 	}
 
-	override OnDestroy(): void {}
-
-	protected OnDisable(): void {
+	override OnDestroy(): void {
 		this.bin.Clean();
 	}
+
+	protected OnDisable(): void {}
 }

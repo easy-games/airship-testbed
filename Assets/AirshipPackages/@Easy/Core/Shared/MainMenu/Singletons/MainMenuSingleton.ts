@@ -142,9 +142,7 @@ export class MainMenuSingleton {
 		confirmModal.message.text = message;
 		confirmModal.confirmText.text = confirmButtonText;
 
-		AppManager.OpenModal(go, {
-			sortingOrderOffset: 100,
-		});
+		AppManager.OpenModal(go);
 
 		const result = confirmModal.onResult.Wait();
 		return result;

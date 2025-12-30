@@ -107,7 +107,7 @@ export class AppManager {
 		go: GameObject,
 		config?: {
 			noDarkBackground?: boolean;
-			sortingOrderOffset?: number;
+			// sortingOrderOffset?: number;
 		},
 		onClose?: () => void,
 	): void {
@@ -120,13 +120,19 @@ export class AppManager {
 			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/Modals/AirshipModalCanvas.prefab"),
 			Game.IsProtectedLuauContext() ? CoreRefs.protectedTransform : CoreRefs.rootTransform,
 		).GetComponent<Canvas>()!;
+
 		go.transform.SetParent(canvas.transform);
+
+		let sortOrderOffset = 0;
+		if (Game.IsProtectedLuauContext()) {
+			sortOrderOffset += 100;
+		}
 
 		/* Enable and cache. */
 		if (!config?.noDarkBackground) {
-			this.OpenDarkBackground(this.stack.size() + 10 + (config?.sortingOrderOffset ?? 0));
+			this.OpenDarkBackground(this.stack.size() + 10 + sortOrderOffset);
 		}
-		canvas.sortingOrder = this.stack.size() + 11 + (config?.sortingOrderOffset ?? 0);
+		canvas.sortingOrder = this.stack.size() + 11 + sortOrderOffset;
 		canvas.enabled = true;
 		this.opened = true;
 

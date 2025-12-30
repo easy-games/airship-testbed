@@ -15,9 +15,7 @@ export default class SocialFriendRequestsButtonComponent extends AirshipBehaviou
 				),
 				Dependency<MainMenuController>().mainContentCanvas.transform,
 			);
-			AppManager.OpenModal(go, {
-				sortingOrderOffset: 100,
-			});
+			AppManager.OpenModal(go);
 		});
 	}
 
