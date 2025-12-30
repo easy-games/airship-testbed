@@ -65,7 +65,7 @@ export class MainMenuPartyController {
 			this.UpdateParty();
 
 			if (this.party === undefined) {
-				this.partyCard.UpdateInfo(undefined);
+				this.partyCard.UpdateStatus(undefined);
 			}
 		});
 
@@ -77,7 +77,7 @@ export class MainMenuPartyController {
 
 				this.partyLeaderStatusReceived = true;
 				const partyLeader = data.find((d) => d.userId === this.party!.leader);
-				this.partyCard.UpdateInfo(partyLeader);
+				this.partyCard.UpdateStatus(partyLeader);
 			},
 		);
 
