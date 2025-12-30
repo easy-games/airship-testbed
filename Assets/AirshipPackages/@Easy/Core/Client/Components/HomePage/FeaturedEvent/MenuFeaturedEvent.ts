@@ -98,8 +98,8 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 		if (this.startTime === undefined) return;
 
 		let preEvent = os.time() < this.startTime;
-		let postEvent = os.time() > this.endTime && false;
-		let gamePublic = eventCache?.visibility === AirshipGameVisibility.PUBLIC || true;
+		let postEvent = os.time() > this.endTime;
+		let gamePublic = eventCache?.visibility === AirshipGameVisibility.PUBLIC;
 
 		if (preEvent || !gamePublic) {
 			this.startCountdownText.gameObject.SetActive(true);
