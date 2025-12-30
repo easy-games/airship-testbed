@@ -68,6 +68,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 				? "Unlock the limited edition Victory Crown by winning a match!"
 				: "Unlock the Victory Crown by winning a match!",
 			AirshipUrl.CDN + "/airship/CrownRender.png",
+			undefined,
 			1764788400,
 			1764788400 + 3 * day,
 		);
@@ -157,12 +158,13 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		gameId: string,
 		description: string,
 		popoutImageUrl: string,
+		videoUrl: string | undefined,
 		startTime: number,
 		endTime: number,
 	): void {
 		const go = Instantiate(this.featuredEventPrefab, this.mainContent);
 		const featuredEvent = go.GetAirshipComponent<MenuFeaturedEvent>()!;
-		featuredEvent.Init(gameId, description, popoutImageUrl, startTime, endTime);
+		featuredEvent.Init(gameId, description, popoutImageUrl, videoUrl, startTime, endTime);
 	}
 
 	private CreateSpacer(): void {

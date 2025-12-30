@@ -30,6 +30,7 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 	public borderBottom: GameObject;
 	public popoutImage: RawImage;
 	public rightSection: RectTransform;
+	// public videoPlayer: VideoPlayer;
 
 	@NonSerialized()
 	private popoutImageUrl: string;
@@ -43,6 +44,7 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 		gameId: string,
 		description: string,
 		popoutImageUrl: string,
+		videoUrl: string | undefined,
 		startTime: number,
 		endTime: number,
 	): Promise<void> {
@@ -64,7 +66,7 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 		if (eventCache) {
 			this.LoadGameImages(eventCache);
 		}
-		this.LoadPopoutImages();
+		// this.LoadPopoutImages();
 
 		this.eventDescription.text = description;
 		this.FetchGame(gameId);
@@ -96,12 +98,12 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 		if (this.startTime === undefined) return;
 
 		let preEvent = os.time() < this.startTime;
-		let postEvent = os.time() > this.endTime;
-		let gamePublic = eventCache?.visibility === AirshipGameVisibility.PUBLIC;
+		let postEvent = os.time() > this.endTime && false;
+		let gamePublic = eventCache?.visibility === AirshipGameVisibility.PUBLIC || true;
 
 		if (preEvent || !gamePublic) {
 			this.startCountdownText.gameObject.SetActive(true);
-			this.endCountdownText.gameObject.SetActive(false);
+			// this.endCountdownText.gameObject.SetActive(false);
 			this.playerCountWrapper.SetActive(false);
 			this.playBtn.gameObject.SetActive(false);
 
@@ -128,7 +130,7 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 		} else if (gamePublic) {
 			this.startCountdownText.gameObject.SetActive(false);
 			this.endCountdownText.gameObject.SetActive(false);
-			this.playerCountWrapper.SetActive(true);
+			this.playerCountWrapper.SetActive(Game.IsLandscape()); // hide player count on mobile (not enough space)
 			this.playBtn.gameObject.SetActive(true);
 
 			// let timeLeft = math.round(this.endTime - os.time());
@@ -190,14 +192,14 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 
 	private LoadGameImages(gameDto: ContentServiceGames.PublicGameWithLiveStatsAndOrg): void {
 		// Game Thumbnail
-		task.spawn(async () => {
-			const url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".png";
-			const tex = await Protected.Cache.DownloadImage(url);
-			if (tex) {
-				this.gameThumbnailImg.texture = tex;
-				this.gameThumbnailImg.color = Color.white;
-			}
-		});
+		// task.spawn(async () => {
+		// 	const url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".png";
+		// 	const tex = await Protected.Cache.DownloadImage(url);
+		// 	if (tex) {
+		// 		this.gameThumbnailImg.texture = tex;
+		// 		this.gameThumbnailImg.color = Color.white;
+		// 	}
+		// });
 
 		// Event BG
 		task.spawn(async () => {
@@ -216,18 +218,18 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 	}
 
 	override Start(): void {
-		const rect = this.transform as RectTransform;
-		const gameImgRect = this.gameThumbnailImg.transform as RectTransform;
-		if (Game.IsLandscape()) {
-			this.rightSection.sizeDelta = this.rightSection.sizeDelta.WithX(
-				rect.sizeDelta.x - gameImgRect.sizeDelta.x - 20,
-			);
-		} else {
-			this.rightSection.anchorMin = Vector2.zero;
-			this.rightSection.anchorMax = Vector2.one;
-			this.rightSection.offsetMax = Vector2.zero;
-			this.rightSection.offsetMin = Vector2.zero;
-		}
+		// const rect = this.transform as RectTransform;
+		// const gameImgRect = this.gameThumbnailImg.transform as RectTransform;
+		// if (Game.IsLandscape()) {
+		// 	this.rightSection.sizeDelta = this.rightSection.sizeDelta.WithX(
+		// 		rect.sizeDelta.x - gameImgRect.sizeDelta.x - 20,
+		// 	);
+		// } else {
+		// 	this.rightSection.anchorMin = Vector2.zero;
+		// 	this.rightSection.anchorMax = Vector2.one;
+		// 	this.rightSection.offsetMax = Vector2.zero;
+		// 	this.rightSection.offsetMin = Vector2.zero;
+		// }
 	}
 
 	override OnDestroy(): void {}
