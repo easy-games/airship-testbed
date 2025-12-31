@@ -1,11 +1,13 @@
 import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import PartyInviteModalFriend from "./PartyInviteModalFriend";
 
 export default class PartyInviteModal extends AirshipBehaviour {
 	public content: RectTransform;
 	public playerPrefab: GameObject;
+	public subtitle: TMP_Text;
 
 	private bin = new Bin();
 	private uidToOnlineFriend = new Map<string, PartyInviteModalFriend>();
@@ -17,6 +19,11 @@ export default class PartyInviteModal extends AirshipBehaviour {
 				this.UpdateList();
 			}),
 		);
+
+		if (Game.IsPortrait()) {
+			this.subtitle.text =
+				"Parties let you play together with friends. Members auto follow the leader into games.";
+		}
 	}
 
 	private UpdateList(): void {
