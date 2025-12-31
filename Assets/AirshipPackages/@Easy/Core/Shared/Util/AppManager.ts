@@ -101,10 +101,10 @@ export class AppManager {
 
 	/**
 	 * Creates a canvas and opens the modal.
-	 * @param go
+	 * @param modalPrefab
 	 */
 	public static OpenModal(
-		go: GameObject,
+		modalPrefab: GameObject,
 		config?: {
 			noDarkBackground?: boolean;
 			// sortingOrderOffset?: number;
@@ -121,7 +121,7 @@ export class AppManager {
 			Game.IsProtectedLuauContext() ? CoreRefs.protectedTransform : CoreRefs.rootTransform,
 		).GetComponent<Canvas>()!;
 
-		go.transform.SetParent(canvas.transform);
+		Instantiate(modalPrefab, canvas.transform);
 
 		let sortOrderOffset = 0;
 		if (Game.IsProtectedLuauContext()) {

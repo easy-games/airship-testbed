@@ -72,10 +72,9 @@ export default class SocialMenu extends AirshipBehaviour {
 		this.bin.Add(
 			this.addFriendBtn.onClick.Connect(() => {
 				VibrationManager.Play(VibrationFeedbackType.Heavy);
-				const go = Instantiate(
+				AppManager.OpenModal(
 					Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/Modals/AirshipAddFriendModal.prefab"),
 				);
-				AppManager.OpenModal(go);
 			}),
 		);
 

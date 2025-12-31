@@ -76,10 +76,8 @@ export default class PartyCard extends AirshipBehaviour {
 		this.bin.Add(
 			this.inviteBtn.onClick.Connect(() => {
 				AppManager.OpenModal(
-					Object.Instantiate(
-						Asset.LoadAsset(
-							"Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/HomePage/PartyInviteModal.prefab",
-						),
+					Asset.LoadAsset(
+						"Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/HomePage/PartyInviteModal.prefab",
 					),
 				);
 			}),
