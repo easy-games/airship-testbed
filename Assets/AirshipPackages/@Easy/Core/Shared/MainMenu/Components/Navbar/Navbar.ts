@@ -1,4 +1,6 @@
+import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
 import { MainMenuNavbarController } from "@Easy/Core/Client/ProtectedControllers/MainMenuNavbarController";
+import { MainMenuPageType } from "@Easy/Core/Client/ProtectedControllers/MainMenuPageName";
 import { Dependency } from "../../../Flamework";
 import { Game } from "../../../Game";
 import { Bin } from "../../../Util/Bin";
@@ -18,6 +20,7 @@ export default class Navbar extends AirshipBehaviour {
 	public smallSearchBtn: Button;
 	public logoBtn: RectTransform;
 	public account: GameObject;
+	public bg: GameObject;
 
 	private bin = new Bin();
 
@@ -84,6 +87,23 @@ export default class Navbar extends AirshipBehaviour {
 		// if (Game.IsMobile()) {
 		// 	this.creditsWrapper.SetActive(false);
 		// }
+	}
+
+	protected Start(): void {
+		const HandlePage = (page: MainMenuPageType) => {
+			if (page === MainMenuPageType.Game) {
+				this.bg.SetActive(false);
+			} else {
+				this.bg.SetActive(true);
+			}
+		};
+		const mainMenuController = Dependency<MainMenuController>();
+		mainMenuController.onPageChange.Connect((e) => {
+			HandlePage(e.newPage);
+		});
+		if (mainMenuController.currentPage) {
+			HandlePage(mainMenuController.currentPage.pageType);
+		}
 	}
 
 	override OnDisable(): void {

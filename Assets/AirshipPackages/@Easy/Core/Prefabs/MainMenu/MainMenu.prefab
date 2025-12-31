@@ -12390,7 +12390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.09411765, g: 0.09803922, b: 0.101960786, a: 1}
+  m_Color: {r: 0.07058824, g: 0.078431375, b: 0.101960786, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -18586,6 +18586,24 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 4361071565737394873}
       modified: 1
+    - name: bg
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 6593160980290785276}
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
 --- !u!1001 &307638147276127593
@@ -19928,7 +19946,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6136699804409668924, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_Value
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7363531328088842990, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_AnchorMax.x
