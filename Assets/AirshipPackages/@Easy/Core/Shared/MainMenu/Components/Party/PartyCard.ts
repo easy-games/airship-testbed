@@ -129,6 +129,7 @@ export default class PartyCard extends AirshipBehaviour {
 		}
 
 		this.leaveBtn.gameObject.SetActive(party.members.size() > 1);
+		this.emptyPartyLabel.SetActive(party.members.size() <= 1);
 
 		for (let user of party.members) {
 			if (this.uidToMember.has(user.uid)) {
