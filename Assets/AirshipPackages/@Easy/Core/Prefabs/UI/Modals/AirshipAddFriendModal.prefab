@@ -1279,7 +1279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
-  m_Color: {r: 0.14117648, g: 0.14509805, b: 0.14901961, a: 1}
+  m_Color: {r: 0.11372549, g: 0.1254902, b: 0.16470589, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -3707,27 +3707,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3308028728454978255, guid: a9033686edebb4d47991e52d708594e6, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3308028728454978255, guid: a9033686edebb4d47991e52d708594e6, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3308028728454978255, guid: a9033686edebb4d47991e52d708594e6, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 146.81592
       objectReference: {fileID: 0}
     - target: {fileID: 3308028728454978255, guid: a9033686edebb4d47991e52d708594e6, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 3308028728454978255, guid: a9033686edebb4d47991e52d708594e6, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 106.59204
       objectReference: {fileID: 0}
     - target: {fileID: 3308028728454978255, guid: a9033686edebb4d47991e52d708594e6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 4651265545663820076, guid: a9033686edebb4d47991e52d708594e6, type: 3}
       propertyPath: m_Pivot.x
@@ -3823,7 +3823,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5855393527468332965, guid: a9033686edebb4d47991e52d708594e6, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 28.18408
       objectReference: {fileID: 0}
     - target: {fileID: 5855393527468332965, guid: a9033686edebb4d47991e52d708594e6, type: 3}
       propertyPath: m_AnchoredPosition.x

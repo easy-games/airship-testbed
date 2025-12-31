@@ -2,10 +2,12 @@ import { ProtectedPartyController } from "@Easy/Core/Client/ProtectedControllers
 import { MainMenuPartyController } from "@Easy/Core/Client/ProtectedControllers/Social/MainMenuPartyController";
 import { TransferController } from "@Easy/Core/Client/ProtectedControllers/Transfer/TransferController";
 import { AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
+import { Asset } from "@Easy/Core/Shared/Asset";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { GameCoordinatorParty } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
@@ -70,6 +72,18 @@ export default class PartyCard extends AirshipBehaviour {
 				}),
 			);
 		});
+
+		this.bin.Add(
+			this.inviteBtn.onClick.Connect(() => {
+				AppManager.OpenModal(
+					Object.Instantiate(
+						Asset.LoadAsset(
+							"Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/HomePage/PartyInviteModal.prefab",
+						),
+					),
+				);
+			}),
+		);
 	}
 
 	private SetupDragFriendHooks() {
