@@ -5,7 +5,7 @@ import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { CanvasAPI, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { CanvasAPI, HoverState, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { InputUtils } from "@Easy/Core/Shared/Util/InputUtils";
 import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
 import { Asset } from "../Asset";
@@ -80,6 +80,8 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 	private clickPickupState: ClickPickupState | undefined;
 	private clickPickupBin = new Bin();
+	// Track if we're currently in a drag operation with picked up item
+	private isDraggingPickedUpItem = false;
 
 	private bin = new Bin();
 	private backpackOpenBin = new Bin();
@@ -140,6 +142,19 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				task.spawn(() => {
 					Airship.Inventory.localInventory?.onDraggedOutsideInventory.Fire(drag);
 				});
+			}),
+		);
+
+		// Add dragging events over the drop item catcher in case we start over it
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnBeginDragEvent(this.dropItemCatcher.gameObject, () => {
+				this.BeginDragWithPickedUpItem();
+			}),
+		);
+
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnEndDragEvent(this.dropItemCatcher.gameObject, () => {
+				this.EndDragWithPickedUpItem();
 			}),
 		);
 	}
@@ -370,7 +385,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	 * @param sourceButton The button to clone the visual from
 	 * @returns The RectTransform of the cloned visual
 	 */
-	private CreatePickupVisual(sourceButton: Button): { rect: RectTransform; itemAmountText: TMP_Text } {
+	private CreatePickupVisual(sourceButton: Button): { itemAmountText: TMP_Text } {
 		this.clickPickupBin.Clean();
 		const visual = sourceButton.transform.GetChild(0).gameObject;
 		const clone = Object.Instantiate(visual, this.backpackCanvas.transform);
@@ -395,7 +410,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			Object.Destroy(clone.gameObject);
 		});
 
-		return { rect: cloneRect, itemAmountText: itemAmount };
+		return { itemAmountText: itemAmount };
 	}
 
 	private UpdatePickupAmount(newAmount: number): void {
@@ -496,13 +511,12 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							return;
 						}
 
-						const { rect: cloneRect, itemAmountText } = this.CreatePickupVisual(button);
+						const { itemAmountText } = this.CreatePickupVisual(button);
 						this.clickPickupState = {
 							inventory,
 							slot: slotIndex,
 							itemType: existingItemStack.itemType,
 							amount: existingItemStack.amount,
-							clonedTransform: cloneRect,
 							itemAmountText: itemAmountText,
 							initialClickFlag: true,
 						};
@@ -521,14 +535,13 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							return;
 						}
 						const halfAmount = math.ceil(existingItemStack.amount / 2);
-						const { rect: cloneRect, itemAmountText } = this.CreatePickupVisual(button);
+						const { itemAmountText } = this.CreatePickupVisual(button);
 
 						this.clickPickupState = {
 							inventory,
 							slot: slotIndex,
 							itemType: existingItemStack.itemType,
 							amount: halfAmount,
-							clonedTransform: cloneRect,
 							itemAmountText: itemAmountText,
 							halfStack: true,
 							initialClickFlag: true,
@@ -603,7 +616,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							const swappedItemType = existingItemStack.itemType;
 							const swappedAmount = existingItemStack.amount;
 							const localInventory = Airship.Inventory.localInventory;
-							const { rect: newCloneRect, itemAmountText } = this.CreatePickupVisual(button);
+							const { itemAmountText } = this.CreatePickupVisual(button);
 
 							Airship.Inventory.MoveToSlot(
 								this.clickPickupState.inventory,
@@ -635,7 +648,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 								slot: DESIGNATED_PICKUP_SLOT, // The swapped item is in the local inventory's DESIGNATED_PICKUP_SLOT (pickup state)
 								itemType: swappedItemType,
 								amount: swappedAmount,
-								clonedTransform: newCloneRect,
 								itemAmountText: itemAmountText,
 								swapStack: true,
 								initialClickFlag: false,
@@ -687,7 +699,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							const swappedItemType = existingItemStack.itemType;
 							const swappedAmount = existingItemStack.amount;
 							const localInventory = Airship.Inventory.localInventory;
-							const { rect: newCloneRect, itemAmountText } = this.CreatePickupVisual(button);
+							const { itemAmountText } = this.CreatePickupVisual(button);
 
 							Airship.Inventory.MoveToSlot(
 								this.clickPickupState.inventory,
@@ -717,7 +729,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 								slot: DESIGNATED_PICKUP_SLOT,
 								itemType: swappedItemType,
 								amount: swappedAmount,
-								clonedTransform: newCloneRect,
 								itemAmountText: itemAmountText,
 								swapStack: true,
 								initialClickFlag: false,
@@ -744,7 +755,59 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 					}
 				}
 			}),
+
+			// Add dragging events over buttons in case we start over the buttons
+			CanvasAPI.OnBeginDragEvent(button.gameObject, () => {
+				if (!this.clickPickupState) return;
+				this.BeginDragWithPickedUpItem();
+			}),
+
+			CanvasAPI.OnEndDragEvent(button.gameObject, () => {
+				this.EndDragWithPickedUpItem();
+			}),
+
+			// Track when the picked up item is dragged over this button
+			CanvasAPI.OnHoverEvent(button.gameObject, (hoverState, data) => {
+				if (!this.clickPickupState || !this.isDraggingPickedUpItem) return;
+				if (hoverState === HoverState.ENTER) {
+					this.AddButtonToDragOver(button, slotIndex);
+				}
+			}),
 		];
+	}
+
+	/**
+	 * Hooks up split stack when dragging a picked up item across slots
+	 */
+	private BeginDragWithPickedUpItem(): void {
+		if (!this.clickPickupState) return;
+		this.isDraggingPickedUpItem = true;
+		if (!this.clickPickupState.draggedOverSlots) {
+			this.clickPickupState.draggedOverSlots = new Set();
+		}
+	}
+
+	/**
+	 * Cleans up the drag operation when the picked up item is dropped
+	 */
+	private EndDragWithPickedUpItem(): void {
+		if (!this.clickPickupState) return;
+		this.isDraggingPickedUpItem = false;
+	}
+
+	private AddButtonToDragOver(button: Button, slotIndex: number): void {
+		if (!this.clickPickupState) {
+			return;
+		}
+		if (!this.clickPickupState.draggedOverSlots) {
+			this.clickPickupState.draggedOverSlots = new Set();
+		}
+
+		const existing = this.clickPickupState.draggedOverSlots.has(slotIndex);
+		if (existing) {
+			return;
+		}
+		this.clickPickupState.draggedOverSlots.add(slotIndex);
 	}
 
 	/**
