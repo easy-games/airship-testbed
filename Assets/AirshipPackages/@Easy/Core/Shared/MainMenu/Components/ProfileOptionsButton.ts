@@ -5,13 +5,11 @@ import { RightClickMenuController } from "@Easy/Core/Client/ProtectedControllers
 import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
 import { Protected } from "../../Protected";
-import { CanvasAPI, HoverState } from "../../Util/CanvasAPI";
 import { ProtectedUtil } from "../../Util/ProtectedUtil";
 import { SettingsPageSingleton } from "../Singletons/SettingsPageSingleton";
 import { SettingsTab } from "./Settings/SettingsPageName";
 
 export default class ProfileOptionsButton extends AirshipBehaviour {
-	public hoverBG: Image;
 	public profileImage: RawImage;
 	public button: Button;
 	public usernameText?: TMP_Text;
@@ -33,16 +31,7 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 			});
 		});
 
-		this.hoverBG.enabled = false;
-		CanvasAPI.OnHoverEvent(this.button.gameObject, (hov) => {
-			if (hov === HoverState.ENTER) {
-				this.hoverBG.enabled = true;
-			} else {
-				this.hoverBG.enabled = false;
-			}
-		});
-
-		CanvasAPI.OnClickEvent(this.gameObject, () => {
+		this.button.onClick.Connect(() => {
 			if (ProtectedUtil.IsPhoneMode()) {
 				Dependency<SettingsPageSingleton>().Open(SettingsTab.Account);
 				return;
