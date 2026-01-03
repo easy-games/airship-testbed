@@ -22,6 +22,7 @@ export class MainMenuSingleton {
 
 	public navbarModifier = new Modifier<{ hidden: boolean }>();
 	public socialMenuModifier = new Modifier<{ hidden: boolean }>();
+	public partyCardModifier = new Modifier<{ hidden: boolean }>();
 
 	public readonly hideMobileEscapeButton = false;
 	public onHideMobileEscapeButtonChanged = new Signal<boolean>();

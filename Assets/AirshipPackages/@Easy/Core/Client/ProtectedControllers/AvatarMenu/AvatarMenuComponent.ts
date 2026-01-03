@@ -194,6 +194,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	override OpenPage(params?: unknown): void {
 		super.OpenPage(params);
 
+		this.bin.Add(Dependency<MainMenuSingleton>().partyCardModifier.Add({ hidden: true }));
+
 		// Load the character
 		if (this.mainMenu.avatarView === undefined) {
 			if (this.IsPhoneMode()) {

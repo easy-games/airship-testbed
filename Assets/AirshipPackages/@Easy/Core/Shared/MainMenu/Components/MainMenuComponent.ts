@@ -1,4 +1,7 @@
+import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
+import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
+import PartyCard from "./Party/PartyCard";
 import GameGeneralPage from "./Settings/General/GameGeneralPage";
 import SocialMenu from "./SocialMenu";
 
@@ -10,6 +13,9 @@ export default class MainMenuComponent extends AirshipBehaviour {
 	@Header("Social Menu")
 	public socialMenu: SocialMenu;
 
+	@Header("Other")
+	public partyCard: PartyCard;
+
 	protected Start(): void {
 		// Skybox
 		if (!Game.IsInGame()) {
@@ -20,5 +26,11 @@ export default class MainMenuComponent extends AirshipBehaviour {
 				});
 			}
 		}
+
+		const mainMenu = Dependency<MainMenuSingleton>();
+		mainMenu.partyCardModifier.Observe((values) => {
+			let shouldBeHidden = values.some((v) => v.hidden);
+			this.partyCard.gameObject.SetActive(!shouldBeHidden);
+		});
 	}
 }
