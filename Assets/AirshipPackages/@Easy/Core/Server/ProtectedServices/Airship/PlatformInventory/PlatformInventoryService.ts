@@ -85,7 +85,7 @@ export class ProtectedPlatformInventoryService {
 		userId: string,
 		query?: AirshipItemQueryParameters,
 	): Promise<ReturnType<ServerBridgeApiGetItems>> {
-		return await client.items.getUserInventoryForResource({
+		return await client.items.getUserInventoryByUserId({
 			params: {
 				uid: userId,
 			},
