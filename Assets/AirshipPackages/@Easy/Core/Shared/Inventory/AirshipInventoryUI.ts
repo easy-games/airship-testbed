@@ -13,7 +13,6 @@ import { Game } from "../Game";
 import { CoreAction } from "../Input/AirshipCoreAction";
 import ProximityPrompt from "../Input/ProximityPrompts/ProximityPrompt";
 import StringUtils from "../Types/StringUtil";
-import ObjectUtils from "../Util/ObjectUtils";
 import { ClickPickupState, DraggingState } from "./AirshipDraggingState";
 import AirshipInventoryTile from "./AirshipInventoryTile";
 import Inventory from "./Inventory";
@@ -82,6 +81,8 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	private clickPickupBin = new Bin();
 	// Track if we're currently in a drag operation with picked up item
 	private isDraggingPickedUpItem = false;
+	// Track original button state for highlight restoration (color and transition type)
+	private buttonOriginalState = new Map<Button, { color: Color; transition: Transition }>();
 
 	private bin = new Bin();
 	private backpackOpenBin = new Bin();
@@ -808,6 +809,43 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			return;
 		}
 		this.clickPickupState.draggedOverSlots.add(slotIndex);
+		this.HighlightButton(button);
+	}
+
+	/**
+	 * Highlights a button during drag operations by applying Unity's highlighted color
+	 */
+	private HighlightButton(button: Button): void {
+		if (!button.targetGraphic) return;
+
+		if (!this.buttonOriginalState.has(button)) {
+			this.buttonOriginalState.set(button, {
+				color: button.targetGraphic.color,
+				transition: button.transition,
+			});
+			// Disable Unity's automatic transition while dragging
+			button.transition = Transition.None;
+		}
+
+		const colors = button.colors;
+		const finalHighlightColor = new Color(
+			colors.highlightedColor.r * colors.colorMultiplier,
+			colors.highlightedColor.g * colors.colorMultiplier,
+			colors.highlightedColor.b * colors.colorMultiplier,
+			colors.highlightedColor.a,
+		);
+
+		button.targetGraphic.CrossFadeColor(finalHighlightColor, colors.fadeDuration, true, true);
+
+		// Restore original state when drag ends
+		this.clickPickupBin.Add(() => {
+			const originalState = this.buttonOriginalState.get(button);
+			if (originalState) {
+				button.targetGraphic.CrossFadeColor(originalState.color, colors.fadeDuration, true, true);
+				button.transition = originalState.transition;
+				this.buttonOriginalState.delete(button);
+			}
+		});
 	}
 
 	/**
@@ -817,10 +855,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	 */
 	private GetSlotIndexFromButton(button: Button): number | undefined {
 		return this.buttonToSlotIndexMap.get(button);
-	}
-
-	private GetButtonFromSlotIndex(slotIndex: number): Button | undefined {
-		return ObjectUtils.entries(this.buttonToSlotIndexMap).find(([_, index]) => index === slotIndex)?.[0];
 	}
 
 	/**
