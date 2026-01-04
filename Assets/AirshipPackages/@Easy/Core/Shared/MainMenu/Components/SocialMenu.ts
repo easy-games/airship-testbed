@@ -130,12 +130,8 @@ export default class SocialMenu extends AirshipBehaviour {
 	private FetchLiveStats(): void {
 		try {
 			const result = client.stats.getStats().expect();
-			if (Game.deviceType === AirshipDeviceType.Phone) {
-				this.serverCountText.text = `${result.players.online} Players Connected. ${result.servers.active} Servers Online.`;
-			} else {
-				this.playerCountText.text = `${result.players.online} Players Connected.`;
-				this.serverCountText.text = `${result.servers.active} Servers Online`;
-			}
+			this.playerCountText.text = `${result.players.online} Players Connected.`;
+			this.serverCountText.text = `${result.servers.active} Servers Online`;
 		} catch {
 			return;
 		}

@@ -46,7 +46,12 @@ export default class SortComponent extends AirshipBehaviour {
 					this.gridLayoutGroup.padding.left = 8;
 					this.gridLayoutGroup.padding.right = 4;
 				} else {
-					this.gridLayoutGroup.cellSize = new Vector2(parentWidth * 0.3, parentWidth * 0.3 * 0.56 + 54);
+					let spacing = 40;
+					let inverseAspectRatio = 234 / 320; // height / width
+					// -4 is because sort component has some padding to make sure shadows don't get masked
+					let width = (parentWidth - spacing * 2) / 3 - 4;
+					let height = width * inverseAspectRatio;
+					this.gridLayoutGroup.cellSize = new Vector2(width, height);
 					this.gridLayoutGroup.constraintCount = 3;
 				}
 				Bridge.UpdateLayout(this.content, true);

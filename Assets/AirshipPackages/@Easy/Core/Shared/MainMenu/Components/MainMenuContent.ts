@@ -158,7 +158,7 @@ export default class MainMenuContent extends AirshipBehaviour {
 				// 	screenSize.x + (socialMenuHidden ? -100 : -360) - notchHeight,
 				// 	screenSize.y - 67,
 				// );
-				this.contentWrapper.anchoredPosition = new Vector2(-150, this.contentWrapper.anchoredPosition.y);
+				this.contentWrapper.anchoredPosition = new Vector2(-50, this.contentWrapper.anchoredPosition.y);
 
 				this.navbarContentWrapper.sizeDelta = new Vector2(
 					this.contentWrapper.sizeDelta.x + (socialMenuHidden ? 81 : 341) - 110,
