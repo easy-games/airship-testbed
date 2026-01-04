@@ -2433,7 +2433,7 @@ VideoPlayer:
   - {fileID: 0}
   m_DirectAudioVolumes:
   - 1
-  m_Url: https://cdn.airship.gg/airship/video/bw_teaser_1.mov
+  m_Url: https://cdn.airship.gg/airship/video/bw_teaser_1.mp4
   m_EnabledAudioTracks: 01
   m_DirectAudioMutes: 00
   m_ControlledAudioTrackCount: 1
