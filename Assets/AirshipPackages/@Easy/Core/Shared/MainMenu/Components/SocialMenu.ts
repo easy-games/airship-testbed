@@ -130,7 +130,7 @@ export default class SocialMenu extends AirshipBehaviour {
 	private FetchLiveStats(): void {
 		try {
 			const result = client.stats.getStats().expect();
-			this.playerCountText.text = `${result.players.online} Players Connected.`;
+			this.playerCountText.text = `${result.players.online} Players Connected`;
 			this.serverCountText.text = `${result.servers.active} Servers Online`;
 		} catch {
 			return;
