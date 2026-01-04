@@ -141,10 +141,10 @@ export default class MainMenuContent extends AirshipBehaviour {
 				// 	screenSize.y - 67,
 				// );
 
-				this.navbarContentWrapper.sizeDelta = new Vector2(
-					math.min(screenSize.x - 400, 1050) + 40 + 301,
-					this.navbarContentWrapper.sizeDelta.y,
-				);
+				// this.navbarContentWrapper.sizeDelta = new Vector2(
+				// 	math.min(screenSize.x - 400, 1050) + 40 + 301,
+				// 	this.navbarContentWrapper.sizeDelta.y,
+				// );
 				this.navbarContentWrapper.anchorMin = new Vector2(0.5, 1);
 				this.navbarContentWrapper.anchorMax = new Vector2(0.5, 1);
 				this.navbarContentWrapper.pivot = new Vector2(0.5, 1);
@@ -160,10 +160,10 @@ export default class MainMenuContent extends AirshipBehaviour {
 				// );
 				this.contentWrapper.anchoredPosition = new Vector2(-50, this.contentWrapper.anchoredPosition.y);
 
-				this.navbarContentWrapper.sizeDelta = new Vector2(
-					this.contentWrapper.sizeDelta.x + (socialMenuHidden ? 81 : 341) - 110,
-					this.navbarContentWrapper.sizeDelta.y,
-				);
+				// this.navbarContentWrapper.sizeDelta = new Vector2(
+				// 	this.contentWrapper.sizeDelta.x + (socialMenuHidden ? 81 : 341) - 110,
+				// 	this.navbarContentWrapper.sizeDelta.y,
+				// );
 				this.navbarContentWrapper.anchorMin = new Vector2(0, 1);
 				this.navbarContentWrapper.anchorMax = new Vector2(0, 1);
 				this.navbarContentWrapper.pivot = new Vector2(0, 1);
