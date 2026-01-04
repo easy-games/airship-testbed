@@ -126,7 +126,7 @@ export default class PartyCard extends AirshipBehaviour {
 			return;
 		}
 
-		this.leaveBtn.gameObject.SetActive(party.members.size() > 1);
+		this.leaveBtn.gameObject.SetActive(party.members.size() > 1 && party.leader !== Protected.User.localUser?.uid);
 		this.emptyPartyLabel.SetActive(party.members.size() <= 1);
 
 		for (let user of party.members) {
@@ -138,6 +138,7 @@ export default class PartyCard extends AirshipBehaviour {
 
 			const go = Instantiate(this.partyMemberPrefab, this.transform);
 			const partyMemberComp = go.GetAirshipComponent<PartyCardMember>()!;
+			partyMemberComp.transform.SetSiblingIndex(1);
 			partyMemberComp.Init(user);
 			partyMemberComp.SetLeader(user.uid === party.leader);
 			if (user.uid === party.leader) {

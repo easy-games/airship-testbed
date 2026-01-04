@@ -27,7 +27,7 @@ export class ProtectedPartyController {
 	public readonly onPartyChange = new Signal<
 		[newParty: AirshipPartyInternalSnapshot, oldParty?: AirshipPartyInternalSnapshot]
 	>();
-	private currentParty: AirshipPartyInternalSnapshot | undefined;
+	public currentParty: AirshipPartyInternalSnapshot | undefined;
 
 	constructor(private readonly socketController: SocketController) {
 		if (!Game.IsClient()) return;
