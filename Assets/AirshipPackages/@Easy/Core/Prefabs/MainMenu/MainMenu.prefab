@@ -13601,7 +13601,7 @@ MonoBehaviour:
     - key: FriendsContent
       value: {fileID: 7160687700594184870}
     - key: FriendsOnlineCounter
-      value: {fileID: 1023929784522407728}
+      value: {fileID: 0}
     - key: StatusInputField
       value: {fileID: 0}
     - key: Profile
@@ -22386,7 +22386,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 172248471634307520, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: rect2props.w
-      value: 120.20816
+      value: 113.13709
       objectReference: {fileID: 0}
     - target: {fileID: 172248471634307520, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: rect2props.x
@@ -22398,7 +22398,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 172248471634307520, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: rect2props.z
-      value: 120.20816
+      value: 113.13709
       objectReference: {fileID: 0}
     - target: {fileID: 351230933895454352, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_AnchorMax.x
@@ -22558,7 +22558,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4431875434649073979, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 380
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 4431875434649073979, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_SizeDelta.y
@@ -22658,7 +22658,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7727935298036860593, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00012207031
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8865487247589150854, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -22685,17 +22685,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
---- !u!114 &1023929784522407728 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 464773437539806117, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
-  m_PrefabInstance: {fileID: 596320459167798421}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1638405179551393320 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2232174187482231485, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}

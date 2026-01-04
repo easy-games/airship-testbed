@@ -544,9 +544,9 @@ export class ProtectedFriendsController {
 	}
 
 	public UpdateFriendsList(): void {
-		const onlineCount = this.friendStatuses.filter((f) => f.status === "online").size();
-		const onlineCountText = this.mainMenuController.refs.GetValue("Social", "FriendsOnlineCounter") as TMP_Text;
-		onlineCountText.text = `(${onlineCount}/${this.friendStatuses.size()})`;
+		// const onlineCount = this.friendStatuses.filter((f) => f.status === "online").size();
+		// const onlineCountText = this.mainMenuController.refs.GetValue("Social", "FriendsOnlineCounter") as TMP_Text;
+		// onlineCountText.text = `(${onlineCount}/${this.friendStatuses.size()})`;
 
 		// const mainCanvasRect = this.mainMenuController.mainContentCanvas.GetComponent<RectTransform>();
 
