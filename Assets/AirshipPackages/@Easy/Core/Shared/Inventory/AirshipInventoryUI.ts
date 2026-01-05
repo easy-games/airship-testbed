@@ -478,6 +478,55 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		tile.itemAmount.SetText(amountText);
 	}
 
+	/**
+	 * Updates a tile to show a drag preview without creating a new ItemStack
+	 * @param tile The tile component to update
+	 * @param slot The slot number
+	 * @param draggedItemStack The ItemStack being dragged
+	 * @param previewAmount The amount that would be dropped into this slot
+	 * @param currentItemInSlot The current item in the slot
+	 * @param updateAmountOnly If true, only updates the amount text without changing image/name
+	 */
+	private UpdateDraggedPreviewTile(
+		tile: AirshipInventoryTile,
+		slot: number,
+		draggedItemStack: ItemStack,
+		previewAmount: number,
+		currentItemInSlot: ItemStack | undefined,
+		updateAmountOnly?: boolean,
+	): void {
+		if (slot < 0) return;
+
+		const previewTotalAmount =
+			currentItemInSlot && currentItemInSlot.itemType === draggedItemStack.itemType
+				? currentItemInSlot.amount + previewAmount
+				: previewAmount;
+
+		if (!updateAmountOnly) {
+			let imageSrc = draggedItemStack.itemDef.image;
+			let sprite: Sprite | undefined;
+			if (imageSrc) {
+				if (!StringUtils.endsWith(imageSrc, ".sprite")) {
+					imageSrc += ".sprite";
+				}
+				sprite = Asset.LoadAssetIfExists<Sprite>(imageSrc);
+			}
+			if (sprite) {
+				tile.itemImage.sprite = sprite;
+				tile.itemImage.enabled = true;
+				tile.itemName.enabled = false;
+			} else {
+				tile.itemName.text = draggedItemStack.itemDef.displayName;
+				tile.itemName.enabled = true;
+				tile.itemImage.enabled = false;
+			}
+		}
+
+		tile.itemAmount.enabled = true;
+		const amountText = previewTotalAmount > 1 ? previewTotalAmount + "" : "";
+		tile.itemAmount.SetText(amountText);
+	}
+
 	// TODO: When back from break
 	/**
 	 * Add drag back so we can throw items out of the inventory
@@ -830,7 +879,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	}
 
 	private AddDropPreview(button: Button, slotIndex: number, rightClick: boolean): void {
-		// TODO: ADD item preview gameobject to slot
 		if (!this.clickPickupState) {
 			return;
 		}
@@ -840,38 +888,38 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			return;
 		}
 
-		for (const draggedOverSlot of this.clickPickupState.draggedOverSlots!) {
-			const draggedOverTile = this.slotToBackpackTileComponentMap.get(draggedOverSlot);
-			if (!draggedOverTile) {
-				warn("Missing AirshipInventoryTile component when adding drop preview: " + draggedOverSlot);
-				return;
-			}
-			this.UpdatePreviewAmounts(draggedOverTile, draggedOverSlot, rightClick);
-		}
-
-		// TODO: Update the visual amounts for click pickup state + preview item
-		// TODO: Move item from pickup state to all slots that are in drag
-		// Leftovers should remain in the pickup state
-
-		this.HighlightButton(button);
-	}
-
-	private UpdatePreviewAmounts(tile: AirshipInventoryTile, slotIndex: number, rightClick: boolean): void {
 		// Calculate how many items we should drop to each slot depending on click direction
-		const numberOfDraggedSlots = this.clickPickupState?.draggedOverSlots?.size() ?? 0;
-		const currentStackSize = this.clickPickupState?.itemStack.amount ?? 0;
+		const numberOfDraggedSlots = this.clickPickupState.draggedOverSlots?.size() ?? 0;
+		const currentStackSize = this.clickPickupState.itemStack.amount;
 		const amountToDropToEachSlot = rightClick
 			? 1
 			: math.max(1, math.floor(currentStackSize / numberOfDraggedSlots));
 
-		tile.itemAmount.enabled = true;
-		const currentAmountInSlot = this.clickPickupState?.inventory.GetItem(slotIndex)?.amount;
-		if (currentAmountInSlot) {
-			tile.itemAmount.SetText(currentAmountInSlot + amountToDropToEachSlot + "");
-		} else {
-			tile.itemAmount.SetText(amountToDropToEachSlot + "");
+		// Update each dragged over slot with a preview
+		for (const draggedOverSlot of this.clickPickupState.draggedOverSlots!) {
+			const draggedOverTile = this.slotToBackpackTileComponentMap.get(draggedOverSlot);
+			if (!draggedOverTile) {
+				warn("Missing AirshipInventoryTile component when adding drop preview: " + draggedOverSlot);
+				continue;
+			}
+			const currentItemInSlot = this.clickPickupState.inventory.GetItem(draggedOverSlot);
+
+			// Only set image/name for the newly added slot, update amount for others
+			const isNewSlot = draggedOverSlot === slotIndex;
+			this.UpdateDraggedPreviewTile(
+				draggedOverTile,
+				draggedOverSlot,
+				this.clickPickupState.itemStack,
+				amountToDropToEachSlot,
+				currentItemInSlot,
+				!isNewSlot,
+			);
 		}
-		tile.itemImage.enabled = true;
+
+		// TODO: Move item from pickup state to all slots that are in drag
+		// Leftovers should remain in the pickup state
+
+		this.HighlightButton(button);
 	}
 
 	/**
