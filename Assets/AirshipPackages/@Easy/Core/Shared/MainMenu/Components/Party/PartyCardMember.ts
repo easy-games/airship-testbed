@@ -2,6 +2,7 @@ import { ProtectedPartyController } from "@Easy/Core/Client/ProtectedControllers
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { GameCoordinatorUsers } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
@@ -44,6 +45,8 @@ export default class PartyCardMember extends AirshipBehaviour {
 		this.kickOverlay.gameObject.SetActive(false);
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnHoverEvent(this.gameObject, (hov) => {
+				if (!Dependency<ProtectedPartyController>().IsPartyLeader()) return;
+				if (this.user.uid === Protected.User.localUser?.uid) return;
 				this.kickOverlay.gameObject.SetActive(hov === HoverState.ENTER);
 			}),
 		);
@@ -57,7 +60,7 @@ export default class PartyCardMember extends AirshipBehaviour {
 	}
 
 	private SetIsLocalLeader(leader: boolean): void {
-		if (this.user.uid === Game.localPlayer.userId) {
+		if (this.user.uid === Protected.User.localUser?.uid) {
 			this.button.enabled = false;
 			return;
 		}
