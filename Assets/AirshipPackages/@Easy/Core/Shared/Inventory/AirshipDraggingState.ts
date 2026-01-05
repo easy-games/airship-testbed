@@ -21,6 +21,10 @@ export type ClickPickupState = {
 	 */
 	itemAmountText: TMP_Text;
 	/**
+	 * Reference to the item amount image component for updating amount of cloned item
+	 */
+	itemAmountImage: Image;
+	/**
 	 * Using this as a workaround to prevent the item from being placed back on the same click
 	 * Other option would be to get a pointer id, but that requires editing CanvasApi.OnPointerEvent to maybe give the pointer id which
 	 * could change games that are using it.
@@ -34,10 +38,6 @@ export type ClickPickupState = {
 	 * Tracks if the item has been swapped with another item
 	 */
 	swapStack?: boolean;
-	/**
-	 * Set of slots the item has been dragged over during the drag operation
-	 */
-	draggedOverSlots?: Set<number>;
 	/**
 	 * Whether the drag operation was started with a right click
 	 */
