@@ -150,8 +150,8 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 		// Add dragging events over the drop item catcher in case we start over it
 		this.bin.AddEngineEventConnection(
-			CanvasAPI.OnBeginDragEvent(this.dropItemCatcher.gameObject, () => {
-				this.BeginDragWithPickedUpItem();
+			CanvasAPI.OnBeginDragEvent(this.dropItemCatcher.gameObject, (data) => {
+				this.BeginDragWithPickedUpItem(undefined, undefined, data.button === InputButton.Right);
 			}),
 		);
 
@@ -758,8 +758,8 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			}),
 
 			// Add dragging events over buttons in case we start over the buttons
-			CanvasAPI.OnBeginDragEvent(button.gameObject, () => {
-				this.BeginDragWithPickedUpItem();
+			CanvasAPI.OnBeginDragEvent(button.gameObject, (data) => {
+				this.BeginDragWithPickedUpItem(button, slotIndex, data.button === InputButton.Right);
 			}),
 
 			CanvasAPI.OnEndDragEvent(button.gameObject, () => {
@@ -779,12 +779,21 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	/**
 	 * Hooks up split stack when dragging a picked up item across slots
 	 */
-	private BeginDragWithPickedUpItem(): void {
+	private BeginDragWithPickedUpItem(
+		button: Button | undefined,
+		slotIndex: number | undefined,
+		rightClick?: boolean,
+	): void {
 		if (!this.clickPickupState || this.isInitialPickupPhase || this.isDraggingPickedUpItem) return;
 
 		this.isDraggingPickedUpItem = true;
 		if (!this.clickPickupState.draggedOverSlots) {
 			this.clickPickupState.draggedOverSlots = new Set();
+		}
+
+		// Add the initial button/slot where the drag started
+		if (button !== undefined && slotIndex !== undefined) {
+			this.AddButtonToDragOver(button, slotIndex, rightClick);
 		}
 	}
 
@@ -796,7 +805,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		this.isDraggingPickedUpItem = false;
 	}
 
-	private AddButtonToDragOver(button: Button, slotIndex: number): void {
+	private AddButtonToDragOver(button: Button, slotIndex: number, rightClick?: boolean): void {
 		if (!this.clickPickupState) {
 			return;
 		}
@@ -808,7 +817,27 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		if (existing) {
 			return;
 		}
-		this.clickPickupState.draggedOverSlots.add(slotIndex);
+		const itemInSlotIndex = this.clickPickupState.inventory.GetItem(slotIndex);
+		if (itemInSlotIndex?.itemType === this.clickPickupState.itemType || itemInSlotIndex === undefined) {
+			this.clickPickupState.draggedOverSlots.add(slotIndex);
+			this.AddDropPreview(button, slotIndex, rightClick);
+		}
+	}
+
+	private AddDropPreview(button: Button, slotIndex: number, rightClick?: boolean): void {
+		// TODO: ADD item preview gameobject to slot
+
+		// Calculate how many items we should drop to each slot depending on click direction
+		const numberOfDraggedSlots = this.clickPickupState?.draggedOverSlots?.size() ?? 0;
+		const currentStackSize = this.clickPickupState?.amount ?? 0;
+		const amountToDropToEachSlot = rightClick
+			? 1
+			: math.max(1, math.floor(currentStackSize / numberOfDraggedSlots));
+
+		// TODO: Update the visual amounts for click pickup state + preview item
+		// TODO: Move item from pickup state to all slots that are in drag
+		// Leftovers should remain in the pickup state
+
 		this.HighlightButton(button);
 	}
 
