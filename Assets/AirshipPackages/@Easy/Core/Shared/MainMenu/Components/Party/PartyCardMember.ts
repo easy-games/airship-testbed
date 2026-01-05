@@ -32,7 +32,7 @@ export default class PartyCardMember extends AirshipBehaviour {
 
 		this.bin.Add(
 			Dependency<ProtectedPartyController>().ObserveIsPartyLead((isPartyLead) => {
-				this.SetIsLocalLeader(isPartyLead || true);
+				this.SetIsLocalLeader(isPartyLead);
 			}),
 		);
 
@@ -57,10 +57,10 @@ export default class PartyCardMember extends AirshipBehaviour {
 	}
 
 	private SetIsLocalLeader(leader: boolean): void {
-		// if (this.user.uid === Game.localPlayer.userId) {
-		// 	this.button.enabled = false;
-		// 	return;
-		// }
+		if (this.user.uid === Game.localPlayer.userId) {
+			this.button.enabled = false;
+			return;
+		}
 
 		this.button.enabled = leader;
 	}
