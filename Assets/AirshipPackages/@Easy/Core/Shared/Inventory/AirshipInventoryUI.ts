@@ -66,8 +66,9 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	// private healthBar: Healthbar;
 	// private inventoryRefs: GameObjectReferences;
 
-	private slotToBackpackTileMap = new Map<number, GameObject>();
-	private slotToExternalInventoryTileMap = new Map<number, GameObject>();
+	private slotToBackpackTileComponentMap = new Map<number, AirshipInventoryTile>();
+	private slotToExternalInventoryTileComponentMap = new Map<number, AirshipInventoryTile>();
+	private slotToHotbarTileComponentMap = new Map<number, AirshipInventoryTile>();
 	private buttonToSlotIndexMap = new Map<Button, number>();
 
 	private inventoryEnabled = true;
@@ -431,28 +432,23 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		}
 	}
 
-	private UpdateTile(tile: GameObject, slot: number, itemStack: ItemStack | undefined): void {
+	private UpdateTile(tile: AirshipInventoryTile, slot: number, itemStack: ItemStack | undefined): void {
 		if (slot === DESIGNATED_PICKUP_SLOT) return;
 		const inv = Airship.Inventory.localInventory;
 
-		const tileComponent = tile.GetAirshipComponent<AirshipInventoryTile>();
-		if (!tileComponent) {
-			error("Missing AirshipInventoryTile component when updating inventory tile: " + tile.name);
-		}
-
-		if (tileComponent.slotNumberText !== undefined) {
+		if (tile.slotNumberText !== undefined) {
 			if (slot !== undefined && slot < this.hotbarSlots) {
 				// Get the keybind for this hotbar slot
-				this.UpdateHotbarSlotKeybindText(tileComponent, slot);
+				this.UpdateHotbarSlotKeybindText(tile, slot);
 			} else {
-				tileComponent.slotNumberText.text = "";
+				tile.slotNumberText.text = "";
 			}
 		}
 
 		if (!itemStack) {
-			tileComponent.itemImage.enabled = false;
-			tileComponent.itemAmount.enabled = false;
-			tileComponent.itemName.enabled = false;
+			tile.itemImage.enabled = false;
+			tile.itemAmount.enabled = false;
+			tile.itemName.enabled = false;
 			return;
 		}
 
@@ -466,20 +462,20 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			sprite = Asset.LoadAssetIfExists<Sprite>(imageSrc);
 		}
 		if (sprite) {
-			tileComponent.itemImage.sprite = sprite;
-			tileComponent.itemImage.enabled = true;
-			tileComponent.itemName.enabled = false;
+			tile.itemImage.sprite = sprite;
+			tile.itemImage.enabled = true;
+			tile.itemName.enabled = false;
 		} else {
-			tileComponent.itemName.text = itemStack.itemDef.displayName;
-			tileComponent.itemName.enabled = true;
-			tileComponent.itemImage.enabled = false;
+			tile.itemName.text = itemStack.itemDef.displayName;
+			tile.itemName.enabled = true;
+			tile.itemImage.enabled = false;
 		}
 
-		tileComponent.itemAmount.enabled = true;
+		tile.itemAmount.enabled = true;
 		const amountText = itemStack.amount > 1 ? itemStack.amount + "" : "";
 		// Use SetText to ensure TextMeshPro properly updates, especially when text length changes
 		// (e.g., going from 4 digits to 3 digits like 1000 -> 500)
-		tileComponent.itemAmount.SetText(amountText);
+		tile.itemAmount.SetText(amountText);
 	}
 
 	// TODO: When back from break
@@ -1022,8 +1018,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				Airship.Input.onActionBound.Connect((action) => {
 					if (action.internalName === lowerActionName) {
 						if (slot < this.hotbarContent.childCount) {
-							const tile = this.hotbarContent.GetChild(slot).gameObject;
-							const tileComponent = tile.GetAirshipComponent<AirshipInventoryTile>();
+							const tileComponent = this.slotToHotbarTileComponentMap.get(slot);
 							if (tileComponent && tileComponent.slotNumberText) {
 								this.UpdateHotbarSlotKeybindText(tileComponent, slot);
 							}
@@ -1050,7 +1045,17 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			go = this.hotbarContent.GetChild(slot).gameObject;
 		}
 
-		this.UpdateTile(go, slot, itemStack);
+		// Get or cache the component
+		let hotbarTileComponent = this.slotToHotbarTileComponentMap.get(slot);
+		if (!hotbarTileComponent) {
+			hotbarTileComponent = go.GetAirshipComponent<AirshipInventoryTile>();
+			if (!hotbarTileComponent) {
+				warn("Missing AirshipInventoryTile component when updating hotbar slot: " + slot);
+				return;
+			}
+			this.slotToHotbarTileComponentMap.set(slot, hotbarTileComponent);
+		}
+		this.UpdateTile(hotbarTileComponent, slot, itemStack);
 
 		const contentGO = go.transform.GetChild(0).gameObject;
 		const contentRect = contentGO.GetComponent<RectTransform>()!;
@@ -1065,7 +1070,11 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		}
 
 		if (init) {
-			const tileComponent = go.GetAirshipComponent<AirshipInventoryTile>()!;
+			let tileComponent = this.slotToHotbarTileComponentMap.get(slot);
+			if (!tileComponent) {
+				tileComponent = go.GetAirshipComponent<AirshipInventoryTile>()!;
+				this.slotToHotbarTileComponentMap.set(slot, tileComponent);
+			}
 			this.bin.Add(
 				tileComponent.button.onClick.Connect(() => {
 					Game.localPlayer.character?.SetHeldSlot(slot);
@@ -1128,10 +1137,9 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				tileGO = this.externalInventoryContent.GetChild(i).gameObject;
 			}
 
-			this.slotToExternalInventoryTileMap.set(i, tileGO);
-
 			const tile = tileGO.gameObject.GetAirshipComponentInChildren<AirshipInventoryTile>();
 			if (!tile) continue;
+			this.slotToExternalInventoryTileComponentMap.set(i, tile);
 			this.buttonToSlotIndexMap.set(tile.button, i);
 
 			bin.AddEngineEventConnection(
@@ -1153,13 +1161,17 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		const slotBinMap = new Map<number, Bin>();
 		bin.Add(
 			inventory.ObserveSlots((stack, slot) => {
-				slotBinMap.get(slot)?.Clean();
-				if (slot > inventory.maxSlots) return;
+				if (slot < 0 || slot > inventory.maxSlots) return;
 
+				slotBinMap.get(slot)?.Clean();
 				const slotBin = new Bin();
 				slotBinMap.set(slot, slotBin);
 
-				const tile = this.slotToExternalInventoryTileMap.get(slot)!;
+				const tile = this.slotToExternalInventoryTileComponentMap.get(slot);
+				if (!tile) {
+					warn("Missing AirshipInventoryTile component when updating external inventory slot: " + slot);
+					return;
+				}
 				this.UpdateTile(tile, slot, stack);
 
 				if (stack) {
@@ -1200,13 +1212,11 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			this.externalInventoryContent!.gameObject.SetActive(false);
 			// Clean up button mappings for external inventory
 			for (let i = 0; i < inventory.maxSlots; i++) {
-				const tile = this.slotToExternalInventoryTileMap.get(i);
-				if (tile) {
-					const tileComponent = tile.GetAirshipComponentInChildren<AirshipInventoryTile>();
-					if (tileComponent) {
-						this.buttonToSlotIndexMap.delete(tileComponent.button);
-					}
+				const tileComponent = this.slotToExternalInventoryTileComponentMap.get(i);
+				if (tileComponent) {
+					this.buttonToSlotIndexMap.delete(tileComponent.button);
 				}
+				this.slotToExternalInventoryTileComponentMap.delete(i);
 			}
 		});
 
@@ -1224,10 +1234,21 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			let tileGO: GameObject;
 			if (i >= backpackHotbarContentChildCount) {
 				tileGO = Object.Instantiate(this.backpackHotbarTileTemplate, this.backpackHotbarContent);
+				const tileComponent = tileGO.GetAirshipComponent<AirshipInventoryTile>();
+				if (tileComponent) {
+					this.slotToBackpackTileComponentMap.set(i, tileComponent);
+				}
 			} else {
 				tileGO = this.backpackHotbarContent.GetChild(i).gameObject;
 			}
-			this.slotToBackpackTileMap.set(i, tileGO);
+			if (!this.slotToBackpackTileComponentMap.has(i)) {
+				const inventoryTileComponent = tileGO.GetAirshipComponent<AirshipInventoryTile>();
+				if (inventoryTileComponent) {
+					this.slotToBackpackTileComponentMap.set(i, inventoryTileComponent);
+				} else {
+					warn("Missing AirshipInventoryTile component when updating backpack slot: " + i);
+				}
+			}
 		}
 
 		// backpack slots
@@ -1239,7 +1260,14 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			} else {
 				tileGO = this.backpackContent.GetChild(i).gameObject;
 			}
-			this.slotToBackpackTileMap.set(i + this.hotbarSlots, tileGO);
+			if (!this.slotToBackpackTileComponentMap.has(i + this.hotbarSlots)) {
+				const inventoryTileComponent = tileGO.GetAirshipComponent<AirshipInventoryTile>();
+				if (inventoryTileComponent) {
+					this.slotToBackpackTileComponentMap.set(i + this.hotbarSlots, inventoryTileComponent);
+				} else {
+					warn("Missing AirshipInventoryTile component when updating backpack slot: " + i + this.hotbarSlots);
+				}
+			}
 		}
 
 		const invBin = new Bin();
@@ -1249,11 +1277,17 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			const slotBinMap = new Map<number, Bin>();
 
 			inv.onSlotChanged.Connect((slot, itemStack) => {
+				if (slot < 0 || slot > inv.maxSlots) return;
+
 				slotBinMap.get(slot)?.Clean();
 				const slotBin = new Bin();
 				slotBinMap.set(slot, slotBin);
 
-				const tile = this.slotToBackpackTileMap.get(slot)!;
+				const tile = this.slotToBackpackTileComponentMap.get(slot);
+				if (!tile) {
+					warn("Missing AirshipInventoryTile component when updating backpack slot: " + slot);
+					return;
+				}
 				this.UpdateTile(tile, slot, itemStack);
 
 				if (itemStack) {
@@ -1278,9 +1312,14 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 			// Setup connections
 			for (let i = 0; i < inv.GetMaxSlots(); i++) {
-				const tile = this.slotToBackpackTileMap.get(i)!;
 				const itemStack = inv.GetItem(i);
-				this.UpdateTile(tile, i, itemStack);
+				let tileComponent = this.slotToBackpackTileComponentMap.get(i);
+				if (!tileComponent) {
+					warn("Missing AirshipInventoryTile component when updating backpack slot: " + i);
+					return;
+				}
+
+				this.UpdateTile(tileComponent, i, itemStack);
 
 				// Set up amountChanged connection for existing items (in case onSlotChanged hasn't fired yet)
 				if (itemStack) {
@@ -1291,19 +1330,18 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 						slotBin.Add(
 							itemStack.amountChanged.Connect((e) => {
-								this.UpdateTile(tile, i, e.itemStack);
+								this.UpdateTile(tileComponent, i, e.itemStack);
 							}),
 						);
 						slotBin.Add(
 							itemStack.itemTypeChanged.Connect((e) => {
-								this.UpdateTile(tile, i, e.itemStack);
+								this.UpdateTile(tileComponent, i, e.itemStack);
 							}),
 						);
 						invBin.Add(slotBin);
 					}
 				}
 
-				const tileComponent = tile.GetAirshipComponent<AirshipInventoryTile>()!;
 				this.buttonToSlotIndexMap.set(tileComponent.button, i);
 
 				invBin.AddEngineEventConnection(
