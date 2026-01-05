@@ -30,7 +30,7 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 	public borderBottom: GameObject;
 	public popoutImage: RawImage;
 	public rightSection: RectTransform;
-	// public videoPlayer: VideoPlayer;
+	public videoPlayer: VideoPlayer;
 
 	@NonSerialized()
 	private popoutImageUrl: string;
