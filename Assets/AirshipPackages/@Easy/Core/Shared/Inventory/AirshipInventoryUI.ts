@@ -81,8 +81,10 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	private clickPickupBin = new Bin();
 	// Track if we're currently in a drag operation with picked up item
 	private isDraggingPickedUpItem = false;
-	// Track original button state for highlight restoration (color and transition type)
+	// Track original button state for adding highlights during drag
 	private buttonOriginalState = new Map<Button, { color: Color; transition: Transition }>();
+	// Track if we're in the initial pickup (to prevent drags during initial click)
+	private isInitialPickupPhase = false;
 
 	private bin = new Bin();
 	private backpackOpenBin = new Bin();
@@ -521,6 +523,8 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							itemAmountText: itemAmountText,
 							initialClickFlag: true,
 						};
+
+						this.isInitialPickupPhase = true;
 						Airship.Inventory.MoveToSlot(
 							inventory,
 							slotIndex,
@@ -547,6 +551,8 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							halfStack: true,
 							initialClickFlag: true,
 						};
+
+						this.isInitialPickupPhase = true;
 						Airship.Inventory.MoveToSlot(
 							inventory,
 							slotIndex,
@@ -577,8 +583,10 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				) {
 					// Clear the flag so future UP events on different slots can place
 					this.clickPickupState.initialClickFlag = false;
+					this.isInitialPickupPhase = false;
 					return;
 				}
+				this.isInitialPickupPhase = false;
 
 				const existingItemStack = inventory.GetItem(targetSlotIndex);
 
@@ -603,10 +611,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							);
 
 							this.UpdatePickupAmount(this.clickPickupState.amount - amountToAdd);
-
-							if (this.clickPickupState) {
-								this.clickPickupState.initialClickFlag = false;
-							}
 
 							if (this.clickPickupState.amount <= 0) {
 								this.CleanupClickPickupState();
@@ -746,10 +750,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 						);
 						this.UpdatePickupAmount(this.clickPickupState.amount - 1);
 
-						if (this.clickPickupState) {
-							this.clickPickupState.initialClickFlag = false;
-						}
-
 						if (this.clickPickupState.amount <= 0) {
 							this.CleanupClickPickupState();
 						}
@@ -759,7 +759,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 			// Add dragging events over buttons in case we start over the buttons
 			CanvasAPI.OnBeginDragEvent(button.gameObject, () => {
-				if (!this.clickPickupState) return;
 				this.BeginDragWithPickedUpItem();
 			}),
 
@@ -781,7 +780,8 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	 * Hooks up split stack when dragging a picked up item across slots
 	 */
 	private BeginDragWithPickedUpItem(): void {
-		if (!this.clickPickupState) return;
+		if (!this.clickPickupState || this.isInitialPickupPhase || this.isDraggingPickedUpItem) return;
+
 		this.isDraggingPickedUpItem = true;
 		if (!this.clickPickupState.draggedOverSlots) {
 			this.clickPickupState.draggedOverSlots = new Set();
@@ -792,7 +792,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	 * Cleans up the drag operation when the picked up item is dropped
 	 */
 	private EndDragWithPickedUpItem(): void {
-		if (!this.clickPickupState) return;
+		if (this.isInitialPickupPhase || !this.isDraggingPickedUpItem) return;
 		this.isDraggingPickedUpItem = false;
 	}
 
