@@ -12,8 +12,10 @@ export type DraggingState = {
 export type ClickPickupState = {
 	inventory: Inventory;
 	slot: number;
-	itemType: string;
-	amount: number;
+	/**
+	 * The ItemStack being picked up. This is the source of truth for itemType and amount.
+	 */
+	itemStack: ItemStack;
 	/**
 	 * Reference to the item amount text component for updating amount of cloned item
 	 */
@@ -36,4 +38,8 @@ export type ClickPickupState = {
 	 * Set of slots the item has been dragged over during the drag operation
 	 */
 	draggedOverSlots?: Set<number>;
+	/**
+	 * Whether the drag operation was started with a right click
+	 */
+	isRightClickDrag?: boolean;
 };
