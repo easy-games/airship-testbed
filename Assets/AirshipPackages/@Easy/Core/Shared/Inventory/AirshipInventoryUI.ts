@@ -508,18 +508,21 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			}
 		};
 
-		// Merge in priority order: external, backpack, hotbar not full.  Followed by those three when they are full.
-		if (externalInventory && externalInventory !== inventory) {
+		// Merge in priority order: external not full, local backpack not full, local hotbar not full,
+		// then external full, local backpack full, local hotbar full
+		if (externalInventory) {
 			ProcessPriority(externalInventory, undefined, true);
 		}
-		if (localInventory && inventory === localInventory) {
+		if (localInventory) {
 			ProcessPriority(localInventory, true, true);
 			ProcessPriority(localInventory, false, true);
+		}
+		if (externalInventory) {
+			ProcessPriority(externalInventory, undefined, false);
+		}
+		if (localInventory) {
 			ProcessPriority(localInventory, true, false);
 			ProcessPriority(localInventory, false, false);
-		}
-		if (externalInventory && externalInventory !== inventory) {
-			ProcessPriority(externalInventory, undefined, false);
 		}
 
 		const finalPickupStack = inventory.GetItem(DESIGNATED_PICKUP_SLOT);
@@ -784,18 +787,22 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 					return;
 				}
 				this.isInitialPickupPhase = false;
-
 				// Check for double-click merge if there is a 2nd click within the time window
-				// Allow double-click on any inventory (local or external) to trigger merge
+				// Only trigger if clicking on the same slot and inventory where we picked up
+				const isSameSlot =
+					targetSlotIndex === this.clickPickupState.slot && inventory === this.clickPickupState.inventory;
 				if (
 					this.doubleClickTimerCancel &&
 					pointerButton === PointerButton.LEFT &&
-					!this.clickPickupState.initialClickFlag
+					isSameSlot &&
+					!this.clickPickupState.swapStack
 				) {
 					if (this.doubleClickTimerCancel) {
 						this.doubleClickTimerCancel();
 						this.doubleClickTimerCancel = undefined;
 					}
+					this.clickPickupState.initialClickFlag = false;
+					this.isInitialPickupPhase = false;
 					this.DoubleClickMerge();
 					return;
 				}
