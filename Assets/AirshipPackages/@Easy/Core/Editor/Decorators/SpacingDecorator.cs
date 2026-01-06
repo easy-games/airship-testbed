@@ -1,5 +1,4 @@
-﻿#if AIRSHIP_EDITOR_API
-using System;
+﻿using System;
 using UnityEditor;
 
 [CustomAirshipDecorator("Spacing")]
@@ -13,4 +12,3 @@ internal class SpacingDecorator : AirshipPropertyDecorator {
         }
     }
 }
-#endif

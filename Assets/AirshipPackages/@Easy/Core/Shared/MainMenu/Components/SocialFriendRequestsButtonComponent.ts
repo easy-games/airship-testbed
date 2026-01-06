@@ -1,7 +1,6 @@
-import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
-import { Dependency } from "../../Flamework";
+import { Asset } from "../../Asset";
 
 export default class SocialFriendRequestsButtonComponent extends AirshipBehaviour {
 	public text!: TMP_Text;
@@ -9,15 +8,12 @@ export default class SocialFriendRequestsButtonComponent extends AirshipBehaviou
 
 	override Start(): void {
 		CanvasAPI.OnClickEvent(this.button.gameObject, () => {
-			const go = Object.Instantiate(
-				AssetBridge.Instance.LoadAsset(
+			VibrationManager.Play(VibrationFeedbackType.Heavy);
+			AppManager.OpenModal(
+				Asset.LoadAsset(
 					"AirshipPackages/@Easy/Core/Prefabs/UI/MainMenu/FriendRequests/FriendRequestsModal.prefab",
 				),
-				Dependency<MainMenuController>().mainContentCanvas.transform,
 			);
-			AppManager.OpenModal(go, {
-				sortingOrderOffset: 100,
-			});
 		});
 	}
 

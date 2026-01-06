@@ -94,11 +94,6 @@ export default class MainMenuContent extends AirshipBehaviour {
 		if (Game.IsPortrait()) {
 			this.canvasScalar.matchWidthOrHeight = 1;
 			this.socialMenu.SetParent(this.friendsPage);
-			this.socialMenu.anchorMin = new Vector2(0, 0);
-			this.socialMenu.anchorMax = new Vector2(1, 1);
-			this.socialMenu.pivot = new Vector2(0.5, 1);
-			this.socialMenu.offsetMin = new Vector2(0, 0);
-			this.socialMenu.offsetMax = new Vector2(0, 0);
 			this.socialMenu.gameObject.SetActive(true);
 
 			this.contentWrapper.sizeDelta = new Vector2(screenSize.x, screenSize.y - navigationHeight);
@@ -120,55 +115,55 @@ export default class MainMenuContent extends AirshipBehaviour {
 			this.navbarContentWrapper.offsetMax = new Vector2(0, 65);
 			this.navbarContentWrapper.offsetMin = new Vector2(0, 0);
 			this.navbarContentWrapper.anchoredPosition = new Vector2(0, 0);
-			this.navbarRight.offsetMin = new Vector2(-250, this.navbarRight.offsetMin.y);
 
 			this.mobileNav.gameObject.SetActive(true);
 			this.pages.offsetMin = new Vector2(0, this.pages.offsetMin.y);
 		} else {
 			// Landscape
-			this.socialMenu.gameObject.SetActive(true);
-			this.socialMenu.anchorMin = new Vector2(0, 1);
-			this.socialMenu.anchorMax = new Vector2(0, 1);
-			this.socialMenu.pivot = new Vector2(0, 1);
-			this.socialMenu.sizeDelta = new Vector2(301, screenSize.y - 110);
-			this.socialMenu.SetParent(this.gameObject.transform);
+			// this.socialMenu.gameObject.SetActive(true);
+			// this.socialMenu.anchorMin = new Vector2(0, 1);
+			// this.socialMenu.anchorMax = new Vector2(0, 1);
+			// this.socialMenu.pivot = new Vector2(0, 1);
+			// this.socialMenu.sizeDelta = new Vector2(301, screenSize.y - 110);
+			// this.socialMenu.SetParent(this.gameObject.transform);
 
 			let socialMenuHidden = Dependency<MainMenuSingleton>()
 				.socialMenuModifier.GetTickets()
 				.some((v) => v.hidden);
 
 			if (this.mainMenu.sizeType === "lg") {
-				this.contentWrapper.anchorMin = new Vector2(0.5, 1);
-				this.contentWrapper.anchorMax = new Vector2(0.5, 1);
-				this.contentWrapper.pivot = new Vector2(0.5, 1);
-				this.contentWrapper.anchoredPosition = new Vector2(socialMenuHidden ? 0 : -150, -67);
-				this.contentWrapper.sizeDelta = new Vector2(
-					math.min(screenSize.x - 400, 1050) + (socialMenuHidden ? 300 : 0),
-					screenSize.y - 67,
-				);
+				// this.contentWrapper.anchorMin = new Vector2(0.5, 1);
+				// this.contentWrapper.anchorMax = new Vector2(0.5, 1);
+				// this.contentWrapper.pivot = new Vector2(0.5, 1);
+				// this.contentWrapper.anchoredPosition = new Vector2(-50, 0);
+				// this.contentWrapper.sizeDelta = new Vector2(
+				// 	math.min(screenSize.x - 400, 1050) + (socialMenuHidden ? 300 : 0),
+				// 	screenSize.y - 67,
+				// );
 
-				this.navbarContentWrapper.sizeDelta = new Vector2(
-					math.min(screenSize.x - 400, 1050) + 40 + 301,
-					this.navbarContentWrapper.sizeDelta.y,
-				);
+				// this.navbarContentWrapper.sizeDelta = new Vector2(
+				// 	math.min(screenSize.x - 400, 1050) + 40 + 301,
+				// 	this.navbarContentWrapper.sizeDelta.y,
+				// );
 				this.navbarContentWrapper.anchorMin = new Vector2(0.5, 1);
 				this.navbarContentWrapper.anchorMax = new Vector2(0.5, 1);
 				this.navbarContentWrapper.pivot = new Vector2(0.5, 1);
 				this.navbarContentWrapper.anchoredPosition = new Vector2(20, 0);
 			} else {
-				this.contentWrapper.anchorMin = new Vector2(0, 1);
-				this.contentWrapper.anchorMax = new Vector2(0, 1);
-				this.contentWrapper.pivot = new Vector2(0, 1);
-				this.contentWrapper.anchoredPosition = new Vector2(Screen.safeArea.yMin, -67);
-				this.contentWrapper.sizeDelta = new Vector2(
-					screenSize.x + (socialMenuHidden ? -100 : -360) - notchHeight,
-					screenSize.y - 67,
-				);
+				// this.contentWrapper.anchorMin = new Vector2(0, 1);
+				// this.contentWrapper.anchorMax = new Vector2(0, 1);
+				// this.contentWrapper.pivot = new Vector2(0, 1);
+				// this.contentWrapper.anchoredPosition = new Vector2(Screen.safeArea.yMin, -67);
+				// this.contentWrapper.sizeDelta = new Vector2(
+				// 	screenSize.x + (socialMenuHidden ? -100 : -360) - notchHeight,
+				// 	screenSize.y - 67,
+				// );
+				this.contentWrapper.anchoredPosition = new Vector2(-50, this.contentWrapper.anchoredPosition.y);
 
-				this.navbarContentWrapper.sizeDelta = new Vector2(
-					this.contentWrapper.sizeDelta.x + (socialMenuHidden ? 81 : 341) - 110,
-					this.navbarContentWrapper.sizeDelta.y,
-				);
+				// this.navbarContentWrapper.sizeDelta = new Vector2(
+				// 	this.contentWrapper.sizeDelta.x + (socialMenuHidden ? 81 : 341) - 110,
+				// 	this.navbarContentWrapper.sizeDelta.y,
+				// );
 				this.navbarContentWrapper.anchorMin = new Vector2(0, 1);
 				this.navbarContentWrapper.anchorMax = new Vector2(0, 1);
 				this.navbarContentWrapper.pivot = new Vector2(0, 1);
@@ -177,9 +172,9 @@ export default class MainMenuContent extends AirshipBehaviour {
 			// this.navbar.anchoredPosition = new Vector2(0, 0);
 
 			if (this.mainMenu.sizeType === "lg") {
-				this.socialMenu.anchorMin = new Vector2(0, 1);
-				this.socialMenu.anchorMax = new Vector2(0, 1);
-				this.socialMenu.pivot = new Vector2(0, 1);
+				// this.socialMenu.anchorMin = new Vector2(0, 1);
+				// this.socialMenu.anchorMax = new Vector2(0, 1);
+				// this.socialMenu.pivot = new Vector2(0, 1);
 				let socialMenuPos = this.contentWrapper.anchoredPosition.add(new Vector2(40, -43));
 				// print(
 				// 	"canvasRect.sizeDelta.x: " +
@@ -191,26 +186,26 @@ export default class MainMenuContent extends AirshipBehaviour {
 					.add(new Vector2(screenSize.x / 2, 0))
 					// .add(new Vector2(screenSize.x / 2, 0))
 					.add(new Vector2(this.contentWrapper.sizeDelta.x / 2, 0));
-				this.socialMenu.anchoredPosition = socialMenuPos;
+				// this.socialMenu.anchoredPosition = socialMenuPos;
 			} else {
-				this.socialMenu.anchorMin = new Vector2(1, 1);
-				this.socialMenu.anchorMax = new Vector2(1, 1);
-				this.socialMenu.pivot = new Vector2(1, 1);
-				this.socialMenu.anchoredPosition = new Vector2(
-					-30,
-					this.contentWrapper.anchoredPosition.y + (Game.deviceType === AirshipDeviceType.Phone ? -8 : -43),
-				);
+				// this.socialMenu.anchorMin = new Vector2(1, 1);
+				// this.socialMenu.anchorMax = new Vector2(1, 1);
+				// this.socialMenu.pivot = new Vector2(1, 1);
+				// this.socialMenu.anchoredPosition = new Vector2(
+				// 	-30,
+				// 	this.contentWrapper.anchoredPosition.y + (Game.deviceType === AirshipDeviceType.Phone ? -8 : -43),
+				// );
 			}
 			this.socialMenu.gameObject.SetActive(!socialMenuHidden);
 
 			// If we're mobile, in-game and not tablet:
 			if (isNonTableMobileInGame) {
-				const socialMenuInset = new Vector2(30, 20);
-				this.socialMenu.anchoredPosition = new Vector2(-socialMenuInset.x, -socialMenuInset.y);
-				this.socialMenu.sizeDelta = new Vector2(
-					this.socialMenu.sizeDelta.x,
-					screenSize.y - socialMenuInset.y * 2,
-				);
+				// const socialMenuInset = new Vector2(30, 20);
+				// this.socialMenu.anchoredPosition = new Vector2(-socialMenuInset.x, -socialMenuInset.y);
+				// this.socialMenu.sizeDelta = new Vector2(
+				// 	this.socialMenu.sizeDelta.x,
+				// 	screenSize.y - socialMenuInset.y * 2,
+				// );
 			}
 
 			// this.navbar.sizeDelta = new Vector2(this.navbar.sizeDelta.x, 67);

@@ -227,6 +227,7 @@ declare const Multiline: AirshipBehaviourFieldDecorator<[lines?: number]>;
 declare const TextArea: AirshipBehaviourFieldDecorator<[]>;
 
 declare const HideInInspector: AirshipBehaviourFieldDecorator<[]>;
+
 /**
  * Use this to add some spacing in the Inspector.
  */
