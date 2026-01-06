@@ -7,7 +7,7 @@ import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, HoverState, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { InputUtils } from "@Easy/Core/Shared/Util/InputUtils";
-import { OnUpdate } from "@Easy/Core/Shared/Util/Timer";
+import { OnUpdate, SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import { Asset } from "../Asset";
 import { Game } from "../Game";
 import { CoreAction } from "../Input/AirshipCoreAction";
@@ -25,6 +25,7 @@ import {
 } from "./Signal/SlotInteractionEvent";
 
 const DESIGNATED_PICKUP_SLOT = -2;
+const DOUBLE_CLICK_MERGE_DELAY = 0.3;
 export default class AirshipInventoryUI extends AirshipBehaviour {
 	@Header("Variables")
 	public darkBackground = true;
@@ -81,10 +82,13 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	private clickPickupBin = new Bin();
 	// Track if we're currently in a drag operation with picked up item
 	private isDraggingPickedUpItem = false;
+	private draggingBin = new Bin();
 	// Track original button state for adding highlights during drag
 	private buttonOriginalState = new Map<Button, { color: Color; transition: Transition }>();
 	// Track if we're in the initial pickup (to prevent drags during initial click)
 	private isInitialPickupPhase = false;
+	// Track double-click timer for if we need to merge items.
+	private doubleClickTimerCancel: (() => void) | undefined;
 
 	private bin = new Bin();
 	private backpackOpenBin = new Bin();
@@ -394,6 +398,137 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			this.clickPickupBin.Clean();
 			this.clickPickupState = undefined;
 		}
+		this.draggingBin.Clean();
+
+		if (this.doubleClickTimerCancel) {
+			this.doubleClickTimerCancel();
+			this.doubleClickTimerCancel = undefined;
+		}
+	}
+
+	/**
+	 * Starts a timer to detect double-click for merge-all functionality
+	 */
+	private StartDoubleClickTimer(): void {
+		if (this.doubleClickTimerCancel) {
+			this.doubleClickTimerCancel();
+			this.doubleClickTimerCancel = undefined;
+		}
+
+		// Start new timer
+		this.doubleClickTimerCancel = SetTimeout(DOUBLE_CLICK_MERGE_DELAY, () => {
+			this.doubleClickTimerCancel = undefined;
+		});
+	}
+
+	/**
+	 * Merges all items of the same type from other slots into the pickup item.
+	 */
+	private DoubleClickMerge(): void {
+		if (!this.clickPickupState) return;
+
+		const inventory = this.clickPickupState.inventory;
+		const itemType = this.clickPickupState.itemType;
+		const pickupStack = inventory.GetItem(DESIGNATED_PICKUP_SLOT);
+		if (!pickupStack || pickupStack.itemType !== itemType) return;
+
+		const pickupMaxStackSize = pickupStack.GetMaxStackSize();
+		const pickupSpaceAvailable = pickupMaxStackSize - pickupStack.amount;
+		if (pickupSpaceAvailable <= 0) return;
+
+		const externalInventory = this.externalInventory;
+		const localInventory = Airship.Inventory.localInventory;
+
+		// Helper function to check if we should stop merging
+		const ShouldStop = (): boolean => {
+			const currentPickupStack = inventory.GetItem(DESIGNATED_PICKUP_SLOT);
+			if (!currentPickupStack) return true;
+			const maxStackSize = currentPickupStack.GetMaxStackSize();
+			return currentPickupStack.amount >= maxStackSize;
+		};
+
+		// Helper function to merge from a source slot into the pickup slot
+		const MergeFromSlot = (sourceInventory: Inventory, sourceSlot: number): void => {
+			if (sourceSlot === DESIGNATED_PICKUP_SLOT || ShouldStop()) return;
+
+			const sourceItem = sourceInventory.GetItem(sourceSlot);
+			if (!sourceItem || sourceItem.itemType !== itemType) return;
+
+			const currentPickupStack = inventory.GetItem(DESIGNATED_PICKUP_SLOT);
+			if (!currentPickupStack) return;
+
+			const maxStackSize = currentPickupStack.GetMaxStackSize();
+			const spaceAvailable = maxStackSize - currentPickupStack.amount;
+			if (spaceAvailable <= 0) return;
+
+			const amountToMerge = math.min(sourceItem.amount, spaceAvailable);
+			if (amountToMerge <= 0) return;
+
+			Airship.Inventory.MoveToSlot(sourceInventory, sourceSlot, inventory, DESIGNATED_PICKUP_SLOT, amountToMerge);
+
+			const updatedPickupStack = inventory.GetItem(DESIGNATED_PICKUP_SLOT);
+			if (updatedPickupStack && this.clickPickupState) {
+				this.clickPickupState.amount = updatedPickupStack.amount;
+				this.UpdatePickupAmount(updatedPickupStack.amount);
+			}
+		};
+
+		// Helper function to process which slots to merge based on priority
+		const ProcessPriority = (
+			targetInventory: Inventory,
+			isBackpack: boolean | undefined,
+			isNotFull: boolean,
+		): void => {
+			if (!targetInventory) return;
+
+			const isExternal = targetInventory === externalInventory;
+
+			for (let slot = 0; slot < targetInventory.GetMaxSlots(); slot++) {
+				if (slot === DESIGNATED_PICKUP_SLOT || ShouldStop()) break;
+
+				const slotItem = targetInventory.GetItem(slot);
+				if (!slotItem || slotItem.itemType !== itemType) continue;
+
+				const slotMaxStackSize = slotItem.GetMaxStackSize();
+				const slotSpaceAvailable = slotMaxStackSize - slotItem.amount;
+				const slotIsNotFull = slotSpaceAvailable > 0;
+
+				if (isExternal) {
+					if (slotIsNotFull === isNotFull) {
+						MergeFromSlot(targetInventory, slot);
+						if (ShouldStop()) break;
+					}
+				} else {
+					const slotIsBackpack = slot >= this.hotbarSlots;
+					if (slotIsBackpack === isBackpack && slotIsNotFull === isNotFull) {
+						MergeFromSlot(targetInventory, slot);
+						if (ShouldStop()) break;
+					}
+				}
+			}
+		};
+
+		// Merge in priority order: external, backpack, hotbar not full.  Followed by those three when they are full.
+		if (externalInventory && externalInventory !== inventory) {
+			ProcessPriority(externalInventory, undefined, true);
+		}
+		if (localInventory && inventory === localInventory) {
+			ProcessPriority(localInventory, true, true);
+			ProcessPriority(localInventory, false, true);
+			ProcessPriority(localInventory, true, false);
+			ProcessPriority(localInventory, false, false);
+		}
+		if (externalInventory && externalInventory !== inventory) {
+			ProcessPriority(externalInventory, undefined, false);
+		}
+
+		const finalPickupStack = inventory.GetItem(DESIGNATED_PICKUP_SLOT);
+		if (!finalPickupStack || finalPickupStack.amount <= 0) {
+			this.CleanupClickPickupState();
+		} else if (this.clickPickupState) {
+			this.clickPickupState.amount = finalPickupStack.amount;
+			this.UpdatePickupAmount(finalPickupStack.amount);
+		}
 	}
 
 	/**
@@ -554,6 +689,12 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			// Handle DOWN direction for picking up items
 			CanvasAPI.OnPointerEvent(button.gameObject, (direction, pointerButton) => {
 				if (!this.IsBackpackShown() || direction !== PointerDirection.DOWN || this.clickPickupState) return;
+
+				// Prevent picking up items if double-click timer is active (this is a potential double-click)
+				if (this.doubleClickTimerCancel && pointerButton === PointerButton.LEFT) {
+					return;
+				}
+
 				Airship.Inventory.onInventorySlotClicked.Fire(
 					new InventorySlotMouseClickEvent(inventory, slotIndex, pointerButton),
 				);
@@ -587,6 +728,9 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							DESIGNATED_PICKUP_SLOT,
 							existingItemStack.amount,
 						);
+
+						// Start double-click timer for merge-all functionality
+						this.StartDoubleClickTimer();
 					} else if (pointerButton === PointerButton.RIGHT) {
 						const halfAmount = math.ceil(existingItemStack.amount / 2);
 						const { itemAmountText, itemAmountImage } = this.CreatePickupVisual(button);
@@ -640,6 +784,26 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 					return;
 				}
 				this.isInitialPickupPhase = false;
+
+				// Check for double-click merge if there is a 2nd click within the time window
+				if (
+					this.doubleClickTimerCancel &&
+					pointerButton === PointerButton.LEFT &&
+					inventory === this.clickPickupState.inventory &&
+					!this.clickPickupState.initialClickFlag
+				) {
+					if (this.doubleClickTimerCancel) {
+						this.doubleClickTimerCancel();
+						this.doubleClickTimerCancel = undefined;
+					}
+					this.DoubleClickMerge();
+					return;
+				}
+				// Cancel double click timer if we are passed the window
+				if (this.doubleClickTimerCancel) {
+					this.doubleClickTimerCancel();
+					this.doubleClickTimerCancel = undefined;
+				}
 
 				const existingItemStack = inventory.GetItem(targetSlotIndex);
 
@@ -892,6 +1056,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				consumed,
 			),
 		);
+		this.draggingBin.Clean();
 	}
 
 	/**
@@ -912,6 +1077,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			}
 		}
 		this.draggedOverSlots.clear();
+		this.draggingBin.Clean();
 	}
 
 	private AddButtonToDragOver(button: Button, slotIndex: number, rightClick: boolean): void {
@@ -998,7 +1164,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		button.targetGraphic.CrossFadeColor(finalHighlightColor, colors.fadeDuration, true, true);
 
 		// Restore original state when drag ends
-		this.clickPickupBin.Add(() => {
+		this.draggingBin.Add(() => {
 			const originalState = this.buttonOriginalState.get(button);
 			if (originalState) {
 				button.targetGraphic.CrossFadeColor(originalState.color, colors.fadeDuration, true, true);
