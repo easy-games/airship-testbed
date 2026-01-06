@@ -12,10 +12,8 @@ export type DraggingState = {
 export type ClickPickupState = {
 	inventory: Inventory;
 	slot: number;
-	/**
-	 * The ItemStack being picked up. This is the source of truth for itemType and amount.
-	 */
-	itemStack: ItemStack;
+	itemType: string;
+	amount: number;
 	/**
 	 * Reference to the item amount text component for updating amount of cloned item
 	 */
