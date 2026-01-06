@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4288903873064527255}
   - component: {fileID: 2495832772885075276}
   - component: {fileID: 7240173225575641205}
+  - component: {fileID: 6294026735038889452}
   m_Layer: 5
   m_Name: AirshipModalCanvas
   m_TagString: Untagged
@@ -59,7 +60,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 200
   m_TargetDisplay: 0
 --- !u!114 &2495832772885075276
 MonoBehaviour:
@@ -73,7 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 1
+  m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
@@ -101,3 +102,26 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &6294026735038889452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2886469226697316566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guid: e0329868-e9b3-4089-a9ed-e48cec6d6968
+  script: {fileID: -1705653091041686882, guid: 20ec6a0346ffb45fda6e3048eb078e59, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/MenuCanvasScaleFactor.lua
+  forceContext: 0
+  metadata:
+    name: MenuCanvasScaleFactor
+    singleton: 0
+    decorators: []
+    properties: []
+    displayIcon: {fileID: 0}
+    displayName: 

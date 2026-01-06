@@ -5,23 +5,22 @@ import { RightClickMenuController } from "@Easy/Core/Client/ProtectedControllers
 import { Airship } from "../../Airship";
 import { Dependency } from "../../Flamework";
 import { Protected } from "../../Protected";
-import { CanvasAPI, HoverState } from "../../Util/CanvasAPI";
 import { ProtectedUtil } from "../../Util/ProtectedUtil";
 import { SettingsPageSingleton } from "../Singletons/SettingsPageSingleton";
 import { SettingsTab } from "./Settings/SettingsPageName";
 
 export default class ProfileOptionsButton extends AirshipBehaviour {
-	public hoverBG: Image;
 	public profileImage: RawImage;
 	public button: Button;
-	public usernameText: TMP_Text;
+	public usernameText?: TMP_Text;
 
 	override Start(): void {
-		this.usernameText.text = "";
-		this.profileImage.enabled = false;
-		if (ProtectedUtil.IsPhoneMode()) {
-			this.usernameText.gameObject.SetActive(false);
+		if (this.usernameText) {
+			this.usernameText.text = "";
 		}
+
+		this.profileImage.color = new Color(1, 1, 1, 0.1);
+
 		Bridge.UpdateLayout(this.transform as RectTransform, true);
 		task.spawn(() => {
 			this.UpdatePicture();
@@ -32,16 +31,7 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 			});
 		});
 
-		this.hoverBG.enabled = false;
-		CanvasAPI.OnHoverEvent(this.button.gameObject, (hov) => {
-			if (hov === HoverState.ENTER) {
-				this.hoverBG.enabled = true;
-			} else {
-				this.hoverBG.enabled = false;
-			}
-		});
-
-		CanvasAPI.OnClickEvent(this.gameObject, () => {
+		this.button.onClick.Connect(() => {
 			if (ProtectedUtil.IsPhoneMode()) {
 				Dependency<SettingsPageSingleton>().Open(SettingsTab.Account);
 				return;
@@ -94,12 +84,15 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 		const userController = Dependency<ProtectedUserController>();
 		userController.WaitForLocalUser();
 		if (userController.localUser) {
-			this.usernameText.text = userController.localUser.username;
+			if (this.usernameText) {
+				this.usernameText.text = userController.localUser.username;
+			}
+
 			Bridge.UpdateLayout(this.transform as RectTransform, true);
 			Airship.Players.GetProfilePictureAsync(userController.localUser.uid).then((texture) => {
 				if (texture) {
 					this.profileImage.texture = texture;
-					this.profileImage.enabled = true;
+					this.profileImage.color = Color.white;
 				}
 			});
 		}

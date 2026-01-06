@@ -22,6 +22,7 @@ export class MainMenuSingleton {
 
 	public navbarModifier = new Modifier<{ hidden: boolean }>();
 	public socialMenuModifier = new Modifier<{ hidden: boolean }>();
+	public partyCardModifier = new Modifier<{ hidden: boolean }>();
 
 	public readonly hideMobileEscapeButton = false;
 	public onHideMobileEscapeButtonChanged = new Signal<boolean>();
@@ -142,9 +143,7 @@ export class MainMenuSingleton {
 		confirmModal.message.text = message;
 		confirmModal.confirmText.text = confirmButtonText;
 
-		AppManager.OpenModal(go, {
-			sortingOrderOffset: 100,
-		});
+		AppManager.OpenModal(go);
 
 		const result = confirmModal.onResult.Wait();
 		return result;

@@ -5,7 +5,6 @@ import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import PartyCard from "@Easy/Core/Shared/MainMenu/Components/Party/PartyCard";
-import PartyMember from "@Easy/Core/Shared/MainMenu/Components/PartyMember";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
@@ -66,7 +65,7 @@ export class MainMenuPartyController {
 			this.UpdateParty();
 
 			if (this.party === undefined) {
-				this.partyCard.UpdateInfo(undefined);
+				this.partyCard.UpdateStatus(undefined);
 			}
 		});
 
@@ -78,7 +77,7 @@ export class MainMenuPartyController {
 
 				this.partyLeaderStatusReceived = true;
 				const partyLeader = data.find((d) => d.userId === this.party!.leader);
-				this.partyCard.UpdateInfo(partyLeader);
+				this.partyCard.UpdateStatus(partyLeader);
 			},
 		);
 
@@ -125,28 +124,28 @@ export class MainMenuPartyController {
 		});
 
 		// load from cache
-		this.SetupReferences();
+		// this.SetupReferences();
 
-		task.spawn(() => {
-			Protected.User.WaitForLocalUser();
-			if (!this.partyUpdateReceived) {
-				const partyString = StateManager.GetString("airship:party");
-				if (partyString) {
-					this.party = json.decode(partyString);
-				}
-			}
+		// task.spawn(() => {
+		// 	Protected.User.WaitForLocalUser();
+		// 	if (!this.partyUpdateReceived) {
+		// 		const partyString = StateManager.GetString("airship:party");
+		// 		if (partyString) {
+		// 			this.party = json.decode(partyString);
+		// 		}
+		// 	}
 
-			// Note: we should merge UpdateParty() with partyCard.UpdateInfo().
-			// For now, we need to call this first.
-			this.UpdateParty();
+		// 	// Note: we should merge UpdateParty() with partyCard.UpdateInfo().
+		// 	// For now, we need to call this first.
+		// 	this.UpdateParty();
 
-			if (!this.partyLeaderStatusReceived) {
-				const partyLeaderStatusString = StateManager.GetString("airship:party-leader-status");
-				if (partyLeaderStatusString) {
-					this.partyCard.UpdateInfo(json.decode(partyLeaderStatusString));
-				}
-			}
-		});
+		// 	if (!this.partyLeaderStatusReceived) {
+		// 		const partyLeaderStatusString = StateManager.GetString("airship:party-leader-status");
+		// 		if (partyLeaderStatusString) {
+		// 			this.partyCard.UpdateInfo(json.decode(partyLeaderStatusString));
+		// 		}
+		// 	}
+		// });
 	}
 
 	private SetupReferences(): void {
@@ -170,69 +169,61 @@ export class MainMenuPartyController {
 	}
 
 	private UpdateParty(dontUpdateCache = false): void {
-		if (!dontUpdateCache) {
-			if (this.party) {
-				StateManager.SetString("airship:party", json.encode(this.party));
-			} else {
-				StateManager.RemoveString("airship:party");
-			}
-		}
-
-		if (this.party === undefined || (this.party.members.size() <= 1 && this.party.invited.size() === 0)) {
-			this.partyCardContents.SetActive(false);
-			this.emptyPartyGO.SetActive(true);
-			return;
-		}
-		this.partyCardContents.SetActive(true);
-		this.emptyPartyGO.SetActive(false);
-
-		const partyContent = this.mainMenuController.refs.GetValue("Social", "PartyContent");
-		const partyMemberUids = this.party.members.map((m) => m.uid);
-
-		const leaveButton = this.mainMenuController.refs.GetValue("Social", "LeavePartyButton");
-		const isLocalPlayerThePartyLeader = this.party.leader === Game.localPlayer.userId;
-		if (isLocalPlayerThePartyLeader) {
-			leaveButton.SetActive(false);
-		} else {
-			leaveButton.SetActive(true);
-		}
-
-		// CoreLogger.Log("party: " + json.encode(this.party));
-
-		// Remove old
-		let membersToRemove: GameObject[] = [];
-		let alreadyAddedUids: string[] = [];
-		let childCount = partyContent.transform.childCount;
-		for (let i = 0; i < childCount; i++) {
-			const child = partyContent.transform.GetChild(i);
-			if (partyMemberUids.includes(child.gameObject.name)) {
-				alreadyAddedUids.push(child.gameObject.name);
-			} else {
-				membersToRemove.push(child.gameObject);
-			}
-		}
-		for (const go of membersToRemove) {
-			Object.Destroy(go);
-		}
-
-		// Add new & update existing
-		for (const member of this.party.members) {
-			let go: GameObject;
-			let init = false;
-			if (alreadyAddedUids.includes(member.uid)) {
-				go = partyContent.transform.FindChild(member.uid)!.gameObject;
-			} else {
-				go = Instantiate(this.partyMemberPrefab, partyContent.transform);
-				init = true;
-			}
-
-			const partyMemberComponent = go.GetAirshipComponent<PartyMember>()!;
-			partyMemberComponent.SetUser(member, member.uid === this.party.leader, isLocalPlayerThePartyLeader);
-		}
-
-		CanvasAPI.OnClickEvent(leaveButton, () => {
-			client.party.removeFromParty({ userToRemove: Game.localPlayer.userId }).expect();
-		});
+		// if (!dontUpdateCache) {
+		// 	if (this.party) {
+		// 		StateManager.SetString("airship:party", json.encode(this.party));
+		// 	} else {
+		// 		StateManager.RemoveString("airship:party");
+		// 	}
+		// }
+		// if (this.party === undefined || (this.party.members.size() <= 1 && this.party.invited.size() === 0)) {
+		// 	this.partyCardContents.SetActive(false);
+		// 	this.emptyPartyGO.SetActive(true);
+		// 	return;
+		// }
+		// this.partyCardContents.SetActive(true);
+		// this.emptyPartyGO.SetActive(false);
+		// const partyContent = this.mainMenuController.refs.GetValue("Social", "PartyContent");
+		// const partyMemberUids = this.party.members.map((m) => m.uid);
+		// const leaveButton = this.mainMenuController.refs.GetValue("Social", "LeavePartyButton");
+		// const isLocalPlayerThePartyLeader = this.party.leader === Game.localPlayer.userId;
+		// if (isLocalPlayerThePartyLeader) {
+		// 	leaveButton.SetActive(false);
+		// } else {
+		// 	leaveButton.SetActive(true);
+		// }
+		// // CoreLogger.Log("party: " + json.encode(this.party));
+		// // Remove old
+		// let membersToRemove: GameObject[] = [];
+		// let alreadyAddedUids: string[] = [];
+		// let childCount = partyContent.transform.childCount;
+		// for (let i = 0; i < childCount; i++) {
+		// 	const child = partyContent.transform.GetChild(i);
+		// 	if (partyMemberUids.includes(child.gameObject.name)) {
+		// 		alreadyAddedUids.push(child.gameObject.name);
+		// 	} else {
+		// 		membersToRemove.push(child.gameObject);
+		// 	}
+		// }
+		// for (const go of membersToRemove) {
+		// 	Object.Destroy(go);
+		// }
+		// // Add new & update existing
+		// for (const member of this.party.members) {
+		// 	let go: GameObject;
+		// 	let init = false;
+		// 	if (alreadyAddedUids.includes(member.uid)) {
+		// 		go = partyContent.transform.FindChild(member.uid)!.gameObject;
+		// 	} else {
+		// 		go = Instantiate(this.partyMemberPrefab, partyContent.transform);
+		// 		init = true;
+		// 	}
+		// 	const partyMemberComponent = go.GetAirshipComponent<PartyMember>()!;
+		// 	partyMemberComponent.SetUser(member, member.uid === this.party.leader, isLocalPlayerThePartyLeader);
+		// }
+		// CanvasAPI.OnClickEvent(leaveButton, () => {
+		// 	client.party.removeFromParty({ userToRemove: Game.localPlayer.userId }).expect();
+		// });
 	}
 
 	/**

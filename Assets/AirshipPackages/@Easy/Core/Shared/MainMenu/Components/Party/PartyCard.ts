@@ -2,52 +2,50 @@ import { ProtectedPartyController } from "@Easy/Core/Client/ProtectedControllers
 import { MainMenuPartyController } from "@Easy/Core/Client/ProtectedControllers/Social/MainMenuPartyController";
 import { TransferController } from "@Easy/Core/Client/ProtectedControllers/Transfer/TransferController";
 import { AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
+import { Asset } from "@Easy/Core/Shared/Asset";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
-import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import { GameCoordinatorParty } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, HoverState } from "@Easy/Core/Shared/Util/CanvasAPI";
-import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
-import { Theme } from "@Easy/Core/Shared/Util/Theme";
+import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import FriendCard from "../Friends/FriendCard";
+import PartyCardMember from "./PartyCardMember";
 
 export default class PartyCard extends AirshipBehaviour {
-	public layoutElement!: LayoutElement;
-	public gameImage!: RawImage;
-	public gameText!: TMP_Text;
-	public gameArrow!: Image;
-	public gameButton!: Button;
-	public dropFriendHover!: GameObject;
-	public warpButton!: Button;
-	public partyChatButton: Button;
+	public inviteBtn: Button;
+	public warpButton: Button;
+	public joinBtn: Button;
+	public leaveBtn: Button;
+	public dropFriendHover: GameObject;
+	public emptyPartyLabel: GameObject;
+	public partyMemberPrefab: GameObject;
 
 	private loadedGameImageId: string | undefined;
 	private bin = new Bin();
+	private uidToMember = new Map<string, PartyCardMember>();
 
 	protected Awake(): void {
 		this.warpButton.gameObject.SetActive(false);
-		this.partyChatButton.gameObject.SetActive(false);
+		this.joinBtn.gameObject.SetActive(false);
+
+		let toRemove: Transform[] = [];
+		for (let child of this.transform) {
+			if (child.name.includes("PartyCardMember")) {
+				toRemove.push(child);
+			}
+		}
+		for (let r of toRemove) {
+			Destroy(r.gameObject);
+		}
+		this.emptyPartyLabel.SetActive(true);
 	}
 
 	override Start(): void {
-		this.layoutElement.preferredHeight = 84;
-
-		if (!Game.IsMobile()) {
-			this.bin.AddEngineEventConnection(
-				CanvasAPI.OnHoverEvent(this.gameButton.gameObject, (hov) => {
-					NativeTween.AnchoredPositionX(this.gameArrow.transform, hov === HoverState.ENTER ? -10 : -20, 0.5)
-						.SetEaseQuadOut()
-						.SetUseUnscaledTime(true);
-					this.gameArrow.color = hov === HoverState.ENTER ? Theme.primary : Theme.white;
-					this.gameText.color = hov === HoverState.ENTER ? Theme.primary : Theme.white;
-					this.gameButton.GetComponent<Image>()!.color =
-						hov === HoverState.ENTER ? Theme.white : ColorUtil.HexToColor("24242E");
-				}),
-			);
-		}
-		this.bin.AddEngineEventConnection(
-			CanvasAPI.OnClickEvent(this.gameButton.gameObject, () => {
+		this.bin.Add(
+			this.joinBtn.onClick.Connect(() => {
 				task.spawn(() => {
 					Dependency<TransferController>().TransferToPartyLeader();
 				});
@@ -64,6 +62,26 @@ export default class PartyCard extends AirshipBehaviour {
 		if (!Game.IsMobile()) {
 			this.SetupDragFriendHooks();
 		}
+
+		const mainMenuPartyController = Dependency<MainMenuPartyController>();
+		task.spawn(async () => {
+			this.UpdateParty(mainMenuPartyController.party);
+			this.bin.Add(
+				mainMenuPartyController.onPartyUpdated.Connect((newParty) => {
+					this.UpdateParty(newParty);
+				}),
+			);
+		});
+
+		this.bin.Add(
+			this.inviteBtn.onClick.Connect(() => {
+				AppManager.OpenModal(
+					Asset.LoadAsset(
+						"Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/HomePage/PartyInviteModal.prefab",
+					),
+				);
+			}),
+		);
 	}
 
 	private SetupDragFriendHooks() {
@@ -83,19 +101,65 @@ export default class PartyCard extends AirshipBehaviour {
 			const draggedObject = data.pointerDrag;
 			const friendId = draggedObject.GetAirshipComponent<FriendCard>()?.userId;
 			if (friendId) {
-				Dependency<ProtectedPartyController>().InviteToParty(friendId).catch((reason: unknown) => {
-					Debug.LogError("Failed to invite to party: " + reason);
-				});
+				Dependency<ProtectedPartyController>()
+					.InviteToParty(friendId)
+					.catch((reason: unknown) => {
+						Debug.LogError("Failed to invite to party: " + reason);
+					});
 			}
 		});
 	}
 
 	private SetFriendHoverState(hovering: boolean) {
 		this.dropFriendHover.SetActive(hovering === true);
-		// this.defaultContents.SetActive(hovering === false);
 	}
 
-	public UpdateInfo(userStatus: AirshipUserStatusData | undefined) {
+	private UpdateParty(party: GameCoordinatorParty.PartySnapshot | undefined): void {
+		if (party === undefined) {
+			this.leaveBtn.gameObject.SetActive(false);
+			this.uidToMember.clear();
+			for (let child of this.transform) {
+				if (child.gameObject.name.includes("PartyCardMember")) {
+					Destroy(child.gameObject);
+				}
+			}
+			return;
+		}
+
+		this.leaveBtn.gameObject.SetActive(party.members.size() > 1 && party.leader !== Protected.User.localUser?.uid);
+		this.emptyPartyLabel.SetActive(party.members.size() <= 1);
+
+		for (let user of party.members) {
+			if (this.uidToMember.has(user.uid)) {
+				const partyMemberComp = this.uidToMember.get(user.uid)!;
+				partyMemberComp.SetLeader(user.uid === party.leader);
+				continue;
+			}
+
+			const go = Instantiate(this.partyMemberPrefab, this.transform);
+			const partyMemberComp = go.GetAirshipComponent<PartyCardMember>()!;
+			partyMemberComp.transform.SetSiblingIndex(1);
+			partyMemberComp.Init(user);
+			partyMemberComp.SetLeader(user.uid === party.leader);
+			if (user.uid === party.leader) {
+				partyMemberComp.transform.SetAsFirstSibling();
+			}
+			this.uidToMember.set(user.uid, partyMemberComp);
+		}
+
+		const toRemove = [];
+		for (let uid of ObjectUtils.keys(this.uidToMember)) {
+			if (party.members.find((p) => p.uid === uid) === undefined) {
+				toRemove.push(uid);
+			}
+		}
+		for (let uid of toRemove) {
+			Destroy(this.uidToMember.get(uid)!.gameObject);
+			this.uidToMember.delete(uid);
+		}
+	}
+
+	public UpdateStatus(userStatus: AirshipUserStatusData | undefined) {
 		const party = Dependency<MainMenuPartyController>().party;
 		const isLeader = party?.leader === Protected.User.localUser?.uid;
 
@@ -108,23 +172,12 @@ export default class PartyCard extends AirshipBehaviour {
 		this.warpButton.gameObject.SetActive(isLeader && Game.IsInGame());
 
 		const HideNowPlaying = () => {
-			this.layoutElement.preferredHeight = 84;
-			this.layoutElement.gameObject.GetComponent<ImageWithRoundedCorners>()?.Refresh();
+			this.joinBtn.gameObject.SetActive(false);
 		};
 
 		if (party === undefined || party.members.size() <= 1) {
-			this.layoutElement.preferredHeight = 84;
-			this.layoutElement.gameObject.GetComponent<ImageWithRoundedCorners>()?.Refresh();
-			this.partyChatButton.gameObject.SetActive(false);
 			HideNowPlaying();
 			return;
-		}
-
-		// Party chat button visibility
-		if (Game.IsMobile()) {
-			this.partyChatButton.gameObject.SetActive(false);
-		} else {
-			this.partyChatButton.gameObject.SetActive(true);
 		}
 
 		if (!userStatus || userStatus.status !== "in_game") {
@@ -132,19 +185,16 @@ export default class PartyCard extends AirshipBehaviour {
 			return;
 		}
 
-		this.layoutElement.preferredHeight = 124;
-		this.layoutElement.gameObject.GetComponent<ImageWithRoundedCorners>()?.Refresh();
-
-		if (this.loadedGameImageId !== userStatus.game.icon) {
-			this.loadedGameImageId = userStatus.game.icon;
-			task.spawn(() => {
-				const texture = Bridge.DownloadTexture2DYielding(`${AirshipUrl.CDN}/images/${userStatus.game.icon}`);
-				if (texture) {
-					this.gameImage.texture = texture;
-				}
-			});
-		}
-		this.gameText.text = `Playing ${userStatus.game.name}`;
+		// if (this.loadedGameImageId !== userStatus.game.icon) {
+		// 	this.loadedGameImageId = userStatus.game.icon;
+		// 	task.spawn(() => {
+		// 		const texture = Bridge.DownloadTexture2DYielding(`${AirshipUrl.CDN}/images/${userStatus.game.icon}`);
+		// 		if (texture) {
+		// 			this.gameImage.texture = texture;
+		// 		}
+		// 	});
+		// }
+		// this.gameText.text = `Playing ${userStatus.game.name}`;
 	}
 
 	override OnDestroy(): void {}

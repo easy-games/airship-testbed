@@ -1,9 +1,11 @@
 import { AirshipPartyInternalSnapshot } from "@Easy/Core/Shared/Airship/Types/AirshipParty";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { Protected } from "@Easy/Core/Shared/Protected";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SocketController } from "../../Socket/SocketController";
 
@@ -22,8 +24,10 @@ const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordin
 
 @Controller({})
 export class ProtectedPartyController {
-	public readonly onPartyChange = new Signal<[newParty: AirshipPartyInternalSnapshot, oldParty?: AirshipPartyInternalSnapshot]>();
-	private currentParty: AirshipPartyInternalSnapshot | undefined;
+	public readonly onPartyChange = new Signal<
+		[newParty: AirshipPartyInternalSnapshot, oldParty?: AirshipPartyInternalSnapshot]
+	>();
+	public currentParty: AirshipPartyInternalSnapshot | undefined;
 
 	constructor(private readonly socketController: SocketController) {
 		if (!Game.IsClient()) return;
@@ -55,6 +59,36 @@ export class ProtectedPartyController {
 
 	public async RemoveFromParty(userId: string) {
 		await client.party.removeFromParty({ userToRemove: userId });
+	}
+
+	public IsPartyLeader(): boolean {
+		return (
+			this.currentParty !== undefined &&
+			Protected.User.localUser !== undefined &&
+			this.currentParty.leader === Protected.User.localUser.uid
+		);
+	}
+
+	public ObserveIsPartyLead(observer: (isPartyLead: boolean) => CleanupFunc): () => void {
+		let currentCleanup: CleanupFunc;
+
+		const onChanged = (isPartyLead: boolean) => {
+			currentCleanup?.();
+			currentCleanup = observer(isPartyLead);
+		};
+
+		const bin = new Bin();
+		bin.Add(
+			this.onPartyChange.Connect((newParty) => {
+				onChanged(this.IsPartyLeader());
+			}),
+		);
+		onChanged(this.IsPartyLeader());
+
+		return () => {
+			bin.Clean();
+			currentCleanup?.();
+		};
 	}
 
 	protected OnStart(): void {

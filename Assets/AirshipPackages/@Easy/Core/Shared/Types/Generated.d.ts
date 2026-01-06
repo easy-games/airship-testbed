@@ -4016,6 +4016,46 @@ declare const enum RendererType {
     UniversalRenderer = 1,
     _2DRenderer = 2,
 }
+declare const enum VideoSource {
+    VideoClip = 0,
+    Url = 1,
+}
+declare const enum VideoTimeUpdateMode {
+    DSPTime = 0,
+    GameTime = 1,
+    UnscaledGameTime = 2,
+}
+declare const enum VideoRenderMode {
+    CameraFarPlane = 0,
+    CameraNearPlane = 1,
+    RenderTexture = 2,
+    MaterialOverride = 3,
+    APIOnly = 4,
+}
+declare const enum VideoAspectRatio {
+    NoScaling = 0,
+    FitVertically = 1,
+    FitHorizontally = 2,
+    FitInside = 3,
+    FitOutside = 4,
+    Stretch = 5,
+}
+declare const enum Video3DLayout {
+    No3D = 0,
+    SideBySide3D = 1,
+    OverUnder3D = 2,
+}
+declare const enum VideoTimeReference {
+    Freerun = 0,
+    InternalTime = 1,
+    ExternalTime = 2,
+}
+declare const enum VideoAudioOutputMode {
+    None = 0,
+    AudioSource = 1,
+    Direct = 2,
+    APIOnly = 3,
+}
 declare const enum TransportError {
     DnsResolve = 0,
     Refused = 1,
@@ -50765,6 +50805,111 @@ interface WheelHit {
 
 }
     
+interface VideoClip extends Object {
+    /**
+     * Gets the original video clip file path as it was imported into Unity. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-originalPath.html | Video.VideoClip.originalPath}
+     */
+    readonly originalPath: string;
+    /**
+     * The length of the video clip in frames. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-frameCount.html | Video.VideoClip.frameCount}
+     */
+    readonly frameCount: number;
+    /**
+     * The frame rate of the clip in frames per second. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-frameRate.html | Video.VideoClip.frameRate}
+     */
+    readonly frameRate: number;
+    /**
+     * The length of the video clip in seconds. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-length.html | Video.VideoClip.length}
+     */
+    readonly length: number;
+    /**
+     * The width of the images in the video clip in pixels. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-width.html | Video.VideoClip.width}
+     */
+    readonly width: number;
+    /**
+     * The height of the images in the video clip in pixels. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-height.html | Video.VideoClip.height}
+     */
+    readonly height: number;
+    /**
+     * Returns the numerator of the pixel aspect ratio (numerator:denominator). (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-pixelAspectRatioNumerator.html | Video.VideoClip.pixelAspectRatioNumerator}
+     */
+    readonly pixelAspectRatioNumerator: number;
+    /**
+     * Returns the denominator of the pixel aspect ratio (numerator:denominator). (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-pixelAspectRatioDenominator.html | Video.VideoClip.pixelAspectRatioDenominator}
+     */
+    readonly pixelAspectRatioDenominator: number;
+    /**
+     * Whether the imported clip contains sRGB color data (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-sRGB.html | Video.VideoClip.sRGB}
+     */
+    readonly sRGB: boolean;
+    /**
+     * Gets the number of audio tracks that are embedded in the video clip. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-audioTrackCount.html | Video.VideoClip.audioTrackCount}
+     */
+    readonly audioTrackCount: number;
+
+
+
+    /**
+     * Returns the number of channels in the audio track. For example, if the audio track is a stereo track, this function returns 2.
+     * @param audioTrackIdx Use this index to specify which audio track in the video to use.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip.GetAudioChannelCount.html | Video.VideoClip.GetAudioChannelCount}
+     */
+    GetAudioChannelCount(audioTrackIdx: number): number;
+    /**
+     * Gets the language of the video clip&#8217;s audio tracks, if the audio tracks have an assigned language.
+     * @param audioTrackIdx Index of the audio track you want to query in the video.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip.GetAudioLanguage.html | Video.VideoClip.GetAudioLanguage}
+     */
+    GetAudioLanguage(audioTrackIdx: number): string;
+    /**
+     * Get the audio track sampling rate in hertz (Hz).
+     * @param audioTrackIdx Index of the audio queried audio track.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip.GetAudioSampleRate.html | Video.VideoClip.GetAudioSampleRate}
+     */
+    GetAudioSampleRate(audioTrackIdx: number): number;
+
+
+}
+    
+interface VideoPlayerConstructor {
+    /**
+     * Maximum number of audio tracks that can be controlled. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-controlledAudioTrackMaxCount.html | Video.VideoPlayer.controlledAudioTrackMaxCount}
+     */
+    readonly controlledAudioTrackMaxCount: number;
+
+
+    new(): VideoPlayer;
+
+
+
+}
+declare const VideoPlayer: VideoPlayerConstructor;
+    
 interface NetworkServer {
 
 
@@ -55419,6 +55564,7 @@ interface MirrorServerConstructor {
     new(): MirrorServer;
 
 
+    Log(message: string): void;
 
 }
 declare const MirrorServer: MirrorServerConstructor;
@@ -55572,6 +55718,7 @@ interface AirshipUniVoiceConstructor {
     ClientSetDeafened(deafened: boolean): void;
     IsPeerMuted(peerConnectionId: number): boolean;
     IsRecording(): boolean;
+    Log(message: string): void;
     MutePeer(peerConnectionId: number, muted: boolean): void;
     ServerMute(connectionId: number, muted: boolean): void;
     StartRecording(mic: Device): void;
