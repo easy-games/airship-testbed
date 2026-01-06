@@ -2,7 +2,7 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { InventoryHotbarAction } from "@Easy/Core/Shared/Inventory/InventoryHotbarAction";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
-import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
+import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, HoverState, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
@@ -706,6 +706,16 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				if (targetSlotIndex === undefined) return;
 				const existingItemStack = inventory.GetItem(targetSlotIndex);
 
+				// Check for shift-click quick move before normal pickup
+				if (
+					existingItemStack &&
+					pointerButton === PointerButton.LEFT &&
+					Airship.Input.IsDown(CoreAction.InventoryQuickMoveModifierKey)
+				) {
+					this.QuickMoveSlot(inventory, targetSlotIndex);
+					return;
+				}
+
 				// Pickup items on DOWN direction
 				if (existingItemStack) {
 					if (
@@ -1330,17 +1340,65 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	}
 
 	private QuickMoveSlot(inventory: Inventory, slot: number) {
-		// If we have an external inventory, will need to swap to that instead on shift-click
-		if (this.externalInventory) {
-			const stack = inventory.GetItem(slot);
-			if (!stack) return;
-			const freeSlot = Keyboard.IsKeyDown(Key.LeftShift)
-				? this.externalInventory.FindMergeableSlotWithItemType(stack.itemType) ??
-				  this.externalInventory.GetFirstOpenSlot()
-				: this.externalInventory.GetFirstOpenSlot();
-			if (freeSlot === -1) return;
+		const stack = inventory.GetItem(slot);
+		if (!stack) return;
 
-			Airship.Inventory.MoveToSlot(inventory, slot, this.externalInventory, freeSlot, stack.amount);
+		const localInventory = Airship.Inventory.localInventory;
+		const isFromExternal = this.externalInventory && inventory === this.externalInventory;
+		const isFromLocal = localInventory && inventory === localInventory;
+
+		// Handle movement between external and local inventory
+		if (this.externalInventory && localInventory) {
+			if (isFromExternal) {
+				// Try to quick swap in this order: hotbar same item -> backpack same item -> hotbar open slot -> backpack open slot
+				// Try to merge in hotbar first
+				for (let i = 0; i < this.hotbarSlots; i++) {
+					const existingItem = localInventory.GetItem(i);
+					if (existingItem && existingItem.itemType === stack.itemType) {
+						const maxStackSize = existingItem.GetMaxStackSize();
+						if (existingItem.amount + stack.amount <= maxStackSize) {
+							Airship.Inventory.MoveToSlot(inventory, slot, localInventory, i, stack.amount);
+							return;
+						}
+					}
+				}
+
+				// Try to merge in backpack
+				for (let i = this.hotbarSlots; i < localInventory.GetMaxSlots(); i++) {
+					const existingItem = localInventory.GetItem(i);
+					if (existingItem && existingItem.itemType === stack.itemType) {
+						const maxStackSize = existingItem.GetMaxStackSize();
+						if (existingItem.amount + stack.amount <= maxStackSize) {
+							Airship.Inventory.MoveToSlot(inventory, slot, localInventory, i, stack.amount);
+							return;
+						}
+					}
+				}
+
+				// Try to find open slot in hotbar
+				for (let i = 0; i < this.hotbarSlots; i++) {
+					if (localInventory.GetItem(i) === undefined) {
+						Airship.Inventory.MoveToSlot(inventory, slot, localInventory, i, stack.amount);
+						return;
+					}
+				}
+
+				// Try to find open slot in backpack
+				for (let i = this.hotbarSlots; i < localInventory.GetMaxSlots(); i++) {
+					if (localInventory.GetItem(i) === undefined) {
+						Airship.Inventory.MoveToSlot(inventory, slot, localInventory, i, stack.amount);
+						return;
+					}
+				}
+			} else if (isFromLocal) {
+				const freeSlot = Airship.Input.IsDown(CoreAction.InventoryQuickMoveModifierKey)
+					? this.externalInventory.FindMergeableSlotWithItemType(stack.itemType) ??
+					  this.externalInventory.GetFirstOpenSlot()
+					: this.externalInventory.GetFirstOpenSlot();
+				if (freeSlot !== -1) {
+					Airship.Inventory.MoveToSlot(inventory, slot, this.externalInventory, freeSlot, stack.amount);
+				}
+			}
 		} else {
 			Airship.Inventory.QuickMoveSlot(inventory, slot, this.hotbarSlots);
 		}

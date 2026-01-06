@@ -72,8 +72,10 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 		//Set the default prefab to use whenever a character is spawned
 		Airship.Characters.instantiateViewmodel = this.instantiateViewmodel;
 		Airship.Characters.SetDefaultCharacterPrefab(this.customCharacterPrefab);
-		if (Game.IsClient() && Airship.Characters.GetDefaultCharacterTemplate()?.GetAirshipComponents<Inventory>() !== undefined)
-		{
+		if (
+			Game.IsClient() &&
+			Airship.Characters.GetDefaultCharacterTemplate()?.GetAirshipComponents<Inventory>() !== undefined
+		) {
 			this.CreateHotbarActions();
 		}
 		Airship.Characters.SetDefaultViewmodelPrefab(this.customViewmodelPrefab);
@@ -181,6 +183,11 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 	private CreateHotbarActions(): void {
 		const hotbarActions = [
 			{ name: CoreAction.Inventory, binding: Binding.Key(Key.E), category: InputKeybindCategory.Actions },
+			{
+				name: CoreAction.InventoryQuickMoveModifierKey,
+				binding: Binding.Key(Key.LeftShift),
+				category: InputKeybindCategory.Actions,
+			},
 			{
 				name: InventoryHotbarAction.HotbarSlot1,
 				binding: Binding.Key(Key.Digit1),
