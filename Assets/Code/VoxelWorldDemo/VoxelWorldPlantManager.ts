@@ -7,6 +7,8 @@ import { Game } from "@Easy/Core/Shared/Game";
 export class VoxelWorldPlantEvents {
     public static SetPlants = new NetworkSignal<[plantData: PlantData[]]>("SetPlants");
     public static RemovePlants = new NetworkSignal<[plantPos: Vector3[]]>("RemovePlants");
+    public static DamagePlants = new NetworkSignal<[plantPos: Vector3[]]>("DamagePlants");
+    public static UpdatePlants = new NetworkSignal<[plantData: PlantData[]]>("UpdatePlants");
 }
 
 export class PlantData {
@@ -50,10 +52,16 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
                 }
                 VoxelWorldPlantEvents.SetPlants.server.FireClient(player, plantData);
             }));
+
+            // Client requests to damage plant
+            this.bin.Add(VoxelWorldPlantEvents.DamagePlants.server.OnClientEvent((player, positions)=>{
+                for(const pos of positions) {
+                    this.DamagePlantServer(pos);
+                }
+            }))
         }
 
         if(Game.IsClient() && !Game.IsEditor()) {
-            
             this.bin.Add(VoxelWorldPlantEvents.SetPlants.client.OnServerEvent((plantData) => {
                 for(let data of plantData) {
                     this.SpawnPlant(data, false);
@@ -63,6 +71,12 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
             this.bin.Add(VoxelWorldPlantEvents.RemovePlants.client.OnServerEvent((plantPos) => {
                 for(let pos of plantPos) {
                     this.DestroyPlant(pos);
+                }
+            }))
+
+            this.bin.Add(VoxelWorldPlantEvents.UpdatePlants.client.OnServerEvent((plantData) => {
+                for(let plant of plantData) {
+                    this.UpdatePlantClient(plant);
                 }
             }))
         }
@@ -97,15 +111,75 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
         VoxelWorldPlantEvents.SetPlants.server.FireAllClients(newPlants);
     }
 
-    public IsOccupied(tilePosition: Vector3) { 
-        return this.plants.has(tilePosition);
+    public IsOccupied(worldPosition: Vector3) { 
+        return this.plants.has(this.GetTilePosition(worldPosition));
+    }
+
+    public GetPlant(worldPosition: Vector3) {
+        return this.plants.get(this.GetTilePosition(worldPosition));
+    }
+
+    public GetTilePosition(worldPosition: Vector3) {
+        return new Vector3(math.floor(worldPosition.x), math.floor(worldPosition.y), math.floor(worldPosition.z));
+    }
+
+    public TryDamagePlant(worldPosition: Vector3) {
+        print("Trying to damage plant");
+        if(Game.IsServer()) {
+            this.DamagePlantServer(worldPosition);
+            return false;
+        }
+
+        const tilePos = this.GetTilePosition(worldPosition);
+        const plant = this.GetPlant(tilePos); 
+        if(plant && plant.data.weed) {
+            VoxelWorldPlantEvents.DamagePlants.client.FireServer([tilePos]);
+            return true;
+        }
+        return false;
+    }
+
+    public TryPlacePlant(worldPosition: Vector3) {
+        print("Trying to place plant");
+    }
+
+    private DamagePlantServer(worldPosition: Vector3) {
+        const tilePos = this.GetTilePosition(worldPosition);
+        const plant = this.GetPlant(worldPosition); 
+        if(plant && plant.data.weed) {
+            plant.data.height-=1;
+            if(plant.data.height <= 0) {
+                // Plant is dead
+                this.DestroyPlant(this.GetTilePosition(tilePos));
+            } else {
+                // Tell clients we damaged a plant
+                VoxelWorldPlantEvents.DamagePlants.server.FireAllClients([tilePos]);
+            }
+        } else {
+            if(plant) {
+                print("Trying to damage non weed");
+            } else {
+                print("Trying to damage nothing");
+            }
+        }
+    }
+
+    public UpdatePlantClient(newData: PlantData) {
+        const plant = this.GetPlant(newData.position);
+        if(plant) {
+            plant.UpdateData(newData);
+        }else{
+            error("No plant on tile position server sent us: " + newData.position);
+        }
     }
 
     public SpawnPlant(data: PlantData, notifyImmediate = true) {
+        data.position = this.GetTilePosition(data.position);
         const instance = Instantiate(this.plantTemplate, data.position.add(new Vector3(.5,1,.5)), Quaternion.identity).GetAirshipComponent<VoxelWorldPlantView>();
         if(instance) {
-            instance?.Init(data);
+            instance.Init(data);
             this.plants.set(data.position, instance);
+            print("Saving plant at: " + data.position);
         }
 
         if(notifyImmediate && Game.IsServer()) {
@@ -114,6 +188,7 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
     }
 
     public DestroyPlant(tilePosition: Vector3, notifyImmediate = true) {
+        print("Destroy plant at: " + tilePosition);
         let plant = this.plants.get(tilePosition);
         if(plant) {
             Destroy(plant.gameObject);

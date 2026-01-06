@@ -471,8 +471,8 @@ MonoBehaviour:
             is also assigned in the Resources/NetworkPrefabCollection.asset"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
+      serializedObject: {fileID: 4456266300150642914, guid: e3fc54423f0f65247ab9043c8012c955, type: 3}
+      modified: 1
     - name: useDefaultMovement
       type: boolean
       objectType: 
@@ -528,9 +528,9 @@ MonoBehaviour:
         tags: []
       decorators: []
       nullable: 0
-      serializedValue: 1
+      serializedValue: 0
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: enableCrouching
       type: boolean
       objectType: 
@@ -593,7 +593,7 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 1
       serializedObject: {fileID: 0}
-      modified: 0
+      modified: 1
     - name: customViewmodelPrefab
       type: object
       objectType: GameObject

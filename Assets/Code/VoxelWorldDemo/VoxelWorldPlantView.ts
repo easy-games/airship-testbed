@@ -1,6 +1,9 @@
 import { PlantData } from "./VoxelWorldPlantManager";
 
 export default class VoxelWorldPlantView extends AirshipBehaviour {
+    @Header("Templates")
+    public heightChangeVFX: GameObject;
+
     public heightHolder: Transform;
     public berryHolder: GameObject;
     public weedHolder: GameObject;
@@ -30,5 +33,13 @@ export default class VoxelWorldPlantView extends AirshipBehaviour {
         this.berryHolder.SetActive(data.fruited && !data.weed);
         this.weedHolder.SetActive(data.weed);
         this.leavesHolder.SetActive(!data.weed);
+    }
+
+    public UpdateData(newData: PlantData) {
+        if(newData.height !== this.data.height) {
+            // Play height change vfx
+            Instantiate(this.heightChangeVFX, this.transform.position, this.transform.rotation);
+        }
+        this.data = newData;
     }
 }
