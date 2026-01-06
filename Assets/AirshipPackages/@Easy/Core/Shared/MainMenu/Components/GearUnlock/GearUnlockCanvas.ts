@@ -31,6 +31,10 @@ export default class GearUnlockCanvas extends AirshipBehaviour {
 			VibrationManager.Play(VibrationFeedbackType.Heavy);
 			task.wait(0.2);
 			VibrationManager.Play(VibrationFeedbackType.Heavy);
+			task.wait(0.2);
+			VibrationManager.Play(VibrationFeedbackType.Heavy);
+			task.wait(0.2);
+			VibrationManager.Play(VibrationFeedbackType.Heavy);
 		});
 	}
 

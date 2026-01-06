@@ -2687,7 +2687,7 @@ MonoBehaviour:
         tags: []
       decorators: []
       nullable: 0
-      serializedValue: 1
+      serializedValue: 0
       serializedObject: {fileID: 0}
       modified: 1
     - name: disabledColorHex
@@ -2728,6 +2728,42 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: vibration
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: vibrationType
+      type: IntEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 1
       serializedObject: {fileID: 0}
       modified: 0
     displayIcon: {fileID: 0}
@@ -3906,6 +3942,42 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 0}
       modified: 0
+    - name: vibration
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 1
+    - name: vibrationType
+      type: IntEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
 --- !u!1 &7214392635144702913
@@ -4952,6 +5024,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3781697274346866496}
     m_Modifications:
+    - target: {fileID: 106854589033555976, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 106854589033555976, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 106854589033555976, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 106854589033555976, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 106854589033555976, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 106854589033555976, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 106854589033555976, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 106854589033555976, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 308022378760191281, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -4976,6 +5080,38 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 325307424079224798, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 325307424079224798, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 325307424079224798, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 325307424079224798, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 325307424079224798, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 325307424079224798, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 325307424079224798, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 325307424079224798, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 597280328725849727, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
       propertyPath: m_Material
       value: 
@@ -4983,6 +5119,38 @@ PrefabInstance:
     - target: {fileID: 828029814300865855, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
       propertyPath: m_RaycastTarget
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 943795379460292887, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 943795379460292887, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 943795379460292887, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 943795379460292887, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 943795379460292887, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 943795379460292887, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 943795379460292887, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 943795379460292887, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1120921368903593473, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5205,6 +5373,38 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4662389337388747581, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4662389337388747581, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 4662389337388747581, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 4662389337388747581, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 4662389337388747581, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 4662389337388747581, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 4662389337388747581, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4662389337388747581, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4684952992561777255, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
       propertyPath: m_Material
       value: 
@@ -5252,6 +5452,38 @@ PrefabInstance:
     - target: {fileID: 5099904469173959116, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156224053665457426, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156224053665457426, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156224053665457426, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156224053665457426, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156224053665457426, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156224053665457426, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156224053665457426, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156224053665457426, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5497399131513009170, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
       propertyPath: m_Material
@@ -5309,6 +5541,38 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6214560519137088922, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6214560519137088922, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 6214560519137088922, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 6214560519137088922, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 6214560519137088922, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 6214560519137088922, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 6214560519137088922, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6214560519137088922, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6402533419730773851, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -5325,6 +5589,38 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -30
       objectReference: {fileID: 0}
+    - target: {fileID: 6594280317188467419, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594280317188467419, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594280317188467419, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594280317188467419, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594280317188467419, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594280317188467419, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594280317188467419, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594280317188467419, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7178849551566603267, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
       propertyPath: m_Name
       value: GamePage
@@ -5337,6 +5633,38 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
+    - target: {fileID: 7543600989990981730, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543600989990981730, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543600989990981730, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543600989990981730, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543600989990981730, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543600989990981730, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543600989990981730, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7543600989990981730, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7733421885643461632, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
       propertyPath: m_Material
       value: 
@@ -5397,6 +5725,38 @@ PrefabInstance:
       propertyPath: metadata.properties.Array.data[19].serializedObject
       value: 
       objectReference: {fileID: 4672083422081533474}
+    - target: {fileID: 8572696523684639948, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572696523684639948, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572696523684639948, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572696523684639948, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572696523684639948, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572696523684639948, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572696523684639948, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572696523684639948, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8709605439592708735, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5428,6 +5788,38 @@ PrefabInstance:
     - target: {fileID: 8817582008478010950, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9052097404492197380, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9052097404492197380, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 9052097404492197380, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 9052097404492197380, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 9052097404492197380, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 9052097404492197380, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 9052097404492197380, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9052097404492197380, guid: 3d2b06f0e9f4c9b44ad8ee62c534e76d, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5655,6 +6047,42 @@ MonoBehaviour:
       decorators: []
       nullable: 0
       serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: vibration
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: vibrationType
+      type: IntEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 1
       serializedObject: {fileID: 0}
       modified: 0
     displayIcon: {fileID: 0}
@@ -6082,6 +6510,38 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
+    - target: {fileID: 6904162513659162383, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6904162513659162383, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 6904162513659162383, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 6904162513659162383, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 6904162513659162383, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 6904162513659162383, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 6904162513659162383, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6904162513659162383, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7259171849934435590, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_Material
       value: 
@@ -6102,6 +6562,38 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
+    - target: {fileID: 7694093076401521143, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694093076401521143, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694093076401521143, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694093076401521143, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694093076401521143, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694093076401521143, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694093076401521143, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7694093076401521143, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7727935298036860593, guid: f3d5752ec85014492a5a2fbc8bd32b04, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -6748,6 +7240,70 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6805195576657716171, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6805195576657716171, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 6805195576657716171, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 6805195576657716171, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 6805195576657716171, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 6805195576657716171, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 6805195576657716171, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6805195576657716171, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7338936001066088390, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7338936001066088390, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 7338936001066088390, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 7338936001066088390, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 7338936001066088390, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 7338936001066088390, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 7338936001066088390, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7338936001066088390, guid: 181b2904433958842b5d064457bf28cf, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7531252219990268584, guid: 181b2904433958842b5d064457bf28cf, type: 3}
       propertyPath: m_Material
       value: 
@@ -6871,6 +7427,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1224641255452365254, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224641255452365254, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224641255452365254, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224641255452365254, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224641255452365254, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224641255452365254, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224641255452365254, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1224641255452365254, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2021074429971552578, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -6922,6 +7510,38 @@ PrefabInstance:
     - target: {fileID: 3524996715300821797, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -125
+      objectReference: {fileID: 0}
+    - target: {fileID: 3791319814743762910, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3791319814743762910, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 3791319814743762910, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 3791319814743762910, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 3791319814743762910, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 3791319814743762910, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 3791319814743762910, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3791319814743762910, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3868218253855891458, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
       propertyPath: m_Material
@@ -7034,6 +7654,38 @@ PrefabInstance:
     - target: {fileID: 5478668999766834506, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
       propertyPath: m_SizeDelta.y
       value: 360
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866287610652306356, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866287610652306356, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866287610652306356, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866287610652306356, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866287610652306356, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866287610652306356, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866287610652306356, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866287610652306356, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6257184671061228458, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
       propertyPath: m_AnchorMax.y
@@ -7195,10 +7847,74 @@ PrefabInstance:
       propertyPath: metadata.properties.Array.data[3].serializedObject
       value: 
       objectReference: {fileID: 7399386753844443449}
+    - target: {fileID: 7831190198413513535, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831190198413513535, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831190198413513535, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831190198413513535, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831190198413513535, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831190198413513535, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831190198413513535, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831190198413513535, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8120766663448178335, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
+    - target: {fileID: 8422959228577202217, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8422959228577202217, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 8422959228577202217, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 8422959228577202217, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 8422959228577202217, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 8422959228577202217, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 8422959228577202217, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8422959228577202217, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8662941611794567225, guid: 902b56bd3df62e240871752bb11f8eb8, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -7409,6 +8125,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3781697274346866496}
     m_Modifications:
+    - target: {fileID: 40287888535629360, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 40287888535629360, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 40287888535629360, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 40287888535629360, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 40287888535629360, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 40287888535629360, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 40287888535629360, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 40287888535629360, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 306502342079474210, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
       propertyPath: m_Material
       value: 
@@ -7525,6 +8273,38 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -32.5
       objectReference: {fileID: 0}
+    - target: {fileID: 858205313028224248, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 858205313028224248, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 858205313028224248, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 858205313028224248, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 858205313028224248, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 858205313028224248, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 858205313028224248, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 858205313028224248, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 950580783116412339, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
       propertyPath: m_Spacing
       value: 4
@@ -7541,6 +8321,38 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
+    - target: {fileID: 1511689562959972472, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511689562959972472, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511689562959972472, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511689562959972472, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511689562959972472, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511689562959972472, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511689562959972472, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1511689562959972472, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1743130062773252569, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
       propertyPath: m_Material
       value: 
@@ -7549,12 +8361,140 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
+    - target: {fileID: 2116735945730283185, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2116735945730283185, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 2116735945730283185, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 2116735945730283185, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 2116735945730283185, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 2116735945730283185, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 2116735945730283185, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2116735945730283185, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2217801469001386654, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2217801469001386654, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 2217801469001386654, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 2217801469001386654, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 2217801469001386654, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 2217801469001386654, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 2217801469001386654, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2217801469001386654, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2303433768033827239, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2303433768033827239, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2326665920187797350, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2326665920187797350, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 2326665920187797350, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 2326665920187797350, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 2326665920187797350, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 2326665920187797350, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 2326665920187797350, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2326665920187797350, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3311518521661730855, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3311518521661730855, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 3311518521661730855, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 3311518521661730855, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 3311518521661730855, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 3311518521661730855, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 3311518521661730855, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3311518521661730855, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3508857809658848048, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
@@ -7664,6 +8604,70 @@ PrefabInstance:
     - target: {fileID: 5234166813745590525, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5822312794481958043, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5822312794481958043, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 5822312794481958043, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 5822312794481958043, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 5822312794481958043, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 5822312794481958043, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 5822312794481958043, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5822312794481958043, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6338735868129505972, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6338735868129505972, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 6338735868129505972, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 6338735868129505972, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 6338735868129505972, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 6338735868129505972, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 6338735868129505972, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6338735868129505972, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6447511004327156570, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
       propertyPath: m_AnchorMax.y
@@ -7789,6 +8793,38 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: -17
       objectReference: {fileID: 0}
+    - target: {fileID: 8578486617800405748, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8578486617800405748, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 8578486617800405748, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 8578486617800405748, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 8578486617800405748, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 8578486617800405748, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 8578486617800405748, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8578486617800405748, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8875331519538627494, guid: 4dfbf1cce8742384299b80e5425690ac, type: 3}
       propertyPath: m_Material
       value: 
@@ -7822,6 +8858,70 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9106741346845258035}
     m_Modifications:
+    - target: {fileID: 370041964141165672, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 370041964141165672, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 370041964141165672, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 370041964141165672, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 370041964141165672, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 370041964141165672, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 370041964141165672, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 370041964141165672, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 441301355635200365, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 441301355635200365, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 441301355635200365, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 441301355635200365, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 441301355635200365, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 441301355635200365, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 441301355635200365, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 441301355635200365, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1011633751868494420, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -7942,6 +9042,38 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4859436177804607713, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859436177804607713, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859436177804607713, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859436177804607713, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859436177804607713, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859436177804607713, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859436177804607713, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859436177804607713, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5684500079416023044, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -8041,6 +9173,38 @@ PrefabInstance:
     - target: {fileID: 7516678782597365284, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7747449100024559425, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7747449100024559425, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[6].name
+      value: vibration
+      objectReference: {fileID: 0}
+    - target: {fileID: 7747449100024559425, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[6].type
+      value: boolean
+      objectReference: {fileID: 0}
+    - target: {fileID: 7747449100024559425, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[7].name
+      value: vibrationType
+      objectReference: {fileID: 0}
+    - target: {fileID: 7747449100024559425, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[7].type
+      value: IntEnum
+      objectReference: {fileID: 0}
+    - target: {fileID: 7747449100024559425, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[7].refPath
+      value: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      objectReference: {fileID: 0}
+    - target: {fileID: 7747449100024559425, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[6].serializedValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7747449100024559425, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
+      propertyPath: metadata.properties.Array.data[7].serializedValue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7920938654082165397, guid: cc22e76c928f54fe2b06f38bb565560e, type: 3}
       propertyPath: m_AnchorMax.y
