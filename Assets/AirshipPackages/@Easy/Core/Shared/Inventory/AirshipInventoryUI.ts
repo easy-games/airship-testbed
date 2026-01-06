@@ -1098,6 +1098,26 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				}
 			}
 		}
+
+		for (const [targetInventory, slots] of this.draggedOverSlots) {
+			for (const draggedOverSlot of slots) {
+				const tile = this.GetTileForSlot(targetInventory, draggedOverSlot);
+				if (tile) {
+					const itemInSlot = targetInventory.GetItem(draggedOverSlot);
+					this.UpdateTile(tile, draggedOverSlot, itemInSlot);
+				}
+			}
+		}
+
+		if (this.clickPickupState) {
+			const remainingStack = this.clickPickupState.inventory.GetItem(DESIGNATED_PICKUP_SLOT);
+			if (remainingStack) {
+				this.UpdatePickupAmount(remainingStack.amount, false);
+			} else {
+				this.CleanupClickPickupState();
+			}
+		}
+
 		this.draggedOverSlots.clear();
 		this.draggingBin.Clean();
 	}
