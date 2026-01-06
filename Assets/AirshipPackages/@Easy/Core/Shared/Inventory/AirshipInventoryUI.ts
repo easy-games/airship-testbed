@@ -75,7 +75,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	private visible = false;
 	private backpackEnabled = true;
 
-	private draggedOverSlots = new Set<number>();
+	private draggedOverSlots = new Map<Inventory, Set<number>>();
 	private dragAmountToAdd = 0;
 
 	private clickPickupState: ClickPickupState | undefined;
@@ -165,7 +165,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		// Add dragging events over the drop item catcher in case we start over it
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnBeginDragEvent(this.dropItemCatcher.gameObject, (data) => {
-				this.BeginDragWithPickedUpItem(undefined, undefined, data.button === InputButton.Right);
+				this.BeginDragWithPickedUpItem(undefined, undefined, undefined, data.button === InputButton.Right);
 			}),
 		);
 
@@ -786,10 +786,10 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				this.isInitialPickupPhase = false;
 
 				// Check for double-click merge if there is a 2nd click within the time window
+				// Allow double-click on any inventory (local or external) to trigger merge
 				if (
 					this.doubleClickTimerCancel &&
 					pointerButton === PointerButton.LEFT &&
-					inventory === this.clickPickupState.inventory &&
 					!this.clickPickupState.initialClickFlag
 				) {
 					if (this.doubleClickTimerCancel) {
@@ -985,7 +985,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 			// Add dragging events over buttons in case we start over the buttons
 			CanvasAPI.OnBeginDragEvent(button.gameObject, (data) => {
-				this.BeginDragWithPickedUpItem(button, slotIndex, data.button === InputButton.Right);
+				this.BeginDragWithPickedUpItem(button, inventory, slotIndex, data.button === InputButton.Right);
 			}),
 
 			CanvasAPI.OnEndDragEvent(button.gameObject, () => {
@@ -998,7 +998,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				if (hoverState === HoverState.ENTER) {
 					// Use the stored right click state from when the drag began
 					const rightClick = this.clickPickupState.isRightClickDrag ?? false;
-					this.AddButtonToDragOver(button, slotIndex, rightClick);
+					this.AddButtonToDragOver(button, inventory, slotIndex, rightClick);
 				}
 			}),
 		];
@@ -1009,6 +1009,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	 */
 	private BeginDragWithPickedUpItem(
 		button: Button | undefined,
+		inventory: Inventory | undefined,
 		slotIndex: number | undefined,
 		rightClick: boolean,
 	): void {
@@ -1019,12 +1020,12 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		this.draggedOverSlots.clear();
 
 		// Add the initial button/slot where the drag started
-		if (button !== undefined && slotIndex !== undefined) {
+		if (button !== undefined && inventory !== undefined && slotIndex !== undefined) {
 			const dragEvent = Airship.Inventory.onInventorySlotDragBegin.Fire(
-				new CancellableInventorySlotInteractionEvent(this.clickPickupState.inventory, slotIndex),
+				new CancellableInventorySlotInteractionEvent(inventory, slotIndex),
 			);
 			if (dragEvent.IsCancelled()) return;
-			this.AddButtonToDragOver(button, slotIndex, rightClick);
+			this.AddButtonToDragOver(button, inventory, slotIndex, rightClick);
 		}
 	}
 
@@ -1036,11 +1037,13 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		let consumed = false;
 		if (this.clickPickupState && this.draggedOverSlots.size() > 0) {
 			consumed = true;
-			for (const draggedOverSlot of this.draggedOverSlots) {
-				const tile = this.slotToBackpackTileComponentMap.get(draggedOverSlot);
-				if (tile) {
-					const itemInSlot = this.clickPickupState.inventory.GetItem(draggedOverSlot);
-					this.UpdateTile(tile, draggedOverSlot, itemInSlot);
+			for (const [targetInventory, slots] of this.draggedOverSlots) {
+				for (const draggedOverSlot of slots) {
+					const tile = this.GetTileForSlot(targetInventory, draggedOverSlot);
+					if (tile) {
+						const itemInSlot = targetInventory.GetItem(draggedOverSlot);
+						this.UpdateTile(tile, draggedOverSlot, itemInSlot);
+					}
 				}
 			}
 		}
@@ -1066,73 +1069,84 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		if (this.isInitialPickupPhase || !this.isDraggingPickedUpItem || !this.clickPickupState) return;
 		this.isDraggingPickedUpItem = false;
 		if (this.dragAmountToAdd > 0) {
-			for (const draggedOverSlot of this.draggedOverSlots) {
-				Airship.Inventory.MoveToSlot(
-					this.clickPickupState.inventory,
-					DESIGNATED_PICKUP_SLOT,
-					this.clickPickupState.inventory,
-					draggedOverSlot,
-					this.dragAmountToAdd,
-				);
+			for (const [targetInventory, slots] of this.draggedOverSlots) {
+				for (const draggedOverSlot of slots) {
+					Airship.Inventory.MoveToSlot(
+						this.clickPickupState.inventory,
+						DESIGNATED_PICKUP_SLOT,
+						targetInventory,
+						draggedOverSlot,
+						this.dragAmountToAdd,
+					);
+				}
 			}
 		}
 		this.draggedOverSlots.clear();
 		this.draggingBin.Clean();
 	}
 
-	private AddButtonToDragOver(button: Button, slotIndex: number, rightClick: boolean): void {
+	private AddButtonToDragOver(button: Button, inventory: Inventory, slotIndex: number, rightClick: boolean): void {
 		if (!this.clickPickupState) {
 			return;
 		}
 
-		const existing = this.draggedOverSlots.has(slotIndex);
+		const slotsForInventory = this.draggedOverSlots.get(inventory);
+		const existing = slotsForInventory?.has(slotIndex) ?? false;
 		if (existing) {
 			return;
 		}
-		const itemInSlotIndex = this.clickPickupState.inventory.GetItem(slotIndex);
+		const itemInSlotIndex = inventory.GetItem(slotIndex);
 		if (itemInSlotIndex?.itemType === this.clickPickupState.itemType || itemInSlotIndex === undefined) {
-			this.draggedOverSlots.add(slotIndex);
-			this.AddDropPreview(button, slotIndex, rightClick);
+			if (!slotsForInventory) {
+				this.draggedOverSlots.set(inventory, new Set<number>());
+			}
+			this.draggedOverSlots.get(inventory)!.add(slotIndex);
+			this.AddDropPreview(button, inventory, slotIndex, rightClick);
 		}
 	}
 
-	private AddDropPreview(button: Button, slotIndex: number, rightClick: boolean): void {
+	private AddDropPreview(button: Button, inventory: Inventory, slotIndex: number, rightClick: boolean): void {
 		if (!this.clickPickupState || this.draggedOverSlots.size() === 0) {
 			return;
 		}
 
+		// Calculate total number of dragged slots across all inventories
+		let totalDraggedSlots = 0;
+		for (const slots of this.draggedOverSlots.values()) {
+			totalDraggedSlots += slots.size();
+		}
+
 		// Calculate how many items we should drop to each slot depending on click direction
-		const numberOfDraggedSlots = this.draggedOverSlots.size();
 		const currentStackSize = this.clickPickupState.amount;
-		const amountToDropToEachSlot = rightClick
-			? 1
-			: math.max(1, math.floor(currentStackSize / numberOfDraggedSlots));
+		const amountToDropToEachSlot = rightClick ? 1 : math.max(1, math.floor(currentStackSize / totalDraggedSlots));
 
 		this.dragAmountToAdd = amountToDropToEachSlot;
 
 		// Update the visual clone amount by how many items we "Drop"
-		const totalAmountToDrop = amountToDropToEachSlot * numberOfDraggedSlots;
+		const totalAmountToDrop = amountToDropToEachSlot * totalDraggedSlots;
 		const remainingAmount = math.max(0, currentStackSize - totalAmountToDrop);
 		this.UpdatePickupAmount(remainingAmount, true);
 
 		// Update all hovered slots with preview amounts
-		for (const draggedOverSlot of this.draggedOverSlots) {
-			const draggedOverTile = this.slotToBackpackTileComponentMap.get(draggedOverSlot);
-			if (!draggedOverTile) {
-				warn("Missing AirshipInventoryTile component when adding drop preview: " + draggedOverSlot);
-				continue;
+		for (const [targetInventory, slots] of this.draggedOverSlots) {
+			for (const draggedOverSlot of slots) {
+				const draggedOverTile = this.GetTileForSlot(targetInventory, draggedOverSlot);
+				if (!draggedOverTile) {
+					warn("Missing AirshipInventoryTile component when adding drop preview: " + draggedOverSlot);
+					continue;
+				}
+				const currentItemInSlot = targetInventory.GetItem(draggedOverSlot);
+				// Only set image/name for the newly added slot, update amount for others
+				const isNewSlot = draggedOverSlot === slotIndex && targetInventory === inventory;
+				this.UpdateDraggedPreviewTile(
+					draggedOverTile,
+					draggedOverSlot,
+					this.clickPickupState.itemType,
+					amountToDropToEachSlot,
+					currentItemInSlot,
+					!isNewSlot,
+				);
 			}
-			const currentItemInSlot = this.clickPickupState.inventory.GetItem(draggedOverSlot);
-			// Only set image/name for the newly added slot, update amount for others
-			const isNewSlot = draggedOverSlot === slotIndex;
-			this.UpdateDraggedPreviewTile(
-				draggedOverTile,
-				draggedOverSlot,
-				this.clickPickupState.itemType,
-				amountToDropToEachSlot,
-				currentItemInSlot,
-				!isNewSlot,
-			);
 		}
 
 		this.HighlightButton(button);
@@ -1181,6 +1195,21 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	 */
 	private GetSlotIndexFromButton(button: Button): number | undefined {
 		return this.buttonToSlotIndexMap.get(button);
+	}
+
+	/**
+	 * Gets the tile component for a slot in a given inventory
+	 * @param inventory The inventory the slot belongs to
+	 * @param slot The slot index
+	 * @returns The tile component, or undefined if not found
+	 */
+	private GetTileForSlot(inventory: Inventory, slot: number): AirshipInventoryTile | undefined {
+		if (inventory === this.externalInventory) {
+			return this.slotToExternalInventoryTileComponentMap.get(slot);
+		} else if (inventory === Airship.Inventory.localInventory) {
+			return this.slotToBackpackTileComponentMap.get(slot);
+		}
+		return undefined;
 	}
 
 	/**
