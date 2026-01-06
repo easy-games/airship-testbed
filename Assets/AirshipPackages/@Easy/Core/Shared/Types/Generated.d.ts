@@ -38828,6 +38828,7 @@ interface VoxelBlocks extends MonoBehaviour {
     atlasMaterial: Material;
     atlas: TexturePacker;
     loadedBlocks: Readonly<BlockDefinition[]>;
+    alphebeticalBlocks: Readonly<BlockDefinition[]>;
     rootAssetPath: string;
     m_bundlePaths: Readonly<string[]>;
     blockDefinitionLists: Readonly<VoxelBlockDefinitionList[]>;
@@ -54698,10 +54699,12 @@ interface VoxelWorld extends MonoBehaviour {
     GetNumProcessingMeshChunks(): number;
     GetNumRadiosityProcessingChunks(): number;
     GetPrefabAt(pos: Vector3): GameObject;
-    GetRandomVoxelInWorld(): Vector3;
+    GetRandomOccupiedVoxelPosition(): Vector3;
     GetVoxelAndChunkAt(pos: Vector3): ValueTuple<number, Chunk>;
     GetVoxelAt(pos: Vector3): number;
+    GetVoxelBlockType(pos: Vector3): BlockDefinition;
     GetVoxelColorAt(pos: Vector3): Color32;
+    GetVoxelIdAt(pos: Vector3): number;
     InvokeOnFinishedReplicatingChunksFromServer(): void;
     LoadEmptyWorld(): void;
     LoadWorldFromSaveFile(file: WorldSaveFile): void;
@@ -54755,6 +54758,7 @@ interface SaveChunk {
     key: Vector3;
     data: Readonly<number[]>;
     color: Readonly<number[]>;
+    customData: CSDictionary<number, BinaryBlob>;
 
 
 
@@ -54766,10 +54770,10 @@ interface SaveChunk {
 interface SaveChunkConstructor {
 
 
-    new(key: Vector3, data: Readonly<number[]>, color: Readonly<number[]>): SaveChunk;
+    new(key: Vector3, data: Readonly<number[]>, color: Readonly<number[]>, customData: CSDictionary<number, BinaryBlob>): SaveChunk;
 
 
-    Deserialize(reader: BinaryReader, version: number, voxelData: Readonly<number[]>, colors: Readonly<number[]>): Vector3;
+    Deserialize(reader: BinaryReader, version: number, voxelData: Readonly<number[]>, colors: Readonly<number[]>, customData: CSDictionary<number, BinaryBlob>): Vector3;
 
 }
 declare const SaveChunk: SaveChunkConstructor;
@@ -54815,6 +54819,7 @@ interface VoxelWorldNetworker extends NetworkBehaviour {
 interface Chunk {
     readWriteVoxel: Readonly<number[]>;
     color: Readonly<number[]>;
+    customDataMap: CSDictionary<number, BinaryBlob>;
     damageMap: CSDictionary<number, number>;
     keysWithVoxels: Readonly<number[]>;
     world: VoxelWorld;
@@ -54829,6 +54834,7 @@ interface Chunk {
 
     DestroyAllMeshes(): void;
     GetAllPrefabs(): Readonly<GameObject[]>;
+    GetCustomDataAt(worldPos: Vector3): BinaryBlob;
     GetGameObject(): GameObject;
     GetKey(): Vector3;
     GetLocalColorAt(localX: number, localY: number, localZ: number): Color32;
@@ -54838,6 +54844,7 @@ interface Chunk {
     GetPriorityUpdate(): boolean;
     GetRandomOccupiedVoxelPosition(): Vector3;
     GetVoxelColorAt(worldPos: Vector3): Color32;
+    GetVoxelDamage(worldPos: Vector3): number;
     GetVoxelDataAt(worldPos: Vector3): number;
     HasVoxels(): boolean;
     IsBusy(): boolean;
@@ -54853,6 +54860,7 @@ interface Chunk {
     SetGeometryDirty(dirty: boolean): void;
     SetWorld(world: VoxelWorld): void;
     WaitForLoaded(): void;
+    WriteCustomDataAt(worldPos: Vector3, data: BinaryBlob): void;
     WriteTemporaryCollision(position: Vector3, hasCollision: boolean): void;
     WriteVoxelAt(worldPos: Vector3, voxelData: number): void;
     WriteVoxelColor(worldPos: Vector3, col: Color32): void;
