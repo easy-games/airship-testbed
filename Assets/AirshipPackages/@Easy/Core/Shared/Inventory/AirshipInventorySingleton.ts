@@ -17,7 +17,6 @@ import { InventoryMovingToSlotEvent } from "./Signal/MovingToSlotEvent";
 import {
 	CancellableInventorySlotInteractionEvent,
 	InventoryEvent,
-	InventorySlotClickPickupEvent,
 	InventorySlotMouseClickEvent,
 	SlotDragEndedEvent,
 } from "./Signal/SlotInteractionEvent";
@@ -61,8 +60,6 @@ export class AirshipInventorySingleton {
 	 * @client Client-only event
 	 */
 	public readonly onInventorySlotClicked = new Signal<InventorySlotMouseClickEvent>();
-
-	public readonly onInventorySlotClickPickup = new Signal<InventorySlotClickPickupEvent>();
 	/**
 	 * Event that's invoked if there's a drag requested on a given inventory slot
 	 *

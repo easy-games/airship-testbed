@@ -39,20 +39,6 @@ export class InventorySlotMouseClickEvent implements InventorySlotEvent {
 	}
 }
 
-export class InventorySlotClickPickupEvent extends Cancellable implements InventorySlotEvent {
-	public constructor(public readonly inventory: Inventory, public readonly slotIndex: number) {
-		super();
-	}
-
-	public IsExternalInventory(): boolean {
-		return this.inventory === Airship.Inventory.ui?.GetActiveExternalInventory();
-	}
-
-	public IsLocalInventory(): boolean {
-		return this.inventory === Airship.Inventory.localInventory;
-	}
-}
-
 export class CancellableInventorySlotInteractionEvent extends Cancellable implements InventorySlotEvent {
 	public constructor(public readonly inventory: Inventory, public readonly slotIndex: number) {
 		super();

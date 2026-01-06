@@ -20,7 +20,6 @@ import { InventoryUIVisibility } from "./InventoryUIVisibility";
 import {
 	CancellableInventorySlotInteractionEvent,
 	InventoryEvent,
-	InventorySlotClickPickupEvent,
 	InventorySlotMouseClickEvent,
 	SlotDragEndedEvent,
 } from "./Signal/SlotInteractionEvent";
@@ -75,8 +74,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	private visible = false;
 	private backpackEnabled = true;
 
-	@NonSerialized() public draggingState: DraggingState | undefined;
-	private draggingBin = new Bin();
 	private draggedOverSlots = new Set<number>();
 	private dragAmountToAdd = 0;
 
@@ -141,12 +138,22 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnDropEvent(this.dropItemCatcher.gameObject, (e) => {
-				if (!this.draggingState) return;
+				if (!this.clickPickupState) return;
 
-				const drag = this.draggingState;
-				drag.consumed = true;
+				// Create dragging state from clickPickupState
+				// Could refactor this to not use DraggingState.  Might affect other games that are using this event.
+				// Deciding if we should delete this and change the event to fire when we click out of the inventory with a clickpickup item
+				const itemStack = this.clickPickupState.inventory.GetItem(DESIGNATED_PICKUP_SLOT);
+				if (!itemStack) return;
+
+				const draggingState: DraggingState = {
+					inventory: this.clickPickupState.inventory,
+					itemStack: itemStack,
+					slot: DESIGNATED_PICKUP_SLOT,
+				};
+
 				task.spawn(() => {
-					Airship.Inventory.localInventory?.onDraggedOutsideInventory.Fire(drag);
+					Airship.Inventory.localInventory?.onDraggedOutsideInventory.Fire(draggingState);
 				});
 			}),
 		);
@@ -539,8 +546,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 	// TODO: When back from break
 	/**
-	 * Add drag back so we can throw items out of the inventory
-	 * Add Dragging held item to split multiple stacks
 	 * Double check that everything is synced server/client
 	 * Double check if things are working with external inventory
 	 */
@@ -549,6 +554,9 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			// Handle DOWN direction for picking up items
 			CanvasAPI.OnPointerEvent(button.gameObject, (direction, pointerButton) => {
 				if (!this.IsBackpackShown() || direction !== PointerDirection.DOWN || this.clickPickupState) return;
+				Airship.Inventory.onInventorySlotClicked.Fire(
+					new InventorySlotMouseClickEvent(inventory, slotIndex, pointerButton),
+				);
 
 				const targetSlotIndex = this.GetSlotIndexFromButton(button);
 				if (targetSlotIndex === undefined) return;
@@ -560,13 +568,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 						pointerButton === PointerButton.LEFT ||
 						(pointerButton === PointerButton.RIGHT && existingItemStack.amount <= 1)
 					) {
-						const clickPickupEvent = Airship.Inventory.onInventorySlotClickPickup.Fire(
-							new InventorySlotClickPickupEvent(inventory, slotIndex),
-						);
-						if (clickPickupEvent.IsCancelled()) {
-							return;
-						}
-
 						const { itemAmountText, itemAmountImage } = this.CreatePickupVisual(button);
 						this.clickPickupState = {
 							inventory,
@@ -587,12 +588,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							existingItemStack.amount,
 						);
 					} else if (pointerButton === PointerButton.RIGHT) {
-						const clickPickupEvent = Airship.Inventory.onInventorySlotClickPickup.Fire(
-							new InventorySlotClickPickupEvent(inventory, slotIndex),
-						);
-						if (clickPickupEvent.IsCancelled()) {
-							return;
-						}
 						const halfAmount = math.ceil(existingItemStack.amount / 2);
 						const { itemAmountText, itemAmountImage } = this.CreatePickupVisual(button);
 
@@ -856,12 +851,15 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		if (!this.clickPickupState || this.isInitialPickupPhase || this.isDraggingPickedUpItem) return;
 
 		this.isDraggingPickedUpItem = true;
-
 		this.clickPickupState.isRightClickDrag = rightClick;
 		this.draggedOverSlots.clear();
 
 		// Add the initial button/slot where the drag started
 		if (button !== undefined && slotIndex !== undefined) {
+			const dragEvent = Airship.Inventory.onInventorySlotDragBegin.Fire(
+				new CancellableInventorySlotInteractionEvent(this.clickPickupState.inventory, slotIndex),
+			);
+			if (dragEvent.IsCancelled()) return;
 			this.AddButtonToDragOver(button, slotIndex, rightClick);
 		}
 	}
@@ -871,7 +869,9 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	 */
 	private CancelDragPreviews(): void {
 		// Restore all previewed tiles to show actual items
+		let consumed = false;
 		if (this.clickPickupState && this.draggedOverSlots.size() > 0) {
+			consumed = true;
 			for (const draggedOverSlot of this.draggedOverSlots) {
 				const tile = this.slotToBackpackTileComponentMap.get(draggedOverSlot);
 				if (tile) {
@@ -885,6 +885,13 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		this.isDraggingPickedUpItem = false;
 		this.draggedOverSlots.clear();
 		this.dragAmountToAdd = 0;
+		Airship.Inventory.onInventorySlotDragEnd.Fire(
+			new SlotDragEndedEvent(
+				this.clickPickupState?.inventory ?? Airship.Inventory.localInventory!,
+				DESIGNATED_PICKUP_SLOT,
+				consumed,
+			),
+		);
 	}
 
 	/**
@@ -1008,97 +1015,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	 */
 	private GetSlotIndexFromButton(button: Button): number | undefined {
 		return this.buttonToSlotIndexMap.get(button);
-	}
-
-	/**
-	 * Binds the dragging events for the given {@link button} to the given {@link inventory}, with the slot index {@link slotIndex}
-	 */
-	private BindDragEventsOnButtons(button: Button, inventory: Inventory, slotIndex: number): EngineEventConnection[] {
-		return [
-			CanvasAPI.OnBeginDragEvent(button.gameObject, () => {
-				this.draggingBin.Clean();
-				if (!this.IsBackpackShown()) return;
-				const dragBeginEvent = Airship.Inventory.onInventorySlotDragBegin.Fire(
-					new CancellableInventorySlotInteractionEvent(inventory, slotIndex),
-				);
-				if (dragBeginEvent.IsCancelled()) return;
-
-				const itemStack = inventory.GetItem(slotIndex);
-				if (!itemStack) return;
-
-				const visual = button.transform.GetChild(0).gameObject;
-				const clone = Object.Instantiate(visual, this.backpackCanvas.transform);
-
-				// const slotNumber = clone.transform.Find("SlotNumber");
-				// slotNumber?.gameObject.SetActive(false);
-
-				clone.transform.SetAsLastSibling();
-
-				const cloneRect = clone.GetComponent<RectTransform>()!;
-				cloneRect.sizeDelta = new Vector2(100, 100);
-				const cloneImage = clone.transform.GetChild(0).GetComponent<Image>()!;
-				cloneImage.raycastTarget = false;
-
-				visual.SetActive(false);
-
-				const cloneTransform = clone.GetComponent<RectTransform>()!;
-				cloneTransform.position = Mouse.GetPositionVector3();
-
-				this.draggingBin.Add(
-					OnUpdate.Connect((dt) => {
-						cloneTransform.position = Mouse.GetPositionVector3();
-					}),
-				);
-				this.draggingBin.Add(() => {
-					visual.SetActive(true);
-				});
-
-				this.draggingState = {
-					slot: slotIndex,
-					itemStack,
-					inventory: inventory,
-					transform: cloneTransform,
-					consumed: false,
-				};
-			}),
-			CanvasAPI.OnDropEvent(button.gameObject, () => {
-				if (!this.IsBackpackShown()) return;
-				if (!this.draggingState) return;
-
-				Airship.Inventory.MoveToSlot(
-					this.draggingState.inventory,
-					this.draggingState.slot,
-					inventory,
-					slotIndex,
-					this.draggingState.itemStack.amount,
-				);
-				this.draggingState.consumed = true;
-			}),
-			CanvasAPI.OnEndDragEvent(button.gameObject, () => {
-				this.draggingBin.Clean();
-
-				if (this.draggingState) {
-					Airship.Inventory.onInventorySlotDragEnd.Fire(
-						new SlotDragEndedEvent(
-							this.draggingState.inventory,
-							this.draggingState.slot,
-							this.draggingState.consumed,
-						),
-					);
-
-					if (!this.draggingState.consumed) {
-						// Intent may be to drop item
-						// this.characterInvController.DropItemInSlot(
-						// 	this.draggingState.slot,
-						// 	this.draggingState.itemStack.amount,
-						// );
-					}
-
-					Object.Destroy(this.draggingState.transform.gameObject);
-					this.draggingState = undefined;
-				}
-			}),
-		];
 	}
 
 	/**
@@ -1272,7 +1188,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 			bin.AddEngineEventConnection(
 				CanvasAPI.OnPointerEvent(tile.button.gameObject, (direction, button) => {
-					if (direction !== PointerDirection.UP || this.draggingState) return;
+					if (direction !== PointerDirection.UP || this.isDraggingPickedUpItem) return;
 
 					Airship.Inventory.onInventorySlotClicked.Fire(
 						new InventorySlotMouseClickEvent(inventory, i, button),
@@ -1474,7 +1390,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 				invBin.AddEngineEventConnection(
 					CanvasAPI.OnPointerEvent(tileComponent.button.gameObject, (direction, button) => {
-						if (direction !== PointerDirection.UP || this.draggingState) return;
+						if (direction !== PointerDirection.UP || this.isDraggingPickedUpItem) return;
 
 						if (i < this.hotbarSlots) {
 							// hotbar
