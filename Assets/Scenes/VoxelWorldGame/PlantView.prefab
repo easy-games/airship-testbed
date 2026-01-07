@@ -835,8 +835,8 @@ MonoBehaviour:
           serializedValue: '"Templates"'
       nullable: 0
       serializedValue: 
-      serializedObject: {fileID: 0}
-      modified: 0
+      serializedObject: {fileID: 7965336772721121900, guid: 9ef4c3a7436e6734dbdc758ac9588024, type: 3}
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
 --- !u!1 &8937678773532529194

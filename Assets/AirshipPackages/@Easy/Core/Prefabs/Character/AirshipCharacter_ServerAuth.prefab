@@ -40,6 +40,10 @@ PrefabInstance:
       propertyPath: directionalBlendLerpMod
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 7124091312930647041, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
+      propertyPath: scriptPath
+      value: Assets/AirshipPackages/@Easy/Core/Shared/Character/Animation/CharacterAnimation.lua
+      objectReference: {fileID: 0}
     - target: {fileID: 7270479773071441371, guid: 4bfcf38072e582e42b941b472d5f3dcb, type: 3}
       propertyPath: gravitySnapDistance
       value: 0.1

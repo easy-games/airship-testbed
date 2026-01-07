@@ -15,31 +15,32 @@ export default class VoxelWorldPlantView extends AirshipBehaviour {
 
     public Init(data: PlantData) {
         this.data = data;
+        this.UpdateData(data);
+    }
+
+    public UpdateData(newData: Partial<PlantData>) {
+        if(newData.height !== undefined) {
+            // Play height change vfx
+            Instantiate(this.heightChangeVFX, this.transform.position, this.transform.rotation);
+        }
+        this.data = {...this.data, ...newData};
         
         // Place the grid elements around the new height
         for(let grid of this.grids) {
-            grid.localGridElementSize = grid.localGridElementSize.WithY(data.height / 5.0);
+            grid.localGridElementSize = grid.localGridElementSize.WithY(this.data.height / 5.0);
             grid.Rebuild();
         }
 
         // Color elements
-        this.plantColor.SetColorOnAll(data.weed ? Color.gray : data.color);
+        this.plantColor.SetColorOnAll(this.data.weed ? Color.gray : this.data.color);
         for(let color of this.colors) {
-            color.SetColorOnAll(data.color);
+            color.SetColorOnAll(this.data.color);
         }
 
-        this.heightHolder.localScale = new Vector3(1,data.height,1);
+        this.heightHolder.localScale = new Vector3(1,this.data.height,1);
 
-        this.berryHolder.SetActive(data.fruited && !data.weed);
-        this.weedHolder.SetActive(data.weed);
-        this.leavesHolder.SetActive(!data.weed);
-    }
-
-    public UpdateData(newData: PlantData) {
-        if(newData.height !== this.data.height) {
-            // Play height change vfx
-            Instantiate(this.heightChangeVFX, this.transform.position, this.transform.rotation);
-        }
-        this.data = newData;
+        this.berryHolder.SetActive(this.data.fruited && !this.data.weed);
+        this.weedHolder.SetActive(this.data.weed);
+        this.leavesHolder.SetActive(!this.data.weed);
     }
 }

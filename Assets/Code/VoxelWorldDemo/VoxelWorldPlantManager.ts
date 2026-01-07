@@ -120,7 +120,7 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
     }
 
     public GetTilePosition(worldPosition: Vector3) {
-        return new Vector3(math.floor(worldPosition.x), math.floor(worldPosition.y), math.floor(worldPosition.z));
+        return new Vector3(math.floor(worldPosition.x), 0, math.floor(worldPosition.z));
     }
 
     public TryDamagePlant(worldPosition: Vector3) {
@@ -145,9 +145,11 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
 
     private DamagePlantServer(worldPosition: Vector3) {
         const tilePos = this.GetTilePosition(worldPosition);
+
+        print("Server checking damage: " + worldPosition + " tile: " + tilePos);
         const plant = this.GetPlant(worldPosition); 
         if(plant && plant.data.weed) {
-            plant.data.height-=1;
+            plant.UpdateData({height: plant.data.height-1});
             if(plant.data.height <= 0) {
                 // Plant is dead
                 this.DestroyPlant(this.GetTilePosition(tilePos));
@@ -174,12 +176,18 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
     }
 
     public SpawnPlant(data: PlantData, notifyImmediate = true) {
-        data.position = this.GetTilePosition(data.position);
-        const instance = Instantiate(this.plantTemplate, data.position.add(new Vector3(.5,1,.5)), Quaternion.identity).GetAirshipComponent<VoxelWorldPlantView>();
+        const tilePosition = this.GetTilePosition(data.position);
+        if(this.plants.has(tilePosition)) {
+            print("Trying to spawn plant where a plant already exists");
+            return;
+        }
+        print("Spawning plant at: " + data.position + " tile: " + tilePosition);
+        data.position = tilePosition;
+        const instance = Instantiate(this.plantTemplate, tilePosition.add(new Vector3(.5,1,.5)), Quaternion.identity).GetAirshipComponent<VoxelWorldPlantView>();
         if(instance) {
             instance.Init(data);
-            this.plants.set(data.position, instance);
-            print("Saving plant at: " + data.position);
+            this.plants.set(tilePosition, instance);
+            print("Saving plant at: " + tilePosition);
         }
 
         if(notifyImmediate && Game.IsServer()) {
