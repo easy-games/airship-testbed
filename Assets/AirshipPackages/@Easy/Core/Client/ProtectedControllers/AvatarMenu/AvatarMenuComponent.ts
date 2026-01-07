@@ -346,6 +346,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			}
 		}
 
+        this.CloseCustomization();
 		this.SelectSubNav(0);
 	}
 
@@ -611,8 +612,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (alreadySelected) {
 			// Already selected this item so just deselect it
 			this.UpdateButtonGraphics();
-			this.avatarCustomizationPanel.Close();
-			NativeTween.PositionY(this.avatarToolbar, 35, 0.5).SetEaseExpoOut();
+            this.CloseCustomization();
 			return;
 		}
 
@@ -890,7 +890,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private Revert() {
 		this.LoadCurrentOutfit().expect();
-		this.avatarCustomizationPanel.Close();
+        this.CloseCustomization();
 	}
 
 	private SlideSaveButton(up: boolean) {
@@ -900,4 +900,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			NativeTween.AnchoredPositionY(this.avatarToolbar, 35, 0.5).SetEaseExpoIn();
 		}
 	}
+
+    private CloseCustomization() {
+        this.avatarCustomizationPanel.Close();
+        NativeTween.PositionY(this.avatarToolbar, 35, 0.5).SetEaseExpoOut();
+    }
 }
