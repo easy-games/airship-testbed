@@ -144,11 +144,7 @@ export class AirshipInputSingleton {
 				"ProtectedKeybind:CreateAction",
 				(from: LuauContext, name: string, id: number, binding: Binding, config?: InputActionConfig) => {
 					if (from !== LuauContext.Game) return;
-					const action = this.RegisterAction(
-						name,
-						Binding.Clone(binding),
-						config,
-					);
+					const action = this.RegisterAction(name, Binding.Clone(binding), config);
 					this.TryOverrideGameKeybind(action);
 				},
 			);
@@ -404,23 +400,16 @@ export class AirshipInputSingleton {
 			categoryName === InputKeybindCategory.Misc
 		);
 	}
-	
+
 	/** Same as CreateAction (except it won't broadcast over context bridge) */
 	private RegisterAction(name: string, binding: Binding, config?: InputActionConfig, isCore = false): InputAction {
 		const category = config?.category ?? InputKeybindCategory.Misc;
-		
+
 		if (!this.IsBuiltInCategory(category) && !this.registeredKeybindCategories.includes(category)) {
 			this.registeredKeybindCategories.push(category);
 		}
-		
-		const action = new InputAction(
-			name,
-			binding,
-			false,
-			category,
-			isCore,
-			config?.hidden ?? false,
-		);
+
+		const action = new InputAction(name, binding, false, category, isCore, config?.hidden ?? false);
 		this.AddActionToTable(action);
 		this.onActionBound.Fire(action);
 		return action;
@@ -461,13 +450,7 @@ export class AirshipInputSingleton {
 		// Tell protected context of new action
 		if (Game.IsGameLuauContext()) {
 			task.defer(() => {
-				contextbridge.broadcast(
-					"ProtectedKeybind:CreateAction",
-					name,
-					action.id,
-					action.binding,
-					config,
-				);
+				contextbridge.broadcast("ProtectedKeybind:CreateAction", name, action.id, action.binding, config);
 			});
 		}
 	}
@@ -560,6 +543,11 @@ export class AirshipInputSingleton {
 		const airshipButton = mobileButton.GetAirshipComponent<AirshipMobileButton>();
 		airshipButton?.SetStartingScale(config?.scale ? new Vector3(config.scale.x, config.scale.y, 1) : Vector3.one);
 		const lowerName = actionName.lower();
+
+		if (airshipButton && config?.cooldown) {
+			airshipButton.hasCooldown = true;
+			airshipButton.cooldownTime = config.cooldown.cooldownTime;
+		}
 
 		const rect = mobileButton.GetComponent<RectTransform>()!;
 		rect.localScale = new Vector3(config?.scale?.x ?? 1, config?.scale?.y ?? 1, 1);

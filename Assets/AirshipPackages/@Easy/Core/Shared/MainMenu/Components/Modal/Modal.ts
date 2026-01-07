@@ -15,9 +15,9 @@ export default class Modal extends AirshipBehaviour {
 		const rect = this.transform as RectTransform;
 		rect.anchoredPosition = Vector2.zero;
 
+		const canvas = this.gameObject.GetComponentInParent<Canvas>()!;
 		if (Game.IsPortrait()) {
 			rect.localScale = Vector3.one;
-			const canvas = this.gameObject.GetComponentInParent<Canvas>()!;
 			rect.sizeDelta = new Vector2(Screen.width / canvas.scaleFactor, Screen.height / canvas.scaleFactor);
 
 			rect.anchoredPosition = rect.anchoredPosition.WithY(-rect.sizeDelta.y);
@@ -31,13 +31,22 @@ export default class Modal extends AirshipBehaviour {
 				this.transform,
 			);
 		} else {
+			if (Game.deviceType === AirshipDeviceType.Phone) {
+				rect.sizeDelta = new Vector2(
+					math.min(Screen.width / canvas.scaleFactor - 300, 600),
+					Screen.height / canvas.scaleFactor - 100,
+				);
+				this.bottomBar?.SetActive(false);
+			}
+
 			rect.localScale = Vector3.one.mul(0.4);
 			NativeTween.LocalScale(rect, Vector3.one, 0.12).SetEaseQuadOut().SetUseUnscaledTime(true);
 		}
 	}
 
 	public OnEnable(): void {
-		if (Game.IsPortrait()) {
+		// We run this logic always in portrait, and always on phones in landscape. So always on phones..
+		if (Game.deviceType === AirshipDeviceType.Phone) {
 			const contentSizeFitter = this.gameObject.GetComponentInChildren<ContentSizeFitter>();
 			if (contentSizeFitter) {
 				contentSizeFitter.enabled = false;

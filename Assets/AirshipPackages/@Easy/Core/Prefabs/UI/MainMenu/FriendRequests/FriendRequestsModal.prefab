@@ -1642,6 +1642,42 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 8094481695794984158, guid: 21da7d50b019240928ae085f3c86bbac, type: 3}
       modified: 1
+    - name: contentLayoutElement
+      type: object
+      objectType: LayoutElement
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 5825415151008391397}
+      modified: 1
+    - name: scrollRect
+      type: object
+      objectType: ScrollRect
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 2579361572470932623}
+      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
 --- !u!1 &6508497650349404259
