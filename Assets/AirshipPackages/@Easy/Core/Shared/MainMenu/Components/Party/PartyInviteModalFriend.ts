@@ -26,6 +26,7 @@ export default class PartyInviteModalFriend extends AirshipBehaviour {
 
 		this.bin.Add(
 			this.inviteBtn.onClick.Connect(() => {
+				VibrationManager.Play(VibrationFeedbackType.Light);
 				Dependency<ProtectedPartyController>()
 					.InviteToParty(uid)
 					.then(() => {

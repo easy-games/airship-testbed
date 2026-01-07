@@ -75,6 +75,7 @@ export default class PartyCard extends AirshipBehaviour {
 
 		this.bin.Add(
 			this.inviteBtn.onClick.Connect(() => {
+				VibrationManager.Play(VibrationFeedbackType.Heavy);
 				AppManager.OpenModal(
 					Asset.LoadAsset(
 						"Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/HomePage/PartyInviteModal.prefab",

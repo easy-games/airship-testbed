@@ -4372,19 +4372,18 @@ interface Matrix4x4Constructor {
 	zero: Matrix4x4;
 	identity: Matrix4x4;
 
-	Determinant(m: Matrix4x4): number;
-	Frustum(left: number, right: number, bottom: number, top: number, zNear: number, zFar: number): Matrix4x4;
-	Frustum(fp: FrustumPlanes): Matrix4x4;
-	Inverse(m: Matrix4x4): Matrix4x4;
-	Inverse3DAffine(input: Matrix4x4, result: unknown): boolean;
-	LookAt(from: Vector3, to: Vector3, up: Vector3): Matrix4x4;
-	Ortho(left: number, right: number, bottom: number, top: number, zNear: number, zFar: number): Matrix4x4;
-	Perspective(fov: number, aspect: number, zNear: number, zFar: number): Matrix4x4;
-	Rotate(q: Quaternion): Matrix4x4;
-	Scale(vector: Vector3): Matrix4x4;
-	Translate(vector: Vector3): Matrix4x4;
-	Transpose(m: Matrix4x4): Matrix4x4;
-	TRS(pos: Vector3, q: Quaternion, s: Vector3): Matrix4x4;
+	Determinant: (m: Matrix4x4) => number;
+	Frustum: (left: number, right: number, bottom: number, top: number, zNear: number, zFar: number) => Matrix4x4;
+	Inverse: (m: Matrix4x4) => Matrix4x4;
+	Inverse3DAffine: (input: Matrix4x4, result: unknown) => boolean;
+	LookAt: (from: Vector3, to: Vector3, up: Vector3) => Matrix4x4;
+	Ortho: (left: number, right: number, bottom: number, top: number, zNear: number, zFar: number) => Matrix4x4;
+	Perspective: (fov: number, aspect: number, zNear: number, zFar: number) => Matrix4x4;
+	Rotate: (q: Quaternion) => Matrix4x4;
+	Scale: (vector: Vector3) => Matrix4x4;
+	Translate: (vector: Vector3) => Matrix4x4;
+	Transpose: (m: Matrix4x4) => Matrix4x4;
+	TRS: (pos: Vector3, q: Quaternion, s: Vector3) => Matrix4x4;
 
 	new (): Matrix4x4;
 	new (column0: Vector4, column1: Vector4, column2: Vector4, column3: Vector4): Matrix4x4;

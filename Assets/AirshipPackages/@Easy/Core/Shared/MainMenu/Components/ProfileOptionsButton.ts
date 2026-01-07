@@ -33,6 +33,7 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 
 		this.button.onClick.Connect(() => {
 			if (ProtectedUtil.IsPhoneMode()) {
+				VibrationManager.Play(VibrationFeedbackType.Heavy);
 				Dependency<SettingsPageSingleton>().Open(SettingsTab.Account);
 				return;
 			}
