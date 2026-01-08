@@ -25,7 +25,7 @@ import {
 } from "./Signal/SlotInteractionEvent";
 
 const DESIGNATED_PICKUP_SLOT = -2;
-const DOUBLE_CLICK_MERGE_DELAY = 0.3;
+const DOUBLE_CLICK_MERGE_DELAY = 0.5;
 export default class AirshipInventoryUI extends AirshipBehaviour {
 	@Header("Variables")
 	public darkBackground = true;
@@ -137,6 +137,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 								inventory: this.clickPickupState.inventory,
 								itemStack: itemStack,
 								slot: DESIGNATED_PICKUP_SLOT,
+								pointerButton: button,
 							};
 
 							Airship.Inventory.localInventory?.onDraggedOutsideInventory.Fire(draggingState);
@@ -396,11 +397,10 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				if (targetSlotIndex === undefined) return;
 				const existingItemStack = inventory.GetItem(targetSlotIndex);
 
-				// Check for shift-click quick move before normal pickup
 				if (
 					existingItemStack &&
 					pointerButton === PointerButton.LEFT &&
-					Airship.Input.IsDown(CoreAction.InventoryQuickMoveModifierKey)
+					(Game.IsMobile() || Airship.Input.IsDown(CoreAction.InventoryQuickMoveModifierKey))
 				) {
 					this.QuickMoveSlot(inventory, targetSlotIndex);
 					return;
@@ -680,19 +680,27 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	 * @param sourceButton The button to clone the visual from
 	 * @returns The RectTransform of the cloned visual
 	 */
-	private CreatePickupVisual(sourceButton: Button): { itemAmountText: TMP_Text; itemAmountImage: Image } {
+	private CreatePickupVisual(sourceButton: Button): { itemAmountText?: TMP_Text; itemAmountImage?: Image } {
 		this.clickPickupBin.Clean();
-		const visual = sourceButton.transform.GetChild(0).gameObject;
-		const clone = Object.Instantiate(visual, this.backpackCanvas.transform);
-		const itemAmount = clone.transform.GetChild(1).GetComponent<TMP_Text>();
+		const clone = Object.Instantiate(sourceButton.transform.parent.gameObject, this.backpackCanvas.transform);
+		const tileComponent = clone.gameObject.GetAirshipComponent<AirshipInventoryTile>();
+		const backgroundImage = tileComponent?.button.GetComponent<Image>();
+		if (backgroundImage) {
+			backgroundImage.enabled = false;
+		}
+		if (tileComponent && tileComponent.slotNumberText) {
+			tileComponent.slotNumberText.enabled = false;
+		}
+		if (tileComponent && tileComponent.itemImage) {
+			tileComponent.itemImage.raycastTarget = false;
+		}
 
-		clone.transform.SetAsLastSibling();
-		const cloneRect = clone.GetComponent<RectTransform>()!;
+		const innerClone = clone.transform.GetChild(0).gameObject;
+		innerClone.transform.SetAsLastSibling();
+		const cloneRect = innerClone.GetComponent<RectTransform>()!;
 		cloneRect.sizeDelta = new Vector2(100, 100);
-		const cloneImage = clone.transform.GetChild(0).GetComponent<Image>()!;
-		cloneImage.raycastTarget = false;
 
-		const cloneTransform = clone.GetComponent<RectTransform>()!;
+		const cloneTransform = innerClone.GetComponent<RectTransform>()!;
 		cloneTransform.position = Mouse.GetPositionVector3();
 
 		this.clickPickupBin.Add(
@@ -705,7 +713,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			Object.Destroy(clone.gameObject);
 		});
 
-		return { itemAmountText: itemAmount, itemAmountImage: cloneImage };
+		return { itemAmountText: tileComponent?.itemAmount, itemAmountImage: tileComponent?.itemImage };
 	}
 
 	private UpdatePickupAmount(newAmount: number, textOnly?: boolean): void {
@@ -714,6 +722,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			this.clickPickupState.amount = newAmount;
 		}
 
+		if (!this.clickPickupState.itemAmountImage || !this.clickPickupState.itemAmountText) return;
 		if (newAmount <= 0) {
 			this.clickPickupState.itemAmountImage.enabled = false;
 			this.clickPickupState.itemAmountText.enabled = false;
