@@ -1,7 +1,7 @@
 import VoxelWorldPlantView from "./VoxelWorldPlantView";
 import { NetworkSignal } from "@Easy/Core/Shared/Network/NetworkSignal";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { Airship } from "@Easy/Core/Shared/Airship";
+import { Airship, Platform } from "@Easy/Core/Shared/Airship";
 import { Game } from "@Easy/Core/Shared/Game";
 
 export class VoxelWorldPlantEvents {
@@ -10,6 +10,7 @@ export class VoxelWorldPlantEvents {
     public static DamagePlants = new NetworkSignal<[plantPos: Vector3[]]>("DamagePlants");
     public static UpdatePlants = new NetworkSignal<[plantData: PlantData[]]>("UpdatePlants");
     public static PlacePlants = new NetworkSignal<[plantPos: Vector3[]]>("PlacePlants");
+    public static RequestPlaceDirt = new NetworkSignal<[]>("RequestPlaceDirt");
 }
 
 export class PlantData {
@@ -21,6 +22,9 @@ export class PlantData {
 }
 
 export default class VoxelWorldPlantManager extends AirshipSingleton {
+    private readonly WorldSaveKey = "PlantWorldSave";
+    private worldSaveAvailable = false;
+
     @Header("Templates")
     public plantTemplate: GameObject;
 
@@ -43,8 +47,13 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
         }
     }
 
+    protected OnDestroy(): void {
+        Platform.Server.DataStore.UnlockKey(this.WorldSaveKey);
+    }
+
     protected Start(): void {
         if(Game.IsServer()) {
+            // SERVER
             this.bin.Add(Airship.Players.ObservePlayers((player) => {
                 // Send all plant data
                 let plantData: PlantData[] = [];
@@ -60,9 +69,16 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
                     this.DamagePlantServer(pos);
                 }
             }))
-        }
 
-        if(Game.IsClient() && !Game.IsEditor()) {
+            // Client wants to place dir
+            this.bin.Add(
+            VoxelWorldPlantEvents.RequestPlaceDirt.server.OnClientEvent((player) => {
+                if(player.character) {
+                    this.PlaceDirtServer(player.character.transform.position);
+                }
+            }))
+        } else {
+            // CLIENT
             this.bin.Add(VoxelWorldPlantEvents.SetPlants.client.OnServerEvent((plantData) => {
                 for(let data of plantData) {
                     this.SpawnPlant(data, false);
@@ -83,7 +99,10 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
         }
     }
 
-    private OnVoxelWorldLoadedServer() {
+    private async OnVoxelWorldLoadedServer() {
+        // Load world from server
+        this.LoadVoxelWorld();
+
         const plantPositions = new Set<Vector3>();
         for(let i=0; i < 10; i++) {
             const randomPos = this.voxelWorld.GetRandomOccupiedVoxelPosition();
@@ -106,6 +125,8 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
         }
 
         VoxelWorldPlantEvents.SetPlants.server.FireAllClients(newPlants);
+
+        this.SetupAutoSave();
     }
 
     public IsOccupied(worldPosition: Vector3) { 
@@ -233,5 +254,56 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
         if(notifyImmediate && Game.IsServer()) {
             VoxelWorldPlantEvents.RemovePlants.server.FireAllClients([tilePosition]);
         }
+    }
+
+    public PlaceDirtServer(pos: Vector3) {
+        pos = pos.add(new Vector3(0,.5,0));
+        if(this.GetPlant(pos) !== undefined) {
+            return;
+        }
+
+        this.voxelWorld.WriteVoxelAt(pos, 1, false);
+    }
+
+    private async SetupAutoSave() {
+        if(Game.IsEditor()) {
+            this.worldSaveAvailable = true;
+        } else {
+            this.worldSaveAvailable = await Platform.Server.DataStore.LockKey(this.WorldSaveKey);
+        }
+
+        if(this.worldSaveAvailable) {
+            task.spawnDetached(async ()=>{
+                while(true){
+                    await this.SaveVoxelWorld();
+                    task.wait(15);
+                }
+            });
+        }
+    }
+
+    private async SaveVoxelWorld() {
+        if(this.worldSaveAvailable) {
+            print("SAVING WORLD...");
+            if(Game.IsEditor()) {
+                EditorPrefs.SetString(this.WorldSaveKey, this.voxelWorld.EncodeToString());
+            } else {
+                await Platform.Server.DataStore.SetKey(this.WorldSaveKey, {saveData: this.voxelWorld.EncodeToString()});
+            }
+            print("World saved!");
+        }
+    }
+
+    private async LoadVoxelWorld() {
+        print("Loading world from platform");
+        if(Game.IsEditor()) {
+            this.voxelWorld.DecodeFromString(EditorPrefs.GetString(this.WorldSaveKey));
+        } else {
+            let dataStoreWorld = await Platform.Server.DataStore.GetKey<{saveData: string}>(this.WorldSaveKey);
+            if(dataStoreWorld !== undefined) {
+                this.voxelWorld.DecodeFromString(dataStoreWorld.saveData);
+            }
+        }
+        print("World Loaded!");
     }
 }
