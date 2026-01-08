@@ -116,7 +116,7 @@ export class ItemStack {
 	}
 
 	public GetMaxStackSize(): number {
-		return this.itemDef.maxStackSize ?? 999;
+		return this.itemDef.maxStackSize ?? math.huge;
 	}
 
 	public Clone(): ItemStack {

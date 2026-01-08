@@ -664,7 +664,7 @@ export class AirshipInventorySingleton {
 		const toItemStack = toInv.GetItem(toSlot);
 		if (toItemStack !== undefined && toItemStack.itemType === fromItemStack.itemType && event.allowMerging) {
 			if (this.MergeToSlotWithExcessHandling(toInv, toSlot, toItemStack, fromItemStack, amount, false)) {
-				if (Game.IsClient()) {
+				if (Game.IsClient() && !Game.IsHosting()) {
 					CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
 						fromInv.id,
 						fromSlot,
@@ -686,7 +686,7 @@ export class AirshipInventorySingleton {
 			});
 		}
 
-		if (Game.IsClient()) {
+		if (Game.IsClient() && !Game.IsHosting()) {
 			CoreNetwork.ClientToServer.Inventory.MoveToSlot.client.FireServer(
 				fromInv.id,
 				fromSlot,
