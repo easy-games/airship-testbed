@@ -264,7 +264,29 @@ export default class Inventory extends AirshipBehaviour {
 		}
 	}
 
-	public Decrement(itemType: string, amount: number): void {
+	/**
+	 * Decrements an item from the inventory.
+	 * @param itemType The type of item to decrement
+	 * @param amount The amount to decrement
+	 * @param fromSlot The slot to decrement from, if provided
+	 */
+	public Decrement(itemType: string, amount: number, fromSlot?: number): void {
+		// If a specific slot is provided, try to decrement from that slot first
+		if (fromSlot !== undefined) {
+			const itemStack = this.items.get(fromSlot);
+			if (itemStack && itemStack.itemType === itemType) {
+				if (itemStack.amount <= amount) {
+					itemStack.Destroy();
+				} else {
+					itemStack.SetAmount(itemStack.amount - amount, {
+						noNetwork: Game.IsHosting() && Airship.Inventory.localInventory === this,
+					});
+				}
+				return;
+			}
+		}
+
+		// Fall back to existing behavior: search for items and decrement
 		let counter = 0;
 		for (let [slot, itemStack] of this.items) {
 			if (itemStack.itemType === itemType) {

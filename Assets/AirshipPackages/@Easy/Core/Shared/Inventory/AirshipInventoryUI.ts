@@ -123,40 +123,33 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			}
 		});
 
-		if (this.closeOnClickOutside) {
-			this.bin.AddEngineEventConnection(
-				CanvasAPI.OnPointerEvent(this.dropItemCatcher.gameObject, (direction, button) => {
-					if (!this.IsBackpackShown()) return;
-					if (direction === PointerDirection.DOWN) {
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnPointerEvent(this.dropItemCatcher.gameObject, (direction, button) => {
+				if (!this.IsBackpackShown()) return;
+				if (direction === PointerDirection.DOWN) {
+					if (this.clickPickupState) {
+						// Create dragging state from clickPickupState.  I made this happen on click with the new setup, unsure if we should change
+						// the name as well since might affect other games that are using this event.
+						// Could also get rid of draggingstate entirely I just created this for backwards compatability for now
+						const itemStack = this.clickPickupState.inventory.GetItem(DESIGNATED_PICKUP_SLOT);
+						if (itemStack) {
+							const draggingState: DraggingState = {
+								inventory: this.clickPickupState.inventory,
+								itemStack: itemStack,
+								slot: DESIGNATED_PICKUP_SLOT,
+							};
+
+							Airship.Inventory.localInventory?.onDraggedOutsideInventory.Fire(draggingState);
+							this.CleanupClickPickupState(true);
+						}
+					}
+					if (this.closeOnClickOutside) {
 						AppManager.Close();
 					}
-				}),
-			);
-		}
-
-		this.bin.AddEngineEventConnection(
-			CanvasAPI.OnDropEvent(this.dropItemCatcher.gameObject, (e) => {
-				if (!this.clickPickupState) return;
-
-				// Create dragging state from clickPickupState
-				// Could refactor this to not use DraggingState.  Might affect other games that are using this event.
-				// Deciding if we should delete this and change the event to fire when we click out of the inventory with a clickpickup item
-				const itemStack = this.clickPickupState.inventory.GetItem(DESIGNATED_PICKUP_SLOT);
-				if (!itemStack) return;
-
-				const draggingState: DraggingState = {
-					inventory: this.clickPickupState.inventory,
-					itemStack: itemStack,
-					slot: DESIGNATED_PICKUP_SLOT,
-				};
-
-				task.spawn(() => {
-					Airship.Inventory.localInventory?.onDraggedOutsideInventory.Fire(draggingState);
-				});
+				}
 			}),
 		);
 
-		// Add dragging events over the drop item catcher in case we start over it
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnBeginDragEvent(this.dropItemCatcher.gameObject, (data) => {
 				this.BeginDragWithPickedUpItem(undefined, undefined, undefined, data.button === InputButton.Right);
@@ -527,15 +520,18 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 	/**
 	 * Cleans up the click pickup state, destroying the visual and clearing connections
+	 * @param skipMoveBack If true, skips moving the item back to inventory (used when item is being dropped)
 	 */
-	private CleanupClickPickupState(): void {
+	private CleanupClickPickupState(skipMoveBack: boolean = false): void {
 		if (this.clickPickupState) {
-			Airship.Inventory.MoveToInventory(
-				this.clickPickupState.inventory,
-				DESIGNATED_PICKUP_SLOT,
-				this.clickPickupState.inventory,
-				this.clickPickupState.amount,
-			);
+			if (!skipMoveBack) {
+				Airship.Inventory.MoveToInventory(
+					this.clickPickupState.inventory,
+					DESIGNATED_PICKUP_SLOT,
+					this.clickPickupState.inventory,
+					this.clickPickupState.amount,
+				);
+			}
 			this.clickPickupBin.Clean();
 			this.clickPickupState = undefined;
 		}
