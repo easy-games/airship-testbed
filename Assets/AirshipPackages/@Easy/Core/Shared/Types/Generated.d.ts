@@ -4016,6 +4016,46 @@ declare const enum RendererType {
     UniversalRenderer = 1,
     _2DRenderer = 2,
 }
+declare const enum VideoSource {
+    VideoClip = 0,
+    Url = 1,
+}
+declare const enum VideoTimeUpdateMode {
+    DSPTime = 0,
+    GameTime = 1,
+    UnscaledGameTime = 2,
+}
+declare const enum VideoRenderMode {
+    CameraFarPlane = 0,
+    CameraNearPlane = 1,
+    RenderTexture = 2,
+    MaterialOverride = 3,
+    APIOnly = 4,
+}
+declare const enum VideoAspectRatio {
+    NoScaling = 0,
+    FitVertically = 1,
+    FitHorizontally = 2,
+    FitInside = 3,
+    FitOutside = 4,
+    Stretch = 5,
+}
+declare const enum Video3DLayout {
+    No3D = 0,
+    SideBySide3D = 1,
+    OverUnder3D = 2,
+}
+declare const enum VideoTimeReference {
+    Freerun = 0,
+    InternalTime = 1,
+    ExternalTime = 2,
+}
+declare const enum VideoAudioOutputMode {
+    None = 0,
+    AudioSource = 1,
+    Direct = 2,
+    APIOnly = 3,
+}
 declare const enum TransportError {
     DnsResolve = 0,
     Refused = 1,
@@ -50776,6 +50816,495 @@ interface WheelHit {
 
 }
     
+interface VideoPlayer extends Behaviour {
+    /**
+     * The source that the VideoPlayer uses for playback.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-source.html | Video.VideoPlayer.source}
+     */
+    source: VideoSource;
+    /**
+     * The clock source used by the VideoPlayer to derive its current time.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-timeUpdateMode.html | Video.VideoPlayer.timeUpdateMode}
+     */
+    timeUpdateMode: VideoTimeUpdateMode;
+    /**
+     * The file URL or web URL that the VideoPlayer reads content from.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-url.html | Video.VideoPlayer.url}
+     */
+    url: string;
+    /**
+     * The clip being played by the VideoPlayer.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-clip.html | Video.VideoPlayer.clip}
+     */
+    clip: VideoClip;
+    /**
+     * Where the video content will be drawn.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-renderMode.html | Video.VideoPlayer.renderMode}
+     */
+    renderMode: VideoRenderMode;
+    /**
+     * Whether you can change the time source followed by the VideoPlayer. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-canSetTimeUpdateMode.html | Video.VideoPlayer.canSetTimeUpdateMode}
+     */
+    readonly canSetTimeUpdateMode: boolean;
+    /**
+     * Camera component to draw to when Video.VideoPlayer.renderMode is set to either Video.VideoRenderMode.CameraFarPlane or Video.VideoRenderMode.CameraNearPlane.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-targetCamera.html | Video.VideoPlayer.targetCamera}
+     */
+    targetCamera: Camera;
+    /**
+     * RenderTexture to draw to when Video.VideoPlayer.renderMode is set to Video.VideoTarget.RenderTexture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-targetTexture.html | Video.VideoPlayer.targetTexture}
+     */
+    targetTexture: RenderTexture;
+    /**
+     * Renderer which is targeted when Video.VideoPlayer.renderMode is set to Video.VideoTarget.MaterialOverride
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-targetMaterialRenderer.html | Video.VideoPlayer.targetMaterialRenderer}
+     */
+    targetMaterialRenderer: Renderer;
+    /**
+     * Material texture property which is targeted when Video.VideoPlayer.renderMode is set to Video.VideoTarget.MaterialOverride.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-targetMaterialProperty.html | Video.VideoPlayer.targetMaterialProperty}
+     */
+    targetMaterialProperty: string;
+    /**
+     * Defines how the video content will be stretched to fill the target area.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-aspectRatio.html | Video.VideoPlayer.aspectRatio}
+     */
+    aspectRatio: VideoAspectRatio;
+    /**
+     * Overall transparency level of the target camera plane video.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-targetCameraAlpha.html | Video.VideoPlayer.targetCameraAlpha}
+     */
+    targetCameraAlpha: number;
+    /**
+     * Type of 3D content contained in the source video media.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-targetCamera3DLayout.html | Video.VideoPlayer.targetCamera3DLayout}
+     */
+    targetCamera3DLayout: Video3DLayout;
+    /**
+     * Internal texture in which video content is placed. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-texture.html | Video.VideoPlayer.texture}
+     */
+    readonly texture: Texture;
+    /**
+     * Returns whether the VideoPlayer has successfully prepared the content to be played.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-isPrepared.html | Video.VideoPlayer.isPrepared}
+     */
+    readonly isPrepared: boolean;
+    /**
+     * Determines whether the VideoPlayer will wait for the first frame to be loaded into the texture before starting playback when Video.VideoPlayer.playOnAwake is on.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-waitForFirstFrame.html | Video.VideoPlayer.waitForFirstFrame}
+     */
+    waitForFirstFrame: boolean;
+    /**
+     * Whether the content will start playing back as soon as the component awakes.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-playOnAwake.html | Video.VideoPlayer.playOnAwake}
+     */
+    playOnAwake: boolean;
+    /**
+     * Returns whether the VideoPlayer is currently playing the content.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-isPlaying.html | Video.VideoPlayer.isPlaying}
+     */
+    readonly isPlaying: boolean;
+    /**
+     * Whether playback is paused. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-isPaused.html | Video.VideoPlayer.isPaused}
+     */
+    readonly isPaused: boolean;
+    /**
+     * Whether you can change the current time using the VideoPlayer.time or VideoPlayer.frame properties. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-canSetTime.html | Video.VideoPlayer.canSetTime}
+     */
+    readonly canSetTime: boolean;
+    /**
+     * The presentation time of the currently available frame in VideoPlayer.texture in seconds.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-time.html | Video.VideoPlayer.time}
+     */
+    time: number;
+    /**
+     * The frame index of the currently available frame in VideoPlayer.texture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-frame.html | Video.VideoPlayer.frame}
+     */
+    frame: number;
+    /**
+     * The clock time that the VideoPlayer follows to schedule its samples. The clock time is expressed in seconds. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-clockTime.html | Video.VideoPlayer.clockTime}
+     */
+    readonly clockTime: number;
+    /**
+     * Returns true if the VideoPlayer can step forward through the video content. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-canStep.html | Video.VideoPlayer.canStep}
+     */
+    readonly canStep: boolean;
+    /**
+     * Whether you can change the playback speed. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-canSetPlaybackSpeed.html | Video.VideoPlayer.canSetPlaybackSpeed}
+     */
+    readonly canSetPlaybackSpeed: boolean;
+    /**
+     * Factor by which the basic playback rate will be multiplied.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-playbackSpeed.html | Video.VideoPlayer.playbackSpeed}
+     */
+    playbackSpeed: number;
+    /**
+     * Determines whether the VideoPlayer restarts from the beginning when it reaches the end of the clip.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-isLooping.html | Video.VideoPlayer.isLooping}
+     */
+    isLooping: boolean;
+    /**
+     * The clock that the Video.VideoPlayer observes to detect and correct drift.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-timeReference.html | Video.VideoPlayer.timeReference}
+     */
+    timeReference: VideoTimeReference;
+    /**
+     * Reference time of the external clock the Video.VideoPlayer uses to correct its drift.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-externalReferenceTime.html | Video.VideoPlayer.externalReferenceTime}
+     */
+    externalReferenceTime: number;
+    /**
+     * Whether frame-skipping to maintain synchronization can be controlled. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-canSetSkipOnDrop.html | Video.VideoPlayer.canSetSkipOnDrop}
+     */
+    readonly canSetSkipOnDrop: boolean;
+    /**
+     * Whether the VideoPlayer is allowed to skip frames to catch up with current time.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-skipOnDrop.html | Video.VideoPlayer.skipOnDrop}
+     */
+    skipOnDrop: boolean;
+    /**
+     * Number of frames in the current video content. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-frameCount.html | Video.VideoPlayer.frameCount}
+     */
+    readonly frameCount: number;
+    /**
+     * The frame rate of the clip or URL in frames/second. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-frameRate.html | Video.VideoPlayer.frameRate}
+     */
+    readonly frameRate: number;
+    /**
+     * The length of the VideoClip, or the URL, in seconds. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-length.html | Video.VideoPlayer.length}
+     */
+    readonly length: number;
+    /**
+     * The width of the images in the VideoClip, or URL, in pixels. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-width.html | Video.VideoPlayer.width}
+     */
+    readonly width: number;
+    /**
+     * The height of the images in the VideoClip, or URL, in pixels. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-height.html | Video.VideoPlayer.height}
+     */
+    readonly height: number;
+    /**
+     * Numerator of the pixel aspect ratio (num:den) for the VideoClip or the URL. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-pixelAspectRatioNumerator.html | Video.VideoPlayer.pixelAspectRatioNumerator}
+     */
+    readonly pixelAspectRatioNumerator: number;
+    /**
+     * Denominator of the pixel aspect ratio (num:den) for the VideoClip or the URL. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-pixelAspectRatioDenominator.html | Video.VideoPlayer.pixelAspectRatioDenominator}
+     */
+    readonly pixelAspectRatioDenominator: number;
+    /**
+     * Number of audio tracks found in the data source currently configured. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-audioTrackCount.html | Video.VideoPlayer.audioTrackCount}
+     */
+    readonly audioTrackCount: number;
+    /**
+     * Number of audio tracks that this VideoPlayer will take control of.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-controlledAudioTrackCount.html | Video.VideoPlayer.controlledAudioTrackCount}
+     */
+    controlledAudioTrackCount: number;
+    /**
+     * Destination for the audio embedded in the video.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-audioOutputMode.html | Video.VideoPlayer.audioOutputMode}
+     */
+    audioOutputMode: VideoAudioOutputMode;
+    /**
+     * Whether direct-output volume controls are supported for the current platform and video format. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-canSetDirectAudioVolume.html | Video.VideoPlayer.canSetDirectAudioVolume}
+     */
+    readonly canSetDirectAudioVolume: boolean;
+    /**
+     * Enables the frameReady events.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-sendFrameReadyEvents.html | Video.VideoPlayer.sendFrameReadyEvents}
+     */
+    sendFrameReadyEvents: boolean;
+
+    readonly prepareCompleted: MonoSignal<void>;
+    readonly loopPointReached: MonoSignal<void>;
+    readonly started: MonoSignal<void>;
+    readonly frameDropped: MonoSignal<void>;
+    readonly errorReceived: MonoSignal<void>;
+    readonly seekCompleted: MonoSignal<void>;
+    readonly clockResyncOccurred: MonoSignal<void>;
+    readonly frameReady: MonoSignal<void>;
+
+
+    /**
+     * Enable/disable audio track decoding. Only effective when the VideoPlayer is not currently playing.
+     * @param trackIndex Index of the audio track to enable/disable.
+     * @param enabled True for enabling the track. False for disabling the track.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.EnableAudioTrack.html | Video.VideoPlayer.EnableAudioTrack}
+     */
+    EnableAudioTrack(trackIndex: number, enabled: boolean): void;
+    /**
+     * The number of audio channels in the specified audio track.
+     * @param trackIndex Index for the audio track being queried.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.GetAudioChannelCount.html | Video.VideoPlayer.GetAudioChannelCount}
+     */
+    GetAudioChannelCount(trackIndex: number): number;
+    /**
+     * Returns the language code, if any, for the specified track.
+     * @param trackIndex Index of the audio track to query.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.GetAudioLanguageCode.html | Video.VideoPlayer.GetAudioLanguageCode}
+     */
+    GetAudioLanguageCode(trackIndex: number): string;
+    /**
+     * Gets the audio track sampling rate in Hertz.
+     * @param trackIndex Index of the audio track to query.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.GetAudioSampleRate.html | Video.VideoPlayer.GetAudioSampleRate}
+     */
+    GetAudioSampleRate(trackIndex: number): number;
+    /**
+     * Gets the direct-output audio mute status for the specified track.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.GetDirectAudioMute.html | Video.VideoPlayer.GetDirectAudioMute}
+     */
+    GetDirectAudioMute(trackIndex: number): boolean;
+    /**
+     * Return the direct-output volume for specified track.
+     * @param trackIndex Track index for which the volume is queried.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.GetDirectAudioVolume.html | Video.VideoPlayer.GetDirectAudioVolume}
+     */
+    GetDirectAudioVolume(trackIndex: number): number;
+    /**
+     * Gets the AudioSource that will receive audio samples for the specified track if Video.VideoPlayer.audioOutputMode is set to Video.VideoAudioOutputMode.AudioSource.
+     * @param trackIndex Index of the audio track for which the AudioSource is wanted.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.GetTargetAudioSource.html | Video.VideoPlayer.GetTargetAudioSource}
+     */
+    GetTargetAudioSource(trackIndex: number): AudioSource;
+    /**
+     * Whether decoding for the specified audio track is enabled. See Video.VideoPlayer.EnableAudioTrack for distinction with mute.
+     * @param trackIndex Index of the audio track being queried.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.IsAudioTrackEnabled.html | Video.VideoPlayer.IsAudioTrackEnabled}
+     */
+    IsAudioTrackEnabled(trackIndex: number): boolean;
+    /**
+     * Pauses the playback and leaves the current time intact.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.Pause.html | Video.VideoPlayer.Pause}
+     */
+    Pause(): void;
+    /**
+     * Starts or resumes the playback of a video.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.Play.html | Video.VideoPlayer.Play}
+     */
+    Play(): void;
+    /**
+     * Prepares the playback engine so that it's ready for playback.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.Prepare.html | Video.VideoPlayer.Prepare}
+     */
+    Prepare(): void;
+    /**
+     * Set the direct-output audio mute status for the specified track.
+     * @param trackIndex Track index for which the mute is set.
+     * @param mute Mute on/off.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.SetDirectAudioMute.html | Video.VideoPlayer.SetDirectAudioMute}
+     */
+    SetDirectAudioMute(trackIndex: number, mute: boolean): void;
+    /**
+     * Set the direct-output audio volume for the specified track.
+     * @param trackIndex Track index for which the volume is set.
+     * @param volume New volume, between 0 and 1.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.SetDirectAudioVolume.html | Video.VideoPlayer.SetDirectAudioVolume}
+     */
+    SetDirectAudioVolume(trackIndex: number, volume: number): void;
+    /**
+     * Sets the AudioSource that will receive audio samples for the specified track if this audio target is selected with Video.VideoPlayer.audioOutputMode.
+     * @param trackIndex Index of the audio track to associate with the specified AudioSource.
+     * @param source AudioSource to associate with the audio track.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.SetTargetAudioSource.html | Video.VideoPlayer.SetTargetAudioSource}
+     */
+    SetTargetAudioSource(trackIndex: number, source: AudioSource): void;
+    /**
+     * Immediately advance the current time by one frame.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.StepForward.html | Video.VideoPlayer.StepForward}
+     */
+    StepForward(): void;
+    /**
+     * Stops the playback and sets the current time to 0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.Stop.html | Video.VideoPlayer.Stop}
+     */
+    Stop(): void;
+
+
+}
+    
+interface VideoClip extends Object {
+    /**
+     * Gets the original video clip file path as it was imported into Unity. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-originalPath.html | Video.VideoClip.originalPath}
+     */
+    readonly originalPath: string;
+    /**
+     * The length of the video clip in frames. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-frameCount.html | Video.VideoClip.frameCount}
+     */
+    readonly frameCount: number;
+    /**
+     * The frame rate of the clip in frames per second. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-frameRate.html | Video.VideoClip.frameRate}
+     */
+    readonly frameRate: number;
+    /**
+     * The length of the video clip in seconds. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-length.html | Video.VideoClip.length}
+     */
+    readonly length: number;
+    /**
+     * The width of the images in the video clip in pixels. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-width.html | Video.VideoClip.width}
+     */
+    readonly width: number;
+    /**
+     * The height of the images in the video clip in pixels. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-height.html | Video.VideoClip.height}
+     */
+    readonly height: number;
+    /**
+     * Returns the numerator of the pixel aspect ratio (numerator:denominator). (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-pixelAspectRatioNumerator.html | Video.VideoClip.pixelAspectRatioNumerator}
+     */
+    readonly pixelAspectRatioNumerator: number;
+    /**
+     * Returns the denominator of the pixel aspect ratio (numerator:denominator). (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-pixelAspectRatioDenominator.html | Video.VideoClip.pixelAspectRatioDenominator}
+     */
+    readonly pixelAspectRatioDenominator: number;
+    /**
+     * Whether the imported clip contains sRGB color data (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-sRGB.html | Video.VideoClip.sRGB}
+     */
+    readonly sRGB: boolean;
+    /**
+     * Gets the number of audio tracks that are embedded in the video clip. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-audioTrackCount.html | Video.VideoClip.audioTrackCount}
+     */
+    readonly audioTrackCount: number;
+
+
+
+    /**
+     * Returns the number of channels in the audio track. For example, if the audio track is a stereo track, this function returns 2.
+     * @param audioTrackIdx Use this index to specify which audio track in the video to use.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip.GetAudioChannelCount.html | Video.VideoClip.GetAudioChannelCount}
+     */
+    GetAudioChannelCount(audioTrackIdx: number): number;
+    /**
+     * Gets the language of the video clip&#8217;s audio tracks, if the audio tracks have an assigned language.
+     * @param audioTrackIdx Index of the audio track you want to query in the video.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip.GetAudioLanguage.html | Video.VideoClip.GetAudioLanguage}
+     */
+    GetAudioLanguage(audioTrackIdx: number): string;
+    /**
+     * Get the audio track sampling rate in hertz (Hz).
+     * @param audioTrackIdx Index of the audio queried audio track.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip.GetAudioSampleRate.html | Video.VideoClip.GetAudioSampleRate}
+     */
+    GetAudioSampleRate(audioTrackIdx: number): number;
+
+
+}
+    
+interface VideoPlayerConstructor {
+    /**
+     * Maximum number of audio tracks that can be controlled. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-controlledAudioTrackMaxCount.html | Video.VideoPlayer.controlledAudioTrackMaxCount}
+     */
+    readonly controlledAudioTrackMaxCount: number;
+
+
+    new(): VideoPlayer;
+
+
+
+}
+declare const VideoPlayer: VideoPlayerConstructor;
+    
 interface NetworkServer {
 
 
@@ -54677,7 +55206,6 @@ interface VoxelWorld extends MonoBehaviour {
     BulkReadVoxels(positions: Readonly<Vector3[]>): Readonly<number[]>;
     CalculatePlaneIntersection(origin: Vector3, dir: Vector3, planeNormal: Vector3, planePoint: Vector3): Vector3;
     CanSeePoint(pos: Vector3, dest: Vector3, destNormal: Vector3): boolean;
-    ColorVoxelAt(pos: Vector3, color: Color, priority: boolean): void;
     CreateSingleStarterVoxel(): void;
     DamageVoxelAt(pos: Vector3, damage: number, priority: boolean): void;
     DecodeFromString(stringData: string): void;
@@ -54732,6 +55260,8 @@ interface VoxelWorld extends MonoBehaviour {
     WaitForChunkToLoad(voxel: Vector3): void;
     WriteTemporaryVoxelCollisionAt(pos: Vector3, num: number): void;
     WriteVoxelAt(pos: Vector3, num: number, priority: boolean): void;
+    WriteVoxelColorAt(pos: Vector3, color: Color, priority: boolean): void;
+    WriteVoxelCustomDataAt(pos: Vector3, data: BinaryBlob, priority: boolean): void;
     WriteVoxelGroupAt(positions: Readonly<Vector3[]>, voxelData: Readonly<number[]>, priority: boolean): void;
 
 
@@ -54841,7 +55371,6 @@ interface Chunk {
     GetLocalVoxelDataAt(localPos: Vector3): number;
     GetLocalVoxelDataAt(localX: number, localY: number, localZ: number): number;
     GetPrefabAt(worldPos: Vector3): GameObject;
-    GetPriorityUpdate(): boolean;
     GetRandomOccupiedVoxelPosition(): Vector3;
     GetVoxelColorAt(worldPos: Vector3): Color32;
     GetVoxelDamage(worldPos: Vector3): number;
@@ -54850,6 +55379,7 @@ interface Chunk {
     IsBusy(): boolean;
     IsGeometryDirty(): boolean;
     IsLoaded(): boolean;
+    IsPriorityUpdate(): boolean;
     MainthreadForceCollisionRebuild(): void;
     MainthreadUpdateMesh(world: VoxelWorld): boolean;
     MarkKeysWithVoxelsDirty(): void;
@@ -54932,12 +55462,12 @@ interface VoxelWorldConstructor {
     GetVoxelDataFlips(voxelData: number): Flips;
     GetVoxelDataId(voxelData: number): number;
     GetVoxelDataId(voxelData: number): number;
-    GetVoxelDataIsSolid(voxelData: number): boolean;
     GetVoxelDataRotation(voxelData: number): Quaternion;
     GetVoxelDataScale(voxelData: number): Vector3;
     GetVoxelDataWithFlippedBits(voxel: number, flippedBits: number): number;
     GetVoxelDataWithSolidBit(voxelData: number, solid: boolean): number;
     HashCoordinates(x: number, y: number, z: number): number;
+    IsVoxelDataIsSolid(voxelData: number): boolean;
     Sign(input: Vector3): Vector3;
 
 }
@@ -55440,6 +55970,7 @@ interface MirrorServerConstructor {
     new(): MirrorServer;
 
 
+    Log(message: string): void;
 
 }
 declare const MirrorServer: MirrorServerConstructor;
@@ -55593,6 +56124,7 @@ interface AirshipUniVoiceConstructor {
     ClientSetDeafened(deafened: boolean): void;
     IsPeerMuted(peerConnectionId: number): boolean;
     IsRecording(): boolean;
+    Log(message: string): void;
     MutePeer(peerConnectionId: number, muted: boolean): void;
     ServerMute(connectionId: number, muted: boolean): void;
     StartRecording(mic: Device): void;

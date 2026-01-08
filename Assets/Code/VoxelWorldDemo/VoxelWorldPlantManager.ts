@@ -9,6 +9,7 @@ export class VoxelWorldPlantEvents {
     public static RemovePlants = new NetworkSignal<[plantPos: Vector3[]]>("RemovePlants");
     public static DamagePlants = new NetworkSignal<[plantPos: Vector3[]]>("DamagePlants");
     public static UpdatePlants = new NetworkSignal<[plantData: PlantData[]]>("UpdatePlants");
+    public static PlacePlants = new NetworkSignal<[plantPos: Vector3[]]>("PlacePlants");
 }
 
 export class PlantData {
@@ -96,12 +97,8 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
         for(let pos of plantPositions) {
             const block = this.voxelWorld.GetVoxelBlockType(pos);
             if(block) {
-                print(i + " TYPE: " + block.definition.blockName);
-                const data = new PlantData();
-                data.height = math.random(1,3);
-                data.color = new Color(math.random() * .3, .8, math.random() * .3);
+                const data = this.GetRandomPlant(pos);
                 data.weed = true;
-                data.position = pos;
                 this.SpawnPlant(data, false);
                 newPlants.push(data);
             }
@@ -123,11 +120,19 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
         return new Vector3(math.floor(worldPosition.x), 0, math.floor(worldPosition.z));
     }
 
+    private GetRandomPlant(worldPosition: Vector3) {
+        const data = new PlantData();
+        data.height = math.random(1,3);
+        data.color = new Color(math.random() * .3, .8, math.random() * .3);
+        data.fruited = math.random() >= .5;
+        data.position = this.GetTilePosition(worldPosition);
+        return data;
+    }
+
     public TryDamagePlant(worldPosition: Vector3) {
         print("Trying to damage plant");
         if(Game.IsServer()) {
-            this.DamagePlantServer(worldPosition);
-            return false;
+            return this.DamagePlantServer(worldPosition);
         }
 
         const tilePos = this.GetTilePosition(worldPosition);
@@ -141,6 +146,25 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
 
     public TryPlacePlant(worldPosition: Vector3) {
         print("Trying to place plant");
+        if(Game.IsServer()) {
+            this.PlacePlantServer(worldPosition);
+            return;
+        }
+
+        const tilePos = this.GetTilePosition(worldPosition);
+        const plant = this.GetPlant(tilePos); 
+        if(!plant) {
+            VoxelWorldPlantEvents.PlacePlants.client.FireServer([tilePos]);
+            return true;
+        }
+        return false;
+    }
+
+    private PlacePlantServer(worldPosition: Vector3) {
+        const plant = this.GetPlant(worldPosition); 
+        if(!plant) {
+            this.SpawnPlant(this.GetRandomPlant(worldPosition), false);
+        }
     }
 
     private DamagePlantServer(worldPosition: Vector3) {
@@ -157,12 +181,14 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
                 // Tell clients we damaged a plant
                 VoxelWorldPlantEvents.DamagePlants.server.FireAllClients([tilePos]);
             }
+            return true;
         } else {
             if(plant) {
                 print("Trying to damage non weed");
             } else {
                 print("Trying to damage nothing");
             }
+            return false;
         }
     }
 
@@ -187,6 +213,7 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
         if(instance) {
             instance.Init(data);
             this.plants.set(tilePosition, instance);
+            this.voxelWorld.WriteVoxelCustomDataAt(tilePosition, new BinaryBlob(data), false);
             print("Saving plant at: " + tilePosition);
         }
 
