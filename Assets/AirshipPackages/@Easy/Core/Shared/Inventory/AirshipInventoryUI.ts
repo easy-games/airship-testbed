@@ -176,6 +176,9 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			}
 		}
 	}
+	// Todo: Fix max drag based on current stack size
+	// Find out why we are getting ghost items with external inventory
+	// Verify shared mode fixes.
 
 	public OpenBackpack(): void {
 		if (!this.inventoryEnabled || !this.backpackEnabled) return;
@@ -1105,6 +1108,17 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		if (existing) {
 			return;
 		}
+
+		let currentTotalSlots = 0;
+		for (const slots of this.draggedOverSlots.values()) {
+			currentTotalSlots += slots.size();
+		}
+
+		const maxSlots = this.clickPickupState.amount;
+		if (currentTotalSlots >= maxSlots) {
+			return;
+		}
+
 		const itemInSlotIndex = inventory.GetItem(slotIndex);
 		if (itemInSlotIndex?.itemType === this.clickPickupState.itemType || itemInSlotIndex === undefined) {
 			if (!slotsForInventory) {
