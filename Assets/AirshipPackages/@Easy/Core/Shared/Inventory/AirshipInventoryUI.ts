@@ -25,7 +25,7 @@ import {
 } from "./Signal/SlotInteractionEvent";
 
 const DESIGNATED_PICKUP_SLOT = -2;
-const DOUBLE_CLICK_MERGE_DELAY = 0.5;
+const DOUBLE_CLICK_MERGE_DELAY = 0.3;
 export default class AirshipInventoryUI extends AirshipBehaviour {
 	@Header("Variables")
 	public darkBackground = true;
@@ -765,7 +765,9 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		);
 
 		// If swapping between external and local inventory, move swapped item to local pickup slot
-		if (localInventory && this.clickPickupState.inventory !== localInventory) {
+		const isActuallyExternalToLocal = targetInventory === localInventory;
+		let swappedItemMovedToLocal = false;
+		if (localInventory && this.clickPickupState.inventory !== localInventory && isActuallyExternalToLocal) {
 			const swappedItem = this.clickPickupState.inventory.GetItem(DESIGNATED_PICKUP_SLOT);
 			if (swappedItem) {
 				Airship.Inventory.MoveToSlot(
@@ -775,18 +777,19 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 					DESIGNATED_PICKUP_SLOT,
 					swappedItem.amount,
 				);
+				swappedItemMovedToLocal = true;
 			}
 		}
 
-		// Get the swapped item and update pickup state
-		const swappedItem = this.clickPickupState.inventory.GetItem(DESIGNATED_PICKUP_SLOT);
+		const inventoryToCheck = swappedItemMovedToLocal && localInventory ? localInventory : this.clickPickupState.inventory;
+		const swappedItem = inventoryToCheck.GetItem(DESIGNATED_PICKUP_SLOT);
 		if (!swappedItem) {
 			this.CleanupClickPickupState();
 			return false;
 		}
 
 		this.clickPickupState = {
-			inventory: this.clickPickupState.inventory,
+			inventory: inventoryToCheck,
 			slot: DESIGNATED_PICKUP_SLOT,
 			itemType: swappedItem.itemType,
 			amount: swappedItem.amount,
