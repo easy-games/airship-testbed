@@ -55230,7 +55230,7 @@ interface VoxelWorld extends MonoBehaviour {
     GetRandomOccupiedVoxelPosition(): Vector3;
     GetVoxelAndChunkAt(pos: Vector3): ValueTuple<number, Chunk>;
     GetVoxelAt(pos: Vector3): number;
-    GetVoxelBlockType(pos: Vector3): BlockDefinition;
+    GetVoxelBlockTypeAt(pos: Vector3): BlockDefinition;
     GetVoxelColorAt(pos: Vector3): Color32;
     GetVoxelIdAt(pos: Vector3): number;
     InvokeOnFinishedReplicatingChunksFromServer(): void;

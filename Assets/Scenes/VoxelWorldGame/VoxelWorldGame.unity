@@ -1187,7 +1187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useSimplifiedVoxels: 0
   useCameraAsFocusPosition: 1
-  autoLoad: 1
+  autoLoad: 0
   voxelWorldFile: {fileID: 11400000, guid: ed02d52999089d842ae9d51e6796d9b5, type: 2}
   worldNetworker: {fileID: 1560877688}
   chunksFolder: {fileID: 0}
