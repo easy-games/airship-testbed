@@ -9,6 +9,7 @@ export enum CoreAction {
 	PrimaryAction = "PrimaryAction",
 	SecondaryAction = "SecondaryAction",
 	Inventory = "Open Inventory",
+	InventoryQuickMoveModifierKey = "Quick Move Modifier",
 	Interact = "Interact",
 	PushToTalk = "PushToTalk",
 	Emote = "Emote",

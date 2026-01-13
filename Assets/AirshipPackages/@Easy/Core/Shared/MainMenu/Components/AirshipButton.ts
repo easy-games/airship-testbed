@@ -6,7 +6,7 @@ import { SignalPriority } from "../../Util/Signal";
 import { AirshipButtonClickEffect } from "./AirshipButtonClickEffect";
 
 export default class AirshipButton extends AirshipBehaviour {
-	private bin = new Bin();
+	protected bin = new Bin();
 
 	private disabled = false;
 	protected image: Image | undefined;

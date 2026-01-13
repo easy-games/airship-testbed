@@ -264,7 +264,29 @@ export default class Inventory extends AirshipBehaviour {
 		}
 	}
 
-	public Decrement(itemType: string, amount: number): void {
+	/**
+	 * Decrements an item from the inventory.
+	 * @param itemType The type of item to decrement
+	 * @param amount The amount to decrement
+	 * @param fromSlot The slot to decrement from, if provided
+	 */
+	public Decrement(itemType: string, amount: number, fromSlot?: number): void {
+		// If a specific slot is provided, try to decrement from that slot first
+		if (fromSlot !== undefined) {
+			const itemStack = this.items.get(fromSlot);
+			if (itemStack && itemStack.itemType === itemType) {
+				if (itemStack.amount <= amount) {
+					itemStack.Destroy();
+				} else {
+					itemStack.SetAmount(itemStack.amount - amount, {
+						noNetwork: Game.IsHosting() && Airship.Inventory.localInventory === this,
+					});
+				}
+				return;
+			}
+		}
+
+		// Fall back to existing behavior: search for items and decrement
 		let counter = 0;
 		for (let [slot, itemStack] of this.items) {
 			if (itemStack.itemType === itemType) {
@@ -286,6 +308,53 @@ export default class Inventory extends AirshipBehaviour {
 		this.finishedInitialReplication = true;
 	}
 
+	/**
+	 * Merges an ItemStack with all mergeable slots in this inventory.
+	 * Fills each mergeable slot to its max stack size, then continues to the next.
+	 * @param itemStack The ItemStack to merge
+	 * @param noNetwork Whether to skip network updates
+	 * @returns The remaining ItemStack after merging (or undefined if fully merged)
+	 */
+	private MergeWithAllSlots(itemStack: ItemStack, noNetwork = false): ItemStack | undefined {
+		let remainingAmount = itemStack.amount;
+
+		// Try to merge with all existing mergeable slots, prioritizing lower slot numbers
+		for (let slot = 0; slot < this.maxSlots; slot++) {
+			if (remainingAmount <= 0) break;
+
+			const otherItem = this.items.get(slot);
+			if (!otherItem) continue;
+			if (otherItem.itemType !== itemStack.itemType) continue;
+
+			const maxStackSize = otherItem.GetMaxStackSize();
+			const spaceAvailable = maxStackSize - otherItem.amount;
+			if (spaceAvailable <= 0) continue;
+
+			const amountToMerge = math.min(remainingAmount, spaceAvailable);
+			otherItem.SetAmount(otherItem.amount + amountToMerge, {
+				noNetwork: noNetwork,
+			});
+			remainingAmount -= amountToMerge;
+		}
+
+		if (remainingAmount <= 0) {
+			itemStack.Destroy();
+			return undefined;
+		}
+
+		// Create a new ItemStack with the remaining amount
+		const remainingStack = new ItemStack(itemStack.itemType, remainingAmount);
+		itemStack.Destroy();
+		return remainingStack;
+	}
+
+	/**
+	 * Adds an ItemStack to the inventory.  Will attempt to merge with existing items first.
+	 * If there is a remainder, it will be added to the first open slot.
+	 * If there is a remainder and no open slot, the itemStack will be destroyed.
+	 * @param itemStack The ItemStack to add
+	 * @returns True if itemStack was added with no remainder.  Returns false if cancelled or there was a remainder that couldn't be added.
+	 */
 	public AddItem(itemStack: ItemStack): boolean {
 		// OnBeforeAddItem event
 		const addItemEvent = new OnBeforeAddItemEvent(itemStack);
@@ -293,23 +362,22 @@ export default class Inventory extends AirshipBehaviour {
 		if (result.IsCancelled()) return false;
 		itemStack = addItemEvent.itemStack;
 
-		// Merge with existing
-		for (let [otherId, otherItem] of this.items) {
-			if (itemStack.CanMerge(otherItem)) {
-				otherItem.SetAmount(otherItem.amount + itemStack.amount, {
-					noNetwork: Game.IsHosting() && Airship.Inventory.localInventory === this,
-				});
-				itemStack.Destroy();
-				return true;
+		const remainingStack = this.MergeWithAllSlots(
+			itemStack,
+			Game.IsHosting() && Airship.Inventory.localInventory === this,
+		);
+
+		// If there's a remainder, put it in the first open slot
+		if (remainingStack) {
+			const openSlot = this.GetFirstOpenSlot();
+			if (openSlot === -1) {
+				remainingStack.Destroy();
+				return false;
 			}
+
+			this.SetItem(openSlot, remainingStack);
 		}
 
-		const openSlot = this.GetFirstOpenSlot();
-		if (openSlot === -1) {
-			return false;
-		}
-
-		this.SetItem(openSlot, itemStack);
 		return true;
 	}
 

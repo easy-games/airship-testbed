@@ -63,6 +63,12 @@ export class ItemStack {
 		}
 	}
 
+	/**
+	 * @Deprecated Inventory now handles merging by first attempting to merge with existing items, then adding to the first open slot if there is a remainder.
+	 * Checks if the ItemStacks can be merged.
+	 * @param other The ItemStack to check if it can be merged with this ItemStack
+	 * @returns True if the ItemStacks can be merged, false otherwise
+	 */
 	public CanMerge(other: ItemStack): boolean {
 		if (other.itemType !== this.itemType) return false;
 		if (other.amount + this.amount > this.GetMaxStackSize()) return false;
@@ -110,7 +116,7 @@ export class ItemStack {
 	}
 
 	public GetMaxStackSize(): number {
-		return this.itemDef.maxStackSize ?? 999;
+		return this.itemDef.maxStackSize ?? math.huge;
 	}
 
 	public Clone(): ItemStack {

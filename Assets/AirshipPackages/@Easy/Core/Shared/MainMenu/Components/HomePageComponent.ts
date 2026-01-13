@@ -9,6 +9,7 @@ import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import SortComponent from "../../../Client/Components/HomePage/Sort/SortComponent";
 import { SortId } from "../../../Client/Components/HomePage/Sort/SortId";
 import { MainMenuBlockSingleton } from "../../../Client/ProtectedControllers//Settings/MainMenuBlockSingleton";
+import { AirshipDeploymentPlatform } from "../../Airship/Types/AirshipGame";
 import { Asset } from "../../Asset";
 import DateParser from "../../DateParser";
 import { Game } from "../../Game";
@@ -19,7 +20,6 @@ import { ProtectedUtil } from "../../Util/ProtectedUtil";
 import { MainMenuSingleton } from "../Singletons/MainMenuSingleton";
 import DiscordHero from "./DiscordHero";
 import MainMenuPageComponent from "./MainMenuPageComponent";
-import { AirshipDeploymentPlatform } from "../../Airship/Types/AirshipGame";
 
 const gamesClient = new ContentServiceGames.Client(UnityMakeRequest(AirshipUrl.ContentService));
 
@@ -39,10 +39,6 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	private sorts = new Map<SortId, SortComponent>();
 	private addedDiscordHero = false;
 	// private loadedGameComponents: HomePageGameComponent[] = [];
-
-	protected Awake(): void {
-		this.animateInDuration = 0;
-	}
 
 	protected Start(): void {
 		const mainMenu = Dependency<MainMenuSingleton>();
@@ -72,6 +68,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 				? "Unlock the limited edition Victory Crown by winning a match!"
 				: "Unlock the Victory Crown by winning a match!",
 			AirshipUrl.CDN + "/airship/CrownRender.png",
+			undefined,
 			1764788400,
 			1764788400 + 3 * day,
 		);
@@ -161,12 +158,13 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		gameId: string,
 		description: string,
 		popoutImageUrl: string,
+		videoUrl: string | undefined,
 		startTime: number,
 		endTime: number,
 	): void {
 		const go = Instantiate(this.featuredEventPrefab, this.mainContent);
 		const featuredEvent = go.GetAirshipComponent<MenuFeaturedEvent>()!;
-		featuredEvent.Init(gameId, description, popoutImageUrl, startTime, endTime);
+		featuredEvent.Init(gameId, description, popoutImageUrl, videoUrl, startTime, endTime);
 	}
 
 	private CreateSpacer(): void {
@@ -209,9 +207,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 				}
 
 				const developerGames = searchSingleton.myGames.filter((f) =>
-					f.platforms.includes(
-						ProtectedUtil.GetLocalPlatformString() as AirshipDeploymentPlatform,
-					),
+					f.platforms.includes(ProtectedUtil.GetLocalPlatformString() as AirshipDeploymentPlatform),
 				);
 				sortComponent.SetGames(developerGames, indexCounter);
 				indexCounter += developerGames.size();
@@ -230,6 +226,11 @@ export default class HomePageComponent extends MainMenuPageComponent {
 
 					return true;
 				});
+				if (sortId === SortId.Popular) {
+					games = games.sort((a, b) => {
+						return a.liveStats.playerCount > b.liveStats.playerCount;
+					});
+				}
 
 				sortComponent!.SetGames(games, indexCounter);
 				indexCounter += games.size();

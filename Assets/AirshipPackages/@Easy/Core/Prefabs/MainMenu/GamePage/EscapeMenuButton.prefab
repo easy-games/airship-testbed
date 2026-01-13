@@ -245,6 +245,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 346792636734705431}
   - {fileID: 7730149503808785606}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -273,8 +274,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.015686275}
+  m_Material: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
+  m_Color: {r: 0.15686275, g: 0.17254902, b: 0.22352941, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -571,6 +572,62 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 0}
       modified: 0
+    - name: sounds
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: vibration
+      type: boolean
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators:
+      - name: Spacing
+        parameters: []
+      nullable: 0
+      serializedValue: 0
+      serializedObject: {fileID: 0}
+      modified: 0
+    - name: vibrationType
+      type: IntEnum
+      objectType: 
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: AirshipPackages/@Easy/Core/Shared/Types/Generated.d@VibrationFeedbackType
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 1
+      serializedObject: {fileID: 0}
+      modified: 0
     displayIcon: {fileID: 0}
     displayName: 
 --- !u!114 &6373983948658439160
@@ -585,8 +642,76 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec18a89aa0caf4669ae44f413c827581, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 4
+  radius: 6
   image: {fileID: 3862718998900362066}
+--- !u!1 &6458820936956322030
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 346792636734705431}
+  - component: {fileID: 135297187543623152}
+  - component: {fileID: 6693605997026977002}
+  m_Layer: 5
+  m_Name: Outline
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &346792636734705431
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6458820936956322030}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7539554840099469866}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &135297187543623152
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6458820936956322030}
+  m_CullTransparentMesh: 1
+--- !u!114 &6693605997026977002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6458820936956322030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c280d1ddc7af1a04e8f71ea529d0c27f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.015686275}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Texture: {fileID: 0}
+  _outlineWidth: 1
+  _cornerRadius: 6
+  _cornerSegments: 18
+  _mappingBias: 0.5
+  _slightlyThickerCorners: 0
+  _fillCenter: 0
 --- !u!1 &7323718825141502168
 GameObject:
   m_ObjectHideFlags: 0

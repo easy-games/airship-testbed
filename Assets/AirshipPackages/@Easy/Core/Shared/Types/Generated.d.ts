@@ -4223,7 +4223,7 @@ declare const enum LoadingStatus {
     Loading = 1,
     Loaded = 2,
 }
-declare const enum Flips {
+declare const enum VoxelFlip {
     Flip_0Deg = 0,
     Flip_90Deg = 1,
     Flip_180Deg = 2,
@@ -38868,7 +38868,7 @@ interface VoxelBlocks extends MonoBehaviour {
     atlasMaterial: Material;
     atlas: TexturePacker;
     loadedBlocks: Readonly<BlockDefinition[]>;
-    alphebeticalBlocks: Readonly<BlockDefinition[]>;
+    alphabeticalBlocks: Readonly<BlockDefinition[]>;
     rootAssetPath: string;
     m_bundlePaths: Readonly<string[]>;
     blockDefinitionLists: Readonly<VoxelBlockDefinitionList[]>;
@@ -39183,7 +39183,7 @@ declare const Surface: SurfaceConstructor;
 interface PrecalculatedFlipConstructor {
 
 
-    new(srcVertices: Readonly<Vector3[]>, srcNormals: Readonly<Vector3[]>, srcSurfaces: Readonly<Surface[]>, flip: Flips): PrecalculatedFlip;
+    new(srcVertices: Readonly<Vector3[]>, srcNormals: Readonly<Vector3[]>, srcSurfaces: Readonly<Surface[]>, voxelFlip: VoxelFlip): PrecalculatedFlip;
 
 
 
@@ -55220,7 +55220,6 @@ interface VoxelWorld extends MonoBehaviour {
     FillSingleBlock(): void;
     FromBuffer(buffer: buffer): void;
     FullWorldUpdate(): void;
-    GenerateWorld(populateTerrain: boolean): void;
     GenerateWorld(): void;
     GetChunkByChunkPos(pos: Vector3): Chunk;
     GetCollisionType(voxelData: number): CollisionType;
@@ -55230,8 +55229,9 @@ interface VoxelWorld extends MonoBehaviour {
     GetRandomOccupiedVoxelPosition(): Vector3;
     GetVoxelAndChunkAt(pos: Vector3): ValueTuple<number, Chunk>;
     GetVoxelAt(pos: Vector3): number;
-    GetVoxelBlockTypeAt(pos: Vector3): BlockDefinition;
+    GetVoxelBlockDefAt(pos: Vector3): BlockDefinition;
     GetVoxelColorAt(pos: Vector3): Color32;
+    GetVoxelCustomDataAt(pos: Vector3): BinaryBlob;
     GetVoxelIdAt(pos: Vector3): number;
     InvokeOnFinishedReplicatingChunksFromServer(): void;
     LoadEmptyWorld(): void;
@@ -55259,7 +55259,8 @@ interface VoxelWorld extends MonoBehaviour {
     UpdateFocusCamera(focusCamera: Camera): void;
     WaitForChunkToLoad(voxel: Vector3): void;
     WriteTemporaryVoxelCollisionAt(pos: Vector3, num: number): void;
-    WriteVoxelAt(pos: Vector3, num: number, priority: boolean): void;
+    WriteVoxelAt(pos: Vector3, voxelData: number, priority: boolean): void;
+    WriteVoxelAt(pos: Vector3, voxelData: number): void;
     WriteVoxelColorAt(pos: Vector3, color: Color, priority: boolean): void;
     WriteVoxelCustomDataAt(pos: Vector3, data: BinaryBlob, priority: boolean): void;
     WriteVoxelGroupAt(positions: Readonly<Vector3[]>, voxelData: Readonly<number[]>, priority: boolean): void;
@@ -55459,7 +55460,7 @@ interface VoxelWorldConstructor {
     GetFirstInstance(): VoxelWorld;
     GetVoxelDataExtraBits(voxelData: number): number;
     GetVoxelDataFlippedBits(voxelData: number): number;
-    GetVoxelDataFlips(voxelData: number): Flips;
+    GetVoxelDataFlips(voxelData: number): VoxelFlip;
     GetVoxelDataId(voxelData: number): number;
     GetVoxelDataId(voxelData: number): number;
     GetVoxelDataRotation(voxelData: number): Quaternion;
@@ -55467,7 +55468,7 @@ interface VoxelWorldConstructor {
     GetVoxelDataWithFlippedBits(voxel: number, flippedBits: number): number;
     GetVoxelDataWithSolidBit(voxelData: number, solid: boolean): number;
     HashCoordinates(x: number, y: number, z: number): number;
-    IsVoxelDataIsSolid(voxelData: number): boolean;
+    IsVoxelDataSolid(voxelData: number): boolean;
     Sign(input: Vector3): Vector3;
 
 }

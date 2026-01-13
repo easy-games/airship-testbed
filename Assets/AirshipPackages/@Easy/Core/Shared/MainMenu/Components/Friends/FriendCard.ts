@@ -10,16 +10,14 @@ import { AirshipPartyMode } from "@Easy/Core/Shared/Airship/Types/AirshipParty";
 import { AirshipUserStatusData } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import {
-	GameCoordinatorClient,
-} from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { CanvasAPI, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { CanvasAPI, HoverState, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
+import { Theme } from "@Easy/Core/Shared/Util/Theme";
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
@@ -33,6 +31,7 @@ export default class FriendCard extends AirshipBehaviour {
 	public statusIndicator: Image;
 	public profileImage: RawImage;
 	public canvasGroup: CanvasGroup;
+	public hoverBG: GameObject;
 
 	@NonSerialized() public canvas?: Canvas;
 	@NonSerialized() public userId!: string;
@@ -134,10 +133,6 @@ export default class FriendCard extends AirshipBehaviour {
 			);
 		};
 
-		CoreUI.SetupButton(this.gameObject, {
-			noHoverSound: true,
-		});
-
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnPointerEvent(this.gameObject, (direction, button) => {
 				if (this.redirectScroll.isDragging) return;
@@ -207,18 +202,18 @@ export default class FriendCard extends AirshipBehaviour {
 		}
 		if (userData.status === "online") {
 			this.canvasGroup.alpha = 1;
-			this.statusIndicator.color = ColorUtil.HexToColor("#6AFF61");
+			this.statusIndicator.color = Theme.statusIndicator.online;
 			this.statusText.color = ColorUtil.HexToColor("#0CDF61");
 			this.joinBtn.gameObject.SetActive(false);
 		} else if (userData.status === "in_game") {
 			this.canvasGroup.alpha = 1;
-			this.statusIndicator.color = ColorUtil.HexToColor("#70D4FF");
+			this.statusIndicator.color = Theme.statusIndicator.inGame;
 			this.statusText.color = ColorUtil.HexToColor("70D4FF");
 			this.statusText.text = `Playing ${userData.game.name ?? "???"}`;
 			this.joinBtn.gameObject.SetActive(true);
 		} else {
 			this.canvasGroup.alpha = 0.5;
-			this.statusIndicator.color = ColorUtil.HexToColor("#9C9C9C");
+			this.statusIndicator.color = Theme.statusIndicator.offline;
 			this.statusText.color = new Color(1, 1, 1, 1);
 			this.joinBtn.gameObject.SetActive(false);
 		}
@@ -299,6 +294,16 @@ export default class FriendCard extends AirshipBehaviour {
 						Object.Destroy(cloneObject);
 						cloneObject = undefined;
 						cloneRect = undefined;
+					}
+				}),
+			);
+
+			this.bin.AddEngineEventConnection(
+				CanvasAPI.OnHoverEvent(this.gameObject, (hov, data) => {
+					if (hov === HoverState.ENTER) {
+						this.hoverBG.SetActive(true);
+					} else {
+						this.hoverBG.SetActive(false);
 					}
 				}),
 			);

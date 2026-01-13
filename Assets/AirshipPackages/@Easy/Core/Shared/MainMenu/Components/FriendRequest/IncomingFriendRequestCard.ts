@@ -16,9 +16,13 @@ export default class IncomingFriendRequestCard extends AirshipBehaviour {
 
 	override Start(): void {}
 
-	public Init(user: AirshipUser): void {
+	public Init(user: AirshipUser, scrollRect: ScrollRect): void {
 		this.user = user;
 		this.usernameText.text = user.username;
+
+		for (let redirectScroll of this.gameObject.GetComponentsInChildren<AirshipRedirectScroll>()) {
+			redirectScroll.redirectTarget = scrollRect;
+		}
 
 		task.spawn(async () => {
 			let texture = await Airship.Players.GetProfilePictureAsync(user.uid);
