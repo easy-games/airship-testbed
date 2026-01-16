@@ -253,11 +253,10 @@ export default class Inventory extends AirshipBehaviour {
 
 		if (Game.IsServer() && this.finishedInitialReplication) {
 			// todo: figure out which clients to include
-			const encodedDto = itemStack?.Encode();
 			CoreNetwork.ServerToClient.SetInventorySlot.server.FireAllClients(
 				this.id,
 				slot,
-				encodedDto,
+				itemStack?.Encode(),
 				config?.clientPredicted ?? false,
 			);
 		}
