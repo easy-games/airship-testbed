@@ -1,6 +1,7 @@
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Airship } from "../Airship";
 import { ItemDef } from "../Item/ItemDefinitionTypes";
+import ObjectUtils from "../Util/ObjectUtils";
 
 export interface ItemStackDto {
 	/** ItemType */
@@ -133,7 +134,11 @@ export class ItemStack {
 	}
 
 	public Clone(): ItemStack {
-		const clone = new ItemStack(this.itemType, this.amount, this.customData ? { ...this.customData } : undefined);
+		const clone = new ItemStack(
+			this.itemType,
+			this.amount,
+			this.customData ? ObjectUtils.deepCopy(this.customData) : undefined,
+		);
 		return clone;
 	}
 

@@ -118,8 +118,81 @@ export class AirshipInventorySingleton {
 		},
 	};
 
+	/**
+	 * Optional callback function to merge custom data when merging item stacks.
+	 * If not provided, stacks with custom data will not merge.
+	 * Make sure to set this on both the server and the client or the UI will break.
+	 * 
+	 * @param itemType The type of item being merged
+	 * @param stack1Data Custom data from the first stack
+	 * @param stack2Data Custom data from the second stack
+	 * @param stack1Amount Amount in the first stack
+	 * @param stack2Amount Amount in the second stack
+	 * @returns Merged custom data, or undefined to prevent merging
+	 * 
+	 * @example
+	 *  `Making a sword with the durability of the two swords`
+	 * 	Airship.Inventory.CustomDataMergeFunction = (itemType, data1, data2, amount1, amount2) => {
+			if (itemType === ItemType.AverageSwordDurability && data1.durability && data2.durability) {
+				const finalDurability = ((data1.durability as number) + (data2.durability as number)) / 2;
+				return { durability: finalDurability };
+			}
+			else if (itemType === ItemType.AddSwordDurability && data1.durability && data2.durability) {
+				const finalDurability = (data1.durability as number) + (data2.durability as number);
+				return { durability: finalDurability };
+			}
+			return undefined;
+		};
+	 */
+		public CustomDataMergeFunction?: (
+			itemType: string,
+			stack1Data: Record<string, unknown>,
+			stack2Data: Record<string, unknown>,
+			stack1Amount: number,
+			stack2Amount: number,
+		) => Record<string, unknown> | undefined;
+
 	constructor() {
 		Airship.Inventory = this;
+	}
+
+	/**
+	 * Helper function to determine if two item stacks can be merged based on their custom data.
+	 */
+	public static CanMergeCustomData(
+		stack1: ItemStack,
+		stack2: ItemStack,
+	): { canMerge: boolean; mergedData?: Record<string, unknown> } {
+		const hasCustomData1 = stack1.customData !== undefined;
+		const hasCustomData2 = stack2.customData !== undefined;
+
+		// If neither has custom data, merge normally
+		if (!hasCustomData1 && !hasCustomData2) {
+			return { canMerge: true, mergedData: undefined };
+		}
+
+		// If only one has custom data don't merge for now
+		if (hasCustomData1 !== hasCustomData2) {
+			return { canMerge: false };
+		}
+
+		// Both have custom data use the provided merge function from the player for custom data
+		const mergeFunction = Airship.Inventory.CustomDataMergeFunction;
+		if (!mergeFunction) {
+			return { canMerge: false };
+		}
+
+		const mergedData = mergeFunction(
+			stack1.itemType,
+			stack1.customData!,
+			stack2.customData!,
+			stack1.amount,
+			stack2.amount,
+		);
+
+		return mergedData !== undefined
+			? { canMerge: true, mergedData }
+			: { canMerge: false };
 	}
 
 	protected OnStart(): void {
@@ -239,7 +312,7 @@ export class AirshipInventorySingleton {
 				if (
 					itemStack.itemType !== decodedStack.itemType ||
 					hasCustomDataInDto ||
-					(currentHasCustomData && !hasCustomDataInDto)
+					currentHasCustomData
 				) {
 					inv.SetItem(slot, decodedStack);
 				} else {
@@ -443,8 +516,21 @@ export class AirshipInventorySingleton {
 
 		if (amountToMerge <= 0) return false;
 
-		toItemStack.SetAmount(toItemStack.amount + amountToMerge);
-		fromItemStack.Decrement(amountToMerge);
+		const mergeResult = AirshipInventorySingleton.CanMergeCustomData(toItemStack, fromItemStack);
+		if (!mergeResult.canMerge) {
+			return false;
+		}
+
+		const newAmount = toItemStack.amount + amountToMerge;
+		if (mergeResult.mergedData !== undefined) {
+			const mergedStack = new ItemStack(toItemStack.itemType, newAmount, mergeResult.mergedData);
+			toInv.SetItem(toSlot, mergedStack, { clientPredicted: !noNetwork });
+			fromItemStack.Decrement(amountToMerge);
+		} else {
+			toItemStack.SetAmount(newAmount);
+			fromItemStack.Decrement(amountToMerge);
+		}
+
 		const remainingAmount = amount - amountToMerge;
 
 		// If there's excess, merge with all other slots, then put remainder in first open slot
