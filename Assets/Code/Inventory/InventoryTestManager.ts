@@ -8,24 +8,30 @@ export default class InventoryTestManager extends AirshipSingleton {
 
 	override Start(): void {
 		// Register merge function for TestItemWithCustomData (averages values)
-		Airship.Inventory.RegisterCustomDataMergeFunction("TestItemWithCustomData", (data1, data2, amount1, amount2) => {
-			if (data1.durability && data2.durability) {
-				const avgDurability = ((data1.durability as number) + (data2.durability as number)) / 2;
-				const avgValue = ((data1.value as number) + (data2.value as number)) / 2;
-				return { value: avgValue, durability: avgDurability };
-			}
-			return undefined;
-		});
+		Airship.Inventory.RegisterCustomDataMergeFunction(
+			"TestItemWithCustomData",
+			(data1, data2, amount1, amount2) => {
+				if (data1.durability && data2.durability) {
+					const avgDurability = ((data1.durability as number) + (data2.durability as number)) / 2;
+					const avgValue = ((data1.value as number) + (data2.value as number)) / 2;
+					return { value: avgValue, durability: avgDurability };
+				}
+				return undefined;
+			},
+		);
 
 		// Register merge function for TestItemWithCustomData2 (sums values)
-		Airship.Inventory.RegisterCustomDataMergeFunction("TestItemWithCustomData2", (data1, data2, amount1, amount2) => {
-			if (data1.value && data2.value) {
-				const combinedDurability = (data1.durability as number) + (data2.durability as number);
-				const combinedValue = (data1.value as number) + (data2.value as number);
-				return { value: combinedValue, durability: combinedDurability };
-			}
-			return undefined;
-		});
+		Airship.Inventory.RegisterCustomDataMergeFunction(
+			"TestItemWithCustomData2",
+			(data1, data2, amount1, amount2) => {
+				if (data1.value && data2.value) {
+					const combinedDurability = (data1.durability as number) + (data2.durability as number);
+					const combinedValue = (data1.value as number) + (data2.value as number);
+					return { value: combinedValue, durability: combinedDurability };
+				}
+				return undefined;
+			},
+		);
 		Airship.Inventory.RegisterItem("Iron", {
 			displayName: "Iron Ingot",
 			maxStackSize: undefined,
