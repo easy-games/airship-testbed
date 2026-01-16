@@ -132,7 +132,7 @@ export class AirshipInventorySingleton {
 	 * When two item stacks of this type are merged, this function will be called to determine
 	 * how to merge their custom data.
 	 * Make sure to set this on both the server and the client or the UI will break.
-	 * 
+	 *
 	 * @param itemType The type of item being merged
 	 * @param mergeFunction Function that merges custom data from two stacks
 	 * @param stack1Data Custom data from the first stack
@@ -140,7 +140,7 @@ export class AirshipInventorySingleton {
 	 * @param stack1Amount Amount in the first stack
 	 * @param stack2Amount Amount in the second stack
 	 * @returns Merged custom data, or undefined to prevent merging
-	 * 
+	 *
 	 * @example
 	 * ```ts
 	 * // Weight a food item's spoilage by the stack amount (weighted average) and return a new spoilage value.
@@ -148,10 +148,10 @@ export class AirshipInventorySingleton {
 	 * 	if (stack1Data.spoilage && stack2Data.spoilage) {
 	 * 		const spoilage1 = stack1Data.spoilage as number;
 	 * 		const spoilage2 = stack2Data.spoilage as number;
-	 * 		
+	 *
 	 * 		const totalAmount = stack1Amount + stack2Amount;
 	 * 		const weightedSpoilage = (spoilage1 * stack1Amount + spoilage2 * stack2Amount) / totalAmount;
-	 * 		
+	 *
 	 * 		return { spoilage: weightedSpoilage };
 	 * 	}
 	 * 	return undefined;
@@ -200,16 +200,9 @@ export class AirshipInventorySingleton {
 			return { canMerge: false };
 		}
 
-		const mergedData = mergeFunction(
-			stack1.customData!,
-			stack2.customData!,
-			stack1.amount,
-			stack2.amount,
-		);
+		const mergedData = mergeFunction(stack1.customData!, stack2.customData!, stack1.amount, stack2.amount);
 
-		return mergedData !== undefined
-			? { canMerge: true, mergedData }
-			: { canMerge: false };
+		return mergedData !== undefined ? { canMerge: true, mergedData } : { canMerge: false };
 	}
 
 	protected OnStart(): void {
@@ -319,18 +312,14 @@ export class AirshipInventorySingleton {
 
 			let itemStack = inv.GetItem(slot);
 			const decodedStack = ItemStack.Decode(itemStackDto);
-			
+
 			if (itemStack === undefined) {
 				inv.SetItem(slot, decodedStack);
 			} else {
 				const hasCustomDataInDto = itemStackDto.c !== undefined;
 				const currentHasCustomData = itemStack.customData !== undefined;
-				
-				if (
-					itemStack.itemType !== decodedStack.itemType ||
-					hasCustomDataInDto ||
-					currentHasCustomData
-				) {
+
+				if (itemStack.itemType !== decodedStack.itemType || hasCustomDataInDto || currentHasCustomData) {
 					inv.SetItem(slot, decodedStack);
 				} else {
 					if (itemStack.amount !== decodedStack.amount) {
