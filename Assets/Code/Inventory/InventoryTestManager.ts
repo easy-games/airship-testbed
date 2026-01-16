@@ -7,19 +7,25 @@ export default class InventoryTestManager extends AirshipSingleton {
 	public passiveIronSpawnCooldown = 0.1;
 
 	override Start(): void {
-		Airship.Inventory.CustomDataMergeFunction = (itemType, data1, data2, amount1, amount2) => {
-			if (itemType === "TestItemWithCustomData" && data1.durability && data2.durability) {
+		// Register merge function for TestItemWithCustomData (averages values)
+		Airship.Inventory.RegisterCustomDataMergeFunction("TestItemWithCustomData", (data1, data2, amount1, amount2) => {
+			if (data1.durability && data2.durability) {
 				const avgDurability = ((data1.durability as number) + (data2.durability as number)) / 2;
 				const avgValue = ((data1.value as number) + (data2.value as number)) / 2;
 				return { value: avgValue, durability: avgDurability };
 			}
-			if (itemType === "TestItemWithCustomData2" && data1.value && data2.value) {
+			return undefined;
+		});
+
+		// Register merge function for TestItemWithCustomData2 (sums values)
+		Airship.Inventory.RegisterCustomDataMergeFunction("TestItemWithCustomData2", (data1, data2, amount1, amount2) => {
+			if (data1.value && data2.value) {
 				const combinedDurability = (data1.durability as number) + (data2.durability as number);
 				const combinedValue = (data1.value as number) + (data2.value as number);
 				return { value: combinedValue, durability: combinedDurability };
 			}
 			return undefined;
-		};
+		});
 		Airship.Inventory.RegisterItem("Iron", {
 			displayName: "Iron Ingot",
 			maxStackSize: undefined,
@@ -33,7 +39,7 @@ export default class InventoryTestManager extends AirshipSingleton {
 		});
 
 		if (Game.IsServer()) {
-			task.delay(2, () => {
+			Airship.Characters.ObserveCharacters((character) => {
 				this.TestMergeWithDifferingCustomData();
 			});
 		}

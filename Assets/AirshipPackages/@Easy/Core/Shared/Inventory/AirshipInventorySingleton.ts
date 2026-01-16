@@ -107,6 +107,15 @@ export class AirshipInventorySingleton {
 	private readonly itemAccessories = new Map<string, AccessoryComponent[]>();
 	private readonly internalIdToItemType = new Map<number, string>();
 	private internalIdCounter = 0;
+	private static readonly customItemDataMergeFunctionMap = new Map<
+		string,
+		(
+			stack1Data: Record<string, unknown>,
+			stack2Data: Record<string, unknown>,
+			stack1Amount: number,
+			stack2Amount: number,
+		) => Record<string, unknown> | undefined
+	>();
 
 	public readonly ui: AirshipInventoryUI | undefined;
 
@@ -119,11 +128,13 @@ export class AirshipInventorySingleton {
 	};
 
 	/**
-	 * Optional callback function to merge custom data when merging item stacks.
-	 * If not provided, stacks with custom data will not merge.
+	 * Register a custom data merge function for a specific item type.
+	 * When two item stacks of this type are merged, this function will be called to determine
+	 * how to merge their custom data.
 	 * Make sure to set this on both the server and the client or the UI will break.
 	 * 
 	 * @param itemType The type of item being merged
+	 * @param mergeFunction Function that merges custom data from two stacks
 	 * @param stack1Data Custom data from the first stack
 	 * @param stack2Data Custom data from the second stack
 	 * @param stack1Amount Amount in the first stack
@@ -131,26 +142,33 @@ export class AirshipInventorySingleton {
 	 * @returns Merged custom data, or undefined to prevent merging
 	 * 
 	 * @example
-	 *  `Making a sword with the durability of the two swords`
-	 * 	Airship.Inventory.CustomDataMergeFunction = (itemType, data1, data2, amount1, amount2) => {
-			if (itemType === ItemType.AverageSwordDurability && data1.durability && data2.durability) {
-				const finalDurability = ((data1.durability as number) + (data2.durability as number)) / 2;
-				return { durability: finalDurability };
-			}
-			else if (itemType === ItemType.AddSwordDurability && data1.durability && data2.durability) {
-				const finalDurability = (data1.durability as number) + (data2.durability as number);
-				return { durability: finalDurability };
-			}
-			return undefined;
-		};
+	 * ```ts
+	 * // Weight a food item's spoilage by the stack amount (weighted average) and return a new spoilage value.
+	 * Airship.Inventory.RegisterCustomDataMergeFunction("FoodItem", (stack1Data, stack2Data, stack1Amount, stack2Amount) => {
+	 * 	if (stack1Data.spoilage && stack2Data.spoilage) {
+	 * 		const spoilage1 = stack1Data.spoilage as number;
+	 * 		const spoilage2 = stack2Data.spoilage as number;
+	 * 		
+	 * 		const totalAmount = stack1Amount + stack2Amount;
+	 * 		const weightedSpoilage = (spoilage1 * stack1Amount + spoilage2 * stack2Amount) / totalAmount;
+	 * 		
+	 * 		return { spoilage: weightedSpoilage };
+	 * 	}
+	 * 	return undefined;
+	 * });
+	 * ```
 	 */
-		public CustomDataMergeFunction?: (
-			itemType: string,
+	public RegisterCustomDataMergeFunction(
+		itemType: string,
+		mergeFunction: (
 			stack1Data: Record<string, unknown>,
 			stack2Data: Record<string, unknown>,
 			stack1Amount: number,
 			stack2Amount: number,
-		) => Record<string, unknown> | undefined;
+		) => Record<string, unknown> | undefined,
+	): void {
+		AirshipInventorySingleton.customItemDataMergeFunctionMap.set(itemType, mergeFunction);
+	}
 
 	constructor() {
 		Airship.Inventory = this;
@@ -176,14 +194,13 @@ export class AirshipInventorySingleton {
 			return { canMerge: false };
 		}
 
-		// Both have custom data use the provided merge function from the player for custom data
-		const mergeFunction = Airship.Inventory.CustomDataMergeFunction;
+		// Both have custom data use the provided merge function from the dev for custom data
+		const mergeFunction = AirshipInventorySingleton.customItemDataMergeFunctionMap.get(stack1.itemType);
 		if (!mergeFunction) {
 			return { canMerge: false };
 		}
 
 		const mergedData = mergeFunction(
-			stack1.itemType,
 			stack1.customData!,
 			stack2.customData!,
 			stack1.amount,
