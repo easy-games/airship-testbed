@@ -230,8 +230,7 @@ export default class Inventory extends AirshipBehaviour {
 						CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
 							this.id,
 							slot,
-							e.itemStack.itemType,
-							e.amount,
+							e.itemStack.Encode(),
 						);
 					}),
 				);
@@ -243,8 +242,7 @@ export default class Inventory extends AirshipBehaviour {
 						CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
 							this.id,
 							slot,
-							e.itemType,
-							e.itemStack.amount,
+							e.itemStack.Encode(),
 						);
 					}),
 				);
@@ -255,10 +253,11 @@ export default class Inventory extends AirshipBehaviour {
 
 		if (Game.IsServer() && this.finishedInitialReplication) {
 			// todo: figure out which clients to include
+			const encodedDto = itemStack?.Encode();
 			CoreNetwork.ServerToClient.SetInventorySlot.server.FireAllClients(
 				this.id,
 				slot,
-				itemStack?.Encode(),
+				encodedDto,
 				config?.clientPredicted ?? false,
 			);
 		}
@@ -342,8 +341,7 @@ export default class Inventory extends AirshipBehaviour {
 			return undefined;
 		}
 
-		// Create a new ItemStack with the remaining amount
-		const remainingStack = new ItemStack(itemStack.itemType, remainingAmount);
+		const remainingStack = new ItemStack(itemStack.itemType, remainingAmount, itemStack.customData);
 		itemStack.Destroy();
 		return remainingStack;
 	}

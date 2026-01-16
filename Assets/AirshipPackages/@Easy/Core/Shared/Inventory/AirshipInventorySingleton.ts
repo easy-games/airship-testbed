@@ -218,28 +218,35 @@ export class AirshipInventorySingleton {
 				inv.SetItem(slot, itemStack);
 			},
 		);
-		CoreNetwork.ServerToClient.UpdateInventorySlot.client.OnServerEvent((invId, slot, itemType, amount) => {
+		CoreNetwork.ServerToClient.UpdateInventorySlot.client.OnServerEvent((invId, slot, itemStackDto) => {
 			const inv = this.GetInventory(invId);
 			if (!inv) return;
 
-			let itemStack = inv.GetItem(slot);
-			if (itemStack === undefined && itemType !== undefined && amount !== undefined) {
-				// The server has the authority on this, so we should trust it.
-				itemStack = new ItemStack(itemType);
-				inv.SetItem(slot, itemStack);
-			}
-
-			if (itemStack === undefined) {
-				// Still no item stack!
+			if (itemStackDto === undefined) {
+				inv.SetItem(slot, undefined);
 				return;
 			}
 
-			if (amount !== undefined) {
-				itemStack.SetAmount(amount, { noNetwork: Game.IsHosting() });
-			}
-
-			if (itemType !== undefined) {
-				itemStack.SetItemType(itemType);
+			let itemStack = inv.GetItem(slot);
+			const decodedStack = ItemStack.Decode(itemStackDto);
+			
+			if (itemStack === undefined) {
+				inv.SetItem(slot, decodedStack);
+			} else {
+				const hasCustomDataInDto = itemStackDto.c !== undefined;
+				const currentHasCustomData = itemStack.customData !== undefined;
+				
+				if (
+					itemStack.itemType !== decodedStack.itemType ||
+					hasCustomDataInDto ||
+					(currentHasCustomData && !hasCustomDataInDto)
+				) {
+					inv.SetItem(slot, decodedStack);
+				} else {
+					if (itemStack.amount !== decodedStack.amount) {
+						itemStack.SetAmount(decodedStack.amount, { noNetwork: Game.IsHosting() });
+					}
+				}
 			}
 		});
 	}
@@ -442,7 +449,7 @@ export class AirshipInventorySingleton {
 
 		// If there's excess, merge with all other slots, then put remainder in first open slot
 		if (remainingAmount > 0) {
-			const excessStack = new ItemStack(fromItemStack.itemType, remainingAmount);
+			const excessStack = new ItemStack(fromItemStack.itemType, remainingAmount, fromItemStack.customData);
 			this.MergeItemStackWithSlots(toInv, excessStack, 0, toSlot, noNetwork);
 			if (!excessStack.IsDestroyed()) {
 				this.MergeItemStackWithSlots(toInv, excessStack, toSlot + 1, toInv.GetMaxSlots(), noNetwork);
@@ -502,7 +509,7 @@ export class AirshipInventorySingleton {
 		}
 
 		fromItem.SetAmount(fromItem.amount - amount);
-		toInventory.SetItem(toSlot, new ItemStack(fromItem.itemType, amount), {
+		toInventory.SetItem(toSlot, new ItemStack(fromItem.itemType, amount, fromItem.customData), {
 			clientPredicted: config?.clientPredicted,
 		});
 	}
