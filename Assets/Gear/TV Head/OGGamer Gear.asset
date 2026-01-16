@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
+  m_Name: OGGamer Gear
+  m_EditorClassIdentifier: 
+  classId: 09831de3-1d39-4d2a-983a-124f9318ed6f
+  accessoryPrefabs:
+  - {fileID: 1571249822606560284, guid: 86705bc3f937f514ebcc63f8d35c4e0d, type: 3}
+  face: {fileID: 0}
