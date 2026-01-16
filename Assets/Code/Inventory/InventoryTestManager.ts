@@ -91,8 +91,7 @@ export default class InventoryTestManager extends AirshipSingleton {
 		const players = Airship.Players.GetPlayers();
 		const player = players[0];
 		const inventory = player.character?.inventory;
-		if (!inventory) 
-			return;
+		if (!inventory) return;
 
 		const stack1 = new ItemStack("TestItemWithCustomData", 5, {
 			value: 100,
@@ -114,17 +113,14 @@ export default class InventoryTestManager extends AirshipSingleton {
 			durability: 200,
 		});
 
-		// Test merge for stack1 and stack2
 		inventory.AddItem(stack1);
 		const merged1 = inventory.AddItem(stack2);
 		print(`[InventoryTestManager] Added stack1 & 2, merge result: ${merged1}`);
 
-		// Test merge for stack3 and stack4
 		inventory.AddItem(stack3);
 		const merged2 = inventory.AddItem(stack4);
 		print(`[InventoryTestManager] Added stack3 & 4, merge result: ${merged2}`);
 
-		// Verify stack1/stack2 merge
 		let mergedItem1: ItemStack | undefined = undefined;
 		for (let i = 0; i < inventory.GetMaxSlots(); i++) {
 			const item = inventory.GetItem(i);
@@ -138,10 +134,11 @@ export default class InventoryTestManager extends AirshipSingleton {
 			warn("[InventoryTestManager] No merged stack found for TestItemWithCustomData");
 		} else {
 			const customData1 = mergedItem1.customData as { value?: number; durability?: number };
-			print(`[InventoryTestManager] Stack1/2 merge: ${mergedItem1.amount} items, durability=${customData1?.durability}, value=${customData1?.value}`);
+			print(
+				`[InventoryTestManager] Stack1/2 merge: ${mergedItem1.amount} items, durability=${customData1?.durability}, value=${customData1?.value}`,
+			);
 		}
 
-		// Verify stack3/stack4 merge
 		let mergedItem2: ItemStack | undefined = undefined;
 		for (let i = 0; i < inventory.GetMaxSlots(); i++) {
 			const item = inventory.GetItem(i);
@@ -155,7 +152,9 @@ export default class InventoryTestManager extends AirshipSingleton {
 			warn("[InventoryTestManager] No merged stack found for TestItemWithCustomData2");
 		} else {
 			const customData2 = mergedItem2.customData as { value?: number; durability?: number };
-			print(`[InventoryTestManager] Stack3/4 merge: ${mergedItem2.amount} items, durability=${customData2?.durability}, value=${customData2?.value}`);
+			print(
+				`[InventoryTestManager] Stack3/4 merge: ${mergedItem2.amount} items, durability=${customData2?.durability}, value=${customData2?.value}`,
+			);
 		}
 	}
 
