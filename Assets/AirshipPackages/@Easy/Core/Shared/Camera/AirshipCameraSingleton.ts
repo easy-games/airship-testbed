@@ -49,6 +49,7 @@ export class AirshipCameraSingleton {
 	private sprintFovMultiplier = 1.08;
 
 	private firstPerson = false;
+	private previousCameraMode: CameraMode | undefined;
 
 	/** Fires whenever the user changes their first-person state. */
 	public readonly firstPersonChanged = new Signal<[isFirstPerson: boolean]>();
@@ -606,13 +607,17 @@ export class AirshipCameraSingleton {
 	 * This will only work if using {@link CharacterCameraMode.Fixed}. You can set this with {@link SetModeCustom()}
 	 */
 	public SetFirstPerson(value: boolean) {
-		assert(
-			this.characterCameraMode === CharacterCameraMode.Fixed,
-			"SetFirstPerson() can only be called when using CharacterCameraMode.Locked",
-		);
-
 		if (this.firstPerson === value) {
 			return;
+		}
+
+		if (value) {
+			this.previousCameraMode = this.cameraSystem!.GetMode();
+			this.SetMode(CharacterCameraMode.Fixed);
+		}
+
+		if (!value && this.previousCameraMode) {
+			this.SetModeCustom(this.previousCameraMode);
 		}
 
 		this.firstPerson = value;
