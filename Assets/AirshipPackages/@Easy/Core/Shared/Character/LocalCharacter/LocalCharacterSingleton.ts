@@ -3,7 +3,13 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Keyboard } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { Airship } from "../../Airship";
 import { AirshipCameraSingleton } from "../../Camera/AirshipCameraSingleton";
+import { CoreAction } from "../../Input/AirshipCoreAction";
+import { Binding } from "../../Input/Binding";
+import { InputKeybindCategory } from "../../Input/InputAction";
+import Inventory from "../../Inventory/Inventory";
+import { InventoryHotbarAction } from "../../Inventory/InventoryHotbarAction";
 import { CharacterInput } from "./CharacterInput";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 import { MoveDirectionMode } from "./MoveDirectionMode";
@@ -35,6 +41,11 @@ export class LocalCharacterSingleton {
 		Game.localPlayer.ObserveCharacter((character) => {
 			if (!character) return;
 
+			if (this.firstSpawn) {
+				if (Airship.Characters.GetDefaultCharacterTemplate()?.GetAirshipComponents<Inventory>() !== undefined) {
+					this.CreateHotbarActions();
+				}
+			}
 			this.firstSpawn = false;
 
 			const bin = new Bin();
@@ -186,5 +197,63 @@ export class LocalCharacterSingleton {
 	 */
 	public GetEntityDriver() {
 		return this.characterMovement;
+	}
+
+	/** Sets up keybinds for hotbar slots if the character prefab has an inventory */
+	private CreateHotbarActions(): void {
+		const hotbarActions = [
+			{ name: CoreAction.Inventory, binding: Binding.Key(Key.E), category: InputKeybindCategory.Actions },
+			{
+				name: CoreAction.InventoryQuickMoveModifierKey,
+				binding: Binding.Key(Key.LeftShift),
+				category: InputKeybindCategory.Actions,
+			},
+			{
+				name: InventoryHotbarAction.HotbarSlot1,
+				binding: Binding.Key(Key.Digit1),
+				category: InputKeybindCategory.Hotbar,
+			},
+			{
+				name: InventoryHotbarAction.HotbarSlot2,
+				binding: Binding.Key(Key.Digit2),
+				category: InputKeybindCategory.Hotbar,
+			},
+			{
+				name: InventoryHotbarAction.HotbarSlot3,
+				binding: Binding.Key(Key.Digit3),
+				category: InputKeybindCategory.Hotbar,
+			},
+			{
+				name: InventoryHotbarAction.HotbarSlot4,
+				binding: Binding.Key(Key.Digit4),
+				category: InputKeybindCategory.Hotbar,
+			},
+			{
+				name: InventoryHotbarAction.HotbarSlot5,
+				binding: Binding.Key(Key.Digit5),
+				category: InputKeybindCategory.Hotbar,
+			},
+			{
+				name: InventoryHotbarAction.HotbarSlot6,
+				binding: Binding.Key(Key.Digit6),
+				category: InputKeybindCategory.Hotbar,
+			},
+			{
+				name: InventoryHotbarAction.HotbarSlot7,
+				binding: Binding.Key(Key.Digit7),
+				category: InputKeybindCategory.Hotbar,
+			},
+			{
+				name: InventoryHotbarAction.HotbarSlot8,
+				binding: Binding.Key(Key.Digit8),
+				category: InputKeybindCategory.Hotbar,
+			},
+			{
+				name: InventoryHotbarAction.HotbarSlot9,
+				binding: Binding.Key(Key.Digit9),
+				category: InputKeybindCategory.Hotbar,
+			},
+		];
+		Airship.Input.CreateActions(hotbarActions);
 	}
 }
