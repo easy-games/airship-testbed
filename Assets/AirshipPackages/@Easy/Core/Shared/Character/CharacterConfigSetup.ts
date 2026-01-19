@@ -72,12 +72,6 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 		//Set the default prefab to use whenever a character is spawned
 		Airship.Characters.instantiateViewmodel = this.instantiateViewmodel;
 		Airship.Characters.SetDefaultCharacterPrefab(this.customCharacterPrefab);
-		if (
-			Game.IsClient() &&
-			Airship.Characters.GetDefaultCharacterTemplate()?.GetAirshipComponents<Inventory>() !== undefined
-		) {
-			this.CreateHotbarActions();
-		}
 		Airship.Characters.SetDefaultViewmodelPrefab(this.customViewmodelPrefab);
 		if (this.customViewmodelPrefab !== undefined && Airship.Characters.viewmodel !== undefined) {
 			Airship.Characters.viewmodel.InstantiateFromPrefab(this.customViewmodelPrefab);
@@ -93,10 +87,14 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 			if (hasRun) {
 				error(
 					"Tried to run CharacterConfigSetup twice. You should only have one instance of CharacterConfigSetup in your scene. This script is running on gameobject " +
-						this.gameObject.name,
+					this.gameObject.name,
 				);
 			}
 			hasRun = true;
+
+			if (Airship.Characters.GetDefaultCharacterTemplate()?.GetAirshipComponents<Inventory>() !== undefined) {
+				this.CreateHotbarActions();
+			}
 
 			// Movement
 			// Control how client inputs are recieved by the movement system
