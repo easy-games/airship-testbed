@@ -19,7 +19,6 @@ import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coord
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
@@ -28,17 +27,9 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { AuthController } from "../Auth/AuthController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
+import { PendingSocialNotification } from "./PendingSocialNotification";
 import { SocialNotificationType } from "./SocialNotificationType";
 import { SteamFriendsProtectedController } from "./SteamFriendsProtectedController";
-
-interface PendingSocialNotification {
-	type: SocialNotificationType;
-	key: string;
-	title: string;
-	username: string;
-	userId: string;
-	extraData: unknown;
-}
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
 
@@ -68,6 +59,7 @@ export class ProtectedFriendsController {
 	private friendsScrollRect!: ScrollRect;
 
 	public pendingSocialNotifications: PendingSocialNotification[] = [];
+	public onNewSocialNotification = new Signal<PendingSocialNotification>();
 	public socialNotificationHandlers = new Map<
 		SocialNotificationType,
 		(username: string, userId: string, result: boolean, extraData: unknown) => void
@@ -102,6 +94,14 @@ export class ProtectedFriendsController {
 			extraData,
 		};
 		this.pendingSocialNotifications.push(pendingNotif);
+		task.spawn(() => {
+			// Broadcast this event to game context for the PartyHud
+			if (pendingNotif.type === SocialNotificationType.PartyInvite) {
+				contextbridge.broadcast("social:party-invite");
+			}
+
+			this.onNewSocialNotification.Fire(pendingNotif);
+		});
 
 		task.spawn(() => {
 			this.CachePendingNotificationsYielding();
@@ -115,13 +115,7 @@ export class ProtectedFriendsController {
 		this.socialNotification.titleText.text = title.upper();
 		this.socialNotification.usernameText.text = username;
 		this.socialNotification.onResult.Connect((result) => {
-			let index = this.pendingSocialNotifications.indexOf(pendingNotif);
-			if (index > -1) {
-				this.pendingSocialNotifications.remove(index);
-			}
-			task.spawn(() => {
-				this.CachePendingNotificationsYielding();
-			});
+			this.ClearPendingNotification(pendingNotif);
 
 			const callback = this.socialNotificationHandlers.get(socialNotificationType);
 			if (callback === undefined) {
@@ -136,6 +130,16 @@ export class ProtectedFriendsController {
 			if (texture) {
 				this.socialNotification.userImage.texture = texture;
 			}
+		});
+	}
+
+	public ClearPendingNotification(notif: PendingSocialNotification): void {
+		let index = this.pendingSocialNotifications.indexOf(notif);
+		if (index > -1) {
+			this.pendingSocialNotifications.remove(index);
+		}
+		task.spawn(() => {
+			this.CachePendingNotificationsYielding();
 		});
 	}
 
@@ -269,7 +273,7 @@ export class ProtectedFriendsController {
 				// 	}),
 				// );
 
-				AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/FriendRequest.mp33", {
+				AudioManager.PlayGlobal("AirshipPackages/@Easy/Core/Sound/FriendRequest.mp3", {
 					volumeScale: 0.3,
 				});
 				if (Game.coreContext === CoreContext.GAME) {
@@ -285,12 +289,6 @@ export class ProtectedFriendsController {
 		});
 
 		this.socketController.On<AirshipUserStatusData[]>("game-coordinator/friend-status-update-multi", (data) => {
-			// print("status updates: " + json.encode(data));
-			let lukeOnSteam = data.find((d) => d.usernameLower === "luke_on_steam");
-			if (lukeOnSteam) {
-				CoreLogger.Log("luke: " + json.encode(lukeOnSteam));
-			}
-
 			for (const newFriend of data) {
 				const existing = this.friendStatuses.find((f) => f.userId === newFriend.userId);
 				if (existing) {
@@ -328,20 +326,20 @@ export class ProtectedFriendsController {
 	}
 
 	public Setup(): void {
-		const statusTextInput = this.mainMenuController.refs.GetValue("Social", "StatusInputField") as TMP_InputField;
-		let savedStatus = StateManager.GetString("social:status-text");
-		if (!savedStatus || savedStatus === "") {
-			Protected.Settings.WaitForSettingsLoaded();
-			savedStatus = Protected.Settings.data.statusText;
-		}
-		if (savedStatus) {
-			this.SetStatusText(savedStatus);
-			statusTextInput.text = savedStatus;
-		}
-		CanvasAPI.OnInputFieldSubmit(statusTextInput.gameObject, (data) => {
-			this.SetStatusText(data);
-			EventSystem.current.ClearSelected();
-		});
+		// const statusTextInput = this.mainMenuController.refs.GetValue("Social", "StatusInputField") as TMP_InputField;
+		// let savedStatus = StateManager.GetString("social:status-text");
+		// if (!savedStatus || savedStatus === "") {
+		// 	Protected.Settings.WaitForSettingsLoaded();
+		// 	savedStatus = Protected.Settings.data.statusText;
+		// }
+		// if (savedStatus) {
+		// 	this.SetStatusText(savedStatus);
+		// 	statusTextInput.text = savedStatus;
+		// }
+		// CanvasAPI.OnInputFieldSubmit(statusTextInput.gameObject, (data) => {
+		// 	this.SetStatusText(data);
+		// 	EventSystem.current.ClearSelected();
+		// });
 	}
 
 	public FuzzySearchFriend(name: string): AirshipUser | undefined {
@@ -546,9 +544,9 @@ export class ProtectedFriendsController {
 	}
 
 	public UpdateFriendsList(): void {
-		const onlineCount = this.friendStatuses.filter((f) => f.status === "online").size();
-		const onlineCountText = this.mainMenuController.refs.GetValue("Social", "FriendsOnlineCounter") as TMP_Text;
-		onlineCountText.text = `(${onlineCount}/${this.friendStatuses.size()})`;
+		// const onlineCount = this.friendStatuses.filter((f) => f.status === "online").size();
+		// const onlineCountText = this.mainMenuController.refs.GetValue("Social", "FriendsOnlineCounter") as TMP_Text;
+		// onlineCountText.text = `(${onlineCount}/${this.friendStatuses.size()})`;
 
 		// const mainCanvasRect = this.mainMenuController.mainContentCanvas.GetComponent<RectTransform>();
 

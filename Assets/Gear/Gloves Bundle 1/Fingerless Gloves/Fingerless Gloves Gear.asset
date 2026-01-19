@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
   m_Name: Fingerless Gloves Gear
   m_EditorClassIdentifier: 
-  classId: 
+  classId: 3e245d4e-de7f-4fe2-84cb-9d0b63e91620
   accessoryPrefabs:
-  - {fileID: 5807680233071375195, guid: 5318293e0e9e2ce47a783849278a3a13, type: 3}
+  - {fileID: 6523975931913343765, guid: 5318293e0e9e2ce47a783849278a3a13, type: 3}
   face: {fileID: 0}

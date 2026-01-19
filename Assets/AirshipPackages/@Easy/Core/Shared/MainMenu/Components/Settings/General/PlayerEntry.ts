@@ -1,3 +1,4 @@
+import TabListEntry from "@Easy/Core/Client/Controllers/TabList/TabListEntry";
 import { ProtectedPartyController } from "@Easy/Core/Client/ProtectedControllers/Airship/Party/PartyController";
 import { MainMenuBlockSingleton } from "@Easy/Core/Client/ProtectedControllers/Settings/MainMenuBlockSingleton";
 import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
@@ -29,6 +30,9 @@ export default class PlayerEntry extends AirshipBehaviour {
 	@Header("Mute")
 	public muteBtn: Button;
 	public muteOverlay: GameObject;
+
+	@Header("Other")
+	public platformImg: Image;
 
 	private player: ProtectedPlayer;
 
@@ -154,6 +158,17 @@ export default class PlayerEntry extends AirshipBehaviour {
 			}
 		} else {
 			this.muteBtn.gameObject.SetActive(false);
+		}
+
+		// Platform Image
+		if (
+			TabListEntry.GetDeviceTypeGroup(player.deviceType) !==
+			TabListEntry.GetDeviceTypeGroup(Game.localPlayer.deviceType)
+		) {
+			this.platformImg.enabled = true;
+			this.platformImg.sprite = TabListEntry.GetDeviceTypeSprite(player.deviceType);
+		} else {
+			this.platformImg.enabled = false;
 		}
 	}
 

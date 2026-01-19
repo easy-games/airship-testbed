@@ -7,7 +7,6 @@ import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import DirectMessagesWindow from "@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow";
-import PartyChatButton from "@Easy/Core/Shared/MainMenu/Components/PartyChatButton";
 import { ClientChatSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton";
 import { GameCoordinatorChat, GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
@@ -58,7 +57,7 @@ export class DirectMessageController {
 
 	public onDirectMessageReceived = new Signal<DirectMessage>();
 
-	private partyChatButton!: PartyChatButton;
+	// private partyChatButton!: PartyChatButton;
 	public onPartyMessageReceived = new Signal<DirectMessage>();
 	private partyUnreadMessageCount = 0;
 
@@ -131,7 +130,7 @@ export class DirectMessageController {
 
 			if (this.openedWindowTarget !== "party") {
 				this.partyUnreadMessageCount++;
-				this.partyChatButton.SetUnreadCount(this.partyUnreadMessageCount);
+				// this.partyChatButton.SetUnreadCount(this.partyUnreadMessageCount);
 			}
 
 			// sound
@@ -184,10 +183,10 @@ export class DirectMessageController {
 		this.offlineNoticeWrapper = this.windowGoRefs.GetValue("UI", "NoticeWrapper");
 		this.offlineNoticeText = this.windowGoRefs.GetValue("UI", "NoticeText") as TMP_Text;
 
-		this.partyChatButton = this.mainMenuController.refs
-			.GetValue("Social", "PartyChatButton")
-			.GetAirshipComponent<PartyChatButton>()!;
-		this.partyChatButton.SetUnreadCount(0);
+		// this.partyChatButton = this.mainMenuController.refs
+		// 	.GetValue("Social", "PartyChatButton")
+		// 	.GetAirshipComponent<PartyChatButton>()!;
+		// this.partyChatButton.SetUnreadCount(0);
 
 		const closeButton = this.windowGoRefs.GetValue("UI", "CloseButton");
 		CoreUI.SetupButton(closeButton);
@@ -513,7 +512,7 @@ export class DirectMessageController {
 			this.RenderChatMessage(msg, false, true);
 		}
 
-		this.partyChatButton.SetUnreadCount(0);
+		// this.partyChatButton.SetUnreadCount(0);
 	}
 
 	private ClearUnreadBadge(uid: string): void {

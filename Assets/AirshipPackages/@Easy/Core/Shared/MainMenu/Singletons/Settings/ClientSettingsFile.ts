@@ -17,9 +17,11 @@ export interface ClientSettingsFile {
 	microphoneEnabled: boolean;
 	voiceToggleEnabled: boolean;
 	vsync: boolean;
-	shadowLevel: number;
-	antiAliasing: number;
+	shadowTier: number;
+	msaaSamples: number;
 	limitFps: number;
 	coreKeybindOverrides: { [key in CoreAction]?: SerializableAction } | undefined;
 	gameKeybindOverrides: { [key: string]: { [key: string]: SerializableAction } };
+	lastPushNotifPromptTime: number;
+	firstLoginTime: number;
 }

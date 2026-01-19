@@ -73,7 +73,7 @@ export class Player {
 	public readonly onChangeTeam = new Signal<[team: Team | undefined, oldTeam: Team | undefined]>();
 
 	public readonly deviceType: AirshipDeviceType;
-	public readonly platform = AirshipPlatformUtil.GetLocalPlatform();
+	public readonly platform: AirshipPlatform;
 
 	public onUsernameChanged = new Signal<[username: string]>();
 
@@ -97,7 +97,7 @@ export class Player {
 	 */
 	public readonly voiceChatAudioSource!: AudioSource;
 
-	private lagCompRequests = new Map<string, { check: () => any; complete: (param: any) => void; result?: any }>();
+	private lagCompRequests = new Map<number, { check: () => any; complete: (param: any) => void; result?: any }>();
 
 	/** @internal */
 	constructor(
@@ -429,6 +429,15 @@ export class Player {
 		}
 	}
 
+	/**
+	 * Mutes client voice chat for the remainder of this session. Can be run on the
+	 * server (muting the player for everyone) or on the client (for a local mute).
+	 */
+	public MuteVoiceChat(muted: boolean) {
+		if (Game.IsServer()) AirshipUniVoice.ServerMute(this.connectionId, muted);
+		else AirshipUniVoice.MutePeer(this.connectionId, muted);
+	}
+
 	public Kick(message: string): void {
 		if (Game.IsHosting()) {
 			error("Unable to kick host.");
@@ -461,7 +470,7 @@ export class Player {
 		const simulationManager = AirshipSimulationManager.Instance as AirshipSimulationManager &
 			AirshipSimulationManagerWithLagCompensation;
 		const checkId = simulationManager.RequestLagCompensationCheck(this.connectionId);
-		if (!checkId) {
+		if (Game.playerFlags.has("LagCompCheckIdIsInt") && checkId < 0) {
 			warn(
 				"Unable to schedule lag compensation for " +
 					this.username +

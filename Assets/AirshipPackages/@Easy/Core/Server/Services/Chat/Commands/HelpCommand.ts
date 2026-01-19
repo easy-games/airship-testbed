@@ -12,8 +12,12 @@ export class HelpCommand extends ChatCommand {
 	public Execute(player: Player, args: string[]): void {
 		player.SendMessage("Available chat commands:");
 
+		let hasPermission = player.orgRoleName !== undefined;
 		const commands = Airship.Chat.GetCommands();
 		for (const com of commands) {
+			if (com.requiresPermission && !hasPermission) {
+				continue;
+			}
 			const msg = ColorUtil.ColoredText(
 				Theme.yellow,
 				"/" + com.commandLabel + ColorUtil.ColoredText(Theme.white, " " + com.usage),

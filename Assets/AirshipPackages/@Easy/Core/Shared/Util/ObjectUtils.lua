@@ -37,11 +37,12 @@ function ObjectUtils.assign(toObj, ...)
 end
 
 function ObjectUtils.copy(object)
-	local result = table.create(#object)
-	for k, v in pairs(object) do
-		result[k] = v
-	end
-	return result
+	-- local result = table.create(#object)
+	-- for k, v in pairs(object) do
+	-- 	result[k] = v
+	-- end
+	-- return result
+	return table.clone(object)
 end
 
 local function deepCopyHelper(object, encountered)

@@ -9,7 +9,6 @@ import { PartyCommand } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientC
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { ProtectedPlayer } from "@Easy/Core/Shared/Player/ProtectedPlayer";
 import { Protected } from "@Easy/Core/Shared/Protected";
-import StringUtils from "@Easy/Core/Shared/Types/StringUtil";
 import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -121,7 +120,7 @@ export class ClientChatSingleton {
 						// wrapperRect.offsetMax = new Vector2(0, 0);
 						// wrapperRect.offsetMin = new Vector2(0, 0);
 					}
-					wrapperRect.anchoredPosition = new Vector2(ProtectedUtil.GetNotchHeight() + 190, -14);
+					wrapperRect.anchoredPosition = new Vector2(ProtectedUtil.GetNotchHeight() + 236, -14);
 				} else {
 					const wrapperRect = this.wrapper.GetComponent<RectTransform>()!;
 					const wrapperImg = wrapperRect.GetComponent<Image>()!;

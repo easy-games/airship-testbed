@@ -22,6 +22,7 @@ export class ProtectedPlayersSingleton {
 				player.userId,
 				player.profileImageId,
 				player.connectionId,
+				player.deviceType,
 			);
 			this.players.push(protectedPlayer);
 			this.onPlayerJoined.Fire(protectedPlayer);

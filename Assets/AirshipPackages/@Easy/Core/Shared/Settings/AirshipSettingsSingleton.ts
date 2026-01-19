@@ -21,7 +21,23 @@ export class AirshipSettingsSingleton {
 
 	protected OnStart(): void { }
 
-	public AddSlider(name: string, startingValue: number, min: number, max: number, increment: number = 1): void {
+	/**
+	 * Creates a slider setting for numeric values between a min and a max
+	 * 
+	 * @param name Name of the slider setting
+	 * @param startingValue Starting setting value
+	 * @param min Minimum value of the slider
+	 * @param max Maximum value of the slider
+	 * @param increment What is the smallest increment between two values in the slider
+	 */
+	public AddSlider(name: string, startingValue: number, min: number, max: number, increment?: number): void {
+		if (increment === undefined) {
+			// Default behaviour grabs closest nearby power of 10 to one hundredth of the range
+			// Ex: range of 75 would have an increment of 1
+			const smallestNearbyPowerOf10 = math.round(math.log10((max - min) / 100));
+			increment = math.pow(10, smallestNearbyPowerOf10);
+		}
+
 		contextbridge.invoke("Settings:AddSlider", LuauContext.Protected, name, startingValue, min, max, increment);
 	}
 

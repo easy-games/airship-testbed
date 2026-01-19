@@ -9,10 +9,11 @@ import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import AirshipEmoteSingleton from "../Emote/AirshipEmoteSingleton";
 import { Dependency } from "../Flamework";
+import { InventoryHotbarAction } from "../Inventory/InventoryHotbarAction";
 import { ItemStack } from "../Inventory/ItemStack";
 import { BeforeLocalInventoryHeldSlotChanged } from "../Inventory/Signal/BeforeLocalInventoryHeldSlotChanged";
 import NametagComponent from "../Nametag/NametagComponent";
-import { Keyboard, Mouse } from "../UserInput";
+import { Mouse } from "../UserInput";
 import ObjectUtils from "../Util/ObjectUtils";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
@@ -77,6 +78,9 @@ export default class Character extends AirshipBehaviour {
 	@Header("Inventory")
 	@NonSerialized()
 	public inventory: Inventory;
+	/**
+	 * @deprecated Use {@link GetHeldItem()} instead. Value is not updated reliably.
+	 */
 	@NonSerialized() public heldItem?: ItemStack;
 	@NonSerialized() public heldSlot = 0;
 	@NonSerialized() public readonly onHeldSlotChanged = new Signal<number>();
@@ -186,21 +190,13 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	public OnEnable(): void {
+		if (Game.IsServer()) this.OnEnableServer();
+
 		if (this.model === undefined) {
 			this.model = this.gameObject;
 		}
 
 		this.despawned = false;
-		this.bin.Add(
-			Airship.Damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
-				if (damageInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
-					if (this.IsDead()) return;
-					let newHealth = math.max(0, this.health - damageInfo.damage);
-
-					this.SetHealth(newHealth, true, true);
-				}
-			}),
-		);
 		this.bin.Add(
 			Airship.Damage.onDeath.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
 				if (damageInfo.gameObject === this.gameObject) {
@@ -208,17 +204,6 @@ export default class Character extends AirshipBehaviour {
 						this.movement.enabled = false;
 					}
 					this.onDeath.Fire();
-				}
-			}),
-		);
-
-		this.bin.Add(
-			Airship.Damage.onHeal.ConnectWithPriority(SignalPriority.MONITOR, (healInfo) => {
-				if (healInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
-					if (this.IsDead()) return;
-					let newHealth = math.min(this.maxHealth, this.health + healInfo.healAmount);
-
-					this.SetHealth(newHealth);
 				}
 			}),
 		);
@@ -231,6 +216,37 @@ export default class Character extends AirshipBehaviour {
 			// have opted not to use our networked movement.
 			this.SetupHeldItemSignalNetworking();
 		}
+	}
+
+	private OnEnableServer() {
+		this.bin.Add(
+			Airship.Damage.onDamage.ConnectWithPriority(SignalPriority.MONITOR, (damageInfo) => {
+				if (damageInfo.gameObject.GetInstanceID() === this.gameObject.GetInstanceID()) {
+					if (this.IsDead()) return;
+					let newHealth = math.max(0, this.health - damageInfo.damage);
+
+					this.SetHealth(newHealth, true);
+				}
+			}),
+		);
+
+		// Listen for heals on this character's game object
+		this.bin.Add(
+			Airship.Damage.onHeal.ConnectWithPriority(SignalPriority.MONITOR, (healInfo) => {
+				if (healInfo.character !== this) return;
+
+				// Clamp the heal amount to return if player is max health after the event.
+				healInfo.healAmount = math.clamp(
+					healInfo.healAmount,
+					0,
+					healInfo.character.GetMaxHealth() - healInfo.character.GetHealth(),
+				);
+
+				if (this.IsDead()) return;
+
+				this.SetHealth(this.health + healInfo.healAmount);
+			}),
+		);
 	}
 
 	public OnDisable(): void {
@@ -858,21 +874,21 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	private SetupHotbarControls() {
-		// Controls
-		const hotbarKeys = [
-			Key.Digit1,
-			Key.Digit2,
-			Key.Digit3,
-			Key.Digit4,
-			Key.Digit5,
-			Key.Digit6,
-			Key.Digit7,
-			Key.Digit8,
-			Key.Digit9,
+		// Controls using registered inventory actions
+		const hotbarActions = [
+			InventoryHotbarAction.HotbarSlot1,
+			InventoryHotbarAction.HotbarSlot2,
+			InventoryHotbarAction.HotbarSlot3,
+			InventoryHotbarAction.HotbarSlot4,
+			InventoryHotbarAction.HotbarSlot5,
+			InventoryHotbarAction.HotbarSlot6,
+			InventoryHotbarAction.HotbarSlot7,
+			InventoryHotbarAction.HotbarSlot8,
+			InventoryHotbarAction.HotbarSlot9,
 		];
-		for (const hotbarIndex of $range(0, hotbarKeys.size() - 1)) {
+		for (const hotbarIndex of $range(0, hotbarActions.size() - 1)) {
 			this.bin.Add(
-				Keyboard.OnKeyDown(hotbarKeys[hotbarIndex], (event) => {
+				Airship.Input.OnDown(hotbarActions[hotbarIndex]).Connect((event) => {
 					if (event.uiProcessed) return;
 					this.SetHeldSlot(hotbarIndex);
 				}),
@@ -901,14 +917,14 @@ export default class Character extends AirshipBehaviour {
 				let trySlot = selectedSlot;
 
 				// Find the next available item in the hotbar:
-				for (const _ of $range(1, hotbarKeys.size())) {
+				for (const _ of $range(1, hotbarActions.size())) {
 					trySlot += inc;
 
 					// Clamp index to hotbar items:
-					if (inc === 1 && trySlot >= hotbarKeys.size()) {
+					if (inc === 1 && trySlot >= hotbarActions.size()) {
 						trySlot = 0;
 					} else if (inc === -1 && trySlot < 0) {
-						trySlot = hotbarKeys.size() - 1;
+						trySlot = hotbarActions.size() - 1;
 					}
 
 					this.SetHeldSlot(trySlot);

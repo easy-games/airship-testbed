@@ -1,24 +1,46 @@
 import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
+import SettingsButtonGroup from "../Controls/SettingsButtonGroup";
 import SettingsToggle from "../Controls/SettingsToggle";
 
 export default class VideoSettingsPage extends AirshipBehaviour {
-	public msaaToggle: SettingsToggle;
-	public hdShadowsToggle: SettingsToggle;
+	public msaaBtnGroup: SettingsButtonGroup;
+	public shadowsBtnGroup: SettingsButtonGroup;
 	public vsyncToggle: SettingsToggle;
 
 	override Start(): void {
-		this.msaaToggle.Init("Anti Aliasing", Protected.Settings.data.antiAliasing === 1);
-		this.msaaToggle.toggle.onValueChanged.Connect((val) => {
-			Protected.Settings.SetAntiAliasing(val ? 1 : 0);
+		this.msaaBtnGroup.Init("Anti Aliasing", Protected.Settings.data.msaaSamples, [
+			{
+				text: "1x",
+				value: 1,
+			},
+			{
+				text: "2x",
+				value: 2,
+			},
+			{
+				text: "4x",
+				value: 4,
+			},
+			{
+				text: "8x",
+				value: 8,
+			},
+		]);
+		this.msaaBtnGroup.onChanged.Connect((val) => {
+			Protected.Settings.SetMSAASamples(val as number);
 			Protected.Settings.MarkAsDirty();
 		});
 
-		this.hdShadowsToggle.Init("HD Shadows", Protected.Settings.data.shadowLevel === 1);
-		this.hdShadowsToggle.toggle.onValueChanged.Connect((val) => {
-			Protected.Settings.SetShadowLevel(val ? 1 : 0);
-			Protected.Settings.MarkAsDirty();
-		});
+		// this.shadowsBtnGroup.Init("Shadow Quality", Protected.Settings.data.shadowTier, [
+		// 	{ text: "None", value: 0, },
+		// 	{ text: "Low", value: 1, },
+		// 	{ text: "High", value: 2, }
+		// ]);
+		// this.shadowsBtnGroup.onChanged.Connect((val) => {
+		// 	Protected.Settings.SetShadowLevel(val as number);
+		// 	Protected.Settings.MarkAsDirty();
+		// });
 
 		if (Game.IsMobile()) {
 			this.vsyncToggle.gameObject.SetActive(false);

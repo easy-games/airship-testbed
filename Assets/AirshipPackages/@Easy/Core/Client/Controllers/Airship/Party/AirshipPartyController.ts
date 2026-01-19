@@ -16,7 +16,8 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
  */
 @Controller({})
 export class AirshipPartyController {
-	public readonly onPartyChange: Signal<AirshipPartyInternalSnapshot> = new Signal();
+	public readonly onPartyChange: Signal<[newParty: AirshipPartyInternalSnapshot, oldParty?: AirshipPartyInternalSnapshot]> = new Signal();
+	private currentParty: AirshipPartyInternalSnapshot | undefined;
 
 	constructor() {
 		if (!Game.IsClient()) return;
@@ -24,7 +25,9 @@ export class AirshipPartyController {
 		Platform.Client.Party = this;
 
 		contextbridge.callback(PartyControllerBridgeTopics.OnPartyChange, (_, party) => {
-			this.onPartyChange.Fire(party);
+			const previous = this.currentParty;
+			this.currentParty = party;
+			this.onPartyChange.Fire(party, previous);
 		});
 	}
 

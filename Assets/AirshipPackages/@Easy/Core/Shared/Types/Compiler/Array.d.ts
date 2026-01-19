@@ -21,6 +21,11 @@ interface ArrayLike<T> {
 /** An array object which cannot be written to. */
 interface ReadonlyArray<T> extends ArrayLike<T>, Iterable<T> {
 	/**
+	 * Returns a shallow copy of this array
+	 */
+	clone(this: ReadonlyArray<T>): Array<T>;
+
+	/**
 	 * Returns true if empty, otherwise false.
 	 */
 	isEmpty(this: ReadonlyArray<any>): boolean;
@@ -39,13 +44,7 @@ interface ReadonlyArray<T> extends ArrayLike<T>, Iterable<T> {
 	 * @param t The beginning of the specified portion of a2.
 	 * @param a2 The target array.
 	 */
-	move(
-		this: ReadonlyArray<defined>,
-		f: number,
-		e: number,
-		t: number,
-		a2: Array<T>
-	): Array<T>;
+	move(this: ReadonlyArray<defined>, f: number, e: number, t: number, a2: Array<T>): Array<T>;
 
 	/**
 	 * Moves elements to array a2. Returns the destination table a2. The destination range can overlap with the source
@@ -55,24 +54,14 @@ interface ReadonlyArray<T> extends ArrayLike<T>, Iterable<T> {
 	 * @param t The beginning of the specified portion of a2.
 	 * @param a2 The target array, or the current array if unspecified.
 	 */
-	move(
-		this: Array<defined>,
-		f: number,
-		e: number,
-		t: number,
-		a2?: Array<T>
-	): Array<T>;
+	move(this: Array<defined>, f: number, e: number, t: number, a2?: Array<T>): Array<T>;
 
 	/**
 	 * Returns whether an array includes a certain element.
 	 * @param searchElement The element to search for.
 	 * @param fromIndex The position in this array at which to begin searching for searchElement.
 	 */
-	includes(
-		this: ReadonlyArray<defined>,
-		searchElement: T,
-		fromIndex?: number
-	): boolean;
+	includes(this: ReadonlyArray<defined>, searchElement: T, fromIndex?: number): boolean;
 
 	/**
 	 * Returns the index of the first occurrence of a value in an array, else returns -1.
@@ -80,11 +69,7 @@ interface ReadonlyArray<T> extends ArrayLike<T>, Iterable<T> {
 	 * @param fromIndex The array index at which to begin the search. If fromIndex is omitted, the search starts at
 	 * index 0.
 	 */
-	indexOf(
-		this: ReadonlyArray<defined>,
-		searchElement: T,
-		fromIndex?: number
-	): number;
+	indexOf(this: ReadonlyArray<defined>, searchElement: T, fromIndex?: number): number;
 
 	/**
 	 * Returns whether **all** the members of an array satisfy the specified test.
@@ -94,11 +79,7 @@ interface ReadonlyArray<T> extends ArrayLike<T>, Iterable<T> {
 	 */
 	every(
 		this: ReadonlyArray<defined>,
-		callback: (
-			value: T,
-			index: number,
-			array: ReadonlyArray<T>
-		) => boolean | undefined
+		callback: (value: T, index: number, array: ReadonlyArray<T>) => boolean | undefined,
 	): boolean;
 
 	/**
@@ -109,11 +90,7 @@ interface ReadonlyArray<T> extends ArrayLike<T>, Iterable<T> {
 	 */
 	some(
 		this: ReadonlyArray<defined>,
-		callback: (
-			value: T,
-			index: number,
-			array: ReadonlyArray<T>
-		) => boolean | undefined
+		callback: (value: T, index: number, array: ReadonlyArray<T>) => boolean | undefined,
 	): boolean;
 
 	/**
@@ -121,10 +98,7 @@ interface ReadonlyArray<T> extends ArrayLike<T>, Iterable<T> {
 	 * @param callback  A function that accepts up to three arguments. forEach calls the callback function one time for
 	 * each element in the array.
 	 */
-	forEach(
-		this: ReadonlyArray<defined>,
-		callback: (value: T, index: number, array: ReadonlyArray<T>) => void
-	): void;
+	forEach(this: ReadonlyArray<defined>, callback: (value: T, index: number, array: ReadonlyArray<T>) => void): void;
 
 	/**
 	 * Calls a defined callback function on each element of an array, and returns an array that contains the results.
@@ -133,7 +107,7 @@ interface ReadonlyArray<T> extends ArrayLike<T>, Iterable<T> {
 	 */
 	map<U extends defined>(
 		this: ReadonlyArray<defined>,
-		callback: (value: T, index: number, array: ReadonlyArray<T>) => U
+		callback: (value: T, index: number, array: ReadonlyArray<T>) => U,
 	): Array<U>;
 
 	/**
@@ -147,15 +121,13 @@ interface ReadonlyArray<T> extends ArrayLike<T>, Iterable<T> {
 	 */
 	mapFiltered<U>(
 		this: ReadonlyArray<defined>,
-		callback: (value: T, index: number, array: ReadonlyArray<T>) => U
+		callback: (value: T, index: number, array: ReadonlyArray<T>) => U,
 	): Array<NonNullable<U>>;
 
 	/**
 	 * Removes all undefined values from the array safely
 	 */
-	filterUndefined(
-		this: undefined extends T ? ReadonlyArray<T> : never
-	): Array<NonNullable<T>>;
+	filterUndefined(this: undefined extends T ? ReadonlyArray<T> : never): Array<NonNullable<T>>;
 
 	/**
 	 * Returns the elements of an array that meet the condition specified in a callback function.
@@ -164,11 +136,7 @@ interface ReadonlyArray<T> extends ArrayLike<T>, Iterable<T> {
 	 */
 	filter<S extends T>(
 		this: ReadonlyArray<defined>,
-		callback: (
-			value: T,
-			index: number,
-			array: ReadonlyArray<T>
-		) => value is S
+		callback: (value: T, index: number, array: ReadonlyArray<T>) => value is S,
 	): Array<S>;
 
 	/**
@@ -178,11 +146,7 @@ interface ReadonlyArray<T> extends ArrayLike<T>, Iterable<T> {
 	 */
 	filter(
 		this: ReadonlyArray<defined>,
-		callback: (
-			value: T,
-			index: number,
-			array: ReadonlyArray<T>
-		) => boolean | undefined
+		callback: (value: T, index: number, array: ReadonlyArray<T>) => boolean | undefined,
 	): Array<T>;
 
 	/**
@@ -195,12 +159,7 @@ interface ReadonlyArray<T> extends ArrayLike<T>, Iterable<T> {
 	 */
 	reduce(
 		this: ReadonlyArray<defined>,
-		callback: (
-			accumulator: T,
-			currentValue: T,
-			currentIndex: number,
-			array: ReadonlyArray<T>
-		) => T
+		callback: (accumulator: T, currentValue: T, currentIndex: number, array: ReadonlyArray<T>) => T,
 	): T;
 
 	/**
@@ -213,13 +172,8 @@ interface ReadonlyArray<T> extends ArrayLike<T>, Iterable<T> {
 	 */
 	reduce<U>(
 		this: ReadonlyArray<defined>,
-		callback: (
-			accumulator: U,
-			currentValue: T,
-			currentIndex: number,
-			array: ReadonlyArray<T>
-		) => U,
-		initialValue: U
+		callback: (accumulator: U, currentValue: T, currentIndex: number, array: ReadonlyArray<T>) => U,
+		initialValue: U,
 	): U;
 
 	/**
@@ -231,19 +185,11 @@ interface ReadonlyArray<T> extends ArrayLike<T>, Iterable<T> {
 	 */
 	find<S extends T>(
 		this: ReadonlyArray<defined>,
-		predicate: (
-			value: T,
-			index: number,
-			obj: ReadonlyArray<T>
-		) => value is S
+		predicate: (value: T, index: number, obj: ReadonlyArray<T>) => value is S,
 	): S | undefined;
 	find(
 		this: ReadonlyArray<defined>,
-		predicate: (
-			value: T,
-			index: number,
-			obj: ReadonlyArray<T>
-		) => boolean | undefined
+		predicate: (value: T, index: number, obj: ReadonlyArray<T>) => boolean | undefined,
 	): T | undefined;
 
 	/**
@@ -255,11 +201,7 @@ interface ReadonlyArray<T> extends ArrayLike<T>, Iterable<T> {
 	 */
 	findIndex(
 		this: ReadonlyArray<defined>,
-		predicate: (
-			value: T,
-			index: number,
-			obj: ReadonlyArray<T>
-		) => boolean | undefined
+		predicate: (value: T, index: number, obj: ReadonlyArray<T>) => boolean | undefined,
 	): number;
 }
 
@@ -310,10 +252,7 @@ interface Array<T> extends ReadonlyArray<T> {
 	 * @param compareFunction A function that defines the sort order. Returns true when the first element must come
 	 * before the second. If omitted, the array is sorted according to the `<` operator.
 	 */
-	sort(
-		this: Array<defined>,
-		compareFunction?: (a: T, b: T) => boolean
-	): Array<T>;
+	sort(this: Array<defined>, compareFunction?: (a: T, b: T) => boolean): Array<T>;
 
 	/** Deletes all values in the Array */
 	clear(this: Array<T>): void;

@@ -186,6 +186,16 @@ interface CharacterMovement extends Component {
 	// Functions
 	GetLookVector(): Vector3;
 	GetMoveDir(): Vector3;
+	/**
+	 * Transforms an intended relative move direction into a world space move direction based on the move direction mode.
+	 */
+	TransformMoveDirection(direction: Vector3, moveDirMode: number): Vector3;
+	/**
+	 * Sets the move input for the next frame
+	 * @param direction World space direction to move in
+	 */
+	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouch: boolean): void;
+	/** @deprecated */
 	SetMoveInput(direction: Vector3, jump: boolean, sprinting: boolean, crouch: boolean, moveDirMode: number): void;
 	SetMovementEnabled(isEnabled: boolean): void;
 	SetLookVector(lookVector: Vector3): void;
@@ -290,9 +300,9 @@ interface AirshipSimulationManager extends MonoBehaviour {
 }
 
 interface AirshipSimulationManagerWithLagCompensation {
-	OnLagCompensationRequestCheck(callback: (id: string) => void): EngineEventConnection;
-	OnLagCompensationRequestComplete(callback: (id: string) => void): EngineEventConnection;
-	RequestLagCompensationCheck(clientId: number): string;
+	OnLagCompensationRequestCheck(callback: (id: number) => void): EngineEventConnection;
+	OnLagCompensationRequestComplete(callback: (id: number) => void): EngineEventConnection;
+	RequestLagCompensationCheck(clientId: number): number;
 }
 
 interface AirshipSimulationManagerConstructor {
@@ -1241,6 +1251,11 @@ interface PlatformGear {
 	face: AccessoryFace | undefined;
 }
 interface PlatformGearConstructor {
+	/**
+	 *
+	 * @param classId The PlatformGear class ID. This can be found from right clicking clothing in the Avatar Editor.
+	 */
+	DownloadYielding(classId: string): PlatformGear | undefined;
 	DownloadYielding(classId: string, airId: string): PlatformGear | undefined;
 }
 declare const PlatformGear: PlatformGearConstructor;
@@ -1430,3 +1445,35 @@ interface QualityManager {
 	OnQualityCheck(callback: (frameHealth: FrameHealth, report: QualityReport) => void): EngineEventConnection;
 }
 declare const QualityManager: QualityManager;
+
+interface RectTransformUtility {}
+
+interface RectTransformUtilityConstructor {
+	ScreenPointToLocalPointInRectangle(
+		rect: RectTransform,
+		screenPoint: Vector2,
+		cam: Camera,
+	): LuaTuple<[hitPlaneOfRect: boolean, localPoint: Vector2]>;
+	ScreenPointToLocalPointInRectangle(
+		rect: RectTransform,
+		screenPoint: Vector2,
+	): LuaTuple<[hitPlaneOfRect: boolean, localPoint: Vector2]>;
+
+	ScreenPointToWorldPointInRectangle(
+		rect: RectTransform,
+		screenPoint: Vector2,
+		cam: Camera,
+	): LuaTuple<[hitPlaneOfRect: boolean, worldPoint: Vector3]>;
+	ScreenPointToWorldPointInRectangle(
+		rect: RectTransform,
+		screenPoint: Vector2,
+	): LuaTuple<[hitPlaneOfRect: boolean, worldPoint: Vector3]>;
+}
+
+interface NativeAlertManager {
+	ShowAsync(title: string, message: string, primaryButton: string, secondaryButton: string): boolean;
+}
+/**
+ * Only works in airship-player. Will be undefined in other cases.
+ */
+declare const NativeAlertManager: NativeAlertManager;

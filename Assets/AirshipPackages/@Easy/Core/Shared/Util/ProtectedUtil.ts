@@ -1,3 +1,4 @@
+import { AudioManager } from "../Audio/AudioManager";
 import { Dependency } from "../Flamework";
 import { Game } from "../Game";
 import { MainMenuSingleton } from "../MainMenu/Singletons/MainMenuSingleton";
@@ -60,5 +61,13 @@ export class ProtectedUtil {
 			case AirshipPlatform.Linux:
 				return "Linux";
 		}
+	}
+
+	public static PlayClickSound(): void {
+		AudioManager.PlayGlobal("Assets/AirshipPackages/@Easy/Core/Sound/UI_Select.wav");
+	}
+
+	public static PlayHoverSound(): void {
+		AudioManager.PlayGlobal("Assets/AirshipPackages/@Easy/Core/Sound/UI_Hover_03.wav");
 	}
 }

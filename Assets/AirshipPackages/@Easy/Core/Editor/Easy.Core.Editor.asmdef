@@ -1,0 +1,20 @@
+{
+    "name": "Easy.Core.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:7dd74451810670845a58d4701944add9",
+        "GUID:5966039ae77c64b44bc04472c1ae63bb",
+        "GUID:30817c1a0e6d646d99c048fc403f5979"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

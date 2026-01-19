@@ -17,9 +17,6 @@ export default class MicIndicator extends AirshipBehaviour {
 	private bin = new Bin();
 	private stateBin = new Bin();
 
-	private voiceChat = Bridge.GetAirshipVoiceChatNetwork();
-	private agent: ChatroomAgent | undefined;
-	private hasAgent = false;
 	private currentSpeakingLevel: number = 0;
 
 	private errorMsgTime = 0;
@@ -27,15 +24,25 @@ export default class MicIndicator extends AirshipBehaviour {
 	override OnEnable(): void {}
 
 	protected Start(): void {
+		if (!Game.IsClient()) {
+			this.enabled = false;
+			return;
+		}
+
 		this.microphoneWrapper.SetActive(false);
+
+		// Disable voice entirely without this flag
+		if (!Game.playerFlags.has("CompressVOIPAudio")) {
+			this.enabled = false;
+			return;
+		}
+
 		task.spawn(() => {
-			while (!this.voiceChat.gameObject.activeInHierarchy || !this.voiceChat.agent) {
+			while (!Bridge.IsVoiceSetup()) {
 				task.unscaledWait();
 			}
-			this.agent = this.voiceChat.agent;
-			this.hasAgent = true;
 
-			this.agent.MuteSelf = true;
+			Bridge.SetMicInputEnabled(false);
 
 			Airship.Input.OnDown("PushToTalk").Connect((event) => {
 				if (event.uiProcessed) return;
@@ -52,28 +59,30 @@ export default class MicIndicator extends AirshipBehaviour {
 					return;
 				};
 
+				
 				if (!Protected.Settings.data.voiceToggleEnabled) {
 					// If the user wants Push-To-Talk
-					this.agent!.MuteSelf = false;
+					Bridge.SetMicInputEnabled(true);
 				} else {
 					// The user wants the mic to toggle
-					this.agent!.MuteSelf = !this.agent!.MuteSelf;
+					Bridge.SetMicInputEnabled(!Bridge.IsMicInputEnabled());
 				};
 			});
 			Airship.Input.OnUp("PushToTalk").Connect((event) => {
 				if (!Protected.Settings.data.voiceToggleEnabled) {
-					this.agent!.MuteSelf = true;
+					Bridge.SetMicInputEnabled(false);
 				};
 			});
 		});
 	}
 
 	public Update(dt: number): void {
-		if (!this.hasAgent) return;
-		if (this.agent!.MuteSelf) {
-			this.SetState("silent");
-		} else {
+		if (!Game.playerFlags.has("CompressVOIPAudio")) return;
+
+		if (Bridge.IsMicInputEnabled()) {
 			this.SetState("talking");
+		} else {
+			this.SetState("silent");
 		}
 	}
 

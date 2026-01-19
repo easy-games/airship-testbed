@@ -42,10 +42,7 @@ interface ReadonlyMap<K, V> extends Iterable<[K, V]> {
 	 * @param callbackfn  A function that accepts up to three arguments. forEach calls the callbackfn function one time
 	 * for each (element / pair of elements) in the array.
 	 */
-	forEach(
-		this: ReadonlyMap<K, V>,
-		callbackfn: (value: V, key: K, self: this) => void
-	): void;
+	forEach(this: ReadonlyMap<K, V>, callbackfn: (value: V, key: K, self: this) => void): void;
 
 	/**
 	 * Returns the number of elements in the Map
@@ -61,6 +58,28 @@ interface ReadonlyMap<K, V> extends Iterable<[K, V]> {
 	 * Returns the value associated with the given key
 	 */
 	get(this: ReadonlyMap<K, V>, key: K): V | undefined;
+
+	some(this: ReadonlyMap<K, V>, callback: (value: V, key: K, map: ReadonlyMap<K, V>) => boolean | undefined): boolean;
+
+	every(
+		this: ReadonlyMap<K, V>,
+		callback: (value: T, key: K, array: ReadonlyMap<K, V>) => boolean | undefined,
+	): boolean;
+
+	/**
+	 * Returns an array of the keys in this map
+	 */
+	keys(this: ReadonlyMap<K, V>): Array<K>;
+
+	/**
+	 * Returns an array of the values in this map
+	 */
+	values(this: ReadonlyMap<K, V>): Array<V>;
+
+	/**
+	 * Returns a shallow copy of this map
+	 */
+	clone(this: ReadonlyMap<K, V>): Map<K, V>;
 }
 
 interface ReadonlyMapConstructor {
@@ -101,6 +120,17 @@ interface Map<K, V> extends ReadonlyMap<K, V> {
 	set(this: Map<K, V>, key: K, value: V): this;
 
 	/**
+	 * Gets or inserts a value into a map, and returns the value
+	 */
+	getOrInsert(this: Map<K, V>, key: K, defaultValue: V): V;
+	/**
+	 * Gets or inserts a _computed value_ and returns the value
+	 *
+	 * _If getting the default value is more costly, this may be preferable over `getOrInsert`_
+	 */
+	getOrInsertComputed(this: Map<K, V>, key: K, computed: (key: K) => V): V;
+
+	/**
 	 * Deletes the given key from the Map.
 	 *
 	 * Returns a boolean indicating whether or not a value was removed.
@@ -124,9 +154,6 @@ interface WeakMap<K extends object, V> extends Map<K, V> {}
 
 interface WeakMapConstructor {
 	new <K extends object, V>(): WeakMap<K, V>;
-	new <K extends object, V>(entries: ReadonlyArray<readonly [K, V]>): WeakMap<
-		K,
-		V
-	>;
+	new <K extends object, V>(entries: ReadonlyArray<readonly [K, V]>): WeakMap<K, V>;
 }
 declare const WeakMap: WeakMapConstructor;

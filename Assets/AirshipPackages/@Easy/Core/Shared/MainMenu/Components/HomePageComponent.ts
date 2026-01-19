@@ -9,6 +9,7 @@ import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
 import SortComponent from "../../../Client/Components/HomePage/Sort/SortComponent";
 import { SortId } from "../../../Client/Components/HomePage/Sort/SortId";
 import { MainMenuBlockSingleton } from "../../../Client/ProtectedControllers//Settings/MainMenuBlockSingleton";
+import { AirshipDeploymentPlatform } from "../../Airship/Types/AirshipGame";
 import { Asset } from "../../Asset";
 import DateParser from "../../DateParser";
 import { Game } from "../../Game";
@@ -39,10 +40,6 @@ export default class HomePageComponent extends MainMenuPageComponent {
 	private addedDiscordHero = false;
 	// private loadedGameComponents: HomePageGameComponent[] = [];
 
-	protected Awake(): void {
-		this.animateInDuration = 0;
-	}
-
 	protected Start(): void {
 		const mainMenu = Dependency<MainMenuSingleton>();
 		mainMenu.ObserveScreenSize((st) => {
@@ -64,14 +61,16 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		this.addedDiscordHero = false;
 
 		const hour = 60 * 60;
+		const day = hour * 24;
 		this.CreateFeaturedEvent(
 			"47c5fdbd-bf3f-4a5b-9ad3-dea11a52a762",
 			Game.deviceType === AirshipDeviceType.Phone
-				? "The first mobile playtest!\nPlay on Mac, Windows, iOS, and Android!"
-				: "The first mobile playtest of BedWars 2.\nPlay on Mac, Windows, iOS, and Android!",
-			AirshipUrl.CDN + "/airship/Barbarian.png",
-			1758992400,
-			1758992400 + 3 * hour,
+				? "Unlock the limited edition Victory Crown by winning a match!"
+				: "Unlock the Victory Crown by winning a match!",
+			AirshipUrl.CDN + "/airship/CrownRender.png",
+			undefined,
+			1764788400,
+			1764788400 + 3 * day,
 		);
 
 		this.CreateSort(SortId.Popular, "Popular");
@@ -159,12 +158,13 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		gameId: string,
 		description: string,
 		popoutImageUrl: string,
+		videoUrl: string | undefined,
 		startTime: number,
 		endTime: number,
 	): void {
 		const go = Instantiate(this.featuredEventPrefab, this.mainContent);
 		const featuredEvent = go.GetAirshipComponent<MenuFeaturedEvent>()!;
-		featuredEvent.Init(gameId, description, popoutImageUrl, startTime, endTime);
+		featuredEvent.Init(gameId, description, popoutImageUrl, videoUrl, startTime, endTime);
 	}
 
 	private CreateSpacer(): void {
@@ -176,7 +176,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 		try {
 			res = gamesClient
 				.getGameSorts({
-					platform: ProtectedUtil.GetLocalPlatformString() as ContentServiceGames.DeploymentPlatform,
+					platform: ProtectedUtil.GetLocalPlatformString() as AirshipDeploymentPlatform,
 				})
 				.expect();
 		} catch {
@@ -207,9 +207,7 @@ export default class HomePageComponent extends MainMenuPageComponent {
 				}
 
 				const developerGames = searchSingleton.myGames.filter((f) =>
-					f.platforms.includes(
-						ProtectedUtil.GetLocalPlatformString() as ContentServiceGames.DeploymentPlatform,
-					),
+					f.platforms.includes(ProtectedUtil.GetLocalPlatformString() as AirshipDeploymentPlatform),
 				);
 				sortComponent.SetGames(developerGames, indexCounter);
 				indexCounter += developerGames.size();
@@ -228,6 +226,11 @@ export default class HomePageComponent extends MainMenuPageComponent {
 
 					return true;
 				});
+				if (sortId === SortId.Popular) {
+					games = games.sort((a, b) => {
+						return a.liveStats.playerCount > b.liveStats.playerCount;
+					});
+				}
 
 				sortComponent!.SetGames(games, indexCounter);
 				indexCounter += games.size();

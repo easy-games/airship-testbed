@@ -1,6 +1,7 @@
 import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
 import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Asset } from "../../Asset";
+import { CoreRefs } from "../../CoreRefs";
 import { Game } from "../../Game";
 import { AppManager } from "../../Util/AppManager";
 import { Bin } from "../../Util/Bin";
@@ -21,6 +22,7 @@ export class MainMenuSingleton {
 
 	public navbarModifier = new Modifier<{ hidden: boolean }>();
 	public socialMenuModifier = new Modifier<{ hidden: boolean }>();
+	public partyCardModifier = new Modifier<{ hidden: boolean }>();
 
 	public readonly hideMobileEscapeButton = false;
 	public onHideMobileEscapeButtonChanged = new Signal<boolean>();
@@ -32,6 +34,8 @@ export class MainMenuSingleton {
 		text: string;
 	};
 
+	private isPartyModalOpen = false;
+
 	constructor() {
 		this.screenSize = new Vector2(Screen.width, Screen.height);
 		this.rawScreenSize = new Vector2(Screen.width, Screen.height);
@@ -40,6 +44,24 @@ export class MainMenuSingleton {
 			this.leaveMatchButtonData = {
 				text,
 			};
+		});
+
+		contextbridge.subscribe("Menu:OpenPartyModal", (from) => {
+			this.OpenPartyModal();
+		});
+	}
+
+	public OpenPartyModal(): void {
+		if (this.isPartyModalOpen) return;
+		this.isPartyModalOpen = true;
+
+		const partyMenu = Instantiate(
+			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/Party/PartyModalCanvas.prefab"),
+			CoreRefs.protectedTransform,
+		);
+		AppManager.OpenCustom(() => {
+			this.isPartyModalOpen = false;
+			Destroy(partyMenu);
 		});
 	}
 
@@ -106,7 +128,7 @@ export class MainMenuSingleton {
 
 	/**
 	 * Displays a confirm modal
-	 * 
+	 *
 	 * @param title Short title displayed at top of modal
 	 * @param message Longer text explaining the consequences of the modal
 	 * @param confirmButtonText Text displayed on confirm button
@@ -121,9 +143,7 @@ export class MainMenuSingleton {
 		confirmModal.message.text = message;
 		confirmModal.confirmText.text = confirmButtonText;
 
-		AppManager.OpenModal(go, {
-			sortingOrderOffset: 100,
-		});
+		AppManager.OpenModal(go);
 
 		const result = confirmModal.onResult.Wait();
 		return result;
