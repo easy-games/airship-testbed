@@ -16,3 +16,5 @@ MonoBehaviour:
   accessoryPrefabs:
   - {fileID: 3669255742219690182, guid: 939cd03f83531dc4799724b0cc19e376, type: 3}
   face: {fileID: 0}
+  optionColors:
+  - {r: 1, g: 0.74509805, b: 0.5882353, a: 1}

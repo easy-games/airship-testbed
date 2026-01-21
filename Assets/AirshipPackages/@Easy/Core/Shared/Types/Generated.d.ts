@@ -39653,7 +39653,7 @@ interface MaterialColorURP extends MonoBehaviour {
     GetColorSettingByMaterial(mat: Material): ColorSetting;
     GetSharedMaterials(): Readonly<Material[]>;
     InitializeColorsFromCurrentMaterials(): void;
-    SetColor(indx: number, newColor: Color): void;
+    SetColor(index: number, newColor: Color): void;
     SetColorOnAll(newColor: Color): void;
 
 
@@ -41092,6 +41092,8 @@ interface AccessoryComponent extends MonoBehaviour {
     accessorySlot: AccessorySlot;
     visibilityMode: VisibilityMode;
     skinnedToCharacter: boolean;
+    colorSetter: CustomAccSetter_Color;
+    variantSetter: CustomAccSetter_Variant;
     meshLods: Readonly<Mesh[]>;
     bodyMask: number;
     serverClassId: string;
@@ -41103,6 +41105,7 @@ interface AccessoryComponent extends MonoBehaviour {
 
 
     Copy(other: AccessoryComponent): void;
+    Customize(variant: number, colorsHex: Readonly<OutfitCustomizationColor[]>): void;
     GetServerClassId(): string;
     GetServerInstanceId(): string;
     GetSlotNumber(): number;
@@ -41111,6 +41114,86 @@ interface AccessoryComponent extends MonoBehaviour {
 
 
 }
+    
+interface CustomAccSetter_Color extends MonoBehaviour {
+    colorGroups: Readonly<ColorGroup[]>;
+
+
+
+    SetColor(key: string, newColor: Color): void;
+
+
+}
+    
+interface ColorGroup {
+    key: string;
+    materialColorIndex: number;
+    matColor: Readonly<MaterialColorURP[]>;
+
+
+
+    SetColor(newColor: Color): void;
+
+
+}
+    
+interface ColorGroupConstructor {
+
+
+    new(): ColorGroup;
+
+
+
+}
+declare const ColorGroup: ColorGroupConstructor;
+    
+interface CustomAccSetter_ColorConstructor {
+
+
+    new(): CustomAccSetter_Color;
+
+
+
+}
+declare const CustomAccSetter_Color: CustomAccSetter_ColorConstructor;
+    
+interface CustomAccSetter_Variant extends MonoBehaviour {
+
+
+
+
+
+}
+    
+interface CustomAccSetter_VariantConstructor {
+
+
+    new(): CustomAccSetter_Variant;
+
+
+
+}
+declare const CustomAccSetter_Variant: CustomAccSetter_VariantConstructor;
+    
+interface OutfitCustomizationColor {
+    key: string;
+    colorHex: string;
+
+
+
+
+
+}
+    
+interface OutfitCustomizationColorConstructor {
+
+
+    new(): OutfitCustomizationColor;
+
+
+
+}
+declare const OutfitCustomizationColor: OutfitCustomizationColorConstructor;
     
 interface BodyMaskInspectorData {
     name: string;
@@ -55882,6 +55965,46 @@ interface WorldSpaceCanvasScalerConstructor {
 
 }
 declare const WorldSpaceCanvasScaler: WorldSpaceCanvasScalerConstructor;
+    
+interface OutfitCustomization {
+    platformCustomSlots: Readonly<OutfitCustomizationSlot[]>;
+
+
+
+
+
+}
+    
+interface OutfitCustomizationSlot {
+    slot: number;
+    variant: number;
+    colors: Readonly<OutfitCustomizationColor[]>;
+
+
+
+
+
+}
+    
+interface OutfitCustomizationSlotConstructor {
+
+
+    new(): OutfitCustomizationSlot;
+
+
+
+}
+declare const OutfitCustomizationSlot: OutfitCustomizationSlotConstructor;
+    
+interface OutfitCustomizationConstructor {
+
+
+    new(): OutfitCustomization;
+
+
+
+}
+declare const OutfitCustomization: OutfitCustomizationConstructor;
     
 interface VibrationManager {
 

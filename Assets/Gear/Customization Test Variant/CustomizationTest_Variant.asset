@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c4968faf83d4945b20e087dcd456ddd, type: 3}
+  m_Name: CustomizationTest_Variant
+  m_EditorClassIdentifier: 
+  classId: 3dd5e4af-33ba-459c-a2eb-37153b4e5159
+  accessoryPrefabs:
+  - {fileID: 3073049856543275330, guid: 06d0512cc39510442941cf66191d04a5, type: 3}
+  face: {fileID: 0}
+  customizationColors: []
+  customizationVariantNames:
+  - TV Box
+  - Monitor
+  - Robot

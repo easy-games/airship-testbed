@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colorSettings:
-  - baseColor: {r: 1, g: 0.74388623, b: 0.5882353, a: 1}
+  - baseColor: {r: 0.24781048, g: 1, b: 0, a: 1}
   addedByEditorScript: 0
 --- !u!114 &3669255742219690182
 MonoBehaviour:
@@ -118,7 +118,10 @@ MonoBehaviour:
   accessorySlot: 2
   visibilityMode: 2
   skinnedToCharacter: 0
-  meshLods: []
+  colorSetter: {fileID: 0}
+  variantSetter: {fileID: 0}
+  meshLods:
+  - {fileID: 0}
   canMeshCombine: 0
   bodyMask: 0
   serverClassId: 

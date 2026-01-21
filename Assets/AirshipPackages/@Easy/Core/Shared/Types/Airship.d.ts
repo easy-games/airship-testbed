@@ -604,6 +604,12 @@ interface AccessoryBuilder extends MonoBehaviour {
 	 */
 	SetSkinColor(color: Color): void;
 
+	SetCustomization(customData: OutfitCustomization | undefined): OutfitCustomization | undefined;
+	GetCustomization(): OutfitCustomization | undefined;
+	GetCustomizationJSON(): string | undefined;
+	SetCustomColor(slot: AccessorySlot, colorKey: string, colorHex: string): void;
+    SetCustomVariant(slot: AccessorySlot, variantIndex: number): void;
+    
 	/**
 	 * Regenerates the combined skinned mesh. Skinned mesh accessories will not be visible until this method is called.
 	 *
@@ -1204,6 +1210,8 @@ interface AccessoryComponent extends MonoBehaviour {
 	localRotation: Quaternion;
 	localScale: Vector3;
 
+	CustomizeVariant(variant: number);
+	CustomizeColor(colors: string[]);
 	Copy(other: AccessoryComponent): void;
 	GetServerInstanceId(): string;
 	GetServerClassId(): string;
@@ -1249,7 +1257,22 @@ interface PlatformGear {
 	classId: string;
 	accessoryPrefabs: AccessoryComponent[];
 	face: AccessoryFace | undefined;
+	customizationColors: PlatformGearColor[];
+	customizationVariantNames: string[];
 }
+
+interface PlatformGearColor {
+	key: string;
+	value: Color;
+	scheme: PlatformGearColorScheme;
+}
+
+declare const enum PlatformGearColorScheme {
+	Skin,
+	Hair,
+	Clothes,
+}
+
 interface PlatformGearConstructor {
 	/**
 	 *

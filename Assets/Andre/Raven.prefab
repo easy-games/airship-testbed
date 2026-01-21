@@ -110,6 +110,8 @@ MonoBehaviour:
   accessorySlot: 6
   visibilityMode: 2
   skinnedToCharacter: 0
+  colorSetter: {fileID: 0}
+  variantSetter: {fileID: 0}
   meshLods: []
   canMeshCombine: 0
   bodyMask: 0
