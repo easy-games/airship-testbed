@@ -1,3 +1,4 @@
+import { Airship } from "@Easy/Core/Shared/Airship";
 import {
 	AirshipGearCategory,
 	AirshipGearItem,
@@ -192,6 +193,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	override OpenPage(params?: unknown): void {
 		super.OpenPage(params);
+
+		this.bin.Add(Dependency<MainMenuSingleton>().partyCardModifier.Add({ hidden: true }));
 
 		// Load the character
 		if (this.mainMenu.avatarView === undefined) {
@@ -416,7 +419,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (clothing && clothing.size() > 0) {
 			clothing.forEach((c) => {
 				this.AddItemButton(c, async () => {
-					print(`Equipping ${c.class.name} (${c.class.classId})`);
+					print(`Clicking ${c.class.name} (${c.class.classId})`);
 					await this.SelectItem(c);
 					this.accessoryBuilder.UpdateCombinedMesh();
 				});
@@ -593,7 +596,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			const gear = PlatformGear.DownloadYielding(clothingDto.class.classId, clothingDto.class.gear.airAssets[0]);
 			if (!gear) error("failed to download clothing.");
 			if (gear?.accessoryPrefabs === undefined) error("empty accessory prefabs.");
-
+			if (!this.selectedAccessories.has(clothingDto.instanceId)) {
+				// Item downloaded after user selected a different item
+				return;
+			}
 			for (let accessoryPrefab of gear.accessoryPrefabs) {
 				this.accessoryBuilder.Add(accessoryPrefab);
 			}
@@ -726,38 +732,10 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		});
 	}
 
-	private RemoveAllAccessories() {
-		this.accessoryBuilder.RemoveAll();
-		this.selectedAccessories.clear();
-		this.activeAccessories.clear();
-	}
-
 	private async LoadCurrentOutfit() {
 		if (!this.viewedOutfit) {
 			return;
 		}
-
-		this.RemoveAllAccessories();
-
-		// Download all accessories in parallel with Promise.all
-		// We won't mesh combine until after all this is done.
-		let promises: Promise<void>[] = [];
-		for (let gearDto of this.viewedOutfit.gear) {
-			promises.push(
-				new Promise(async (resolve) => {
-					if (gearDto.class.gear.airAssets.size() === 0) return resolve();
-
-					if (gearDto.class.gear.category === AirshipGearCategory.FaceDecal) {
-						await this.SelectFaceItem(gearDto);
-						return resolve();
-					}
-
-					await this.SelectItem(gearDto);
-					resolve();
-				}),
-			);
-		}
-		await Promise.all(promises);
 
 		const charTransform = this.mainMenu.avatarView?.humanEntityGo?.transform!;
 		if (!this.hasMeshCombinedOnce) {
@@ -768,11 +746,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			});
 		}
 
-		this.SelectSkinColor(ColorUtil.HexToColor(this.viewedOutfit.skinColor));
-
-		this.UpdateButtonGraphics();
 		this.SetDirty(false);
-		this.accessoryBuilder.UpdateCombinedMesh();
+		Airship.Avatar.LoadOutfit(this.accessoryBuilder, this.viewedOutfit, {
+			removeOldClothingAccessories: true,
+		});
+
 		this.finishedFirstOutfitLoad = true;
 	}
 

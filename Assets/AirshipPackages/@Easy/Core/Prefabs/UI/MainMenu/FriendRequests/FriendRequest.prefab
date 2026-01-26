@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3910638520683853643}
   - component: {fileID: 860579334020805528}
   - component: {fileID: 4562404873143062204}
+  - component: {fileID: 4875549598529183260}
   m_Layer: 0
   m_Name: Accept
   m_TagString: Untagged
@@ -35,8 +36,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -60, y: 0}
-  m_SizeDelta: {x: 19.165, y: 22.998}
+  m_AnchoredPosition: {x: -57.802612, y: 0}
+  m_SizeDelta: {x: 29.3948, y: 29.395}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &3910638520683853643
 CanvasRenderer:
@@ -68,7 +69,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 867dc2c6466794e6287f7f177ce32459, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -120,6 +121,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4875549598529183260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739737818505061358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da4a9c662d9443bdb1d6cc66c6179573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  redirectTarget: {fileID: 0}
+  ignoreDrag: 0
 --- !u!1 &5223916821138044497
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,8 +227,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -328,7 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -407,8 +422,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.09411765, g: 0.09803922, b: 0.101960786, a: 1}
+  m_Material: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
+  m_Color: {r: 0.11372549, g: 0.1254902, b: 0.16470589, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -566,6 +581,7 @@ GameObject:
   - component: {fileID: 4471564538865277337}
   - component: {fileID: 6369447788064803051}
   - component: {fileID: 1988724840183163506}
+  - component: {fileID: 6780048099355677279}
   m_Layer: 0
   m_Name: Decline
   m_TagString: Untagged
@@ -589,8 +605,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -25, y: 0.000030517578}
-  m_SizeDelta: {x: 15.579605, y: 20.253403}
+  m_AnchoredPosition: {x: -20.4769, y: 0.000030517578}
+  m_SizeDelta: {x: 24.6257, y: 32.013}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &4471564538865277337
 CanvasRenderer:
@@ -613,7 +629,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.6313726}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.36862746}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: -10, y: -10, z: -10, w: -10}
   m_Maskable: 1
@@ -622,7 +638,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: ddf6df89ca23e441aa95b8b8b9deac64, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -674,3 +690,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6780048099355677279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8247581589671351472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da4a9c662d9443bdb1d6cc66c6179573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  redirectTarget: {fileID: 0}
+  ignoreDrag: 0

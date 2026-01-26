@@ -40,6 +40,10 @@ export default class SettingsKeybind extends AirshipBehaviour {
 
 	private bin = new Bin();
 
+	@SerializeField()
+	private numPadModifier: Image;
+	private isNumPadOffsetApplied = false;
+
 	override OnEnable(): void {
 		this.overlay.SetActive(false);
 
@@ -256,6 +260,53 @@ export default class SettingsKeybind extends AirshipBehaviour {
 	}
 
 	/**
+	 * Updates the X position of modifier images based on whether numPadModifier is active.
+	 */
+	private UpdateModifierImagePositions(isNumpadModifierActive: boolean): void {
+		if (isNumpadModifierActive && !this.isNumPadOffsetApplied) {
+			const modifierRect = this.modifierKeybindImage.gameObject.transform as RectTransform;
+			const plusRect = this.modifierPlusImage.gameObject.transform as RectTransform;
+			const modifierPos = modifierRect.anchoredPosition;
+			const plusPos = plusRect.anchoredPosition;
+
+			modifierRect.anchoredPosition = new Vector2(modifierPos.x - 35, modifierPos.y);
+			plusRect.anchoredPosition = new Vector2(plusPos.x - 35, plusPos.y);
+			this.isNumPadOffsetApplied = true;
+		} else if (!isNumpadModifierActive && this.isNumPadOffsetApplied) {
+			const modifierRect = this.modifierKeybindImage.gameObject.transform as RectTransform;
+			const plusRect = this.modifierPlusImage.gameObject.transform as RectTransform;
+			const modifierPos = modifierRect.anchoredPosition;
+			const plusPos = plusRect.anchoredPosition;
+
+			modifierRect.anchoredPosition = new Vector2(modifierPos.x + 35, modifierPos.y);
+			plusRect.anchoredPosition = new Vector2(plusPos.x + 35, plusPos.y);
+			this.isNumPadOffsetApplied = false;
+		}
+	}
+
+	private IsNumpadKey(key: Key): boolean {
+		return (
+			key === Key.Numpad0 ||
+			key === Key.Numpad1 ||
+			key === Key.Numpad2 ||
+			key === Key.Numpad3 ||
+			key === Key.Numpad4 ||
+			key === Key.Numpad5 ||
+			key === Key.Numpad6 ||
+			key === Key.Numpad7 ||
+			key === Key.Numpad8 ||
+			key === Key.Numpad9 ||
+			key === Key.NumpadEnter ||
+			key === Key.NumpadDivide ||
+			key === Key.NumpadMultiply ||
+			key === Key.NumpadPlus ||
+			key === Key.NumpadMinus ||
+			key === Key.NumpadPeriod ||
+			key === Key.NumpadEquals
+		);
+	}
+
+	/**
 	 *
 	 * @param keyCode
 	 */
@@ -264,9 +315,12 @@ export default class SettingsKeybind extends AirshipBehaviour {
 			const sprite = InputUtils.GetSpriteForKeyCode(binding.config.key);
 			if (sprite) {
 				this.keybindImage.gameObject.SetActive(true);
+				const isNumpad = this.IsNumpadKey(binding.config.key);
+				this.numPadModifier.gameObject.SetActive(isNumpad);
 				this.keybindImage.sprite = sprite;
 			} else {
 				this.keybindImage.gameObject.SetActive(false);
+				this.numPadModifier.gameObject.SetActive(false);
 			}
 
 			if (!binding.IsComplexBinding()) {
@@ -290,8 +344,11 @@ export default class SettingsKeybind extends AirshipBehaviour {
 				this.modifierKeybindImage.gameObject.SetActive(true);
 				const sprite = InputUtils.GetSpriteForKeyCode(modifierAsKeyCode);
 				if (sprite) this.modifierKeybindImage.sprite = sprite;
+				
+				this.UpdateModifierImagePositions(this.numPadModifier.gameObject.activeSelf);
 			}
 		} else {
+			this.numPadModifier.gameObject.SetActive(false);
 			const sprite = InputUtils.GetSpriteForMouseButton(binding.config.mouseButton);
 			if (sprite) {
 				this.keybindImage.gameObject.SetActive(true);

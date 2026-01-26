@@ -113,20 +113,6 @@ export class MainMenuNavbarController {
 			}
 		});
 
-		// const profileButton = this.mainMenuController.refs.GetValue("Navbar", "ProfileButton");
-		// CanvasAPI.OnClickEvent(profileButton, () => {
-		// 	Dependency<ChangeUsernameController>().Open();
-		// 	// const user = this.userController.localUser;
-		// 	// if (user) {
-		// 	// 	Bridge.CopyToClipboard(user.username + "#" + user.discriminator);
-		// 	// }
-		// })
-
-		this.UpdateProfileSection();
-		this.userController.onLocalUserUpdated.Connect((user) => {
-			this.UpdateProfileSection();
-		});
-
 		task.spawn(() => {
 			const gameData = Game.WaitForGameData();
 			const text = runningGameButton.transform.Find("GameName")!.GetComponent<TMP_Text>()!;
@@ -162,36 +148,6 @@ export class MainMenuNavbarController {
 			},
 		);
 		this.searchFocused.SetActive(true);
-	}
-
-	public UpdateProfileSection(): void {
-		const profileWrapper = this.mainMenuController.refs.GetValue("Navbar", "ProfileButton") as GameObject;
-		const usernameText = this.mainMenuController.refs.GetValue("Navbar", "AccountUsername") as TMP_Text;
-		const picture = this.mainMenuController.refs.GetValue("Navbar", "AccountPicture") as Image;
-		// const disc = this.mainMenuController.refs.GetValue("Navbar", "AccountDiscriminator") as TMP_Text;
-
-		let user = this.userController.localUser;
-		if (!user) {
-			profileWrapper.SetActive(false);
-			return;
-		}
-
-		let displayName = user.username;
-		if (displayName.size() > 16) {
-			displayName = displayName.sub(0, 15);
-		}
-		//usernameText.text = displayName;
-		// disc.text = "#" + user.discriminator;
-		profileWrapper.SetActive(true);
-
-		const profileLayoutGroup = this.mainMenuController.refs.GetValue("Navbar", "ProfileLayoutGroup");
-		LayoutRebuilder.ForceRebuildLayoutImmediate(profileLayoutGroup.GetComponent<RectTransform>()!);
-
-		const profilerWrapperWrapper = this.mainMenuController.refs.GetValue(
-			"Navbar",
-			"ProfileWrapperWrapper",
-		) as HorizontalLayoutGroup;
-		LayoutRebuilder.ForceRebuildLayoutImmediate(profilerWrapperWrapper.GetComponent<RectTransform>()!);
 	}
 
 	private UpdateNavButton(go: GameObject, selected: boolean): void {

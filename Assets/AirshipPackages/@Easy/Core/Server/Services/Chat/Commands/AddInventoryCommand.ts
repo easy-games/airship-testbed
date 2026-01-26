@@ -29,11 +29,14 @@ export class AddInventoryCommand extends ChatCommand {
 				amount = num;
 			}
 		}
-		const itemStack = new ItemStack(itemType, amount);
+		const maxSize = Airship.Inventory.GetItemDef(itemType).maxStackSize;
 
+		if (maxSize && maxSize > amount) {
+			player.SendMessage(`Max stack size for ${itemType} is ${maxSize}`);
+		}
+		const amountToAdd = math.min(amount, maxSize ?? math.huge);
 		if (!player.character) return;
-
-		player.character.inventory?.AddItem(itemStack);
-		player.SendMessage(`Given ${amount} ${itemStack.itemDef.displayName} (${itemType.lower()})`);
+		player.character.inventory?.AddItem(new ItemStack(itemType, amountToAdd));
+		player.SendMessage(`Given ${amountToAdd} ${itemType.lower()}`);
 	}
 }

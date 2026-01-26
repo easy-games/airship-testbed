@@ -13,6 +13,16 @@ export class Theme {
 
 	public static primary = new Color(49 / 255, 115 / 255, 193 / 255, 1); // #3173C1
 	public static uiDark = ColorUtil.HexToColor("#13161A");
+	public static text = {
+		primary: ColorUtil.HexToColor("#EDEFF2"),
+		secondary: ColorUtil.HexToColor("#A8ADB8"),
+	};
+
+	public static statusIndicator = {
+		online: ColorUtil.HexToColor("6AFF61"),
+		inGame: ColorUtil.HexToColor("70D4FF"),
+		offline: ColorUtil.HexToColor("9C9C9C"),
+	};
 
 	public static teamColor = {
 		Green: new Color(0.5, 1, 0.5, 1),

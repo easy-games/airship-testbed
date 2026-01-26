@@ -1,4 +1,4 @@
-import { AirshipUser } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
+import { AirshipFriendWithStatus, AirshipUser } from "@Easy/Core/Shared/Airship/Types/AirshipUser";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -25,7 +25,7 @@ export type BridgeApiGetUsersById = (
 	userIds: string[],
 	strict?: boolean,
 ) => { map: Record<string, AirshipUser>; array: AirshipUser[] };
-export type BridgeApiGetFriends = () => AirshipUser[];
+export type BridgeApiGetFriends<T extends boolean = false> = (includeStatus?: boolean) => T extends true ? AirshipFriendWithStatus[] : AirshipUser[];
 export type BrigdeApiIsFriendsWith = (userId: string) => boolean;
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
@@ -132,8 +132,8 @@ export class ProtectedUserController {
 		};
 	}
 
-	public async GetFriends(): Promise<ReturnType<BridgeApiGetFriends>> {
-		return await client.friends.getFriends();
+	public async GetFriends<T extends boolean = false>(includeStatus: T = false as T): Promise<ReturnType<BridgeApiGetFriends<T>>> {
+		return await client.friends.getFriends<T>({ status: includeStatus });
 	}
 
 	protected OnStart(): void {

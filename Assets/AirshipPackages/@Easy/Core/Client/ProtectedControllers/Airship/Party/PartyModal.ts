@@ -48,7 +48,7 @@ export default class PartyModal extends AirshipBehaviour {
 		NativeTween.LocalScale(this.window, Vector3.one, 0.12).SetEaseQuadOut();
 
 		if (Game.IsMobile()) {
-			this.wrapper.localScale = Vector3.one.mul(1.7);
+			this.wrapper.localScale = Vector3.one.mul(1.3);
 		}
 
 		this.leaveBtn.gameObject.SetActive(false);
@@ -74,7 +74,7 @@ export default class PartyModal extends AirshipBehaviour {
 		this.nobodyOnlineNotice.SetActive(false);
 		this.playersParent.gameObject.ClearChildren();
 		this.bin.Add(
-			Airship.Players.ObservePlayers((p) => {
+			Protected.ProtectedPlayers.ObservePlayers((p) => {
 				if (this.uidToPlayer.has(p.userId)) return;
 
 				this.nobodyOnlineNotice.SetActive(Airship.Players.GetPlayers().size() <= 1);

@@ -1,11 +1,12 @@
 import {} from "@Easy/Core/Shared/Flamework";
-import { Game } from "@Easy/Core/Shared/Game";
 import { MainMenuController } from "../../../Client/ProtectedControllers//MainMenuController";
 import { MainMenuPageType } from "../../../Client/ProtectedControllers//MainMenuPageName";
 
 export default class MainMenuPageComponent extends AirshipBehaviour {
 	private animateOutDuration = 0.1;
-	public animateInDuration = 0.1;
+
+	public animateIn = true;
+	public dontSetPositionOnOpen = false;
 
 	public pageType: MainMenuPageType = MainMenuPageType.Home;
 	protected refs?: GameObjectReferences;
@@ -41,20 +42,18 @@ export default class MainMenuPageComponent extends AirshipBehaviour {
 		this.gameObject.SetActive(true);
 		this.mainMenu?.avatarView?.HideAvatar();
 
+		const rect = this.transform as RectTransform;
 		const canvasGroup = this.gameObject.GetComponent<CanvasGroup>()!;
-		const targetY = this.GetTargetAnchoredPositionY();
-		if (this.animateInDuration <= 0 || Game.IsPortrait() || true) {
-			(this.gameObject.transform as RectTransform).anchoredPosition = new Vector2(0, targetY);
-			canvasGroup.alpha = 1;
-		} else {
-			// const rect = this.transform as RectTransform;
-			// rect.anchoredPosition = new Vector2(0, targetY - 20);
-			// const tween = NativeTween.AnchoredPositionY(rect, targetY, this.animateInDuration).SetUseUnscaledTime(true);
-			// tween.SetEase(EaseType.QuadOut);
-			(this.gameObject.transform as RectTransform).anchoredPosition = new Vector2(0, targetY);
+		canvasGroup.alpha = 1;
 
-			canvasGroup.alpha = 0;
-			NativeTween.CanvasGroupAlpha(canvasGroup, 1, this.animateInDuration).SetUseUnscaledTime(true);
+		if (!this.dontSetPositionOnOpen) {
+			const targetY = this.GetTargetAnchoredPositionY();
+			if (this.animateIn) {
+				rect.anchoredPosition = new Vector2(0, targetY - 20);
+				NativeTween.AnchoredPositionY(rect, targetY, 0.2).SetEaseQuadOut();
+			} else {
+				rect.anchoredPosition = new Vector2(0, targetY);
+			}
 		}
 	}
 

@@ -1,9 +1,9 @@
-import { AirshipGame } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
+import { AirshipDeploymentPlatform, AirshipGame } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
 import DateParser from "@Easy/Core/Shared/DateParser";
 import { Controller, Service } from "@Easy/Core/Shared/Flamework/flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { CoreLogger } from "@Easy/Core/Shared/Logger/CoreLogger";
-import { ContentServiceClient, ContentServiceGames } from "@Easy/Core/Shared/TypePackages/content-service-types";
+import { ContentServiceClient } from "@Easy/Core/Shared/TypePackages/content-service-types";
 import { UnityMakeRequest, UnityMakeRequestError } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
@@ -76,7 +76,7 @@ export default class SearchSingleton {
 		try {
 			const data = contentServiceClient.games
 				.getGameSorts({
-					platform: ProtectedUtil.GetLocalPlatformString() as ContentServiceGames.DeploymentPlatform,
+					platform: ProtectedUtil.GetLocalPlatformString() as AirshipDeploymentPlatform,
 				})
 				.expect();
 

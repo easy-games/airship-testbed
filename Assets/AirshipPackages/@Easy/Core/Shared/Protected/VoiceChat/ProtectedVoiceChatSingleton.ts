@@ -11,15 +11,12 @@ interface SpeakingLevelEntry {
 @Singleton()
 export class ProtectedVoiceChatSingleton implements OnStart {
 	public connectionIdToSpeakingLevel = new Map<number, SpeakingLevelEntry>();
-	public uniVoiceNetwork: AirshipUniVoiceNetwork;
 
 	private mutedUserIds = new Set<string>();
 	private deafened = false;
 
 	constructor() {
 		Protected.VoiceChat = this;
-
-		this.uniVoiceNetwork = Bridge.GetAirshipVoiceChatNetwork();
 
 		contextbridge.callback("VoiceChat:GetSpeakingLevel", (from, connectionId: number) => {
 			// if (Game.IsEditor()) {
@@ -38,6 +35,8 @@ export class ProtectedVoiceChatSingleton implements OnStart {
 	}
 
 	public SetMuted(userId: string, muted: boolean): void {
+		if (!Game.playerFlags.has("CompressVOIPAudio")) return;
+
 		if (muted) {
 			this.mutedUserIds.add(userId);
 		} else {
@@ -46,16 +45,15 @@ export class ProtectedVoiceChatSingleton implements OnStart {
 
 		const player = Protected.ProtectedPlayers.FindByUserId(userId);
 		if (player) {
-			this.uniVoiceNetwork.SetConnectionMuted(player.connectionId, muted);
+			AirshipUniVoice.MutePeer(player.connectionId, muted);
 		}
 	}
 
 	public SetDeafened(deafen: boolean): void {
+		if (!Game.playerFlags.has("CompressVOIPAudio")) return;
+		
 		this.deafened = deafen;
-		// backwards compat
-		try {
-			this.uniVoiceNetwork.SetDeafened(deafen);
-		} catch (err) {}
+		AirshipUniVoice.ClientSetDeafened(this.deafened);
 	}
 
 	public IsDeafened(): boolean {
@@ -72,16 +70,10 @@ export class ProtectedVoiceChatSingleton implements OnStart {
 
 	OnStart(): void {
 		if (!Game.IsInGame()) return;
+		if (!Game.playerFlags.has("CompressVOIPAudio")) return;
 
-		this.uniVoiceNetwork.onPlayerSpeakingLevel.Connect((connectionId, speakingLevel) => {
-			// print(`Player speaking connectionId=${connectionId} speakingLevel=${speakingLevel}`);
+		AirshipUniVoice.OnSpeakingLevelChanged.Connect((connectionId, speakingLevel) => {
 			this.connectionIdToSpeakingLevel.set(connectionId, {
-				speakingLevel: this.NormalizeSpeakingLevel(speakingLevel),
-				time: Time.time,
-			});
-		});
-		this.uniVoiceNetwork.onLocalSpeakingLevel.Connect((speakingLevel) => {
-			this.connectionIdToSpeakingLevel.set(Game.localPlayer.connectionId, {
 				speakingLevel: this.NormalizeSpeakingLevel(speakingLevel),
 				time: Time.time,
 			});

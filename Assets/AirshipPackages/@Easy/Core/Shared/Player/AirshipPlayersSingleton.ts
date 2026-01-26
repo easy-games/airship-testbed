@@ -153,11 +153,6 @@ export class AirshipPlayersSingleton {
 	}
 
 	protected OnStart(): void {
-		if (Game.IsServer() && !Game.IsEditor()) {
-			InternalHttpManager.SetAuthToken("");
-			// HttpManager.SetLoggingEnabled(true);
-		}
-
 		task.spawn(() => {
 			if (Game.IsClient()) {
 				this.InitClient();
@@ -205,25 +200,48 @@ export class AirshipPlayersSingleton {
 
 		// These remotes only come through in prot context
 		if (Game.IsProtectedLuauContext()) {
+			let readyForAddClientsInGameContext = false;
 			CoreNetwork.ServerToClient.AllPlayers.client.OnServerEvent((playerDtos) => {
+				CoreLogger.Log("Received AllPlayers remote with " + playerDtos.size() + " players.");
+				if (!readyForAddClientsInGameContext) {
+					CoreLogger.Log("Waiting for Game Context to be ready for add all clients.");
+					while (!readyForAddClientsInGameContext) {
+						task.wait();
+					}
+				}
+
 				contextbridge.broadcast<(clients: PlayerDto[]) => void>("ProtectedPlayers:AddClients", playerDtos);
 				for (let dto of playerDtos) {
 					this.AddPlayerClient(dto);
 				}
 			});
 			CoreNetwork.ServerToClient.AddPlayer.client.OnServerEvent((playerDto) => {
+				CoreLogger.Log("Received AddPlayer remote: " + playerDto.username);
+				if (!readyForAddClientsInGameContext) {
+					CoreLogger.Log("Waiting for Game Context to be ready for add single client.");
+					while (!readyForAddClientsInGameContext) {
+						task.wait();
+					}
+				}
+
 				contextbridge.broadcast<(clients: PlayerDto[]) => void>("ProtectedPlayers:AddClients", [playerDto]);
 				this.AddPlayerClient(playerDto);
+			});
+			contextbridge.subscribe("ProtectedPlayers:ReadyForAddClients", (from) => {
+				readyForAddClientsInGameContext = true;
 			});
 		} else if (Game.IsGameLuauContext()) {
 			contextbridge.subscribe<(from: LuauContext, clients: PlayerDto[]) => void>(
 				"ProtectedPlayers:AddClients",
 				(from, clients) => {
 					for (const dto of clients) {
-						this.AddPlayerClient(dto);
+						task.spawn(() => {
+							this.AddPlayerClient(dto);
+						});
 					}
 				},
 			);
+			contextbridge.broadcast("ProtectedPlayers:ReadyForAddClients");
 		}
 		CoreNetwork.ServerToClient.RemovePlayer.client.OnServerEvent((clientId) => {
 			const player = this.FindByConnectionId(clientId);
@@ -326,28 +344,33 @@ export class AirshipPlayersSingleton {
 		});
 
 		if (Game.IsProtectedLuauContext()) {
+			// Protected context receives the network event and then sends it over contextbridge to game context.
 			CoreNetwork.ClientToServer.Ready.server.OnClientEvent((player, deviceType, platform) => {
 				(player.deviceType as AirshipDeviceType) = deviceType;
 				(player.platform as AirshipPlatform) = platform;
 				this.HandlePlayerConnect(player);
-				contextbridge.broadcast<(connId: number) => void>("ProtectedPlayers:PlayerReady", player.connectionId);
+				contextbridge.broadcast<
+					(connId: number, deviceType: AirshipDeviceType, platform: AirshipPlatform) => void
+				>("ProtectedPlayers:PlayerReady", player.connectionId, deviceType, platform);
 			});
 		} else if (Game.IsGameLuauContext()) {
-			contextbridge.subscribe<(context: LuauContext, connId: number) => void>(
-				"ProtectedPlayers:PlayerReady",
-				(context, connId) => {
-					const player = this.playersPendingReady.get(connId);
-					if (!player) {
-						warn("Failed to register player: not found in players list.");
-						return;
-					}
-					// fetch outfit
-					task.spawn(() => {
-						this.FetchEquippedOutfit(player, false);
-					});
-					this.HandlePlayerConnect(player);
-				},
-			);
+			// Game context listens to contextbridge for the player ready info.
+			contextbridge.subscribe<
+				(context: LuauContext, connId: number, deviceType: AirshipDeviceType, platform: AirshipPlatform) => void
+			>("ProtectedPlayers:PlayerReady", (context, connId, deviceType, platform) => {
+				const player = this.playersPendingReady.get(connId);
+				if (!player) {
+					warn("Failed to register player: not found in players list.");
+					return;
+				}
+				(player.deviceType as AirshipDeviceType) = deviceType;
+				(player.platform as AirshipPlatform) = platform;
+				// fetch outfit
+				task.spawn(() => {
+					this.FetchEquippedOutfit(player, false);
+				});
+				this.HandlePlayerConnect(player);
+			});
 		}
 
 		if (Game.IsProtectedLuauContext()) {
@@ -522,6 +545,7 @@ export class AirshipPlayersSingleton {
 		// If we don't, we could end up adding two player objects for the local player since the local
 		// player initializes with connId 0
 		Game.WaitForLocalPlayerLoaded();
+
 		let player = this.FindByConnectionId(dto.connectionId);
 		if (!player) {
 			const nob = NetworkUtil.WaitForNetworkIdentity(dto.netId);

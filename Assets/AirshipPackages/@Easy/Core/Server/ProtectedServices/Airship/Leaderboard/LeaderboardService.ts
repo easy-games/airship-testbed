@@ -103,7 +103,7 @@ export class ProtectedLeaderboardService {
 	}
 
 	public async ResetLeaderboard(name: string): Promise<ReturnType<ServerBridgeApiLeaderboardResetLeaderboard>> {
-		await client.resetLeaderboard({ leaderboardId: name, gameId: Game.gameId });
+		await client.resetLeaderboard({ leaderboardId: name });
 	}
 
 	public async GetRankRange(

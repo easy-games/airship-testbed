@@ -1,5 +1,6 @@
 import { Airship, Platform } from "../../Airship";
 import { AirshipUser } from "../../Airship/Types/AirshipUser";
+import { Game } from "../../Game";
 import { GameCoordinatorParty } from "../../TypePackages/game-coordinator-types";
 import { Bin } from "../../Util/Bin";
 import ObjectUtils from "../../Util/ObjectUtils";
@@ -27,6 +28,7 @@ export default class PartyHud extends AirshipBehaviour {
 	private bin = new Bin();
 
 	override Start(): void {
+		if (!Game.IsClient()) return;
 		this.partyBtnGO = this.partyBtn.gameObject;
 		this.membersParent.gameObject.ClearChildren();
 

@@ -9,6 +9,7 @@ import MainMenuComponent from "@Easy/Core/Shared/MainMenu/Components/MainMenuCom
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
+import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetTimeout } from "@Easy/Core/Shared/Util/Timer";
@@ -122,7 +123,6 @@ export class MainMenuController {
 		}
 
 		this.gameBG = this.refs.GetValue("UI", "GameBG");
-		this.gameBG!.GetComponent<Image>()!.color = new Color(0.094, 0.098, 0.102, 1);
 
 		this.mainMenuBG = this.refs.GetValue("UI", "MainMenuBG");
 		this.ToggleGameBG(true);
@@ -298,9 +298,9 @@ export class MainMenuController {
 				this.currentPage.OpenPage(params);
 
 				if (pageType === MainMenuPageType.Game) {
-					this.gameBG!.GetComponent<Image>()!.color = new Color(0.094, 0.098, 0.102, 0.995);
+					this.gameBG!.GetComponent<Image>()!.color = ColorUtil.HexToColor("#12141A", 0.99);
 				} else {
-					this.gameBG!.GetComponent<Image>()!.color = new Color(0.094, 0.098, 0.102, 1);
+					this.gameBG!.GetComponent<Image>()!.color = ColorUtil.HexToColor("#12141A", 1);
 				}
 			} else {
 				error("Trying to route to undefined page: " + pageType);
