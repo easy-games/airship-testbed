@@ -163,7 +163,7 @@ export class Binding {
 
 		const key = this.GetKey();
 		let result: Sprite[] = [];
-		if (key !== undefined) {
+		if (key !== undefined && key !== Key.None) {
 			const sprite = InputUtils.GetSpriteForKeyCode(key, getOutlineVersion);
 			if (sprite) result.push(sprite);
 		}
