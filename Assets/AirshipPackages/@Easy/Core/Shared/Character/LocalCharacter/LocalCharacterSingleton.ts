@@ -42,7 +42,8 @@ export class LocalCharacterSingleton {
 			if (!character) return;
 
 			if (this.firstSpawn) {
-				if (Airship.Characters.GetDefaultCharacterTemplate()?.GetAirshipComponents<Inventory>() !== undefined) {
+				const inventory = character.gameObject.GetAirshipComponent<Inventory>();
+				if (inventory) {
 					this.CreateHotbarActions();
 				}
 			}
