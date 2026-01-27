@@ -141,7 +141,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							};
 
 							Airship.Inventory.localInventory?.onDraggedOutsideInventory.Fire(draggingState);
-							this.CleanupClickPickupState(true);
+							this.CleanupClickPickupState();
 						}
 					}
 					if (this.closeOnClickOutside) {
@@ -567,18 +567,15 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 	/**
 	 * Cleans up the click pickup state, destroying the visual and clearing connections
-	 * @param skipMoveBack If true, skips moving the item back to inventory (used when item is being dropped)
 	 */
 	private CleanupClickPickupState(skipMoveBack: boolean = false): void {
 		if (this.clickPickupState) {
-			if (!skipMoveBack) {
-				Airship.Inventory.MoveToInventory(
-					this.clickPickupState.inventory,
-					DESIGNATED_PICKUP_SLOT,
-					this.clickPickupState.inventory,
-					this.clickPickupState.amount,
-				);
-			}
+			Airship.Inventory.MoveToInventory(
+				this.clickPickupState.inventory,
+				DESIGNATED_PICKUP_SLOT,
+				this.clickPickupState.inventory,
+				this.clickPickupState.amount,
+			);
 			this.clickPickupBin.Clean();
 			this.clickPickupState = undefined;
 		}
