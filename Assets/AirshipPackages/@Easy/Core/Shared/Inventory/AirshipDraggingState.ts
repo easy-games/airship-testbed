@@ -44,5 +44,8 @@ export type ClickPickupState = {
 	 * Whether the drag operation was started with a right click
 	 */
 	isRightClickDrag?: boolean;
-	isFirstLeftClickDrag?: boolean;
+	/**
+	 * Whether this is the first click drag that started the pickup
+	 */
+	isFirstClickDrag?: boolean;
 };

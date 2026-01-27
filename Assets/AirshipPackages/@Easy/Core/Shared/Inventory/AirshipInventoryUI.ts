@@ -205,17 +205,17 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			},
 		);
 
-		// Set up handler on backpack canvas to clear isFirstLeftClickDrag when left button is released over background
+		// Set up handler on backpack canvas to clear isFirstClickDrag when button is released over background
 		this.backpackOpenBin.AddEngineEventConnection(
 			CanvasAPI.OnPointerEvent(this.backpackCanvas.gameObject, (direction, pointerButton) => {
 				if (
 					this.IsBackpackShown() &&
 					this.clickPickupState &&
 					direction === PointerDirection.UP &&
-					pointerButton === PointerButton.LEFT &&
-					this.clickPickupState.isFirstLeftClickDrag
+					(pointerButton === PointerButton.LEFT || pointerButton === PointerButton.RIGHT) &&
+					this.clickPickupState.isFirstClickDrag
 				) {
-					this.clickPickupState.isFirstLeftClickDrag = false;
+					this.clickPickupState.isFirstClickDrag = false;
 				}
 			}),
 		);
@@ -433,12 +433,12 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			CanvasAPI.OnPointerEvent(button.gameObject, (direction, pointerButton) => {
 				if (
 					direction === PointerDirection.UP &&
-					pointerButton === PointerButton.LEFT &&
+					(pointerButton === PointerButton.LEFT || pointerButton === PointerButton.RIGHT) &&
 					this.clickPickupState &&
-					this.clickPickupState.isFirstLeftClickDrag
+					this.clickPickupState.isFirstClickDrag
 				) {
-					// Check if this was a first left click drag that ended on a different button
-					if (this.clickPickupState && this.clickPickupState.isFirstLeftClickDrag) {
+					// Check if this was a first click drag that ended on a different button
+					if (this.clickPickupState && this.clickPickupState.isFirstClickDrag) {
 						const endButton = this.FindButtonUnderCursor();
 						if (endButton) {
 							const endSlotIndex = this.GetSlotIndexFromButton(endButton);
@@ -457,7 +457,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 						}
 					}
 					if (this.clickPickupState) {
-						this.clickPickupState.isFirstLeftClickDrag = false;
+						this.clickPickupState.isFirstClickDrag = false;
 					}
 				}
 				if (
@@ -549,7 +549,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			}),
 
 			CanvasAPI.OnEndDragEvent(button.gameObject, () => {
-				if (this.clickPickupState && this.clickPickupState.isFirstLeftClickDrag) return;
+				if (this.clickPickupState && this.clickPickupState.isFirstClickDrag) return;
 				this.EndDragWithPickedUpItem();
 			}),
 
@@ -963,7 +963,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			itemNameText: itemNameText,
 			swapStack: true,
 			initialClickFlag: false,
-			isFirstLeftClickDrag: false,
+			isFirstClickDrag: false,
 		};
 		return true;
 	}
@@ -1021,7 +1021,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			itemNameText: itemNameText,
 			halfStack: !isFullPickup,
 			initialClickFlag: true,
-			isFirstLeftClickDrag: true,
+			isFirstClickDrag: true,
 		};
 
 		this.isInitialPickupPhase = true;
