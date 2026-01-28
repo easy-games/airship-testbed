@@ -1,10 +1,11 @@
 import { TransferController } from "@Easy/Core/Client/ProtectedControllers/Transfer/TransferController";
+import { AirshipGameVisibility } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { TweenEasingFunction } from "@Easy/Core/Shared/Tween/EasingFunctions";
 import { Tween } from "@Easy/Core/Shared/Tween/Tween";
-import { ContentServiceGames, ContentServicePrisma } from "@Easy/Core/Shared/TypePackages/content-service-types";
+import { ContentServiceGames } from "@Easy/Core/Shared/TypePackages/content-service-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
@@ -28,7 +29,8 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 	public roundedCorners: ImageWithRoundedCorners;
 	public borderBottom: GameObject;
 	public popoutImage: RawImage;
-	public contentLayoutGroup: HorizontalLayoutGroup;
+	public rightSection: RectTransform;
+	public videoPlayer: VideoPlayer;
 
 	@NonSerialized()
 	private popoutImageUrl: string;
@@ -42,6 +44,7 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 		gameId: string,
 		description: string,
 		popoutImageUrl: string,
+		videoUrl: string | undefined,
 		startTime: number,
 		endTime: number,
 	): Promise<void> {
@@ -61,9 +64,9 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 		}
 
 		if (eventCache) {
-			this.LoadGameImages(eventCache);
+			// this.LoadGameImages(eventCache);
 		}
-		this.LoadPopoutImages();
+		// this.LoadPopoutImages();
 
 		this.eventDescription.text = description;
 		this.FetchGame(gameId);
@@ -85,7 +88,6 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 			this.roundedCorners.radius = 0;
 			this.roundedCorners.Validate();
 			this.borderBottom.SetActive(true);
-			this.contentLayoutGroup.padding.left = -5;
 		} else {
 			this.borderBottom.SetActive(false);
 		}
@@ -97,11 +99,11 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 
 		let preEvent = os.time() < this.startTime;
 		let postEvent = os.time() > this.endTime;
-		let gamePublic = eventCache?.visibility === ContentServicePrisma.GameVisibility.PUBLIC;
+		let gamePublic = eventCache?.visibility === AirshipGameVisibility.PUBLIC;
 
-		if (preEvent) {
+		if (preEvent || !gamePublic) {
 			this.startCountdownText.gameObject.SetActive(true);
-			this.endCountdownText.gameObject.SetActive(false);
+			// this.endCountdownText.gameObject.SetActive(false);
 			this.playerCountWrapper.SetActive(false);
 			this.playBtn.gameObject.SetActive(false);
 
@@ -128,7 +130,7 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 		} else if (gamePublic) {
 			this.startCountdownText.gameObject.SetActive(false);
 			this.endCountdownText.gameObject.SetActive(false);
-			this.playerCountWrapper.SetActive(true);
+			this.playerCountWrapper.SetActive(Game.IsLandscape()); // hide player count on mobile (not enough space)
 			this.playBtn.gameObject.SetActive(true);
 
 			// let timeLeft = math.round(this.endTime - os.time());
@@ -190,18 +192,19 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 
 	private LoadGameImages(gameDto: ContentServiceGames.PublicGameWithLiveStatsAndOrg): void {
 		// Game Thumbnail
-		task.spawn(async () => {
-			const url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".png";
-			const tex = await Protected.Cache.DownloadImage(url);
-			if (tex) {
-				this.gameThumbnailImg.texture = tex;
-				this.gameThumbnailImg.color = Color.white;
-			}
-		});
+		// task.spawn(async () => {
+		// 	const url = AirshipUrl.CDN + "/images/" + gameDto.iconImageId + ".png";
+		// 	const tex = await Protected.Cache.DownloadImage(url);
+		// 	if (tex) {
+		// 		this.gameThumbnailImg.texture = tex;
+		// 		this.gameThumbnailImg.color = Color.white;
+		// 	}
+		// });
 
 		// Event BG
 		task.spawn(async () => {
-			const url = AirshipUrl.CDN + "/airship/Topology3.png";
+			// const url = AirshipUrl.CDN + "/airship/Topology3.png";
+			const url = "https://cdn.airship.gg/images/dabcaa58-99aa-4eda-9f25-8adff43fc3de";
 			const tex = await Protected.Cache.DownloadImage(url);
 			if (tex) {
 				this.eventImg.texture = tex;
@@ -214,7 +217,20 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 		this.enableBin.Clean();
 	}
 
-	override Start(): void {}
+	override Start(): void {
+		// const rect = this.transform as RectTransform;
+		// const gameImgRect = this.gameThumbnailImg.transform as RectTransform;
+		// if (Game.IsLandscape()) {
+		// 	this.rightSection.sizeDelta = this.rightSection.sizeDelta.WithX(
+		// 		rect.sizeDelta.x - gameImgRect.sizeDelta.x - 20,
+		// 	);
+		// } else {
+		// 	this.rightSection.anchorMin = Vector2.zero;
+		// 	this.rightSection.anchorMax = Vector2.one;
+		// 	this.rightSection.offsetMax = Vector2.zero;
+		// 	this.rightSection.offsetMin = Vector2.zero;
+		// }
+	}
 
 	override OnDestroy(): void {}
 }

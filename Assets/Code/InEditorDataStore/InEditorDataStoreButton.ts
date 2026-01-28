@@ -172,31 +172,6 @@ export default class InEditorDataStoreButton extends AirshipBehaviour {
 
 		Platform.Server.Leaderboard.InEditorCreateLeaderboard({
 			id: "example",
-			operator: "SUB",
-			sortOrder: "DESC",
-		});
-		print("Set leaderboard to SUB");
-
-		await Platform.Server.Leaderboard.Update("example", {
-			user1: 5,
-			user2: 5,
-			user3: 5,
-			user4: 15,
-		});
-		const rankingsSub1 = await Platform.Server.Leaderboard.GetRankRange("example");
-		print("Sub Rankings: " + json.encode(rankingsSub1));
-
-		await Platform.Server.Leaderboard.Update("example", {
-			user1: -5,
-			user2: -5,
-			user3: -5,
-			user4: 5,
-		});
-		const rankingsSub2 = await Platform.Server.Leaderboard.GetRankRange("example");
-		print("Updated Sub Rankings: " + json.encode(rankingsSub2));
-
-		Platform.Server.Leaderboard.InEditorCreateLeaderboard({
-			id: "example",
 			operator: "SET",
 			sortOrder: "DESC",
 		});

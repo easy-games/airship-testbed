@@ -18,7 +18,7 @@ export class SocketController {
 	public doReconnect = true;
 	public cancelSessionReportTask: () => void | undefined;
 
-	constructor(private readonly authController: AuthController) {}
+	constructor(private readonly authController: AuthController) { }
 
 	protected OnStart(): void {
 		SocketManager.Instance.OnEvent((eventName, data) => {
@@ -104,23 +104,32 @@ export class SocketController {
 			return {}; // Return empty region latencies since we don't have servers to contact.
 		}
 		const regionLatencies: { [regionId: string]: number } = {};
+
 		// Use the best of three tests.
-		for (let i = 0; i < 3; i++) {
-			for (const [regionId, serverUrl] of ObjectUtils.entries(serverMap)) {
+		await Promise.all(ObjectUtils.entries(serverMap).map(async ([regionId, serverUrl], regionIndex) => {
+			task.wait(regionIndex * 0.02); // Stagger tasks
+
+			let latestError: unknown = undefined;
+			for (let attempt = 0; attempt < 3; attempt++) {
 				try {
-					const ping = UdpPingTool.GetPing(serverUrl, 1000);
+					const ping = UdpPingTool.GetPing(serverUrl, 2500);
 					if (regionLatencies[regionId] === undefined || regionLatencies[regionId] > ping) {
 						regionLatencies[regionId] = ping;
 					}
 				} catch (err) {
-					warn(
-						`Unable to calculate latency for "${regionId}" (${serverUrl}). This region will not be reported.`,
-						err,
-					);
+					latestError = err;
+					task.wait(0.25);
 				}
 			}
-			task.unscaledWait(0.25);
-		}
+			if (regionLatencies[regionId] === undefined) {
+				let message = `Unable to calculate latency for "${regionId}" (${serverUrl}). This region will not be reported.`;
+				warn(
+					message,
+					latestError,
+				);
+			}
+		}));
+
 		return regionLatencies;
 	}
 }

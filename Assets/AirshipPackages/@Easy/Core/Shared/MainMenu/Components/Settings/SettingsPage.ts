@@ -294,20 +294,16 @@ export default class SettingsPage extends AirshipBehaviour {
 	protected Start(): void {
 		const settings = Protected.Settings;
 
-		let voiceChat = Bridge.GetAirshipVoiceChatNetwork();
 		this.voiceToggle.Init("Toggle Mute", settings.IsVoiceToggleEnabled());
-		this.voiceToggle.toggle.onValueChanged.Connect((val) => {
-			settings.SetVoiceToggleEnabled(val);
+		if (Game.playerFlags.has("CompressVOIPAudio")) {
+			this.voiceToggle.toggle.onValueChanged.Connect((val) => {
+				settings.SetVoiceToggleEnabled(val);
 
-			if (!val) {
-				if (!voiceChat.agent) {
-					voiceChat = Bridge.GetAirshipVoiceChatNetwork();
-					task.unscaledWait();
+				if (!val) {
+					Bridge.SetMicInputEnabled(false);
 				}
-
-				voiceChat.agent.MuteSelf = true;
-			}
-		});
+			});
+		}
 
 		// Hacky workaround for GetComponentsInChildren<Button> not working.
 		const images = this.rightSection.gameObject.GetComponentsInChildren<Image>(true);

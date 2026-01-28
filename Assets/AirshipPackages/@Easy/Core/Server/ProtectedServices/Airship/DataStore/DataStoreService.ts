@@ -1,7 +1,7 @@
 import { AirshipDataStoreLockInfo, AirshipDataStoreLockMode } from "@Easy/Core/Shared/Airship/Types/AirshipDataStore";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { DataStoreServiceData, DataStoreServicePrisma } from "@Easy/Core/Shared/TypePackages/data-store-types";
+import { DataStoreServiceData } from "@Easy/Core/Shared/TypePackages/data-store-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 

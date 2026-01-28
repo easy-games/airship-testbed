@@ -11,6 +11,7 @@ export class ProtectedPlayer {
 		public userId: string,
 		public profileImageId: string,
 		public connectionId: number,
+		public deviceType: AirshipDeviceType,
 	) {}
 
 	/** Is player friends with the local player? */

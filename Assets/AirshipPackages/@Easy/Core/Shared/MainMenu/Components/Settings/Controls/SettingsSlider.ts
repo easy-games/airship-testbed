@@ -82,6 +82,7 @@ export default class SettingsSlider extends AirshipBehaviour {
 	private FormatValueForDisplay(value: number, increment: number) {
 		let sigDigits = 3;
 		if (increment > 0) sigDigits = math.ceil(math.log10(1 / increment));
+		sigDigits = math.max(sigDigits, 0);
 
 		return string.format(`%.${sigDigits}f`, value);
 	}

@@ -1,10 +1,12 @@
 import { SocketController } from "@Easy/Core/Client/ProtectedControllers/Socket/SocketController";
+import { Asset } from "../../Asset";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
 import { Protected } from "../../Protected";
 import { GameCoordinatorClient } from "../../TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "../../TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "../../Util/AirshipUrl";
+import { AppManager } from "../../Util/AppManager";
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";
 import { ChatColor } from "../../Util/ChatColor";
@@ -17,8 +19,11 @@ export default class SocialMenu extends AirshipBehaviour {
 	public playerCountText!: TMP_Text;
 	public serverCountText!: TMP_Text;
 	public scrollRect: ScrollRect;
+	public roundedCorners: ImageWithIndependentRoundedCorners;
+	public addFriendBtn: Button;
 
 	public verticalLayout: VerticalLayoutGroup;
+	public outline: UIOutline;
 
 	@Header("Lost Connection")
 	public lostConnectionNotice!: GameObject;
@@ -33,11 +38,19 @@ export default class SocialMenu extends AirshipBehaviour {
 		this.rectTransform = this.gameObject.GetComponent<RectTransform>()!;
 	}
 
+	protected OnEnable(): void {}
+
 	override Start(): void {
-		if (Game.deviceType === AirshipDeviceType.Phone) {
-			// this.liveStats.gameObject.SetActive(false);
-			this.playerCountText.gameObject.SetActive(false);
-			this.serverCountText.transform.parent.GetComponent<LayoutElement>()!.preferredHeight = 19;
+		const rect = this.transform as RectTransform;
+		if (Game.IsPortrait()) {
+			rect.anchorMin = new Vector2(0, 0);
+			rect.anchorMax = new Vector2(1, 1);
+			rect.pivot = new Vector2(0.5, 1);
+			rect.offsetMin = new Vector2(0, 116);
+			rect.offsetMax = new Vector2(0, 40);
+			// this.roundedCorners.r = new Vector4(20, 20, 10, 10);
+			// this.roundedCorners.Refresh();
+			// this.outline.
 		}
 		if (Game.IsMobile()) {
 			this.scrollRect.movementType = MovementType.Elastic;
@@ -54,6 +67,15 @@ export default class SocialMenu extends AirshipBehaviour {
 				},
 				true,
 			),
+		);
+
+		this.bin.Add(
+			this.addFriendBtn.onClick.Connect(() => {
+				VibrationManager.Play(VibrationFeedbackType.Heavy);
+				AppManager.OpenModal(
+					Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/Modals/AirshipAddFriendModal.prefab"),
+				);
+			}),
 		);
 
 		const socketController = Dependency<SocketController>();
@@ -108,16 +130,16 @@ export default class SocialMenu extends AirshipBehaviour {
 	private FetchLiveStats(): void {
 		try {
 			const result = client.stats.getStats().expect();
-			if (Game.deviceType === AirshipDeviceType.Phone) {
-				this.serverCountText.text = `${result.players.online} Players Connected. ${result.servers.active} Servers Online.`;
-			} else {
-				this.playerCountText.text = `${result.players.online} Players Connected.`;
-				this.serverCountText.text = `${result.servers.active} Servers Online`;
-			}
+			this.playerCountText.text = `${result.players.online} Players Connected`;
+			this.serverCountText.text = `${result.servers.active} Servers Online`;
 		} catch {
 			return;
 		}
 	}
 
-	override OnDestroy(): void {}
+	override OnDestroy(): void {
+		this.bin.Clean();
+	}
+
+	protected OnDisable(): void {}
 }

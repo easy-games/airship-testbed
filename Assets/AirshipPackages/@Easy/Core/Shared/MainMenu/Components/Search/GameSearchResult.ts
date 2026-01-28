@@ -66,9 +66,9 @@ export default class GameSearchResult extends SearchResult {
 
 		let playerCountText = "";
 		if (gameDto.liveStats?.playerCount ?? 0 > 0) {
-			playerCountText = "<color=#23F677>  •  " + gameDto.liveStats!.playerCount! + " online</color>";
+			playerCountText = "<color=#23F677>  -  " + gameDto.liveStats!.playerCount! + " online</color>";
 		} else {
-			playerCountText = "  •  " + gameDto.plays + " plays";
+			playerCountText = "  -  " + gameDto.plays + " plays";
 		}
 
 		if (size === "sm") {
@@ -83,9 +83,9 @@ export default class GameSearchResult extends SearchResult {
 		const timeUpdatedSeconds = DateParser.FromISO(gameDto.lastVersionUpdate!);
 		const timeDiff = os.time() - timeUpdatedSeconds;
 		this.gameText.text =
-			`${gameDto.organization?.name ?? ""}${playerCountText}  •  updated ` +
+			`${gameDto.organization?.name ?? ""}${playerCountText}  -  updated ` +
 			TimeUtil.FormatTimeAgo(timeDiff, { includeAgo: true }) +
-			`  •  ${gameDto.plays} plays`;
+			`  -  ${gameDto.plays} plays`;
 	}
 
 	override OnSubmit(): void {

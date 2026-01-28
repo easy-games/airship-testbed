@@ -1,5 +1,6 @@
 import {
-	ProtectedModerationService,
+	ModerationServiceBridgeTopics,
+	ServerBridgeApiModerateChat,
 } from "@Easy/Core/Server/ProtectedServices/Airship/Moderation/ModerationService";
 import { AddInventoryCommand } from "@Easy/Core/Server/Services/Chat/Commands/AddInventoryCommand";
 import { BotCommand } from "@Easy/Core/Server/Services/Chat/Commands/BotCommand";
@@ -29,7 +30,6 @@ import { ChatColor } from "../Util/ChatColor";
 import { ChatUtil } from "../Util/ChatUtil";
 import ObjectUtils from "../Util/ObjectUtils";
 import { Signal } from "../Util/Signal";
-import { ModerationServiceModeration } from "../TypePackages/moderation-service-types";
 
 class ChatMessageEvent extends Cancellable {
 	/**
@@ -52,8 +52,7 @@ class ChatMessageEvent extends Cancellable {
 export class AirshipChatSingleton {
 	private messageIdCounter: number = 1;
 	private commands = new Map<string, ChatCommand>();
-	private readonly moderationService: ProtectedModerationService;
-
+	private commandPermissions = new Map<string, Set<string>>(); // ChatCommand Label, Player Id
 	public readonly canUseRichText = true;
 	/**
 	 * Event fired when a player chats.
@@ -66,7 +65,6 @@ export class AirshipChatSingleton {
 
 	constructor() {
 		Airship.Chat = this;
-		this.moderationService = new ProtectedModerationService();
 	}
 
 	protected OnStart(): void {
@@ -108,7 +106,11 @@ export class AirshipChatSingleton {
 						if (command) {
 							if (command.requiresPermission && !Game.IsEditor()) {
 								// todo: add easy employee check
-								if (!player.orgRoleName) {
+								const isGameOrgMember = !!player.orgRoleName;
+								const hasChatCommandPermission = !!this.commandPermissions
+									.get(commandData.label)
+									?.has(player.userId);
+								if (!isGameOrgMember && !hasChatCommandPermission) {
 									player.SendMessage(
 										ChatColor.Red(
 											`You do not have permission to use ${ChatColor.Yellow(
@@ -141,26 +143,29 @@ export class AirshipChatSingleton {
 				});
 
 				if (!Game.IsEditor()) {
-					this.moderationService
-						.ModerateChatMessage("public_chat", player.userId, result.message)
-						.then((moderationResult: ModerationServiceModeration.ModerationResponse) => {
-							if (moderationResult.messageBlocked) {
-								CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients({
-									type: "remove",
-									internalMessageId: messageId,
-								});
-								player.SendMessage(
-									"Your message was blocked.",
-								);
-								return;
-							} else if (moderationResult.transformedMessage) {
-								CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients({
-									type: "update",
-									internalMessageId: messageId,
-									message: moderationResult.transformedMessage,
-								});
-							}
-						});
+					task.spawn(() => {
+						const moderationResult = contextbridge.invoke<ServerBridgeApiModerateChat>(
+							ModerationServiceBridgeTopics.ModerateChat,
+							LuauContext.Protected,
+							"public_chat",
+							player.userId,
+							result.message,
+						);
+						if (moderationResult.messageBlocked) {
+							CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients({
+								type: "remove",
+								internalMessageId: messageId,
+							});
+							player.SendMessage("Your message was blocked.");
+							return;
+						} else if (moderationResult.transformedMessage) {
+							CoreNetwork.ServerToClient.ChatMessage.server.FireAllClients({
+								type: "update",
+								internalMessageId: messageId,
+								message: moderationResult.transformedMessage,
+							});
+						}
+					});
 				}
 			},
 		);
@@ -224,8 +229,8 @@ export class AirshipChatSingleton {
 		if (!Game.IsServer()) {
 			error(
 				"Error trying to call RegisterCommand " +
-				command.commandLabel +
-				": Can only register command on server.",
+					command.commandLabel +
+					": Can only register command on server.",
 			);
 		}
 
@@ -237,5 +242,49 @@ export class AirshipChatSingleton {
 
 	public GetCommands(): ChatCommand[] {
 		return ObjectUtils.values(this.commands);
+	}
+
+	/**
+	 * [Server only]
+	 *
+	 * Gives a player permission to use specified chat command
+	 *
+	 */
+	public GiveCommandPermission(commandLabel: string, playerId: string) {
+		if (!Game.IsServer()) {
+			error(
+				"Error trying to call GiveCommandPermission " + commandLabel + ": Can only register command on server.",
+			);
+		}
+
+		const parsedLabel = commandLabel.lower();
+		const perms = this.commandPermissions.get(parsedLabel) || new Set<string>();
+		if (perms.has(playerId)) return;
+
+		perms.add(playerId);
+		this.commandPermissions.set(parsedLabel, perms);
+	}
+
+	/**
+	 * [Server only]
+	 *
+	 * Revokes a player's permission to use specified chat command
+	 *
+	 */
+	public RemoveCommandPermission(commandLabel: string, playerId: string) {
+		if (!Game.IsServer()) {
+			error(
+				"Error trying to call RemoveCommandPermission " +
+					commandLabel +
+					": Can only register command on server.",
+			);
+		}
+
+		const parsedLabel = commandLabel.lower();
+		const perms = this.commandPermissions.get(parsedLabel);
+		if (!perms) return;
+
+		perms.delete(playerId);
+		this.commandPermissions.set(parsedLabel, perms);
 	}
 }

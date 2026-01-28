@@ -36,21 +36,22 @@ export default class SortComponent extends AirshipBehaviour {
 		const mainMenu = Dependency<MainMenuSingleton>();
 		this.bin.Add(
 			mainMenu.ObserveScreenSize((sizeType, size) => {
-				if (sizeType === "sm") {
-					if (Game.IsPortrait()) {
-						this.gridLayoutGroup.cellSize = new Vector2(size.x * 0.97, size.x * 0.97 * 0.56 + 54);
-						this.gridLayoutGroup.constraintCount = 1;
-						this.titleText.GetComponent<TMP_Text>()!.margin = new Vector4(8, 0, 0, 0);
-						this.gridLayoutGroup.padding.left = 8;
-						this.gridLayoutGroup.padding.right = 4;
+				const parentTransform = this.transform.parent as RectTransform;
+				const parentWidth = parentTransform.sizeDelta.x;
 
-						//
-					} else {
-						this.gridLayoutGroup.cellSize = new Vector2(size.x * 0.28, size.x * 0.28 * 0.56 + 54);
-						this.gridLayoutGroup.constraintCount = 2;
-					}
+				if (Game.IsPortrait()) {
+					this.gridLayoutGroup.cellSize = new Vector2(size.x * 0.97, size.x * 0.97 * 0.56 + 54);
+					this.gridLayoutGroup.constraintCount = 1;
+					this.titleText.GetComponent<TMP_Text>()!.margin = new Vector4(8, 0, 0, 0);
+					this.gridLayoutGroup.padding.left = 8;
+					this.gridLayoutGroup.padding.right = 4;
 				} else {
-					this.gridLayoutGroup.cellSize = new Vector2(320, 234);
+					let spacing = 40;
+					let inverseAspectRatio = 234 / 320; // height / width
+					// -4 is because sort component has some padding to make sure shadows don't get masked
+					let width = (parentWidth - spacing * 2) / 3 - 4;
+					let height = width * inverseAspectRatio;
+					this.gridLayoutGroup.cellSize = new Vector2(width, height);
 					this.gridLayoutGroup.constraintCount = 3;
 				}
 				Bridge.UpdateLayout(this.content, true);

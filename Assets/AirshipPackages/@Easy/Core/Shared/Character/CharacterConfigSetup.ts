@@ -82,7 +82,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 			if (hasRun) {
 				error(
 					"Tried to run CharacterConfigSetup twice. You should only have one instance of CharacterConfigSetup in your scene. This script is running on gameobject " +
-						this.gameObject.name,
+					this.gameObject.name,
 				);
 			}
 			hasRun = true;

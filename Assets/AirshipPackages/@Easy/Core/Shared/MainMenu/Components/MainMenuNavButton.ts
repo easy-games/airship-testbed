@@ -1,5 +1,5 @@
 import { CanvasAPI, HoverState } from "../../Util/CanvasAPI";
-import { ColorUtil } from "../../Util/ColorUtil";
+import { Theme } from "../../Util/Theme";
 
 export default class MainMenuNavButton extends AirshipBehaviour {
 	public selected = false;
@@ -12,8 +12,8 @@ export default class MainMenuNavButton extends AirshipBehaviour {
 	public text!: TMP_Text;
 	public iconImage!: Image;
 
-	private textColorActive = new Color(1, 1, 1, 1);
-	private textColorNormal = ColorUtil.HexToColor("D8D8D8");
+	private textColorActive = Theme.text.primary;
+	private textColorNormal = Theme.text.secondary;
 	public noTextColorChange = false;
 
 	public Awake(): void {

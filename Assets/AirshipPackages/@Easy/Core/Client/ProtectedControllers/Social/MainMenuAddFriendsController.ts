@@ -1,7 +1,6 @@
 import { Asset } from "@Easy/Core/Shared/Asset";
-import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
+import { Controller } from "@Easy/Core/Shared/Flamework";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
-import { MainMenuController } from "../MainMenuController";
 
 @Controller({})
 export class MainMenuAddFriendsController {
@@ -15,12 +14,8 @@ export class MainMenuAddFriendsController {
 	protected OnStart(): void {}
 
 	public Open(): void {
-		const go = Object.Instantiate(
+		AppManager.OpenModal(
 			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/Modals/AirshipAddFriendModal.prefab"),
-			Dependency<MainMenuController>().mainContentCanvas.transform,
 		);
-		AppManager.OpenModal(go, {
-			sortingOrderOffset: 100,
-		});
 	}
 }
