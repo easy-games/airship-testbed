@@ -230,15 +230,24 @@ export class CameraSystem {
 		}
 	}
 
+	/** 
+	 * Returns a list of all cameras that should be updated synchronously
+	 * (for main cameras this includes the UI camera so we keep the 
+	 * world UI FOV in sync)
+	 */
 	private GetCamerasByType(cameraType: CharacterCameraType) {
+		const cameraRig = Airship.Camera.cameraRig;
 		let relevantCameras: Camera[] = [];
 		switch (cameraType) {
 			case CharacterCameraType.VIEW_MODEL:
-				relevantCameras = [Airship.Camera.cameraRig!.viewmodelCamera!];
+				relevantCameras = [cameraRig!.viewmodelCamera!];
 				break;
 			case CharacterCameraType.FIRST_PERSON:
 			case CharacterCameraType.THIRD_PERSON:
 				relevantCameras = [this.GetActiveCamera()];
+
+				const uiCamera = cameraRig?.uiCamera;
+				if (uiCamera) relevantCameras.push(uiCamera);
 				break;
 		}
 		return relevantCameras;

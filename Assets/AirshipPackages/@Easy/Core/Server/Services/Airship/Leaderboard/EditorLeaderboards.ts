@@ -93,16 +93,6 @@ export default class EditorLeaderboards {
 					}
 				}
 				break;
-			case "SUB":
-				for (const [playerId, value] of entries(update)) {
-					const currentValue = leaderboard.userStats[playerId];
-					if (currentValue === undefined) {
-						leaderboard.userStats[playerId] = value;
-					} else {
-						leaderboard.userStats[playerId] = currentValue - value;
-					}
-				}
-				break;
 			case "USE_LATEST":
 				for (const [playerId, value] of entries(update)) {
 					leaderboard.userStats[playerId] = value;

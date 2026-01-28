@@ -6,7 +6,7 @@ import { SignalPriority } from "../../Util/Signal";
 import { AirshipButtonClickEffect } from "./AirshipButtonClickEffect";
 
 export default class AirshipButton extends AirshipBehaviour {
-	private bin = new Bin();
+	protected bin = new Bin();
 
 	private disabled = false;
 	protected image: Image | undefined;
@@ -22,6 +22,10 @@ export default class AirshipButton extends AirshipBehaviour {
 	@Tooltip("Sets child text to underline on mouse hover.")
 	public underlineOnHover = false;
 	public sounds = false;
+
+	@Spacing()
+	public vibration = false;
+	public vibrationType: VibrationFeedbackType = VibrationFeedbackType.Medium;
 
 	@Header("Optional Variables")
 	public disabledColorHex = "#2E3035";
@@ -60,6 +64,9 @@ export default class AirshipButton extends AirshipBehaviour {
 			this.button.onClick.ConnectWithPriority(SignalPriority.HIGHEST, () => {
 				if (this.sounds) {
 					ProtectedUtil.PlayClickSound();
+				}
+				if (this.vibration) {
+					VibrationManager.Play(this.vibrationType);
 				}
 			}),
 		);

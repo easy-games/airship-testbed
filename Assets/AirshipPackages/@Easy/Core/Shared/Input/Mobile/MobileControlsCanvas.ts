@@ -14,7 +14,8 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 	public dynamicJoystick: DynamicJoystick;
 	private isJoystickDynamic = true;
 
-	private crouchGO: GameObject;
+	private crouchToggleBtn: GameObject;
+	private crouchBtn: GameObject;
 	private crouchImg: Image;
 
 	private activeColor = ColorUtil.HexToColor("4B7853", 0.81);
@@ -52,10 +53,15 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 		Airship.Input.CreateMobileButton(CoreMobileButton.Jump, new Vector2(-220, 180), {
 			icon: CoreIcon.JumpPose,
 		});
-		this.crouchGO = Airship.Input.CreateMobileButton(CoreMobileButton.CrouchToggle, new Vector2(-140, 340), {
+		this.crouchToggleBtn = Airship.Input.CreateMobileButton(CoreMobileButton.CrouchToggle, new Vector2(-140, 340), {
 			icon: CoreIcon.CrouchPose,
 		});
-		this.crouchImg = this.crouchGO.GetComponent<Image>()!;
+		this.crouchBtn = Airship.Input.CreateMobileButton(CoreAction.Crouch, new Vector2(-140, 340), {
+			icon: CoreIcon.CrouchPose,
+		});
+		this.crouchBtn.gameObject.SetActive(false);
+
+		this.crouchImg = this.crouchToggleBtn.GetComponent<Image>()!;
 
 		this.SetupEvents();
 	}
@@ -84,6 +90,7 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 				this.UpdateButtonState();
 			}),
 		);
+		this.bin.Add(Game.localPlayer.ObserveCharacter((character) => {}));
 		this.bin.Add(
 			Game.localPlayer.ObserveCharacter((character) => {
 				if (character === undefined) {
@@ -166,6 +173,7 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 		}
 	}
 
+	private isFlyingCache = false;
 	protected Update(dt: number): void {
 		if (Game.IsMobile()) {
 			let input: Vector2;
@@ -194,6 +202,18 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 			}
 
 			Airship.Characters.localCharacterManager.input?.SetQueuedMoveDirection(new Vector3(input.x, 0, input.y));
+
+			// Show crouch btn instead of crouch-toggle btn while flying
+			const isFlying = Game.localPlayer.character?.movement?.IsFlying();
+			if (isFlying && !this.isFlyingCache) {
+				this.isFlyingCache = true;
+				this.crouchBtn.SetActive(true);
+				this.crouchToggleBtn.SetActive(false);
+			} else if (!isFlying && this.isFlyingCache) {
+				this.isFlyingCache = false;
+				this.crouchBtn.SetActive(false);
+				this.crouchToggleBtn.SetActive(true);
+			}
 		}
 	}
 }

@@ -3943,7 +3943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1516763401155024849, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 46.47
+      value: 49.15
       objectReference: {fileID: 0}
     - target: {fileID: 1516763401155024849, guid: c7352fcbcc82a254e92a8f903b7ece68, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -6506,11 +6506,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b02ebca8259ca8b4099defaa114ca070, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networkCollectionIdCounter: 1
-  codeZipCacheEnabled: 0
-  currentCoreVersion: 
-  currentCoreMaterialsVersion: 
-  coreMaterialsAssetBundle: {fileID: 0}
 --- !u!4 &1535030005
 Transform:
   m_ObjectHideFlags: 0

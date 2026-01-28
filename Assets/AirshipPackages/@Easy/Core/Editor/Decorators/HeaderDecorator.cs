@@ -1,5 +1,4 @@
-﻿#if AIRSHIP_EDITOR_API
-using UnityEditor;
+﻿using UnityEditor;
 
 [CustomAirshipDecorator("Header")]
 internal class HeaderDecorator : AirshipPropertyDecorator {
@@ -11,4 +10,3 @@ internal class HeaderDecorator : AirshipPropertyDecorator {
         EditorGUILayout.LabelField(title, guiStyle);
     }
 }
-#endif

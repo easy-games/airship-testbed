@@ -926,6 +926,7 @@ MonoBehaviour:
   maxServerCommandPrediction: 1
   serverAuth: 0
   serverGeneratesCommands: 0
+  maximumLagCompensation: 0.5
 --- !u!114 &7877576865563315073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1001,7 +1002,7 @@ MonoBehaviour:
   jumpCoyoteTime: 0.14
   allowDebugFlying: 1
   flySpeedMultiplier: 3
-  verticalFlySpeed: 2
+  verticalFlySpeed: 0.9
   useGravity: 1
   gravityMultiplier: 5
   upwardsGravityMultiplier: 1

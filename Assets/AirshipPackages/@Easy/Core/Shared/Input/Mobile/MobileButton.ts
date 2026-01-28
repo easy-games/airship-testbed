@@ -23,6 +23,10 @@ export interface MobileButtonConfig {
 	pivot?: Vector2;
 
 	prefab?: GameObject;
+
+	cooldown?: {
+		cooldownTime: number;
+	};
 }
 
 export enum CoreMobileButton {

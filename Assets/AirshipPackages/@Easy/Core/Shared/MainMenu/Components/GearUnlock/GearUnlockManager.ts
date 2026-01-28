@@ -33,9 +33,9 @@ export default class GearUnlockManager extends AirshipBehaviour {
 
 				this.ShowRewardYielding("test", {
 					classId: "39c9c35b-d849-448b-8554-e919f3e26e01",
-					messageTitle: "Unlocked BETA Chain!",
+					messageTitle: "Unlocked: BETA Chain",
 					messageBody:
-						"Thank you for playing the Airship Beta. As a thank you, enjoy this exclusive avatar item.",
+						"Thank you for playing the Airship Beta. As a thank you, you've unlocked an exclusive avatar item.",
 				});
 			});
 		}

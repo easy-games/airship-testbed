@@ -2899,11 +2899,6 @@ declare const enum EaseType {
     BounceOut = 101,
     BounceInOut = 102,
 }
-declare const enum ChatroomAgentMode {
-    Unconnected = 0,
-    Host = 1,
-    Guest = 2,
-}
 declare const enum StereoScreenCaptureMode {
     LeftEye = 1,
     RightEye = 2,
@@ -4021,6 +4016,46 @@ declare const enum RendererType {
     UniversalRenderer = 1,
     _2DRenderer = 2,
 }
+declare const enum VideoSource {
+    VideoClip = 0,
+    Url = 1,
+}
+declare const enum VideoTimeUpdateMode {
+    DSPTime = 0,
+    GameTime = 1,
+    UnscaledGameTime = 2,
+}
+declare const enum VideoRenderMode {
+    CameraFarPlane = 0,
+    CameraNearPlane = 1,
+    RenderTexture = 2,
+    MaterialOverride = 3,
+    APIOnly = 4,
+}
+declare const enum VideoAspectRatio {
+    NoScaling = 0,
+    FitVertically = 1,
+    FitHorizontally = 2,
+    FitInside = 3,
+    FitOutside = 4,
+    Stretch = 5,
+}
+declare const enum Video3DLayout {
+    No3D = 0,
+    SideBySide3D = 1,
+    OverUnder3D = 2,
+}
+declare const enum VideoTimeReference {
+    Freerun = 0,
+    InternalTime = 1,
+    ExternalTime = 2,
+}
+declare const enum VideoAudioOutputMode {
+    None = 0,
+    AudioSource = 1,
+    Direct = 2,
+    APIOnly = 3,
+}
 declare const enum TransportError {
     DnsResolve = 0,
     Refused = 1,
@@ -4187,6 +4222,16 @@ declare const enum LoadingStatus {
     NotLoading = 0,
     Loading = 1,
     Loaded = 2,
+}
+declare const enum VoxelFlip {
+    Flip_0Deg = 0,
+    Flip_90Deg = 1,
+    Flip_180Deg = 2,
+    Flip_270Deg = 3,
+    Flip_0DegVertical = 4,
+    Flip_90DegVertical = 5,
+    Flip_180DegVertical = 6,
+    Flip_270DegVertical = 7,
 }
 declare const enum CrouchEdgeDetection {
     None = 0,
@@ -4577,7 +4622,7 @@ interface AsyncOperation extends YieldInstruction {
      */
     allowSceneActivation: boolean;
 
-    readonly completed: MonoSignal<AsyncOperation>;
+    readonly completed: MonoSignal<[AsyncOperation]>;
 
 
 
@@ -19240,8 +19285,8 @@ interface ReflectionProbeConstructor {
     BlendCubemap(src: Texture, dst: Texture, blend: number, target: RenderTexture): boolean;
     UpdateCachedState(): void;
 
-    readonly reflectionProbeChanged: MonoSignal<ReflectionProbe, ReflectionProbeEvent>;
-    readonly defaultReflectionTexture: MonoSignal<Texture>;
+    readonly reflectionProbeChanged: MonoSignal<[ReflectionProbe, ReflectionProbeEvent]>;
+    readonly defaultReflectionTexture: MonoSignal<[Texture]>;
 }
 declare const ReflectionProbe: ReflectionProbeConstructor;
     
@@ -26004,7 +26049,7 @@ interface TMP_Text extends MaskableGraphic {
     readonly renderedHeight: number;
     readonly layoutPriority: number;
 
-    readonly OnPreRenderText: MonoSignal<TMP_TextInfo>;
+    readonly OnPreRenderText: MonoSignal<[TMP_TextInfo]>;
 
 
     ClearMesh(): void;
@@ -26429,7 +26474,7 @@ interface FontConstructor {
     GetOSInstalledFontNames(): Readonly<string[]>;
     GetPathsToOSFonts(): Readonly<string[]>;
 
-    readonly textureRebuilt: MonoSignal<Font>;
+    readonly textureRebuilt: MonoSignal<[Font]>;
 }
 declare const Font: FontConstructor;
     
@@ -27428,8 +27473,8 @@ interface TMP_TextConstructor {
 
 
 
-    readonly OnFontAssetRequest: MonoSignal<number, string, TMP_FontAsset>;
-    readonly OnSpriteAssetRequest: MonoSignal<number, string, TMP_SpriteAsset>;
+    readonly OnFontAssetRequest: MonoSignal<[number, string, TMP_FontAsset]>;
+    readonly OnSpriteAssetRequest: MonoSignal<[number, string, TMP_SpriteAsset]>;
     readonly OnMissingCharacter: MonoSignal<void>;
 }
 declare const TMP_Text: TMP_TextConstructor;
@@ -27441,7 +27486,7 @@ interface TextMeshProUGUI extends TMP_Text, ILayoutElement {
     readonly canvasRenderer: CanvasRenderer;
     maskOffset: Vector4;
 
-    readonly OnPreRenderText: MonoSignal<TMP_TextInfo>;
+    readonly OnPreRenderText: MonoSignal<[TMP_TextInfo]>;
 
 
     CalculateLayoutInputHorizontal(): void;
@@ -33356,10 +33401,12 @@ interface NetworkConnectionToClient extends NetworkConnection {
     remoteTimeline: number;
     remoteTimescale: number;
     bufferTimeMultiplier: number;
+    inputBufferTime: number;
     snapshotBufferSizeLimit: number;
     readonly address: string;
     readonly bufferTime: number;
     readonly rtt: number;
+    readonly rttVariance: number;
 
 
 
@@ -33830,7 +33877,7 @@ declare const GizmoUtils: GizmoUtilsConstructor;
     
 interface CollisionWatcher extends MonoBehaviour {
 
-    readonly OnCollide: MonoSignal<Collision>;
+    readonly OnCollide: MonoSignal<[Collision]>;
 
 
 
@@ -33986,7 +34033,7 @@ declare const CollisionWatcher: CollisionWatcherConstructor;
     
 interface TriggerWatcher extends MonoBehaviour {
 
-    readonly OnEnter: MonoSignal<Collider>;
+    readonly OnEnter: MonoSignal<[Collider]>;
 
 
 
@@ -34510,9 +34557,9 @@ interface ApplicationConstructor {
     readonly logMessageReceived: MonoSignal<void>;
     readonly logMessageReceivedThreaded: MonoSignal<void>;
     readonly onBeforeRender: MonoSignal<void>;
-    readonly focusChanged: MonoSignal<boolean>;
-    readonly deepLinkActivated: MonoSignal<string>;
-    readonly wantsToQuit: MonoSignal<boolean>;
+    readonly focusChanged: MonoSignal<[boolean]>;
+    readonly deepLinkActivated: MonoSignal<[string]>;
+    readonly wantsToQuit: MonoSignal<[boolean]>;
     readonly quitting: MonoSignal<void>;
     readonly unloading: MonoSignal<void>;
 }
@@ -37860,129 +37907,6 @@ interface Bridge {
 
 }
     
-interface IChatroomNetwork {
-    readonly LocalPeerId: number;
-    readonly PeerIDs: Readonly<number[]>;
-
-    readonly OnCreatedChatroom: MonoSignal<void>;
-    readonly OnChatroomCreationFailed: MonoSignal<Exception>;
-    readonly OnClosedChatroom: MonoSignal<void>;
-    readonly OnJoinedChatroom: MonoSignal<number>;
-    readonly OnChatroomJoinFailed: MonoSignal<Exception>;
-    readonly OnLeftChatroom: MonoSignal<void>;
-    readonly OnPeerJoinedChatroom: MonoSignal<number, number, AudioSource>;
-    readonly OnPeerLeftChatroom: MonoSignal<number>;
-    readonly OnAudioReceived: MonoSignal<number, ChatroomAudioSegment>;
-    readonly OnAudioBroadcasted: MonoSignal<ChatroomAudioSegment>;
-
-
-    BroadcastAudioSegment(data: ChatroomAudioSegment): void;
-    CloseChatroom(data: unknown): void;
-    CloseChatroom(): void;
-    HostChatroom(data: unknown): void;
-    HostChatroom(): void;
-    JoinChatroom(data: unknown): void;
-    JoinChatroom(): void;
-    LeaveChatroom(data: unknown): void;
-    LeaveChatroom(): void;
-
-
-}
-    
-interface ChatroomAudioSegment {
-    segmentIndex: number;
-    frequency: number;
-    channelCount: number;
-    samples: Readonly<number[]>;
-
-
-
-
-
-}
-    
-    
-interface ChatroomAgent {
-    PeerOutputs: CSDictionary<number, IAudioOutput>;
-    OnModeChanged: Action<ChatroomAgentMode>;
-    PeerSettings: CSDictionary<number, ChatroomPeerSettings>;
-    readonly Network: IChatroomNetwork;
-    readonly AudioInput: IAudioInput;
-    readonly AudioOutputFactory: IAudioOutputFactory;
-    readonly CurrentMode: ChatroomAgentMode;
-    MuteOthers: boolean;
-    MuteSelf: boolean;
-
-
-
-    Dispose(): void;
-
-
-}
-    
-interface IAudioOutput {
-    ID: string;
-
-
-
-    Feed(segmentIndex: number, frequency: number, channelCount: number, audioSamples: Readonly<number[]>): void;
-    Feed(segment: ChatroomAudioSegment): void;
-
-
-}
-    
-interface ChatroomPeerSettings {
-    muteThem: boolean;
-    muteSelf: boolean;
-
-
-
-
-
-}
-    
-interface ChatroomPeerSettingsConstructor {
-
-
-    new(): ChatroomPeerSettings;
-
-
-
-}
-declare const ChatroomPeerSettings: ChatroomPeerSettingsConstructor;
-    
-interface IAudioInput {
-    readonly Frequency: number;
-    readonly ChannelCount: number;
-    readonly SegmentRate: number;
-
-    readonly OnSegmentReady: MonoSignal<number, Readonly<number[]>>;
-
-
-
-
-}
-    
-interface IAudioOutputFactory {
-
-
-
-    Create(frequency: number, channelCount: number, samplesLen: number, audioSource: AudioSource): IAudioOutput;
-
-
-}
-    
-interface ChatroomAgentConstructor {
-
-
-    new(chatroomNetwork: IChatroomNetwork, audioInput: IAudioInput, audioOutputFactory: IAudioOutputFactory): ChatroomAgent;
-
-
-
-}
-declare const ChatroomAgent: ChatroomAgentConstructor;
-    
-    
 interface Texture2DArray extends Texture {
     /**
      * Number of elements in a texture array (Read Only).
@@ -38789,7 +38713,6 @@ interface BridgeConstructor {
     CopyToClipboard(text: string): void;
     DownloadTexture2DYielding(url: string): Texture2D;
     GetActiveScene(): Scene;
-    GetAirshipVoiceChatNetwork(): AirshipUniVoiceNetwork;
     GetAllocatedRam(): number;
     GetAverageFPS(): number;
     GetCurrentFPS(): number;
@@ -38803,8 +38726,10 @@ interface BridgeConstructor {
     HasMicrophonePermission(): boolean;
     IsFullScreen(): boolean;
     IsLowEndDevice(): boolean;
+    IsMicInputEnabled(): boolean;
     IsMicRecording(): boolean;
     IsSceneLoading(): boolean;
+    IsVoiceSetup(): boolean;
     LoadGlobalSceneByName(sceneName: string): void;
     LoadScene(sceneName: string, restartLuau: boolean, loadSceneMode: LoadSceneMode): void;
     LoadSceneAsyncFromAssetBundle(sceneName: string, loadSceneMode: LoadSceneMode): void;
@@ -38831,10 +38756,11 @@ interface BridgeConstructor {
     SetDefaultAudioSourceValues(source: AudioSource): void;
     SetFullScreen(value: boolean): void;
     SetMicDeviceIndex(i: number): void;
+    SetMicInputEnabled(enabled: boolean): void;
     SetParentToSceneRoot(transform: Transform): void;
     SetSkyboxMaterial(material: Material): void;
     SetVolume(volume: number): void;
-    StartMicRecording(frequency: number, sampleLength: number): void;
+    StartMicRecording(): void;
     StopMicRecording(): void;
     UnloadGlobalSceneByName(sceneName: string): void;
     UnloadScene(sceneName: string): void;
@@ -38942,6 +38868,7 @@ interface VoxelBlocks extends MonoBehaviour {
     atlasMaterial: Material;
     atlas: TexturePacker;
     loadedBlocks: Readonly<BlockDefinition[]>;
+    alphabeticalBlocks: Readonly<BlockDefinition[]>;
     rootAssetPath: string;
     m_bundlePaths: Readonly<string[]>;
     blockDefinitionLists: Readonly<VoxelBlockDefinitionList[]>;
@@ -39256,7 +39183,7 @@ declare const Surface: SurfaceConstructor;
 interface PrecalculatedFlipConstructor {
 
 
-    new(srcVertices: Readonly<Vector3[]>, srcNormals: Readonly<Vector3[]>, srcSurfaces: Readonly<Surface[]>, flip: Flips): PrecalculatedFlip;
+    new(srcVertices: Readonly<Vector3[]>, srcNormals: Readonly<Vector3[]>, srcSurfaces: Readonly<Surface[]>, voxelFlip: VoxelFlip): PrecalculatedFlip;
 
 
 
@@ -41111,8 +41038,8 @@ interface DevConsoleConstructor {
 
     readonly OnConsoleEnabled: MonoSignal<void>;
     readonly OnConsoleDisabled: MonoSignal<void>;
-    readonly OnConsoleOpened: MonoSignal<boolean>;
-    readonly OnConsoleClosed: MonoSignal<boolean>;
+    readonly OnConsoleOpened: MonoSignal<[boolean]>;
+    readonly OnConsoleClosed: MonoSignal<[boolean]>;
     readonly OnConsoleFocused: MonoSignal<void>;
     readonly OnConsoleFocusLost: MonoSignal<void>;
 }
@@ -41126,7 +41053,7 @@ interface CloudImage extends MonoBehaviour {
     hideErrors: boolean;
     readonly loadedUrl: string;
 
-    readonly OnFinishedLoading: MonoSignal<unknown>;
+    readonly OnFinishedLoading: MonoSignal<[unknown]>;
 
 
     ReleaseImage(notifyCache: boolean): void;
@@ -43684,7 +43611,7 @@ interface Scroller extends VisualElement {
      */
     direction: SliderDirection;
 
-    readonly valueChanged: MonoSignal<number>;
+    readonly valueChanged: MonoSignal<[number]>;
 
 
     /**
@@ -43868,7 +43795,7 @@ interface AirshipLongPress extends MonoBehaviour, IBeginDragHandler, IDragHandle
     holdTime: number;
 
     readonly OnClick: MonoSignal<void>;
-    readonly OnLongPress: MonoSignal<unknown>;
+    readonly OnLongPress: MonoSignal<[unknown]>;
 
 
     OnBeginDrag(eventData: PointerEventData): void;
@@ -48649,7 +48576,7 @@ interface QualitySettingsConstructor {
     SetQualityLevel(index: number, applyExpensiveChanges: boolean): void;
     SetTextureMipmapLimitSettings(groupName: string, textureMipmapLimitSettings: TextureMipmapLimitSettings): void;
 
-    readonly activeQualityLevelChanged: MonoSignal<number, number>;
+    readonly activeQualityLevelChanged: MonoSignal<[number, number]>;
 }
 declare const QualitySettings: QualitySettingsConstructor;
     
@@ -49556,7 +49483,7 @@ interface Panel extends IContainer {
     readonly children: Readonly<Widget[]>;
     documentationUrl: string;
 
-    readonly onSetDirty: MonoSignal<Panel>;
+    readonly onSetDirty: MonoSignal<[Panel]>;
 
 
     GetHashCode(): number;
@@ -50889,6 +50816,495 @@ interface WheelHit {
 
 }
     
+interface VideoPlayer extends Behaviour {
+    /**
+     * The source that the VideoPlayer uses for playback.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-source.html | Video.VideoPlayer.source}
+     */
+    source: VideoSource;
+    /**
+     * The clock source used by the VideoPlayer to derive its current time.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-timeUpdateMode.html | Video.VideoPlayer.timeUpdateMode}
+     */
+    timeUpdateMode: VideoTimeUpdateMode;
+    /**
+     * The file URL or web URL that the VideoPlayer reads content from.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-url.html | Video.VideoPlayer.url}
+     */
+    url: string;
+    /**
+     * The clip being played by the VideoPlayer.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-clip.html | Video.VideoPlayer.clip}
+     */
+    clip: VideoClip;
+    /**
+     * Where the video content will be drawn.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-renderMode.html | Video.VideoPlayer.renderMode}
+     */
+    renderMode: VideoRenderMode;
+    /**
+     * Whether you can change the time source followed by the VideoPlayer. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-canSetTimeUpdateMode.html | Video.VideoPlayer.canSetTimeUpdateMode}
+     */
+    readonly canSetTimeUpdateMode: boolean;
+    /**
+     * Camera component to draw to when Video.VideoPlayer.renderMode is set to either Video.VideoRenderMode.CameraFarPlane or Video.VideoRenderMode.CameraNearPlane.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-targetCamera.html | Video.VideoPlayer.targetCamera}
+     */
+    targetCamera: Camera;
+    /**
+     * RenderTexture to draw to when Video.VideoPlayer.renderMode is set to Video.VideoTarget.RenderTexture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-targetTexture.html | Video.VideoPlayer.targetTexture}
+     */
+    targetTexture: RenderTexture;
+    /**
+     * Renderer which is targeted when Video.VideoPlayer.renderMode is set to Video.VideoTarget.MaterialOverride
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-targetMaterialRenderer.html | Video.VideoPlayer.targetMaterialRenderer}
+     */
+    targetMaterialRenderer: Renderer;
+    /**
+     * Material texture property which is targeted when Video.VideoPlayer.renderMode is set to Video.VideoTarget.MaterialOverride.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-targetMaterialProperty.html | Video.VideoPlayer.targetMaterialProperty}
+     */
+    targetMaterialProperty: string;
+    /**
+     * Defines how the video content will be stretched to fill the target area.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-aspectRatio.html | Video.VideoPlayer.aspectRatio}
+     */
+    aspectRatio: VideoAspectRatio;
+    /**
+     * Overall transparency level of the target camera plane video.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-targetCameraAlpha.html | Video.VideoPlayer.targetCameraAlpha}
+     */
+    targetCameraAlpha: number;
+    /**
+     * Type of 3D content contained in the source video media.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-targetCamera3DLayout.html | Video.VideoPlayer.targetCamera3DLayout}
+     */
+    targetCamera3DLayout: Video3DLayout;
+    /**
+     * Internal texture in which video content is placed. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-texture.html | Video.VideoPlayer.texture}
+     */
+    readonly texture: Texture;
+    /**
+     * Returns whether the VideoPlayer has successfully prepared the content to be played.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-isPrepared.html | Video.VideoPlayer.isPrepared}
+     */
+    readonly isPrepared: boolean;
+    /**
+     * Determines whether the VideoPlayer will wait for the first frame to be loaded into the texture before starting playback when Video.VideoPlayer.playOnAwake is on.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-waitForFirstFrame.html | Video.VideoPlayer.waitForFirstFrame}
+     */
+    waitForFirstFrame: boolean;
+    /**
+     * Whether the content will start playing back as soon as the component awakes.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-playOnAwake.html | Video.VideoPlayer.playOnAwake}
+     */
+    playOnAwake: boolean;
+    /**
+     * Returns whether the VideoPlayer is currently playing the content.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-isPlaying.html | Video.VideoPlayer.isPlaying}
+     */
+    readonly isPlaying: boolean;
+    /**
+     * Whether playback is paused. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-isPaused.html | Video.VideoPlayer.isPaused}
+     */
+    readonly isPaused: boolean;
+    /**
+     * Whether you can change the current time using the VideoPlayer.time or VideoPlayer.frame properties. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-canSetTime.html | Video.VideoPlayer.canSetTime}
+     */
+    readonly canSetTime: boolean;
+    /**
+     * The presentation time of the currently available frame in VideoPlayer.texture in seconds.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-time.html | Video.VideoPlayer.time}
+     */
+    time: number;
+    /**
+     * The frame index of the currently available frame in VideoPlayer.texture.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-frame.html | Video.VideoPlayer.frame}
+     */
+    frame: number;
+    /**
+     * The clock time that the VideoPlayer follows to schedule its samples. The clock time is expressed in seconds. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-clockTime.html | Video.VideoPlayer.clockTime}
+     */
+    readonly clockTime: number;
+    /**
+     * Returns true if the VideoPlayer can step forward through the video content. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-canStep.html | Video.VideoPlayer.canStep}
+     */
+    readonly canStep: boolean;
+    /**
+     * Whether you can change the playback speed. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-canSetPlaybackSpeed.html | Video.VideoPlayer.canSetPlaybackSpeed}
+     */
+    readonly canSetPlaybackSpeed: boolean;
+    /**
+     * Factor by which the basic playback rate will be multiplied.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-playbackSpeed.html | Video.VideoPlayer.playbackSpeed}
+     */
+    playbackSpeed: number;
+    /**
+     * Determines whether the VideoPlayer restarts from the beginning when it reaches the end of the clip.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-isLooping.html | Video.VideoPlayer.isLooping}
+     */
+    isLooping: boolean;
+    /**
+     * The clock that the Video.VideoPlayer observes to detect and correct drift.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-timeReference.html | Video.VideoPlayer.timeReference}
+     */
+    timeReference: VideoTimeReference;
+    /**
+     * Reference time of the external clock the Video.VideoPlayer uses to correct its drift.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-externalReferenceTime.html | Video.VideoPlayer.externalReferenceTime}
+     */
+    externalReferenceTime: number;
+    /**
+     * Whether frame-skipping to maintain synchronization can be controlled. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-canSetSkipOnDrop.html | Video.VideoPlayer.canSetSkipOnDrop}
+     */
+    readonly canSetSkipOnDrop: boolean;
+    /**
+     * Whether the VideoPlayer is allowed to skip frames to catch up with current time.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-skipOnDrop.html | Video.VideoPlayer.skipOnDrop}
+     */
+    skipOnDrop: boolean;
+    /**
+     * Number of frames in the current video content. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-frameCount.html | Video.VideoPlayer.frameCount}
+     */
+    readonly frameCount: number;
+    /**
+     * The frame rate of the clip or URL in frames/second. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-frameRate.html | Video.VideoPlayer.frameRate}
+     */
+    readonly frameRate: number;
+    /**
+     * The length of the VideoClip, or the URL, in seconds. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-length.html | Video.VideoPlayer.length}
+     */
+    readonly length: number;
+    /**
+     * The width of the images in the VideoClip, or URL, in pixels. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-width.html | Video.VideoPlayer.width}
+     */
+    readonly width: number;
+    /**
+     * The height of the images in the VideoClip, or URL, in pixels. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-height.html | Video.VideoPlayer.height}
+     */
+    readonly height: number;
+    /**
+     * Numerator of the pixel aspect ratio (num:den) for the VideoClip or the URL. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-pixelAspectRatioNumerator.html | Video.VideoPlayer.pixelAspectRatioNumerator}
+     */
+    readonly pixelAspectRatioNumerator: number;
+    /**
+     * Denominator of the pixel aspect ratio (num:den) for the VideoClip or the URL. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-pixelAspectRatioDenominator.html | Video.VideoPlayer.pixelAspectRatioDenominator}
+     */
+    readonly pixelAspectRatioDenominator: number;
+    /**
+     * Number of audio tracks found in the data source currently configured. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-audioTrackCount.html | Video.VideoPlayer.audioTrackCount}
+     */
+    readonly audioTrackCount: number;
+    /**
+     * Number of audio tracks that this VideoPlayer will take control of.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-controlledAudioTrackCount.html | Video.VideoPlayer.controlledAudioTrackCount}
+     */
+    controlledAudioTrackCount: number;
+    /**
+     * Destination for the audio embedded in the video.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-audioOutputMode.html | Video.VideoPlayer.audioOutputMode}
+     */
+    audioOutputMode: VideoAudioOutputMode;
+    /**
+     * Whether direct-output volume controls are supported for the current platform and video format. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-canSetDirectAudioVolume.html | Video.VideoPlayer.canSetDirectAudioVolume}
+     */
+    readonly canSetDirectAudioVolume: boolean;
+    /**
+     * Enables the frameReady events.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-sendFrameReadyEvents.html | Video.VideoPlayer.sendFrameReadyEvents}
+     */
+    sendFrameReadyEvents: boolean;
+
+    readonly prepareCompleted: MonoSignal<void>;
+    readonly loopPointReached: MonoSignal<void>;
+    readonly started: MonoSignal<void>;
+    readonly frameDropped: MonoSignal<void>;
+    readonly errorReceived: MonoSignal<void>;
+    readonly seekCompleted: MonoSignal<void>;
+    readonly clockResyncOccurred: MonoSignal<void>;
+    readonly frameReady: MonoSignal<void>;
+
+
+    /**
+     * Enable/disable audio track decoding. Only effective when the VideoPlayer is not currently playing.
+     * @param trackIndex Index of the audio track to enable/disable.
+     * @param enabled True for enabling the track. False for disabling the track.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.EnableAudioTrack.html | Video.VideoPlayer.EnableAudioTrack}
+     */
+    EnableAudioTrack(trackIndex: number, enabled: boolean): void;
+    /**
+     * The number of audio channels in the specified audio track.
+     * @param trackIndex Index for the audio track being queried.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.GetAudioChannelCount.html | Video.VideoPlayer.GetAudioChannelCount}
+     */
+    GetAudioChannelCount(trackIndex: number): number;
+    /**
+     * Returns the language code, if any, for the specified track.
+     * @param trackIndex Index of the audio track to query.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.GetAudioLanguageCode.html | Video.VideoPlayer.GetAudioLanguageCode}
+     */
+    GetAudioLanguageCode(trackIndex: number): string;
+    /**
+     * Gets the audio track sampling rate in Hertz.
+     * @param trackIndex Index of the audio track to query.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.GetAudioSampleRate.html | Video.VideoPlayer.GetAudioSampleRate}
+     */
+    GetAudioSampleRate(trackIndex: number): number;
+    /**
+     * Gets the direct-output audio mute status for the specified track.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.GetDirectAudioMute.html | Video.VideoPlayer.GetDirectAudioMute}
+     */
+    GetDirectAudioMute(trackIndex: number): boolean;
+    /**
+     * Return the direct-output volume for specified track.
+     * @param trackIndex Track index for which the volume is queried.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.GetDirectAudioVolume.html | Video.VideoPlayer.GetDirectAudioVolume}
+     */
+    GetDirectAudioVolume(trackIndex: number): number;
+    /**
+     * Gets the AudioSource that will receive audio samples for the specified track if Video.VideoPlayer.audioOutputMode is set to Video.VideoAudioOutputMode.AudioSource.
+     * @param trackIndex Index of the audio track for which the AudioSource is wanted.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.GetTargetAudioSource.html | Video.VideoPlayer.GetTargetAudioSource}
+     */
+    GetTargetAudioSource(trackIndex: number): AudioSource;
+    /**
+     * Whether decoding for the specified audio track is enabled. See Video.VideoPlayer.EnableAudioTrack for distinction with mute.
+     * @param trackIndex Index of the audio track being queried.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.IsAudioTrackEnabled.html | Video.VideoPlayer.IsAudioTrackEnabled}
+     */
+    IsAudioTrackEnabled(trackIndex: number): boolean;
+    /**
+     * Pauses the playback and leaves the current time intact.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.Pause.html | Video.VideoPlayer.Pause}
+     */
+    Pause(): void;
+    /**
+     * Starts or resumes the playback of a video.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.Play.html | Video.VideoPlayer.Play}
+     */
+    Play(): void;
+    /**
+     * Prepares the playback engine so that it's ready for playback.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.Prepare.html | Video.VideoPlayer.Prepare}
+     */
+    Prepare(): void;
+    /**
+     * Set the direct-output audio mute status for the specified track.
+     * @param trackIndex Track index for which the mute is set.
+     * @param mute Mute on/off.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.SetDirectAudioMute.html | Video.VideoPlayer.SetDirectAudioMute}
+     */
+    SetDirectAudioMute(trackIndex: number, mute: boolean): void;
+    /**
+     * Set the direct-output audio volume for the specified track.
+     * @param trackIndex Track index for which the volume is set.
+     * @param volume New volume, between 0 and 1.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.SetDirectAudioVolume.html | Video.VideoPlayer.SetDirectAudioVolume}
+     */
+    SetDirectAudioVolume(trackIndex: number, volume: number): void;
+    /**
+     * Sets the AudioSource that will receive audio samples for the specified track if this audio target is selected with Video.VideoPlayer.audioOutputMode.
+     * @param trackIndex Index of the audio track to associate with the specified AudioSource.
+     * @param source AudioSource to associate with the audio track.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.SetTargetAudioSource.html | Video.VideoPlayer.SetTargetAudioSource}
+     */
+    SetTargetAudioSource(trackIndex: number, source: AudioSource): void;
+    /**
+     * Immediately advance the current time by one frame.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.StepForward.html | Video.VideoPlayer.StepForward}
+     */
+    StepForward(): void;
+    /**
+     * Stops the playback and sets the current time to 0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer.Stop.html | Video.VideoPlayer.Stop}
+     */
+    Stop(): void;
+
+
+}
+    
+interface VideoClip extends Object {
+    /**
+     * Gets the original video clip file path as it was imported into Unity. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-originalPath.html | Video.VideoClip.originalPath}
+     */
+    readonly originalPath: string;
+    /**
+     * The length of the video clip in frames. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-frameCount.html | Video.VideoClip.frameCount}
+     */
+    readonly frameCount: number;
+    /**
+     * The frame rate of the clip in frames per second. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-frameRate.html | Video.VideoClip.frameRate}
+     */
+    readonly frameRate: number;
+    /**
+     * The length of the video clip in seconds. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-length.html | Video.VideoClip.length}
+     */
+    readonly length: number;
+    /**
+     * The width of the images in the video clip in pixels. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-width.html | Video.VideoClip.width}
+     */
+    readonly width: number;
+    /**
+     * The height of the images in the video clip in pixels. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-height.html | Video.VideoClip.height}
+     */
+    readonly height: number;
+    /**
+     * Returns the numerator of the pixel aspect ratio (numerator:denominator). (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-pixelAspectRatioNumerator.html | Video.VideoClip.pixelAspectRatioNumerator}
+     */
+    readonly pixelAspectRatioNumerator: number;
+    /**
+     * Returns the denominator of the pixel aspect ratio (numerator:denominator). (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-pixelAspectRatioDenominator.html | Video.VideoClip.pixelAspectRatioDenominator}
+     */
+    readonly pixelAspectRatioDenominator: number;
+    /**
+     * Whether the imported clip contains sRGB color data (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-sRGB.html | Video.VideoClip.sRGB}
+     */
+    readonly sRGB: boolean;
+    /**
+     * Gets the number of audio tracks that are embedded in the video clip. (Read Only).
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip-audioTrackCount.html | Video.VideoClip.audioTrackCount}
+     */
+    readonly audioTrackCount: number;
+
+
+
+    /**
+     * Returns the number of channels in the audio track. For example, if the audio track is a stereo track, this function returns 2.
+     * @param audioTrackIdx Use this index to specify which audio track in the video to use.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip.GetAudioChannelCount.html | Video.VideoClip.GetAudioChannelCount}
+     */
+    GetAudioChannelCount(audioTrackIdx: number): number;
+    /**
+     * Gets the language of the video clip&#8217;s audio tracks, if the audio tracks have an assigned language.
+     * @param audioTrackIdx Index of the audio track you want to query in the video.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip.GetAudioLanguage.html | Video.VideoClip.GetAudioLanguage}
+     */
+    GetAudioLanguage(audioTrackIdx: number): string;
+    /**
+     * Get the audio track sampling rate in hertz (Hz).
+     * @param audioTrackIdx Index of the audio queried audio track.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoClip.GetAudioSampleRate.html | Video.VideoClip.GetAudioSampleRate}
+     */
+    GetAudioSampleRate(audioTrackIdx: number): number;
+
+
+}
+    
+interface VideoPlayerConstructor {
+    /**
+     * Maximum number of audio tracks that can be controlled. (Read Only)
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/Video.VideoPlayer-controlledAudioTrackMaxCount.html | Video.VideoPlayer.controlledAudioTrackMaxCount}
+     */
+    readonly controlledAudioTrackMaxCount: number;
+
+
+    new(): VideoPlayer;
+
+
+
+}
+declare const VideoPlayer: VideoPlayerConstructor;
+    
 interface NetworkServer {
 
 
@@ -51242,7 +51658,7 @@ interface NetworkClientConstructor {
     UnregisterPrefab(prefab: GameObject): void;
     UnregisterSpawnHandler(assetId: number): void;
 
-    readonly onConnectionQualityChanged: MonoSignal<ConnectionQuality, ConnectionQuality>;
+    readonly onConnectionQualityChanged: MonoSignal<[ConnectionQuality, ConnectionQuality]>;
 }
 declare const NetworkClient: NetworkClientConstructor;
     
@@ -54470,7 +54886,7 @@ interface SplineConstructor {
 
 
 
-    readonly Changed: MonoSignal<Readonly<BezierKnot[]>, number, SplineModification>;
+    readonly Changed: MonoSignal<[Readonly<BezierKnot[]>, number, SplineModification]>;
 }
 declare const Spline: SplineConstructor;
     
@@ -54498,7 +54914,7 @@ interface SplineAnimate extends SplineComponent {
     StartOffset: number;
     readonly IsPlaying: boolean;
 
-    readonly Updated: MonoSignal<Vector3, Quaternion>;
+    readonly Updated: MonoSignal<[Vector3, Quaternion]>;
     readonly Completed: MonoSignal<void>;
 
 
@@ -54614,9 +55030,9 @@ interface SplineContainerConstructor {
 
 
 
-    readonly SplineAdded: MonoSignal<SplineContainer, number>;
-    readonly SplineRemoved: MonoSignal<SplineContainer, number>;
-    readonly SplineReordered: MonoSignal<SplineContainer, number, number>;
+    readonly SplineAdded: MonoSignal<[SplineContainer, number]>;
+    readonly SplineRemoved: MonoSignal<[SplineContainer, number]>;
+    readonly SplineReordered: MonoSignal<[SplineContainer, number, number]>;
 }
 declare const SplineContainer: SplineContainerConstructor;
     
@@ -54778,10 +55194,10 @@ interface VoxelWorld extends MonoBehaviour {
     readonly doVisuals: boolean;
     focusPosition: Vector3;
 
-    readonly BeforeVoxelChunkUpdated: MonoSignal<Chunk>;
-    readonly VoxelChunkUpdated: MonoSignal<Chunk>;
-    readonly BeforeVoxelPlaced: MonoSignal<number, Vector3>;
-    readonly VoxelPlaced: MonoSignal<unknown, unknown, unknown, unknown>;
+    readonly BeforeVoxelChunkUpdated: MonoSignal<[Chunk]>;
+    readonly VoxelChunkUpdated: MonoSignal<[Chunk]>;
+    readonly BeforeVoxelPlaced: MonoSignal<[number, Vector3]>;
+    readonly VoxelPlaced: MonoSignal<[unknown, unknown, unknown, unknown]>;
     readonly OnFinishedLoading: MonoSignal<void>;
     readonly OnFinishedReplicatingChunksFromServer: MonoSignal<void>;
 
@@ -54790,35 +55206,38 @@ interface VoxelWorld extends MonoBehaviour {
     BulkReadVoxels(positions: Readonly<Vector3[]>): Readonly<number[]>;
     CalculatePlaneIntersection(origin: Vector3, dir: Vector3, planeNormal: Vector3, planePoint: Vector3): Vector3;
     CanSeePoint(pos: Vector3, dest: Vector3, destNormal: Vector3): boolean;
-    ColorVoxelAt(pos: Vector3, color: Color, priority: boolean): void;
-    CreateSingleStarterBlock(): void;
+    CreateSingleStarterVoxel(): void;
     DamageVoxelAt(pos: Vector3, damage: number, priority: boolean): void;
+    DecodeFromString(stringData: string): void;
     DeleteRenderedGameObjects(): void;
     DirtyMesh(voxel: Vector3, dirtyCollisions: boolean, priority: boolean): void;
     DirtyMesh(voxel: Vector3, dirtyCollisions: boolean): void;
     DirtyNeighborMeshes(voxel: Vector3, dirtyCollision: boolean, priority: boolean): void;
     DirtyNeighborMeshes(voxel: Vector3, dirtyCollision: boolean): void;
+    EncodeToString(): string;
     FillFlatGround(): void;
     FillRandomTerrain(): void;
     FillSingleBlock(): void;
     FromBuffer(buffer: buffer): void;
     FullWorldUpdate(): void;
-    GenerateWorld(populateTerrain: boolean): void;
     GenerateWorld(): void;
     GetChunkByChunkPos(pos: Vector3): Chunk;
     GetCollisionType(voxelData: number): CollisionType;
     GetNumProcessingMeshChunks(): number;
     GetNumRadiosityProcessingChunks(): number;
     GetPrefabAt(pos: Vector3): GameObject;
-    GetRandomVoxelInWorld(): Vector3;
+    GetRandomOccupiedVoxelPosition(): Vector3;
     GetVoxelAndChunkAt(pos: Vector3): ValueTuple<number, Chunk>;
     GetVoxelAt(pos: Vector3): number;
+    GetVoxelBlockDefAt(pos: Vector3): BlockDefinition;
     GetVoxelColorAt(pos: Vector3): Color32;
+    GetVoxelCustomDataAt(pos: Vector3): BinaryBlob;
+    GetVoxelIdAt(pos: Vector3): number;
     InvokeOnFinishedReplicatingChunksFromServer(): void;
     LoadEmptyWorld(): void;
     LoadWorldFromSaveFile(file: WorldSaveFile): void;
     OnRenderObject(): void;
-    RaycastVoxel(pos: Vector3, direction: Vector3, maxDistance: number): VoxelRaycastResult;
+    RaycastVoxel(localPos: Vector3, localDirection: Vector3, maxDistance: number): VoxelRaycastResult;
     RaycastVoxel_Internal(pos: Vector3, direction: Vector3, maxDistance: number, debug: boolean): ValueTuple<boolean, number, Vector3, Vector3>;
     RaycastVoxel_Internal(pos: Vector3, direction: Vector3, maxDistance: number): ValueTuple<boolean, number, Vector3, Vector3>;
     RaycastVoxelForLighting(pos: Vector3, direction: Vector3, maxDistance: number, debug: boolean): number;
@@ -54840,8 +55259,11 @@ interface VoxelWorld extends MonoBehaviour {
     UpdateFocusCamera(focusCamera: Camera): void;
     WaitForChunkToLoad(voxel: Vector3): void;
     WriteTemporaryVoxelCollisionAt(pos: Vector3, num: number): void;
-    WriteVoxelAt(pos: Vector3, num: number, priority: boolean): void;
-    WriteVoxelGroupAt(positions: Readonly<Vector3[]>, nums: Readonly<number[]>, priority: boolean): void;
+    WriteVoxelAt(pos: Vector3, voxelData: number, priority: boolean): void;
+    WriteVoxelAt(pos: Vector3, voxelData: number): void;
+    WriteVoxelColorAt(pos: Vector3, color: Color, priority: boolean): void;
+    WriteVoxelCustomDataAt(pos: Vector3, data: BinaryBlob, priority: boolean): void;
+    WriteVoxelGroupAt(positions: Readonly<Vector3[]>, voxelData: Readonly<number[]>, priority: boolean): void;
 
 
 }
@@ -54867,6 +55289,7 @@ interface SaveChunk {
     key: Vector3;
     data: Readonly<number[]>;
     color: Readonly<number[]>;
+    customData: CSDictionary<number, BinaryBlob>;
 
 
 
@@ -54878,10 +55301,10 @@ interface SaveChunk {
 interface SaveChunkConstructor {
 
 
-    new(key: Vector3, data: Readonly<number[]>, color: Readonly<number[]>): SaveChunk;
+    new(key: Vector3, data: Readonly<number[]>, color: Readonly<number[]>, customData: CSDictionary<number, BinaryBlob>): SaveChunk;
 
 
-    Deserialize(reader: BinaryReader, version: number, voxelData: Readonly<number[]>, colors: Readonly<number[]>): Vector3;
+    Deserialize(reader: BinaryReader, version: number, voxelData: Readonly<number[]>, colors: Readonly<number[]>, customData: CSDictionary<number, BinaryBlob>): Vector3;
 
 }
 declare const SaveChunk: SaveChunkConstructor;
@@ -54918,7 +55341,7 @@ interface VoxelWorldNetworker extends NetworkBehaviour {
     RpcFinishedSendingWorld(conn: NetworkConnection): void;
     RpcWriteChunks(conn: NetworkConnection, positions: Readonly<Vector3[]>, chunks: Readonly<Chunk[]>): void;
     RpcWriteVoxel(pos: Vector3, voxel: number): void;
-    RpcWriteVoxelGroup(positions: Readonly<Vector3[]>, nums: Readonly<number[]>, priority: boolean): void;
+    RpcWriteVoxelGroup(positions: Readonly<Vector3[]>, voxelData: Readonly<number[]>, priority: boolean): void;
     Weaved(): boolean;
 
 
@@ -54927,9 +55350,9 @@ interface VoxelWorldNetworker extends NetworkBehaviour {
 interface Chunk {
     readWriteVoxel: Readonly<number[]>;
     color: Readonly<number[]>;
+    customDataMap: CSDictionary<number, BinaryBlob>;
     damageMap: CSDictionary<number, number>;
     keysWithVoxels: Readonly<number[]>;
-    materialPropertiesDirty: boolean;
     world: VoxelWorld;
     bottomLeftInt: Vector3;
     bounds: Bounds;
@@ -54940,22 +55363,24 @@ interface Chunk {
 
 
 
-    Busy(): boolean;
-    Clear(): void;
-    Free(): void;
+    DestroyAllMeshes(): void;
+    GetAllPrefabs(): Readonly<GameObject[]>;
+    GetCustomDataAt(worldPos: Vector3): BinaryBlob;
     GetGameObject(): GameObject;
     GetKey(): Vector3;
     GetLocalColorAt(localX: number, localY: number, localZ: number): Color32;
-    GetLocalVoxelAt(localPos: Vector3): number;
-    GetLocalVoxelAt(localX: number, localY: number, localZ: number): number;
+    GetLocalVoxelDataAt(localPos: Vector3): number;
+    GetLocalVoxelDataAt(localX: number, localY: number, localZ: number): number;
     GetPrefabAt(worldPos: Vector3): GameObject;
-    GetPriorityUpdate(): boolean;
     GetRandomOccupiedVoxelPosition(): Vector3;
-    GetVoxelAt(worldPos: Vector3): number;
     GetVoxelColorAt(worldPos: Vector3): Color32;
+    GetVoxelDamage(worldPos: Vector3): number;
+    GetVoxelDataAt(worldPos: Vector3): number;
     HasVoxels(): boolean;
+    IsBusy(): boolean;
     IsGeometryDirty(): boolean;
     IsLoaded(): boolean;
+    IsPriorityUpdate(): boolean;
     MainthreadForceCollisionRebuild(): void;
     MainthreadUpdateMesh(world: VoxelWorld): boolean;
     MarkKeysWithVoxelsDirty(): void;
@@ -54966,8 +55391,9 @@ interface Chunk {
     SetGeometryDirty(dirty: boolean): void;
     SetWorld(world: VoxelWorld): void;
     WaitForLoaded(): void;
+    WriteCustomDataAt(worldPos: Vector3, data: BinaryBlob): void;
     WriteTemporaryCollision(position: Vector3, hasCollision: boolean): void;
-    WriteVoxel(worldPos: Vector3, num: number): void;
+    WriteVoxelAt(worldPos: Vector3, voxelData: number): void;
     WriteVoxelColor(worldPos: Vector3, col: Color32): void;
     WriteVoxelDamage(worldPos: Vector3, dmg: number): void;
 
@@ -55028,20 +55454,22 @@ interface VoxelWorldConstructor {
     CardinalVector(normal: Vector3): Vector3;
     CreateChunk(key: Vector3): Chunk;
     DeleteChildGameObjects(parent: GameObject): void;
-    FlipBitsToQuaternion(flipBits: number): Quaternion;
     Floor(input: Vector3): Vector3;
     FloorInt(input: Vector3): Vector3;
+    GetAllInstances(findObjectsInactive: FindObjectsInactive): Readonly<VoxelWorld[]>;
     GetFirstInstance(): VoxelWorld;
-    GetScaleFromFlipBits(flipBits: number): Vector3;
-    GetVoxelFlippedBits(voxel: number): number;
+    GetVoxelDataExtraBits(voxelData: number): number;
+    GetVoxelDataFlippedBits(voxelData: number): number;
+    GetVoxelDataFlips(voxelData: number): VoxelFlip;
+    GetVoxelDataId(voxelData: number): number;
+    GetVoxelDataId(voxelData: number): number;
+    GetVoxelDataRotation(voxelData: number): Quaternion;
+    GetVoxelDataScale(voxelData: number): Vector3;
+    GetVoxelDataWithFlippedBits(voxel: number, flippedBits: number): number;
+    GetVoxelDataWithSolidBit(voxelData: number, solid: boolean): number;
     HashCoordinates(x: number, y: number, z: number): number;
-    SetVoxelFlippedBits(voxel: number, flippedBits: number): number;
-    SetVoxelSolidBit(voxel: number, solid: boolean): number;
+    IsVoxelDataSolid(voxelData: number): boolean;
     Sign(input: Vector3): Vector3;
-    VoxelDataToBlockId(block: number): number;
-    VoxelDataToBlockId(block: number): number;
-    VoxelDataToExtraBits(block: number): number;
-    VoxelIsSolid(voxel: number): boolean;
 
 }
 declare const VoxelWorld: VoxelWorldConstructor;
@@ -55473,6 +55901,239 @@ interface VibrationManagerConstructor {
 
 }
 declare const VibrationManager: VibrationManagerConstructor;
+    
+interface AirshipUniVoice extends MonoBehaviour {
+
+
+
+
+
+}
+    
+interface IAudioServer<T> {
+    readonly ClientIDs: Readonly<T[]>;
+    readonly ClientVoiceSettings: CSDictionary<T, VoiceSettings>;
+
+    readonly OnServerStart: MonoSignal<void>;
+    readonly OnServerStop: MonoSignal<void>;
+    readonly OnClientVoiceSettingsUpdated: MonoSignal<void>;
+
+
+
+
+}
+    
+interface VoiceSettings {
+    muteAll: boolean;
+    mutedPeers: Readonly<number[]>;
+    deafenAll: boolean;
+    deafenedPeers: Readonly<number[]>;
+    myTags: Readonly<string[]>;
+    mutedTags: Readonly<string[]>;
+    deafenedTags: Readonly<string[]>;
+
+
+
+    SetDeaf(peerId: number, state: boolean): void;
+    SetMute(peerId: number, state: boolean): void;
+
+
+}
+    
+interface VoiceSettingsConstructor {
+
+
+    new(): VoiceSettings;
+
+
+
+}
+declare const VoiceSettings: VoiceSettingsConstructor;
+    
+interface MirrorServer extends IAudioServer<number> {
+    ServerMutedClientIDs: Readonly<number[]>;
+    readonly ClientIDs: Readonly<number[]>;
+    readonly ClientVoiceSettings: CSDictionary<number, VoiceSettings>;
+
+    readonly OnServerStart: MonoSignal<void>;
+    readonly OnServerStop: MonoSignal<void>;
+    readonly OnClientVoiceSettingsUpdated: MonoSignal<void>;
+
+
+    Dispose(): void;
+
+
+}
+    
+interface MirrorServerConstructor {
+
+
+    new(): MirrorServer;
+
+
+    Log(message: string): void;
+
+}
+declare const MirrorServer: MirrorServerConstructor;
+    
+interface ClientSession<T> {
+    OutputsEnabled: boolean;
+    readonly PeerOutputs: CSDictionary<T, IAudioOutput>;
+    InputEnabled: boolean;
+    InputFilters: Readonly<IAudioFilter[]>;
+    Client: IAudioClient<T>;
+    Input: IAudioInput;
+    OutputProvider: Func<IAudioOutput>;
+    OutputFactory: IAudioOutputFactory<T>;
+
+
+
+    AddOutputFilter<TFilter extends IAudioFilter>(filterFactory: Func<IAudioFilter>): void;
+    Dispose(): void;
+    HasInputFilter<TFilter extends IAudioFilter>(): boolean;
+    HasOutputFilter<TFilter extends IAudioFilter>(): boolean;
+    RemoveOutputFilter<TFilter extends IAudioFilter>(): void;
+
+
+}
+    
+interface IAudioOutput {
+
+
+
+    Feed(frame: AudioFrame): void;
+
+
+}
+    
+interface AudioFrame {
+    timestamp: number;
+    frequency: number;
+    channelCount: number;
+    samples: Readonly<number[]>;
+
+
+
+
+
+}
+    
+interface IAudioFilter {
+
+
+
+    Run(input: AudioFrame): AudioFrame;
+
+
+}
+    
+interface IAudioClient<T> {
+    readonly ID: T;
+    readonly PeerIDs: Readonly<T[]>;
+    readonly YourVoiceSettings: VoiceSettings;
+    OnPostProcessedPeerAudioFrame: Action<T, AudioFrame>;
+
+    readonly OnJoined: MonoSignal<[T, Readonly<T[]>]>;
+    readonly OnLeft: MonoSignal<void>;
+    readonly OnPeerJoined: MonoSignal<[T]>;
+    readonly OnPeerLeft: MonoSignal<[T]>;
+    readonly OnReceivedPeerAudioFrame: MonoSignal<[T, AudioFrame]>;
+
+
+    SendAudioFrame(frame: AudioFrame): void;
+    SubmitVoiceSettings(): void;
+
+
+}
+    
+interface IAudioInput {
+
+    readonly OnFrameReady: MonoSignal<[AudioFrame]>;
+
+
+
+
+}
+    
+interface IAudioOutputFactory<T> {
+
+
+
+    Create(peerId: T): IAudioOutput;
+
+
+}
+    
+interface ClientSessionConstructor {
+
+
+    new(client: IAudioClient<T>, input: IAudioInput, outputProvider: Func<IAudioOutput>): ClientSession<T>;
+    new(client: IAudioClient<T>, input: IAudioInput, outputFactory: IAudioOutputFactory<T>): ClientSession<T>;
+
+
+
+}
+declare const ClientSession: ClientSessionConstructor;
+    
+interface Device {
+    readonly Name: string;
+    readonly MaxFrequency: number;
+    readonly MinFrequency: number;
+    readonly SupportsAnyFrequency: boolean;
+    VolumeMultiplier: number;
+    readonly SamplingFrequency: number;
+    readonly FrameDurationMS: number;
+    readonly FrameLength: number;
+    readonly ChannelCount: number;
+    readonly IsRecording: boolean;
+
+    readonly OnStartRecording: MonoSignal<void>;
+    readonly OnFrameCollected: MonoSignal<[number, number, Readonly<number[]>]>;
+    readonly OnStopRecording: MonoSignal<void>;
+
+
+    StartRecording(frameDurationMS: number): void;
+    StartRecording(): void;
+    StartRecording(samplingFrequency: number, frameDurationMS: number): void;
+    StartRecording(samplingFrequency: number): void;
+    StopRecording(): void;
+
+
+}
+    
+interface DeviceConstructor {
+    DEFAULT_FRAME_DURATION_MS: number;
+    DEFAULT_SAMPLING_FREQUENCY: number;
+
+
+
+
+
+}
+declare const Device: DeviceConstructor;
+    
+interface AirshipUniVoiceConstructor {
+    readonly HasSetUpServer: boolean;
+    readonly HasSetUpClient: boolean;
+    readonly AudioServer: MirrorServer;
+    readonly ClientSession: ClientSession<number>;
+
+
+    new(): AirshipUniVoice;
+
+
+    ClientSetDeafened(deafened: boolean): void;
+    IsPeerMuted(peerConnectionId: number): boolean;
+    IsRecording(): boolean;
+    Log(message: string): void;
+    MutePeer(peerConnectionId: number, muted: boolean): void;
+    ServerMute(connectionId: number, muted: boolean): void;
+    StartRecording(mic: Device): void;
+    StopRecording(): void;
+
+    readonly OnSpeakingLevelChanged: MonoSignal<[number, number]>;
+}
+declare const AirshipUniVoice: AirshipUniVoiceConstructor;
     
 interface AirshipSteamFriendInfo {
     playingAirship: boolean;

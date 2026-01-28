@@ -89,7 +89,7 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 		const timeString = TimeUtil.FormatTimeAgo(timeDiff, {
 			includeAgo: true,
 		});
-		this.authorText.text = `${gameDto.organization?.name} • ${timeString}`;
+		this.authorText.text = `${gameDto.organization?.name} - ${timeString}`;
 
 		this.UpdatePlayerCount(gameDto.liveStats?.playerCount ?? 0);
 
