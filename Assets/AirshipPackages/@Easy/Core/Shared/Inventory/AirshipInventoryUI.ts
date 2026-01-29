@@ -136,7 +136,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							const draggingState: DraggingState = {
 								inventory: this.clickPickupState.inventory,
 								itemStack: itemStack,
-								originalSlot: this.clickPickupState.slot,
+								slot: this.clickPickupState.slot,
 								pointerButton: button,
 							};
 
