@@ -136,7 +136,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							const draggingState: DraggingState = {
 								inventory: this.clickPickupState.inventory,
 								itemStack: itemStack,
-								slot: DESIGNATED_PICKUP_SLOT,
+								slot: this.clickPickupState.slot,
 								pointerButton: button,
 							};
 
@@ -176,9 +176,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			}
 		}
 	}
-	// Todo: Fix max drag based on current stack size
-	// Find out why we are getting ghost items with external inventory
-	// Verify shared mode fixes.
 
 	public OpenBackpack(): void {
 		if (!this.inventoryEnabled || !this.backpackEnabled) return;
@@ -232,14 +229,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		this.backpackOpenBin.Add(() => {
 			// Cancel any drag previews and restore tiles to their actual state
 			this.CancelDragPreviews();
-
-			if (this.clickPickupState) {
-				Airship.Inventory.MoveToInventory(
-					this.clickPickupState.inventory,
-					DESIGNATED_PICKUP_SLOT,
-					this.clickPickupState.inventory,
-				);
-			}
 			this.CleanupClickPickupState();
 		});
 	}
@@ -568,13 +557,15 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	/**
 	 * Cleans up the click pickup state, destroying the visual and clearing connections
 	 */
-	private CleanupClickPickupState(skipMoveBack: boolean = false): void {
+	private CleanupClickPickupState(): void {
 		if (this.clickPickupState) {
-			Airship.Inventory.MoveToInventory(
+			const pickupStack = this.clickPickupState.inventory.GetItem(DESIGNATED_PICKUP_SLOT);
+			Airship.Inventory.MoveToSlot(
 				this.clickPickupState.inventory,
 				DESIGNATED_PICKUP_SLOT,
 				this.clickPickupState.inventory,
-				this.clickPickupState.amount,
+				this.clickPickupState.slot,
+				pickupStack?.amount ?? this.clickPickupState.amount,
 			);
 			this.clickPickupBin.Clean();
 			this.clickPickupState = undefined;
