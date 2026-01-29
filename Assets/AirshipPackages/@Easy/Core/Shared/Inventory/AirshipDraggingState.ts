@@ -5,7 +5,7 @@ import { ItemStack } from "./ItemStack";
 export type DraggingState = {
 	inventory: Inventory;
 	itemStack: ItemStack;
-	slot: number;
+	originalSlot: number;
 	pointerButton: PointerButton;
 };
 
