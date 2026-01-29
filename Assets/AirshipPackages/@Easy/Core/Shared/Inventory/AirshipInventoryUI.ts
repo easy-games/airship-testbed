@@ -560,11 +560,10 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	private CleanupClickPickupState(): void {
 		if (this.clickPickupState) {
 			const pickupStack = this.clickPickupState.inventory.GetItem(DESIGNATED_PICKUP_SLOT);
-			Airship.Inventory.MoveToSlot(
+			Airship.Inventory.MoveToInventory(
 				this.clickPickupState.inventory,
 				DESIGNATED_PICKUP_SLOT,
 				this.clickPickupState.inventory,
-				this.clickPickupState.slot,
 				pickupStack?.amount ?? this.clickPickupState.amount,
 			);
 			this.clickPickupBin.Clean();
