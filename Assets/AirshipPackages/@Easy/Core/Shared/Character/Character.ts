@@ -173,6 +173,11 @@ export default class Character extends AirshipBehaviour {
 		[Map<string, unknown>, CharacterSnapshotData, Map<string, unknown>, CharacterSnapshotData]
 	>();
     
+    /**
+     * Signals that the players outfit has finished loading onto the character. 
+     * Fires from autoLoadAvatarOutfit or when calling Character.LoadOutfit().
+     * Will not fire on future Accessory changes. 
+     */
     public OnAvatarOutfitLoaded = new Signal<[outfitDto: AirshipOutfit]>();
 
 	public Awake(): void {
