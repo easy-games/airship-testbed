@@ -133,10 +133,6 @@ export default class CharacterAnimation extends AirshipBehaviour {
 		return this.isFirstPerson;
 	}
 
-	public SetPlaybackSpeed(newSpeed: number) {
-		this.character.animation?.SetPlaybackSpeed(newSpeed);
-	}
-
 	public IsViewModelEnabled(): boolean {
 		return this.viewModelEnabled;
 	}
