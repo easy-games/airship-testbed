@@ -428,9 +428,10 @@ MonoBehaviour:
   meshCombiner: {fileID: 5232673978488062214}
   firstPerson: 0
   lodCount: 3
-  currentOutfit: {fileID: 0}
-  currentUserId: 
-  currentUserName: 
+  visualizer:
+    currentOutfit: {fileID: 0}
+    currentUserId: 
+    currentUserName: 
   cancelPendingDownload: 0
 --- !u!114 &-1624083086148811293
 MonoBehaviour:
