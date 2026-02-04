@@ -28,6 +28,17 @@ export default class OutfitButtonNameComponent extends AirshipBehaviour {
 
             this.avatarMenuComp?.RenameOutfit(this.outfitButtonIndex, name);
         });
+        
+        // Find the caret and disable its raycast target so it doesn't hide pointer events
+        for(const child of this.transform.parent) {
+            if(child.gameObject.name === "Caret") {
+                const caret = this.transform.parent.GetChild(0).GetComponent<MaskableGraphic>();
+                if(caret) {
+                    caret.raycastTarget = false;
+                }
+                break;
+            }
+        }
     }
 
     public StartRename() {

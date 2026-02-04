@@ -562,7 +562,7 @@ MonoBehaviour:
   - {fileID: 1149836141499182161}
   - {fileID: 665416985170017182}
   - {fileID: 7132230456949110370}
-  outputBaseMeshMatColors:
+  outputCombinedMeshMatColors:
   - {fileID: 2210429693668880385}
   - {fileID: 7243268431693276113}
   - {fileID: 115702469869794286}

@@ -1,4 +1,4 @@
-import { Airship } from "@Easy/Core/Shared/Airship";
+import { Airship, Platform } from "@Easy/Core/Shared/Airship";
 import {
 	AirshipGearCategory,
 	AirshipGearItem,
@@ -13,10 +13,10 @@ import { Game } from "@Easy/Core/Shared/Game";
 import AirshipButton from "@Easy/Core/Shared/MainMenu/Components/AirshipButton";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { Protected } from "@Easy/Core/Shared/Protected";
-import { Keyboard } from "@Easy/Core/Shared/UserInput";
+import { Keyboard, Mouse } from "@Easy/Core/Shared/UserInput";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
-import { CanvasAPI, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
+import { CanvasAPI, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ColorUtil } from "@Easy/Core/Shared/Util/ColorUtil";
 import MainMenuPageComponent from "../../../Shared/MainMenu/Components/MainMenuPageComponent";
 import { MainMenuController } from "../MainMenuController";
@@ -26,6 +26,8 @@ import AvatarMenuBtn from "./AvatarMenuBtn";
 import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import OutfitButton from "./Outfit/OutfitButtonComponent";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
+import { RightClickMenuController } from "../UI/RightClickMenu/RightClickMenuController";
+import { EncodeJSON } from "@Easy/Core/Shared/json";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -140,6 +142,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				const outfitButton = go.GetAirshipComponent<OutfitButton>();
 				if (outfitButton) outfitButton.outfitIdx = i;
 
+                // Left clicking an outfit
 				CanvasAPI.OnClickEvent(go, () => {
 					task.spawn(async () => {
 						if (this.dirty) {
@@ -155,6 +158,32 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 						this.SelectOutfit(outfitI);
 					});
 				});
+
+
+                // Right clicking an outfit
+                CanvasAPI.OnPointerEvent(go, (dir, btn) => {
+                    if (dir === PointerDirection.DOWN && btn === PointerButton.RIGHT) {
+                        Dependency<RightClickMenuController>().OpenRightClickMenu(
+                            Dependency<MainMenuController>().mainContentCanvas,
+                            Mouse.position,
+                            [
+                                {
+                                    text: "Copy Outfit",
+                                    onClick: () => {
+                                        // Save whole DTO interface?
+                                        Bridge.CopyToClipboard(EncodeJSON(Protected.Avatar.outfits[outfitI]));
+                                        // let outfitStr = "";
+                                        // for( const gear of Protected.Avatar.outfits[outfitI].gear) {
+                                        //     outfitStr += gear.class.classId+",";
+                                        // }
+                                        // Bridge.CopyToClipboard(outfitStr);
+                                        // print("OUTFIT GEAR: " + outfitStr);
+                                    },
+                                },
+                            ],
+                        );
+                    }
+                });
 			}
 		}
 
