@@ -29,7 +29,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: ed9efe8d5aaec7d4b851c821a12b1b6c, type: 3}
+        m_Texture: {fileID: 2800000, guid: a05a4a7323dd8b94bb1c8737601a33b7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -160,8 +160,8 @@ Material:
     - _MetalOverride: 0.4
     - _Metallic: 0
     - _Mode: 0
-    - _MouthIndex: 0
-    - _MouthStrength: 1
+    - _MouthIndex: 2
+    - _MouthStrength: 0
     - _OcclusionStrength: 1
     - _OverrideStrength: 0
     - _POINT_FILTER: 1
