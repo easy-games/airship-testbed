@@ -42,17 +42,19 @@ export default class SocialMenu extends AirshipBehaviour {
 
 	override Start(): void {
 		const rect = this.transform as RectTransform;
-		if (Game.IsPortrait()) {
-			rect.anchorMin = new Vector2(0, 0);
-			rect.anchorMax = new Vector2(1, 1);
-			rect.pivot = new Vector2(0.5, 1);
-			rect.offsetMin = new Vector2(0, 116);
-			rect.offsetMax = new Vector2(0, 40);
-			// this.roundedCorners.r = new Vector4(20, 20, 10, 10);
-			// this.roundedCorners.Refresh();
-			// this.outline.
-		}
+
 		if (Game.IsMobile()) {
+			if (!Game.IsInGame() && Game.deviceType === AirshipDeviceType.Phone) {
+				// Not sure why we need this 0 delay.
+				task.delay(0, () => {
+					rect.anchorMin = new Vector2(0, 0);
+					rect.anchorMax = new Vector2(1, 1);
+					rect.pivot = new Vector2(0.5, 1);
+					rect.offsetMin = new Vector2(0, 116);
+					rect.offsetMax = new Vector2(0, 40);
+				});
+			}
+
 			this.scrollRect.movementType = MovementType.Elastic;
 			this.verticalLayout.padding.bottom = 200;
 		}

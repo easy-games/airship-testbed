@@ -1,4 +1,3 @@
-import { CoreContext } from "../../CoreClientContext";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
 import { Bin } from "../../Util/Bin";
@@ -67,16 +66,6 @@ export default class MainMenuContent extends AirshipBehaviour {
 
 		const scaleFactor = Game.GetScaleFactor();
 		this.canvasScalar.scaleFactor = scaleFactor;
-
-		if (Game.coreContext === CoreContext.MAIN_MENU) {
-			if (Game.deviceType === AirshipDeviceType.Phone) {
-				// phones are in portrait
-				Screen.orientation = ScreenOrientation.Portrait;
-			} else {
-				// ipads are in landscape
-				Screen.orientation = ScreenOrientation.LandscapeLeft;
-			}
-		}
 
 		// CoreLogger.Log(
 		// 	`screenSize.x: ${screenSize.x}, sizetype: ${this.mainMenu.sizeType}, scaleFactor: ${

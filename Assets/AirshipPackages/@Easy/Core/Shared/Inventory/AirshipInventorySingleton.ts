@@ -904,7 +904,8 @@ export class AirshipInventorySingleton {
 
 				const accessoryComponent = accessory.GetComponent<AccessoryComponent>();
 				if (!accessoryComponent) {
-					error("Missing AccessoryComponent on game object prefab");
+					Debug.LogError(`[Airship] Missing AccessoryComponent on accessory prefab for item ${itemType}.`, accessory);
+					continue;
 				}
 				accessories.push(accessoryComponent);
 			}
