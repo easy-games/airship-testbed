@@ -37,7 +37,6 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 			task.spawn(() => {
 				if (val) {
 					if (Bridge.HasMicrophonePermission()) {
-						clientSettings.PickMicAndStartRecording();
 						clientSettings.SetMicrophoneEnabled(true);
 						clientSettings.MarkAsDirty();
 					} else {
