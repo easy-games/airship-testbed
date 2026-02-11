@@ -861,7 +861,8 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		if (!this.clickPickupState.itemAmountImage || !this.clickPickupState.itemAmountText) return;
 
 		const itemDef = Airship.Inventory.GetItemDef(this.clickPickupState.itemType);
-		const hasSprite = this.LoadItemSprite(itemDef.image) !== undefined;
+		const sprite = this.LoadItemSprite(itemDef.image);
+		const hasSprite = sprite !== undefined;
 
 		if (newAmount <= 0) {
 			this.clickPickupState.itemAmountImage.enabled = false;
@@ -881,6 +882,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			}
 			if (hasSprite) {
 				this.clickPickupState.itemAmountImage.enabled = true;
+				this.clickPickupState.itemAmountImage.sprite = sprite;
 				if (this.clickPickupState.itemNameText) {
 					this.clickPickupState.itemNameText.enabled = false;
 				}
@@ -888,6 +890,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				this.clickPickupState.itemAmountImage.enabled = false;
 				this.clickPickupState.itemAmountImage.sprite = undefined as any;
 				if (this.clickPickupState.itemNameText) {
+					this.clickPickupState.itemNameText.text = itemDef.displayName;
 					this.clickPickupState.itemNameText.enabled = true;
 				}
 			}
@@ -957,6 +960,8 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			initialClickFlag: false,
 			isFirstClickDrag: false,
 		};
+		this.UpdatePickupAmount(swappedItem.amount, false);
+
 		return true;
 	}
 
@@ -1632,7 +1637,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				const shouldQuickMove = Airship.Input.IsDown(CoreAction.InventoryQuickMoveModifierKey);
 				const freeSlot = shouldQuickMove
 					? this.externalInventory.FindMergeableSlotWithItemType(stack.itemType) ??
-					  this.externalInventory.GetFirstOpenSlot()
+					this.externalInventory.GetFirstOpenSlot()
 					: this.externalInventory.GetFirstOpenSlot();
 				if (freeSlot !== -1) {
 					Airship.Inventory.MoveToSlot(inventory, slot, this.externalInventory, freeSlot, stack.amount);
