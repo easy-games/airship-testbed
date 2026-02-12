@@ -4234,22 +4234,22 @@ declare const enum VoxelFlip {
     Flip_270DegVertical = 7,
 }
 declare const enum AirshipFaceDecal {
-    Open = 0,
-    OpenO = 1,
-    OpenM = 2,
-    OpenE = 3,
-    Yell = 4,
-    Surprise = 5,
-    Grimace = 6,
+    OpenSmall = 0,
+    OpenBig = 1,
+    Yell = 2,
+    Scream = 3,
+    Frown = 4,
+    Grimace = 5,
+    Surprise = 6,
     Smile = 7,
     Pucker = 8,
     Grit = 9,
     Meow = 10,
     Grin = 11,
     Woozy = 12,
-    TongueOut = 13,
-    Frown = 14,
-    Smirk = 15,
+    Smirk = 13,
+    Scowl = 14,
+    TongueOut = 15,
     None = -1,
 }
 declare const enum FaceRenderMode {
@@ -55562,10 +55562,8 @@ interface CanvasDistanceManagerConstructor {
 declare const CanvasDistanceManager: CanvasDistanceManagerConstructor;
     
 interface AccessoryFaceComponent extends MonoBehaviour {
-    netId: NetworkIdentity;
     faceRenderer: Renderer;
     reactToVoice: boolean;
-    volumeDBMin: number;
     volumeDBYell: number;
     volumeDBScream: number;
     pitchVariationMax: number;
@@ -55945,11 +55943,9 @@ interface AudioSourceReader extends MonoBehaviour {
     minHz: number;
     maxHz: number;
     rmsThreshold: number;
-    fluxEnterThreshold: number;
-    fluxExitThreshold: number;
     fluxSmoothing: number;
     audioStartTime: number;
-    readonly IsSpeaking: boolean;
+    readonly isSpeaking: boolean;
     readonly RMS: number;
     readonly Flux: number;
 
@@ -55980,6 +55976,7 @@ interface AccessoryFaceAudioReader extends AudioSourceReader {
 }
     
 interface AccessoryFaceAudioReaderConstructor {
+    DetectVoices: boolean;
 
 
     new(): AccessoryFaceAudioReader;
