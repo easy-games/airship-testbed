@@ -974,8 +974,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   faceRenderer: {fileID: 227044206}
-  volumeDBThreshold: 1
-  faceMat: {fileID: 2100000, guid: b4c67e2b57a298e4389ee3204f6d883b, type: 2}
+  reactToVoice: 1
+  volumeDBYell: 0.15
+  volumeDBScream: 0.3
+  pitchVariationMax: 0.35
+  initialFace: -1
+  initialRenderMode: -1
+  logValues: 0
 --- !u!137 &227044206 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 8006313594836566323, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
@@ -993,7 +998,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62e76007534f47f4abb7ed0503d189e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visualizer: {fileID: 1107701400}
+  sampleRate: 48000
+  fftSize: 1024
+  minHz: 300
+  maxHz: 4000
+  rmsThreshold: 0.005
+  fluxSmoothing: 0.3
+  audioStartTime: 0
+  face: {fileID: 227044205}
+  visualizer: {fileID: 0}
 --- !u!82 &227044208
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1001,7 +1014,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 227044203}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 066077756750a4b4da842a39752cc59a, type: 3}
@@ -2346,6 +2359,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 300286532204213649, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
+      propertyPath: initialFace
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1256217271562514279, guid: 6354d1c2926319242ba9081c0c3dd934, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.0270596
@@ -5405,7 +5422,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 661904760318282846, guid: f1dee920cea7aba43b30f6e9b5eee5bc, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 661904760318282846, guid: f1dee920cea7aba43b30f6e9b5eee5bc, type: 3}
       propertyPath: m_AnchorMin.x
@@ -5413,7 +5430,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 661904760318282846, guid: f1dee920cea7aba43b30f6e9b5eee5bc, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 661904760318282846, guid: f1dee920cea7aba43b30f6e9b5eee5bc, type: 3}
       propertyPath: m_SizeDelta.x
@@ -5453,11 +5470,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 661904760318282846, guid: f1dee920cea7aba43b30f6e9b5eee5bc, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 216
       objectReference: {fileID: 0}
     - target: {fileID: 661904760318282846, guid: f1dee920cea7aba43b30f6e9b5eee5bc, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -108
       objectReference: {fileID: 0}
     - target: {fileID: 661904760318282846, guid: f1dee920cea7aba43b30f6e9b5eee5bc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5475,6 +5492,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: VisualGraphInstance
       objectReference: {fileID: 0}
+    - target: {fileID: 3401046635088290017, guid: f1dee920cea7aba43b30f6e9b5eee5bc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5485,17 +5506,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 661904760318282846, guid: f1dee920cea7aba43b30f6e9b5eee5bc, type: 3}
   m_PrefabInstance: {fileID: 1107701398}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1107701400 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6443565160261712187, guid: f1dee920cea7aba43b30f6e9b5eee5bc, type: 3}
-  m_PrefabInstance: {fileID: 1107701398}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8a34a828211fdf4c91558c53c4614b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1119986049
 GameObject:
   m_ObjectHideFlags: 0

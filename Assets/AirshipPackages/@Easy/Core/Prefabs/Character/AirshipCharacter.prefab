@@ -1066,6 +1066,8 @@ MonoBehaviour:
   volumeDBYell: 0.15
   volumeDBScream: 0.35
   pitchVariationMax: 0.35
+  initialFace: -1
+  initialRenderMode: 1
   logValues: 0
 --- !u!1001 &3492179243954559087
 PrefabInstance:
