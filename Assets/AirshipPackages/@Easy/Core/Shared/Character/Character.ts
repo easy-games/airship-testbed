@@ -172,6 +172,13 @@ export default class Character extends AirshipBehaviour {
 	public OnCompareSnapshots = new Signal<
 		[Map<string, unknown>, CharacterSnapshotData, Map<string, unknown>, CharacterSnapshotData]
 	>();
+    
+    /**
+     * Signals that the players outfit has finished loading onto the character. 
+     * Fires from autoLoadAvatarOutfit or when calling Character.LoadOutfit().
+     * Will not fire on future Accessory changes. 
+     */
+    public OnAvatarOutfitLoaded = new Signal<[outfitDto: AirshipOutfit]>();
 
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
@@ -503,19 +510,21 @@ export default class Character extends AirshipBehaviour {
 		// 	outfitDto = json.decode(DEFAULT_EDITOR_OUTFIT);
 		// }
 		if (Game.IsClient() && outfitDto && this.autoLoadAvatarOutfit) {
-			task.spawn(() => {
+			task.spawn(async () => {
 				// print(`loading outfit for userId ${this.player?.userId}`, json.encode(outfitDto));
-				Airship.Avatar.LoadOutfit(this.accessoryBuilder, outfitDto, {
+				await Airship.Avatar.LoadOutfit(this.accessoryBuilder, outfitDto, {
 					removeOldClothingAccessories: true,
 				});
+                this.OnAvatarOutfitLoaded.Fire(outfitDto);
 			});
 
 			// Viewmodel
 			if (this.IsLocalCharacter() && Airship.Characters.viewmodel) {
-				task.spawn(() => {
-					Airship.Avatar.LoadOutfit(Airship.Characters.viewmodel!.accessoryBuilder, outfitDto, {
+				task.spawn(async () => {
+					await Airship.Avatar.LoadOutfit(Airship.Characters.viewmodel!.accessoryBuilder, outfitDto, {
 						removeOldClothingAccessories: true,
 					});
+                    this.OnAvatarOutfitLoaded.Fire(outfitDto);
 				});
 			}
 		}
