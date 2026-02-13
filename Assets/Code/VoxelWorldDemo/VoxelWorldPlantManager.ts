@@ -138,7 +138,7 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
         let i=0; 
         let newPlants: PlantData[] = [];
         for(let pos of plantPositions) {
-            const block = this.voxelWorld.GetVoxelBlockTypeAt(pos);
+            const block = this.voxelWorld.GetVoxelBlockDefAt(pos);
             if(block) {
                 const data = this.GetRandomPlant(pos);
                 data.weed = true;
