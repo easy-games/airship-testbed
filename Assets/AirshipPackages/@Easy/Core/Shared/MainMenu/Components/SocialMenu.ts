@@ -38,20 +38,13 @@ export default class SocialMenu extends AirshipBehaviour {
 		this.rectTransform = this.gameObject.GetComponent<RectTransform>()!;
 	}
 
-	protected OnEnable(): void {}
+	protected OnEnable(): void {
+		this.ApplyMobilePhoneMainMenuLayout();
+	}
 
 	override Start(): void {
-		const rect = this.transform as RectTransform;
-		if (Game.IsPortrait()) {
-			rect.anchorMin = new Vector2(0, 0);
-			rect.anchorMax = new Vector2(1, 1);
-			rect.pivot = new Vector2(0.5, 1);
-			rect.offsetMin = new Vector2(0, 116);
-			rect.offsetMax = new Vector2(0, 40);
-			// this.roundedCorners.r = new Vector4(20, 20, 10, 10);
-			// this.roundedCorners.Refresh();
-			// this.outline.
-		}
+		this.ApplyMobilePhoneMainMenuLayout();
+
 		if (Game.IsMobile()) {
 			this.scrollRect.movementType = MovementType.Elastic;
 			this.verticalLayout.padding.bottom = 200;
@@ -142,4 +135,20 @@ export default class SocialMenu extends AirshipBehaviour {
 	}
 
 	protected OnDisable(): void {}
+
+	private ApplyMobilePhoneMainMenuLayout(): void {
+		if (!Game.IsMobile() || Game.deviceType !== AirshipDeviceType.Phone || Game.IsInGame()) {
+			return;
+		}
+
+		if (this.rectTransform === undefined) {
+			return;
+		}
+
+		this.rectTransform.anchorMin = new Vector2(0, 0);
+		this.rectTransform.anchorMax = new Vector2(1, 1);
+		this.rectTransform.pivot = new Vector2(0.5, 1);
+		this.rectTransform.offsetMin = new Vector2(0, 116);
+		this.rectTransform.offsetMax = new Vector2(0, 40);
+	}
 }

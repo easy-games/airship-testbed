@@ -5,12 +5,7 @@ import { FixedCameraMode } from "../Camera/DefaultCameraModes/FixedCameraMode";
 import { OrbitCameraMode } from "../Camera/DefaultCameraModes/OrbitCameraMode";
 import { Dependency } from "../Flamework";
 import { Game } from "../Game";
-import { CoreAction } from "../Input/AirshipCoreAction";
-import { Binding } from "../Input/Binding";
-import { InputKeybindCategory } from "../Input/InputAction";
 import { CoreMobileButton } from "../Input/Mobile/MobileButton";
-import Inventory from "../Inventory/Inventory";
-import { InventoryHotbarAction } from "../Inventory/InventoryHotbarAction";
 import { InventoryUIVisibility } from "../Inventory/InventoryUIVisibility";
 import { CharacterCameraMode } from "./LocalCharacter/CharacterCameraMode";
 
@@ -72,12 +67,6 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 		//Set the default prefab to use whenever a character is spawned
 		Airship.Characters.instantiateViewmodel = this.instantiateViewmodel;
 		Airship.Characters.SetDefaultCharacterPrefab(this.customCharacterPrefab);
-		if (
-			Game.IsClient() &&
-			Airship.Characters.GetDefaultCharacterTemplate()?.GetAirshipComponents<Inventory>() !== undefined
-		) {
-			this.CreateHotbarActions();
-		}
 		Airship.Characters.SetDefaultViewmodelPrefab(this.customViewmodelPrefab);
 		if (this.customViewmodelPrefab !== undefined && Airship.Characters.viewmodel !== undefined) {
 			Airship.Characters.viewmodel.InstantiateFromPrefab(this.customViewmodelPrefab);
@@ -93,7 +82,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 			if (hasRun) {
 				error(
 					"Tried to run CharacterConfigSetup twice. You should only have one instance of CharacterConfigSetup in your scene. This script is running on gameobject " +
-						this.gameObject.name,
+					this.gameObject.name,
 				);
 			}
 			hasRun = true;
@@ -177,63 +166,5 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 				Airship.Input.HideMobileButtons(CoreMobileButton.CrouchToggle);
 			}
 		}
-	}
-
-	/** Sets up keybinds for hotbar slots if the character prefab has an inventory */
-	private CreateHotbarActions(): void {
-		const hotbarActions = [
-			{ name: CoreAction.Inventory, binding: Binding.Key(Key.E), category: InputKeybindCategory.Actions },
-			{
-				name: CoreAction.InventoryQuickMoveModifierKey,
-				binding: Binding.Key(Key.LeftShift),
-				category: InputKeybindCategory.Actions,
-			},
-			{
-				name: InventoryHotbarAction.HotbarSlot1,
-				binding: Binding.Key(Key.Digit1),
-				category: InputKeybindCategory.Hotbar,
-			},
-			{
-				name: InventoryHotbarAction.HotbarSlot2,
-				binding: Binding.Key(Key.Digit2),
-				category: InputKeybindCategory.Hotbar,
-			},
-			{
-				name: InventoryHotbarAction.HotbarSlot3,
-				binding: Binding.Key(Key.Digit3),
-				category: InputKeybindCategory.Hotbar,
-			},
-			{
-				name: InventoryHotbarAction.HotbarSlot4,
-				binding: Binding.Key(Key.Digit4),
-				category: InputKeybindCategory.Hotbar,
-			},
-			{
-				name: InventoryHotbarAction.HotbarSlot5,
-				binding: Binding.Key(Key.Digit5),
-				category: InputKeybindCategory.Hotbar,
-			},
-			{
-				name: InventoryHotbarAction.HotbarSlot6,
-				binding: Binding.Key(Key.Digit6),
-				category: InputKeybindCategory.Hotbar,
-			},
-			{
-				name: InventoryHotbarAction.HotbarSlot7,
-				binding: Binding.Key(Key.Digit7),
-				category: InputKeybindCategory.Hotbar,
-			},
-			{
-				name: InventoryHotbarAction.HotbarSlot8,
-				binding: Binding.Key(Key.Digit8),
-				category: InputKeybindCategory.Hotbar,
-			},
-			{
-				name: InventoryHotbarAction.HotbarSlot9,
-				binding: Binding.Key(Key.Digit9),
-				category: InputKeybindCategory.Hotbar,
-			},
-		];
-		Airship.Input.CreateActions(hotbarActions);
 	}
 }

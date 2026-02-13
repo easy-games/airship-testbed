@@ -23,6 +23,9 @@ export default class Navbar extends AirshipBehaviour {
 	public bg: GameObject;
 
 	private bin = new Bin();
+	private defaultRectOffsetMin?: Vector2;
+	private defaultRectOffsetMax?: Vector2;
+	private defaultLeftOffsetMax?: Vector2;
 
 	override OnEnable(): void {
 		if (Dependency<MainMenuSingleton>().IsInGameNonTabletMobile()) {
@@ -37,6 +40,10 @@ export default class Navbar extends AirshipBehaviour {
 		}
 
 		const rect = this.transform as RectTransform;
+		this.defaultRectOffsetMin = rect.offsetMin;
+		this.defaultRectOffsetMax = rect.offsetMax;
+		this.defaultLeftOffsetMax = this.left.offsetMax;
+
 		const mainMenu = Dependency<MainMenuSingleton>();
 		this.bin.Add(
 			mainMenu.ObserveScreenSize((st, size) => {
@@ -49,37 +56,32 @@ export default class Navbar extends AirshipBehaviour {
 
 				if (Game.IsLandscape() && Game.IsMobile() && Game.IsInGame()) {
 					this.avatarBtn.gameObject.SetActive(false);
-					rect.offsetMin = new Vector2(50, rect.offsetMin.y);
-					this.left.offsetMax = new Vector2(-276, this.left.offsetMax.y);
+					rect.offsetMin = new Vector2(50, this.defaultRectOffsetMin!.y);
+					rect.offsetMax = this.defaultRectOffsetMax!;
+					this.left.offsetMax = new Vector2(-276, this.defaultLeftOffsetMax!.y);
 				} else {
-					rect.offsetMin = new Vector2(15, rect.offsetMin.y);
-					rect.offsetMax = new Vector2(-15, rect.offsetMax.y);
-
-					if (Game.IsInGame() && st === "sm") {
-						this.searchWrapper.gameObject.SetActive(false);
-						this.homeBtn.gameObject.SetActive(false);
-						this.runningGameBtn.gameObject.SetActive(false);
-					} else {
-					}
+					this.avatarBtn.gameObject.SetActive(true);
+					rect.offsetMin = new Vector2(15, this.defaultRectOffsetMin!.y);
+					rect.offsetMax = new Vector2(-15, this.defaultRectOffsetMax!.y);
+					this.left.offsetMax = this.defaultLeftOffsetMax!;
 				}
+
+				const useSmallSearch = Game.IsPortrait();
+				const hideNavButtons = Game.IsInGame() && st === "sm";
+				this.searchWrapper.gameObject.SetActive(!hideNavButtons && !useSmallSearch);
+				this.homeBtn.gameObject.SetActive(!hideNavButtons);
+				this.runningGameBtn.gameObject.SetActive(Game.IsInGame() && !hideNavButtons);
+				this.smallSearchBtn.gameObject.SetActive(useSmallSearch);
+				this.account.SetActive(useSmallSearch);
+				this.myGamesBtn.gameObject.SetActive(!Game.IsMobile());
 			}),
 		);
 
-		if (Game.IsPortrait()) {
-			// this.logoBtn.gameObject.SetActive(false);
-			this.searchWrapper.gameObject.SetActive(false);
-			this.smallSearchBtn.gameObject.SetActive(true);
-			this.bin.Add(
-				this.smallSearchBtn.onClick.Connect(() => {
-					Dependency<MainMenuNavbarController>().FocusSearchbar();
-				}),
-			);
-			this.account.SetActive(true);
-			this.myGamesBtn.gameObject.SetActive(false);
-		} else {
-			this.smallSearchBtn.gameObject.SetActive(false);
-			this.account.SetActive(false);
-		}
+		this.bin.Add(
+			this.smallSearchBtn.onClick.Connect(() => {
+				Dependency<MainMenuNavbarController>().FocusSearchbar();
+			}),
+		);
 
 		// this.quitGameBtn.gameObject.SetActive(Screen.fullScreen);
 		this.quitGameBtn.gameObject.SetActive(false);

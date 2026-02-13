@@ -56,6 +56,11 @@ export class Player {
 	public readonly team: Team | undefined;
 
 	/**
+	 * Platform mute info if the player is muted (prevented from sending public text chat messages).
+	 */
+	public muteInfo: { muted: boolean, expiresAt: string | undefined } | undefined;
+
+	/**
 	 * The server only transfer data provided with the request that transfered the player to this server. This is not available
 	 * on the client.
 	 */
@@ -160,6 +165,10 @@ export class Player {
 			let data = json.decode(transferPacket) as GameCoordinatorTransfers.ServerTransferData;
 			this.clientTransferData = data.clientTransferData;
 			this.serverTransferData = data.serverTransferData;
+			this.muteInfo = data.muteInfo;
+			if (this.muteInfo?.muted) {
+				this.MuteVoiceChat(true);
+			}
 		}
 
 		const simulationManager = AirshipSimulationManager.Instance as AirshipSimulationManager &

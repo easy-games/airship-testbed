@@ -398,25 +398,29 @@ export class ProtectedAvatarSingleton {
 			case AirshipGearClothingSubcategory.Legs:
 				return AccessorySlot.Legs;
 			case AirshipGearClothingSubcategory.Feet:
+			case AirshipGearClothingSubcategory.LeftFoot:
+			case AirshipGearClothingSubcategory.RightFoot:
 				return AccessorySlot.Feet;
 			case AirshipGearClothingSubcategory.Backpack:
 				return AccessorySlot.Backpack;
 			case AirshipGearClothingSubcategory.Waist:
 				return AccessorySlot.Waist;
 			case AirshipGearClothingSubcategory.Hands:
-				return AccessorySlot.Hands;
 			case AirshipGearClothingSubcategory.LeftHand:
-				return AccessorySlot.LeftHand;
 			case AirshipGearClothingSubcategory.RightHand:
-				return AccessorySlot.RightHand;
+				return AccessorySlot.Hands;
+			// case AirshipGearClothingSubcategory.LeftHand:
+			// 	return AccessorySlot.LeftHand;
+			// case AirshipGearClothingSubcategory.RightHand:
+			// 	return AccessorySlot.RightHand;
 			case AirshipGearClothingSubcategory.Ears:
 				return AccessorySlot.Ears;
 			case AirshipGearClothingSubcategory.Nose:
 				return AccessorySlot.Nose;
-			case AirshipGearClothingSubcategory.LeftFoot:
-				return AccessorySlot.LeftFoot;
-			case AirshipGearClothingSubcategory.RightFoot:
-				return AccessorySlot.RightFoot;
+			// case AirshipGearClothingSubcategory.LeftFoot:
+			// 	return AccessorySlot.LeftFoot;
+			// case AirshipGearClothingSubcategory.RightFoot:
+			// 	return AccessorySlot.RightFoot;
 			default:
 				warn("unknown GearClothingSubcategory mapping: " + slot);
 				return AccessorySlot.Root;

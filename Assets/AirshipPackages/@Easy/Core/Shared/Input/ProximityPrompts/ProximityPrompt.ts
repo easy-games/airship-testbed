@@ -95,9 +95,7 @@ export default class ProximityPrompt extends AirshipBehaviour {
 		this.SetObjectText(this.objectText);
 		this.SetActionText(this.actionText);
 		if (Game.IsClient()) {
-			task.unscaledDelay(0, () => {
-				Dependency<ProximityPromptController>().RegisterProximityPrompt(this);
-			});
+			Dependency<ProximityPromptController>().RegisterProximityPrompt(this);
 		}
 
 		this.bin.AddEngineEventConnection(

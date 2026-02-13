@@ -11,6 +11,7 @@ export class AirshipCharacterFootstepsSingleton {
 	public onFootstep = new Signal<CharacterFootstepSignal>();
 	public baseFootstepVolumeScale = 0.1;
 	public foostepSoundsEnabled = true;
+	public checkForVoxelWorld = true;
 
 	private materialMap = new Map<string, string[]>();
 
@@ -30,6 +31,7 @@ export class AirshipCharacterFootstepsSingleton {
 				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wood_03.ogg",
 				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wood_04.ogg",
 			];
+			this.materialMap.set("Wood", woodPaths);
 			this.materialMap.set("Wood_Cherry_Natural", woodPaths);
 			this.materialMap.set("Wood_Cherry_Toon", woodPaths);
 			this.materialMap.set("Wood_Cherry_Natural_UV", woodPaths);
@@ -43,6 +45,7 @@ export class AirshipCharacterFootstepsSingleton {
 				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wool_03.ogg",
 				"Assets/AirshipPackages/@Easy/Core/Sound/Footsteps/Footstep_Wool_04.ogg",
 			];
+			this.materialMap.set("Wool", woolPaths);
 			this.materialMap.set("Denim_UV", woolPaths);
 
 			const grassPaths = [
@@ -63,21 +66,32 @@ export class AirshipCharacterFootstepsSingleton {
 		const raycastHit = character.movement.groundedRaycastHit;
 		const renderer = raycastHit.collider?.GetComponent<Renderer>();
 
-		let materialName = "grass";
+		const materialName = "grass";
 		let material: Material | undefined;
-		let clips: AudioClip[] = [];
-		let crouching = character.state === CharacterState.Crouching;
+		const clips: AudioClip[] = [];
+		const crouching = character.state === CharacterState.Crouching;
 		let volumeScale = crouching ? 0.3 : 1;
 		if (!character.IsLocalCharacter()) {
 			volumeScale *= 2;
 		}
-		let volume = this.baseFootstepVolumeScale * volumeScale;
+		const volume = this.baseFootstepVolumeScale * volumeScale;
 		let foundPaths: string[] | undefined = [];
 
 		if (renderer) {
 			const material = renderer.material;
-			let [matName] = material.name.gsub("%s*%([^)]+%)", "");
-			let materialNameLower = matName.lower();
+			let matName = material.name;
+			matName = material.name.gsub("%s*%([^)]+%)", "")[0];
+			if (this.checkForVoxelWorld && LayerMask.LayerToName(renderer.gameObject.layer) === "VoxelWorld") {
+				const world = renderer.gameObject.GetComponentInParent<VoxelWorld>();
+				const def = world?.GetVoxelBlockDefAt(
+					raycastHit.point.sub(new Vector3(0, 0.05, 0)).sub(world.transform.position),
+				);
+				if (def) {
+					matName = def.definition.name;
+				}
+			}
+
+			const materialNameLower = matName.lower();
 
 			// print("footstep material: " + material.name + ', shortened: "' + materialName + '"');
 
@@ -85,9 +99,17 @@ export class AirshipCharacterFootstepsSingleton {
 			if (!foundPaths) {
 				if (
 					StringUtils.includes(materialNameLower, "dirt") ||
-					StringUtils.includes(materialNameLower, "grass")
+					StringUtils.includes(materialNameLower, "grass") ||
+					StringUtils.includes(materialNameLower, "sand")
 				) {
 					foundPaths = this.materialMap.get("Dirt");
+				} else if (
+					StringUtils.includes(materialNameLower, "wood") ||
+					StringUtils.includes(materialNameLower, "plank")
+				) {
+					foundPaths = this.materialMap.get("Wood");
+				} else if (StringUtils.includes(materialNameLower, "wool")) {
+					foundPaths = this.materialMap.get("Wool");
 				}
 			}
 			if (!foundPaths) {
@@ -98,7 +120,7 @@ export class AirshipCharacterFootstepsSingleton {
 		}
 
 		if (foundPaths) {
-			for (let path of foundPaths) {
+			for (const path of foundPaths) {
 				const clip = Asset.LoadAssetIfExists<AudioClip>(path);
 				if (clip) {
 					clips.push(clip);

@@ -1,6 +1,7 @@
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { Airship } from "../Airship";
 import { ItemDef } from "../Item/ItemDefinitionTypes";
+import ObjectUtils from "../Util/ObjectUtils";
 
 export interface ItemStackDto {
 	/** ItemType */
@@ -8,6 +9,9 @@ export interface ItemStackDto {
 
 	/** Amount */
 	a: number;
+
+	/** Optional custom data (example adding weight to an item stack */
+	c?: Record<string, unknown>;
 }
 
 export type ItemStackTypeChangeSignal = {
@@ -29,16 +33,22 @@ export class ItemStack {
 	 */
 	public readonly itemDef: ItemDef;
 	public readonly amount: number;
+	/**
+	 * Optional custom data for this ItemStack that can be used to store
+	 * instance-specific data that differs between items of the same type.
+	 */
+	public readonly customData?: Record<string, unknown>;
 	public readonly changed = new Signal<void>();
 	public readonly itemTypeChanged = new Signal<ItemStackTypeChangeSignal>();
 	public readonly amountChanged = new Signal<ItemStackAmountChangeSignal>();
 	public readonly destroyed = new Signal<ItemStack>();
 	private hasBeenDestroyed = false;
 
-	constructor(itemType: string, amount = 1) {
+	constructor(itemType: string, amount = 1, customData?: Record<string, unknown>) {
 		this.itemType = itemType;
 		this.amount = amount;
 		this.itemDef = Airship.Inventory.GetItemDef(itemType);
+		this.customData = customData;
 	}
 
 	public SetItemType(itemType: string): void {
@@ -77,14 +87,18 @@ export class ItemStack {
 	}
 
 	public Encode(): ItemStackDto {
-		return {
+		const dto: ItemStackDto = {
 			i: this.itemType,
 			a: this.amount,
 		};
+		if (this.customData !== undefined) {
+			dto.c = this.customData;
+		}
+		return dto;
 	}
 
 	public static Decode(dto: ItemStackDto): ItemStack {
-		const item = new ItemStack(dto.i, dto.a);
+		const item = new ItemStack(dto.i, dto.a, dto.c);
 		return item;
 	}
 
@@ -120,7 +134,11 @@ export class ItemStack {
 	}
 
 	public Clone(): ItemStack {
-		const clone = new ItemStack(this.itemType, this.amount);
+		const clone = new ItemStack(
+			this.itemType,
+			this.amount,
+			this.customData ? ObjectUtils.deepCopy(this.customData) : undefined,
+		);
 		return clone;
 	}
 

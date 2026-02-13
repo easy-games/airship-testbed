@@ -107,6 +107,15 @@ export class AirshipInventorySingleton {
 	private readonly itemAccessories = new Map<string, AccessoryComponent[]>();
 	private readonly internalIdToItemType = new Map<number, string>();
 	private internalIdCounter = 0;
+	private static readonly customItemDataMergeFunctionMap = new Map<
+		string,
+		(
+			stack1Data: Record<string, unknown>,
+			stack2Data: Record<string, unknown>,
+			stack1Amount: number,
+			stack2Amount: number,
+		) => Record<string, unknown> | undefined
+	>();
 
 	public readonly ui: AirshipInventoryUI | undefined;
 
@@ -118,8 +127,82 @@ export class AirshipInventorySingleton {
 		},
 	};
 
+	/**
+	 * Register a custom data merge function for a specific item type.
+	 * When two item stacks of this type are merged, this function will be called to determine
+	 * how to merge their custom data.
+	 * Make sure to set this on both the server and the client or the UI will break.
+	 *
+	 * @param itemType The type of item being merged
+	 * @param mergeFunction Function that merges custom data from two stacks
+	 * @param stack1Data Custom data from the first stack
+	 * @param stack2Data Custom data from the second stack
+	 * @param stack1Amount Amount in the first stack
+	 * @param stack2Amount Amount in the second stack
+	 * @returns Merged custom data, or undefined to prevent merging
+	 *
+	 * @example
+	 * ```ts
+	 * // Weight a food item's spoilage by the stack amount (weighted average) and return a new spoilage value.
+	 * Airship.Inventory.RegisterCustomDataMergeFunction("FoodItem", (stack1Data, stack2Data, stack1Amount, stack2Amount) => {
+	 * 	if (stack1Data.spoilage && stack2Data.spoilage) {
+	 * 		const spoilage1 = stack1Data.spoilage as number;
+	 * 		const spoilage2 = stack2Data.spoilage as number;
+	 *
+	 * 		const totalAmount = stack1Amount + stack2Amount;
+	 * 		const weightedSpoilage = (spoilage1 * stack1Amount + spoilage2 * stack2Amount) / totalAmount;
+	 *
+	 * 		return { spoilage: weightedSpoilage };
+	 * 	}
+	 * 	return undefined;
+	 * });
+	 * ```
+	 */
+	public RegisterCustomDataMergeFunction(
+		itemType: string,
+		mergeFunction: (
+			stack1Data: Record<string, unknown>,
+			stack2Data: Record<string, unknown>,
+			stack1Amount: number,
+			stack2Amount: number,
+		) => Record<string, unknown> | undefined,
+	): void {
+		AirshipInventorySingleton.customItemDataMergeFunctionMap.set(itemType, mergeFunction);
+	}
+
 	constructor() {
 		Airship.Inventory = this;
+	}
+
+	/**
+	 * Helper function to determine if two item stacks can be merged based on their custom data.
+	 */
+	public static CanMergeCustomData(
+		stack1: ItemStack,
+		stack2: ItemStack,
+	): { canMerge: boolean; mergedData?: Record<string, unknown> } {
+		const hasCustomData1 = stack1.customData !== undefined;
+		const hasCustomData2 = stack2.customData !== undefined;
+
+		// If neither has custom data, merge normally
+		if (!hasCustomData1 && !hasCustomData2) {
+			return { canMerge: true, mergedData: undefined };
+		}
+
+		// If only one has custom data don't merge for now
+		if (hasCustomData1 !== hasCustomData2) {
+			return { canMerge: false };
+		}
+
+		// Both have custom data use the provided merge function from the dev for custom data
+		const mergeFunction = AirshipInventorySingleton.customItemDataMergeFunctionMap.get(stack1.itemType);
+		if (!mergeFunction) {
+			return { canMerge: false };
+		}
+
+		const mergedData = mergeFunction(stack1.customData!, stack2.customData!, stack1.amount, stack2.amount);
+
+		return mergedData !== undefined ? { canMerge: true, mergedData } : { canMerge: false };
 	}
 
 	protected OnStart(): void {
@@ -218,28 +301,31 @@ export class AirshipInventorySingleton {
 				inv.SetItem(slot, itemStack);
 			},
 		);
-		CoreNetwork.ServerToClient.UpdateInventorySlot.client.OnServerEvent((invId, slot, itemType, amount) => {
+		CoreNetwork.ServerToClient.UpdateInventorySlot.client.OnServerEvent((invId, slot, itemStackDto) => {
 			const inv = this.GetInventory(invId);
 			if (!inv) return;
 
-			let itemStack = inv.GetItem(slot);
-			if (itemStack === undefined && itemType !== undefined && amount !== undefined) {
-				// The server has the authority on this, so we should trust it.
-				itemStack = new ItemStack(itemType);
-				inv.SetItem(slot, itemStack);
-			}
-
-			if (itemStack === undefined) {
-				// Still no item stack!
+			if (itemStackDto === undefined) {
+				inv.SetItem(slot, undefined);
 				return;
 			}
 
-			if (amount !== undefined) {
-				itemStack.SetAmount(amount, { noNetwork: Game.IsHosting() });
-			}
+			let itemStack = inv.GetItem(slot);
+			const decodedStack = ItemStack.Decode(itemStackDto);
 
-			if (itemType !== undefined) {
-				itemStack.SetItemType(itemType);
+			if (itemStack === undefined) {
+				inv.SetItem(slot, decodedStack);
+			} else {
+				const hasCustomDataInDto = itemStackDto.c !== undefined;
+				const currentHasCustomData = itemStack.customData !== undefined;
+
+				if (itemStack.itemType !== decodedStack.itemType || hasCustomDataInDto || currentHasCustomData) {
+					inv.SetItem(slot, decodedStack);
+				} else {
+					if (itemStack.amount !== decodedStack.amount) {
+						itemStack.SetAmount(decodedStack.amount, { noNetwork: Game.IsHosting() });
+					}
+				}
 			}
 		});
 	}
@@ -436,13 +522,26 @@ export class AirshipInventorySingleton {
 
 		if (amountToMerge <= 0) return false;
 
-		toItemStack.SetAmount(toItemStack.amount + amountToMerge);
-		fromItemStack.Decrement(amountToMerge);
+		const mergeResult = AirshipInventorySingleton.CanMergeCustomData(toItemStack, fromItemStack);
+		if (!mergeResult.canMerge) {
+			return false;
+		}
+
+		const newAmount = toItemStack.amount + amountToMerge;
+		if (mergeResult.mergedData !== undefined) {
+			const mergedStack = new ItemStack(toItemStack.itemType, newAmount, mergeResult.mergedData);
+			toInv.SetItem(toSlot, mergedStack, { clientPredicted: !noNetwork });
+			fromItemStack.Decrement(amountToMerge);
+		} else {
+			toItemStack.SetAmount(newAmount);
+			fromItemStack.Decrement(amountToMerge);
+		}
+
 		const remainingAmount = amount - amountToMerge;
 
 		// If there's excess, merge with all other slots, then put remainder in first open slot
 		if (remainingAmount > 0) {
-			const excessStack = new ItemStack(fromItemStack.itemType, remainingAmount);
+			const excessStack = new ItemStack(fromItemStack.itemType, remainingAmount, fromItemStack.customData);
 			this.MergeItemStackWithSlots(toInv, excessStack, 0, toSlot, noNetwork);
 			if (!excessStack.IsDestroyed()) {
 				this.MergeItemStackWithSlots(toInv, excessStack, toSlot + 1, toInv.GetMaxSlots(), noNetwork);
@@ -502,7 +601,7 @@ export class AirshipInventorySingleton {
 		}
 
 		fromItem.SetAmount(fromItem.amount - amount);
-		toInventory.SetItem(toSlot, new ItemStack(fromItem.itemType, amount), {
+		toInventory.SetItem(toSlot, new ItemStack(fromItem.itemType, amount, fromItem.customData), {
 			clientPredicted: config?.clientPredicted,
 		});
 	}
@@ -805,7 +904,8 @@ export class AirshipInventorySingleton {
 
 				const accessoryComponent = accessory.GetComponent<AccessoryComponent>();
 				if (!accessoryComponent) {
-					error("Missing AccessoryComponent on game object prefab");
+					Debug.LogError(`[Airship] Missing AccessoryComponent on accessory prefab for item ${itemType}.`, accessory);
+					continue;
 				}
 				accessories.push(accessoryComponent);
 			}

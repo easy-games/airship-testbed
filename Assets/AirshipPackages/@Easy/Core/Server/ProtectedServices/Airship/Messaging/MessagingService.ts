@@ -2,6 +2,7 @@ import { Airship } from "@Easy/Core/Shared/Airship";
 import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ProtectedPlayersSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/ProtectedPlayersSingleton";
+import { AirshipPlayersSingleton } from "@Easy/Core/Shared/Player/AirshipPlayersSingleton";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 
@@ -66,7 +67,19 @@ interface KickUserEvent {
 	uid: string;
 	messageToUser: string;
 }
-type AirshipMultiplexEvent = KickUserEvent;
+
+interface SetMutedUserEvent {
+    type: "SET_MUTED_USER";
+    uid: string;
+    messageToUser: string;
+	muteInfo: {
+		muted: boolean;
+		expiresAt: string | undefined;
+	} | undefined;
+}
+
+
+type AirshipMultiplexEvent = KickUserEvent | SetMutedUserEvent;
 
 @Service({})
 export class MessagingService {
@@ -167,7 +180,31 @@ export class MessagingService {
 			if (data.type === "KICK_USER") {
 				const player = this.protectedPlayers.FindByUserId(data.uid);
 				if (!player) return;
-				TransferManager.Instance.KickClient(player.connectionId, data.messageToUser || "You have been kicked");
+				TransferManager.Instance.KickClient(player.connectionId, data.messageToUser || "You have been kicked.");
+			}
+		});
+
+		this.airshipGameEvents.Connect((data) => {
+			if (data.type === "SET_MUTED_USER") {
+				const player = this.protectedPlayers.FindByUserId(data.uid);
+				if (!player) return;
+
+				// Set player to muted in the protected context
+				const airshipPlayer = Dependency<AirshipPlayersSingleton>().FindByUserId(data.uid);
+				if (airshipPlayer) {
+					airshipPlayer.muteInfo = data.muteInfo;
+					if (data.muteInfo?.muted) {
+						airshipPlayer.MuteVoiceChat(true);
+					}
+				}
+
+				// Sending this info to the game from protected context
+				contextbridge.broadcast<(userId: string, muteInfo: { muted: boolean, expiresAt: string | undefined } | undefined, message: string) => void>(
+					"Player:SetPlatformMuted",
+					data.uid,
+					data.muteInfo,
+					data.messageToUser,
+				);
 			}
 		});
 

@@ -662,7 +662,7 @@ export class ProtectedFriendsController {
 			let bPrio = GetStatusOrder(b.status);
 
 			if (aPrio === bPrio) {
-				return a.username < b.username;
+				return a.username.lower() < b.username.lower();
 			}
 
 			return aPrio > bPrio;

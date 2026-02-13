@@ -167,6 +167,7 @@ export namespace GameCoordinatorChat {
     export interface SendMessageSuccess {
         messageSent: true;
         transformedMessage?: string;
+        filterResult: { messageBlocked: boolean; transformedMessage?: string };
     }
 
     export type SendPartyMessageArgs = {
@@ -1528,6 +1529,7 @@ export namespace GameCoordinatorTransfers {
         user: GameCoordinatorUsers.PublicUser;
         orgRoleName: string | undefined;
         isEasyEmployee: boolean;
+        muteInfo: { muted: boolean; expiresAt: string | undefined } | undefined;
         clientTransferData?: unknown;
         serverTransferData?: unknown;
     }
@@ -1775,7 +1777,10 @@ export namespace GameCoordinatorUserLocations {
     }
 
     export interface ClientSpec {
-        find(args: FindArgs["query"], options?: RequestOptions): Promise<{ [userId: string]: { serverId: string } }>;
+        find(
+            args: FindArgs["query"],
+            options?: RequestOptions,
+        ): Promise<{ [userId: string]: { gameId: string; serverId: string } }>;
     }
 
     export class Client implements ClientSpec {
@@ -1788,7 +1793,7 @@ export namespace GameCoordinatorUserLocations {
         async find(
             args: FindArgs["query"],
             options?: RequestOptions,
-        ): Promise<{ [userId: string]: { serverId: string } }> {
+        ): Promise<{ [userId: string]: { gameId: string; serverId: string } }> {
             return await this.makeRequest({
                 method: "GET",
                 routeId: "GameCoordinator:UserLocations:find",

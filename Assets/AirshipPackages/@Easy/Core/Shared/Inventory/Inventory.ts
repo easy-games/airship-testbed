@@ -8,6 +8,7 @@ import { Player } from "../Player/Player";
 import { Cancellable } from "../Util/Cancellable";
 import { MapUtil } from "../Util/MapUtil";
 import { DraggingState } from "./AirshipDraggingState";
+import { AirshipInventorySingleton } from "./AirshipInventorySingleton";
 import { ItemStack, ItemStackDto } from "./ItemStack";
 
 export interface InventoryDto {
@@ -230,8 +231,7 @@ export default class Inventory extends AirshipBehaviour {
 						CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
 							this.id,
 							slot,
-							e.itemStack.itemType,
-							e.amount,
+							e.itemStack.Encode(),
 						);
 					}),
 				);
@@ -243,8 +243,7 @@ export default class Inventory extends AirshipBehaviour {
 						CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
 							this.id,
 							slot,
-							e.itemType,
-							e.itemStack.amount,
+							e.itemStack.Encode(),
 						);
 					}),
 				);
@@ -326,14 +325,26 @@ export default class Inventory extends AirshipBehaviour {
 			if (!otherItem) continue;
 			if (otherItem.itemType !== itemStack.itemType) continue;
 
+			const mergeResult = AirshipInventorySingleton.CanMergeCustomData(itemStack, otherItem);
+			if (!mergeResult.canMerge) {
+				continue;
+			}
+
 			const maxStackSize = otherItem.GetMaxStackSize();
 			const spaceAvailable = maxStackSize - otherItem.amount;
 			if (spaceAvailable <= 0) continue;
 
 			const amountToMerge = math.min(remainingAmount, spaceAvailable);
-			otherItem.SetAmount(otherItem.amount + amountToMerge, {
-				noNetwork: noNetwork,
-			});
+			const newAmount = otherItem.amount + amountToMerge;
+
+			if (mergeResult.mergedData !== undefined) {
+				const mergedStack = new ItemStack(otherItem.itemType, newAmount, mergeResult.mergedData);
+				this.SetItem(slot, mergedStack, { clientPredicted: noNetwork });
+			} else {
+				otherItem.SetAmount(newAmount, {
+					noNetwork: noNetwork,
+				});
+			}
 			remainingAmount -= amountToMerge;
 		}
 
@@ -342,8 +353,7 @@ export default class Inventory extends AirshipBehaviour {
 			return undefined;
 		}
 
-		// Create a new ItemStack with the remaining amount
-		const remainingStack = new ItemStack(itemStack.itemType, remainingAmount);
+		const remainingStack = new ItemStack(itemStack.itemType, remainingAmount, itemStack.customData);
 		itemStack.Destroy();
 		return remainingStack;
 	}

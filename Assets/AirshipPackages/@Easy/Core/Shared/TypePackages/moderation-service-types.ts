@@ -153,14 +153,77 @@ export namespace ModerationServiceModeration {
     }
 }
 
+// ====+==== UserReport Types ====+====
+export namespace ModerationServiceUserReport {
+    export interface BaseReport<T extends string> {
+        type: T;
+    }
+
+    export type ReportedAvatar = ModerationServiceUserReport.BaseReport<typeof UserReportReasons.AVATAR>;
+
+    export interface ReportedChat extends ModerationServiceUserReport.BaseReport<typeof UserReportReasons.CHAT> {
+        conversationId: string;
+        messageId?: string;
+    }
+
+    export type ReportedContent =
+        | ModerationServiceUserReport.ReportedChat
+        | ModerationServiceUserReport.ReportedUsername
+        | ModerationServiceUserReport.ReportedAvatar;
+
+    export type ReportedUsername = ModerationServiceUserReport.BaseReport<typeof UserReportReasons.USERNAME>;
+
+    export type ReportUserArgs = {
+        data: ModerationServiceUserReport.UserReportDto;
+    };
+
+    export interface UserReportDto {
+        uid: string;
+        gameId?: string;
+        reasons: ModerationServiceUserReport.ReportedContent[];
+    }
+
+    export const UserReportReasons = {
+        AVATAR: "avatar",
+        USERNAME: "username",
+        CHAT: "chat",
+    } as const;
+    export type UserReportReasons = (typeof UserReportReasons)[keyof typeof UserReportReasons];
+
+    export interface ClientSpec {
+        reportUser(args: ReportUserArgs["data"], options?: RequestOptions): Promise<void>;
+    }
+
+    export class Client implements ClientSpec {
+        private readonly makeRequest: MakeRequest;
+
+        constructor(makeRequest: MakeRequest) {
+            this.makeRequest = makeRequest;
+        }
+
+        async reportUser(args: ReportUserArgs["data"], options?: RequestOptions): Promise<void> {
+            return await this.makeRequest({
+                method: "POST",
+                routeId: "ModerationService:UserReport:reportUser",
+                path: `/user-report/`,
+                retryKey: options?.retryKey ?? "ModerationService:UserReport:reportUser",
+                body: args,
+            });
+        }
+    }
+}
+
 export interface ModerationServiceClientSpec {
     moderation: ModerationServiceModeration.ClientSpec;
+    userReport: ModerationServiceUserReport.ClientSpec;
 }
 
 export class ModerationServiceClient implements ModerationServiceClientSpec {
     public readonly moderation: ModerationServiceModeration.ClientSpec;
+    public readonly userReport: ModerationServiceUserReport.ClientSpec;
 
     constructor(makeRequest: MakeRequest) {
         this.moderation = new ModerationServiceModeration.Client(makeRequest);
+        this.userReport = new ModerationServiceUserReport.Client(makeRequest);
     }
 }

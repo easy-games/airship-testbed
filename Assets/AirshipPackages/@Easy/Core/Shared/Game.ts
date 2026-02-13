@@ -181,11 +181,13 @@ export class Game {
 	}
 
 	public static IsLandscape(): boolean {
-		return Screen.width >= Screen.height;
+		if (!Game.IsMobile()) return true;
+		return !this.IsPortrait();
 	}
 
 	public static IsPortrait(): boolean {
-		return !this.IsLandscape();
+		if (!Game.IsMobile()) return false;
+		return Screen.orientation === ScreenOrientation.Portrait;
 	}
 
 	/**
@@ -194,6 +196,22 @@ export class Game {
 	public static GetScaleFactor(): number {
 		let dpi = Screen.dpi;
 		let width = Screen.width;
+		const height = Screen.height;
+		const isTrue16By9Preset = width * 9 === height * 16 && width % 8 === 0 && height % 8 === 0;
+
+		if (Game.IsEditor() && !Game.IsMobile()) {
+			// Free Aspect in editor uses arbitrary viewport sizes; DPI-based scaling makes UI inconsistent.
+			// Keep desktop Free Aspect at 1x on all platforms.
+			if (!isTrue16By9Preset) {
+				return 1;
+			}
+
+			// Unity "Low Resolution Aspect Ratios" and smaller editor Game views should use 1x scaling.
+			// Only use DPI-based desktop scaling for truly high-res editor render sizes (e.g. 4K-like heights).
+			if (height < 1440) {
+				return 1;
+			}
+		}
 
 		if (Game.IsMobile()) {
 			if (Game.deviceType === AirshipDeviceType.Tablet) {

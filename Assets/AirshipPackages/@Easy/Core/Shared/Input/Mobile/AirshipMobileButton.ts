@@ -16,6 +16,8 @@ export default class AirshipMobileButton extends AirshipButton {
 	private isOnCooldown = false;
 	private lastUsedTime: number;
 
+	private fadeIn = false;
+
 	override Start(): void {
 		super.Start();
 		this.startingImageAlpha = this.image?.color.a ?? 1;
@@ -28,6 +30,12 @@ export default class AirshipMobileButton extends AirshipButton {
 				}
 			}),
 		);
+	}
+
+	protected OnEnable(): void {
+		if (this.fadeIn && this.image) {
+			NativeTween.GraphicAlpha(this.iconImage, 1, 0.5).SetUseUnscaledTime(true);
+		}
 	}
 
 	protected Update(dt: number): void {
@@ -45,6 +53,7 @@ export default class AirshipMobileButton extends AirshipButton {
 	}
 
 	public FadeOut(duration: number = 0.5): void {
+		this.fadeIn = false;
 		if (this.image && this.iconImage) {
 			NativeTween.GraphicAlpha(this.image, 0, duration).SetUseUnscaledTime(true);
 			NativeTween.GraphicAlpha(this.iconImage, 0, duration).SetUseUnscaledTime(true);
@@ -52,6 +61,7 @@ export default class AirshipMobileButton extends AirshipButton {
 	}
 
 	public FadeIn(duration: number = 0.5): void {
+		this.fadeIn = true;
 		if (this.image && this.iconImage && this.startingImageAlpha && this.startingIconAlpha) {
 			NativeTween.GraphicAlpha(this.image, this.startingImageAlpha, duration).SetUseUnscaledTime(true);
 			NativeTween.GraphicAlpha(this.iconImage, this.startingIconAlpha, duration).SetUseUnscaledTime(true);
@@ -158,5 +168,9 @@ export default class AirshipMobileButton extends AirshipButton {
 	 */
 	public SetLastUsedTime(lastUsedTime: number) {
 		this.lastUsedTime = lastUsedTime;
+	}
+
+	OnDestroy(): void {
+		this.bin.Clean();
 	}
 }

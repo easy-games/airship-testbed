@@ -15,7 +15,7 @@ export class FlyCommand extends ChatCommand {
 		}
 
 		const flying = !player.character.movement.IsFlying();
-		player.character.movement.SetDebugFlying(flying);
+		player.character.movement.SetFlying(flying);
 		player.SendMessage(
 			flying
 				? ColorUtil.ColoredText(Theme.green, "Fly mode enabled.")

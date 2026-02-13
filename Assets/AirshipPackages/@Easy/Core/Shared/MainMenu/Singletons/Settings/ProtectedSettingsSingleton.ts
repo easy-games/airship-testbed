@@ -299,7 +299,7 @@ export class ProtectedSettingsSingleton {
 
 		this.SetGlobalVolume(this.GetGlobalVolume());
 		this.SetMSAASamples(this.data.msaaSamples);
-		this.SetShadowLevel(this.data.shadowTier);
+		// this.SetShadowLevel(this.data.shadowTier);
 		this.SetVsync(this.data.vsync);
 		this.SetLimitFPS(this.data.limitFps);
 
@@ -396,25 +396,25 @@ export class ProtectedSettingsSingleton {
 		}
 	}
 
-	public SetShadowLevel(level: number): void {
-		const pipelineAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
-		const clampedLevel = math.clamp(level, 0, 2);
-		this.data.shadowTier = clampedLevel;
+	// public SetShadowLevel(level: number): void {
+	// 	const pipelineAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
+	// 	const clampedLevel = math.clamp(level, 0, 2);
+	// 	this.data.shadowTier = clampedLevel;
 
-		switch (clampedLevel) {
-			case 2: // High Quality
-				pipelineAsset.mainLightShadowmapResolution = 4096;
-				pipelineAsset.shadowDistance = 120;
-				break;
-			case 1: // Low Quality
-				pipelineAsset.mainLightShadowmapResolution = 1024;
-				pipelineAsset.shadowDistance = 70;
-				break;
-			case 0: // No Shadows
-				pipelineAsset.shadowDistance = 0; // is there a better way to disable shadows?
-				break;
-		}
-	}
+	// 	switch (clampedLevel) {
+	// 		case 2: // High Quality
+	// 			pipelineAsset.mainLightShadowmapResolution = 4096;
+	// 			pipelineAsset.shadowDistance = 120;
+	// 			break;
+	// 		case 1: // Low Quality
+	// 			pipelineAsset.mainLightShadowmapResolution = 1024;
+	// 			pipelineAsset.shadowDistance = 70;
+	// 			break;
+	// 		case 0: // No Shadows
+	// 			pipelineAsset.shadowDistance = 0; // is there a better way to disable shadows?
+	// 			break;
+	// 	}
+	// }
 
 	public SetVsync(vsync: boolean): void {
 		this.data.vsync = vsync;

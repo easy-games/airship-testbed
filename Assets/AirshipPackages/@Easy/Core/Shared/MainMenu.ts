@@ -18,6 +18,15 @@ CoreRefs.Init();
 InputBridge.Instance.SetMouseLocked(false);
 InputBridge.Instance.SetCursorVisible(true);
 
+if (Game.deviceType === AirshipDeviceType.Phone) {
+	print("setting portrait");
+	// phones are in portrait
+	Screen.orientation = ScreenOrientation.Portrait;
+} else {
+	// ipads are in landscape
+	Screen.orientation = ScreenOrientation.LandscapeLeft;
+}
+
 CanvasAPI.Init();
 AppManager.Init();
 AudioManager.Init();
