@@ -3163,11 +3163,11 @@ declare const enum VisibilityMode {
 declare const enum BodyMask {
     NONE = 0,
     HAIR = 1,
-    FACE = 2,
+    HEAD = 2,
     R_ARM_UPPER = 4,
     L_ARM_UPPER = 8,
     EARS = 16,
-    UNUSED1 = 32,
+    FACE = 32,
     UNUSED2 = 64,
     L_ARM_LOWER = 128,
     L_HAND = 256,
@@ -3189,8 +3189,8 @@ declare const enum BodyMask {
     L_FOOT = 16777216,
     R_FOOT = 33554432,
     R_LEG_LOWER = 67108864,
-    UNUSED11 = 134217728,
-    UNUSED12 = 268435456,
+    ABS = 134217728,
+    NECK = 268435456,
     UNUSED13 = 536870912,
     UNUSED14 = 1073741824,
 }
@@ -4232,6 +4232,32 @@ declare const enum VoxelFlip {
     Flip_90DegVertical = 5,
     Flip_180DegVertical = 6,
     Flip_270DegVertical = 7,
+}
+declare const enum AirshipFaceDecal {
+    OpenSmall = 0,
+    OpenBig = 1,
+    Yell = 2,
+    Scream = 3,
+    Frown = 4,
+    Grimace = 5,
+    Surprise = 6,
+    Smile = 7,
+    Pucker = 8,
+    Grit = 9,
+    Meow = 10,
+    Grin = 11,
+    Woozy = 12,
+    Smirk = 13,
+    Scowl = 14,
+    TongueOut = 15,
+    None = -1,
+}
+declare const enum FaceRenderMode {
+    Temporary = 0,
+    OverwriteDefault = 1,
+    OverwriteVoice = 2,
+    OverwriteAll = 3,
+    None = -1,
 }
 declare const enum CrouchEdgeDetection {
     None = 0,
@@ -39653,7 +39679,7 @@ interface MaterialColorURP extends MonoBehaviour {
     GetColorSettingByMaterial(mat: Material): ColorSetting;
     GetSharedMaterials(): Readonly<Material[]>;
     InitializeColorsFromCurrentMaterials(): void;
-    SetColor(indx: number, newColor: Color): void;
+    SetColor(index: number, newColor: Color): void;
     SetColorOnAll(newColor: Color): void;
 
 
@@ -55263,6 +55289,7 @@ interface VoxelWorld extends MonoBehaviour {
     WriteVoxelAt(pos: Vector3, voxelData: number): void;
     WriteVoxelColorAt(pos: Vector3, color: Color, priority: boolean): void;
     WriteVoxelCustomDataAt(pos: Vector3, data: BinaryBlob, priority: boolean): void;
+    WriteVoxelGroupAt(positions: Readonly<Vector3[]>, voxelData: Readonly<number[]>, priority: boolean, asServer: boolean): void;
     WriteVoxelGroupAt(positions: Readonly<Vector3[]>, voxelData: Readonly<number[]>, priority: boolean): void;
 
 
@@ -55533,6 +55560,33 @@ interface CanvasDistanceManagerConstructor {
 
 }
 declare const CanvasDistanceManager: CanvasDistanceManagerConstructor;
+    
+interface AccessoryFaceComponent extends MonoBehaviour {
+    faceRenderer: Renderer;
+    reactToVoice: boolean;
+    volumeDBYell: number;
+    volumeDBScream: number;
+    pitchVariationMax: number;
+    logValues: boolean;
+    faceMat: Material;
+
+
+
+    SetFace(faceType: AirshipFaceDecal, faceMode: FaceRenderMode): void;
+    SetTalkingAudioLevels(volume: number, variation: number): void;
+
+
+}
+    
+interface AccessoryFaceComponentConstructor {
+
+
+    new(): AccessoryFaceComponent;
+
+
+
+}
+declare const AccessoryFaceComponent: AccessoryFaceComponentConstructor;
     
 interface ActiveAccessory {
     AccessoryComponent: AccessoryComponent;
@@ -55882,6 +55936,55 @@ interface WorldSpaceCanvasScalerConstructor {
 
 }
 declare const WorldSpaceCanvasScaler: WorldSpaceCanvasScalerConstructor;
+    
+interface AudioSourceReader extends MonoBehaviour {
+    sampleRate: number;
+    fftSize: number;
+    minHz: number;
+    maxHz: number;
+    rmsThreshold: number;
+    fluxSmoothing: number;
+    audioStartTime: number;
+    readonly isSpeaking: boolean;
+    readonly RMS: number;
+    readonly Flux: number;
+
+
+
+
+
+}
+    
+interface AudioSourceReaderConstructor {
+
+
+    new(): AudioSourceReader;
+
+
+
+}
+declare const AudioSourceReader: AudioSourceReaderConstructor;
+    
+interface AccessoryFaceAudioReader extends AudioSourceReader {
+    face: AccessoryFaceComponent;
+    visualizer: VisualGraphComponent;
+
+
+
+
+
+}
+    
+interface AccessoryFaceAudioReaderConstructor {
+    DetectVoices: boolean;
+
+
+    new(): AccessoryFaceAudioReader;
+
+
+
+}
+declare const AccessoryFaceAudioReader: AccessoryFaceAudioReaderConstructor;
     
 interface VibrationManager {
 

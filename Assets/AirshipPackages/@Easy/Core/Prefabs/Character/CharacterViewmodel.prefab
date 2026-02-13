@@ -724,8 +724,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outputSkinnedMeshRenderers:
   - {fileID: 1826325905645677443}
-  outputCombinedMeshMatColors:
-  - {fileID: 576573197197490131}
+  outputBaseMeshMatColors: []
   rootBone: {fileID: 8597778678561897134}
   createOverlayMesh: 0
   hiddenSurfaces:

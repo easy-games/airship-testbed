@@ -370,6 +370,7 @@ GameObject:
   - component: {fileID: 7877576865563315073}
   - component: {fileID: 7270479773071441371}
   - component: {fileID: 3239827073778428190}
+  - component: {fileID: 7609783187878864408}
   m_Layer: 3
   m_Name: AirshipCharacter
   m_TagString: Character
@@ -1048,6 +1049,26 @@ MonoBehaviour:
   animWalkSpeed: 4.666667
   animRunSpeed: 6.6666665
   animCrouchSpeed: 2.123333
+--- !u!114 &7609783187878864408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8616685848737228372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ece7420a276f7b4a8faabee2f8a9268, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  faceRenderer: {fileID: 192977161433551546}
+  reactToVoice: 1
+  volumeDBYell: 0.15
+  volumeDBScream: 0.35
+  pitchVariationMax: 0.35
+  initialFace: -1
+  initialRenderMode: 1
+  logValues: 0
 --- !u!1001 &3492179243954559087
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1344,6 +1365,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8712362769775679849, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: outputCombinedMeshMatColors.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8712362769775679849, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: 'outputCombinedMeshMatColors.Array.data[0]'
+      value: 
+      objectReference: {fileID: 3376486535275522158}
+    - target: {fileID: 8712362769775679849, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: 'outputCombinedMeshMatColors.Array.data[1]'
+      value: 
+      objectReference: {fileID: 6121505449834953662}
+    - target: {fileID: 8712362769775679849, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+      propertyPath: 'outputCombinedMeshMatColors.Array.data[2]'
+      value: 
+      objectReference: {fileID: 3597734320738806657}
     - target: {fileID: 8802499123621670980, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
       propertyPath: m_Name
       value: AirshipRigHolder
@@ -1378,11 +1415,38 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+--- !u!137 &192977161433551546 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3664559219000330965, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+  m_PrefabInstance: {fileID: 3492179243954559087}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &906797123808458266 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 4387387471186734709, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
   m_PrefabInstance: {fileID: 3492179243954559087}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3376486535275522158 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2210429693668880385, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+  m_PrefabInstance: {fileID: 3492179243954559087}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3597734320738806657 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 115702469869794286, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+  m_PrefabInstance: {fileID: 3492179243954559087}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5232673978488062214 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8712362769775679849, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
@@ -1419,6 +1483,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7eb696a0152059a4896e326dc2378287, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6121505449834953662 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7243268431693276113, guid: e7a11eaa5c64b9b4788a1b360cd7bdac, type: 3}
+  m_PrefabInstance: {fileID: 3492179243954559087}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edb3ca3a4fc108419fa32aa56070efe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &8307927661282889293 stripped

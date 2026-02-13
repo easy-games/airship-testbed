@@ -8,22 +8,17 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: HumanFaceTransparent
-  m_Shader: {fileID: 4800000, guid: 650dd9526735d5b46b79224bc6e94025, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 898cc1068f7d75a4d9d4a7599a123a2f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _ALPHATEST_ON
-  - _SURFACE_TYPE_TRANSPARENT
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses:
-  - SHADOWCASTER
-  - DepthOnly
   - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
@@ -34,7 +29,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 9896b14104c5459408df9e456f20a43c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1ebaabe9bea8ca24d89f8963daa1ee9a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -66,7 +61,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 9896b14104c5459408df9e456f20a43c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 56feaa4747c75694a8bc2cba0a51a9a1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
@@ -75,6 +70,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MouthMap:
+        m_Texture: {fileID: 2800000, guid: cd10beab4a6661b44a4f8f2341506f6d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
@@ -95,6 +94,22 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _RoughnessTex:
         m_Texture: {fileID: 2800000, guid: 781266cb27b0c364b8e44e55f768a517, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_5ae00784e8994947941985b8785ada99_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: e8c8af08e49a8704f9d27afb78eccd41, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -141,13 +156,17 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Lights: 0
+    - _LocalMouthEdge: 0.5
     - _MetalOverride: 0.4
     - _Metallic: 0
     - _Mode: 0
+    - _MouthIndex: 0
+    - _MouthStrength: 0
     - _OcclusionStrength: 1
     - _OverrideStrength: 0
     - _POINT_FILTER: 1
     - _Parallax: 0.02
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _RimIntensity: 0
     - _RimPower: 3
@@ -176,6 +195,13 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 1, g: 1, b: 1, a: 0.1764706}
+    - _LocalMouthPos: {r: -1, g: 0.33333, b: 0, a: 0}
+    - _LocalMouthSize: {r: 2, g: 0.33333, b: 0, a: 0}
+    - _MouseScale: {r: 1.1, g: 1.1, b: 0, a: 0}
+    - _MouthMaskPos: {r: -1, g: 0.33333, b: 0, a: 0}
+    - _MouthMaskSize: {r: 2, g: 0.33333, b: 0, a: 0}
+    - _MouthPos: {r: -0.0125, g: 0.565, b: 0, a: 0}
+    - _OFFSET: {r: 0, g: 0.575, b: 0, a: 0}
     - _OverrideColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowTint: {r: 1, g: 1, b: 1, a: 1}
