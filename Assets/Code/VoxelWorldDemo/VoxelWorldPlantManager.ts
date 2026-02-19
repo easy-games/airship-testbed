@@ -132,8 +132,8 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
 			// Load world from data platform
 			await this.LoadVoxelWorld();
 		}
-		print("Create weeds");
-		this.CreateNewWeeds();
+		//print("Create weeds");
+		//this.CreateNewWeeds();
 		print("Auto Save");
 		this.SetupAutoSave();
 	}
@@ -263,7 +263,7 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
 			print("Trying to spawn plant where a plant already exists");
 			return;
 		}
-		print("Spawning plant at: " + data.position + " tile: " + tilePosition);
+		//print("Spawning plant at: " + data.position + " tile: " + tilePosition);
 		data.position = tilePosition;
 		const instance = Instantiate(
 			this.plantTemplate,
@@ -273,8 +273,8 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
 		if (instance) {
 			instance.Init(data);
 			this.plants.set(tilePosition, instance);
+			print("TS writing plant at: " + tilePosition);
 			this.voxelWorld.WriteVoxelCustomDataAt(tilePosition, new BinaryBlob(data), false);
-			print("Saving plant at: " + tilePosition);
 		}
 
 		if (notifyImmediate && Game.IsServer()) {
@@ -283,7 +283,7 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
 	}
 
 	public DestroyPlant(tilePosition: Vector3, notifyImmediate = true) {
-		print("Destroy plant at: " + tilePosition);
+		//print("Destroy plant at: " + tilePosition);
 		let plant = this.plants.get(tilePosition);
 		if (plant) {
 			Destroy(plant.gameObject);
@@ -315,6 +315,9 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
 
 	private async ResetWorld() {
 		print("RESETTING WORLD");
+		for (var plant of this.plants) {
+			this.DestroyPlant(plant[0], false);
+		}
 		this.voxelWorld.LoadWorldFromSaveFile(this.voxelWorld.voxelWorldFile);
 		this.CreateNewWeeds();
 		this.SaveVoxelWorld();
@@ -329,9 +332,11 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
 
 		if (this.worldSaveAvailable) {
 			task.spawnDetached(async () => {
+				const delayTime = 15;
+				task.wait(delayTime);
 				while (true) {
 					await this.SaveVoxelWorld();
-					task.wait(15);
+					task.wait(delayTime);
 				}
 			});
 		}
@@ -362,6 +367,19 @@ export default class VoxelWorldPlantManager extends AirshipSingleton {
 				this.voxelWorld.DecodeFromString(dataStoreWorld.saveData);
 			}
 		}
+
+		// Loop through custom data to find current plants
+		for (let chunk of this.voxelWorld.GetAllLoadedChunks()) {
+			for (let data of chunk.GetAllCustomData()) {
+				let plantData: PlantData = data.Decode() as PlantData;
+				if (plantData) {
+					this.SpawnPlant(plantData);
+				} else {
+					warn("Unable to decode plant data from BinaryBlob");
+				}
+			}
+		}
+
 		// this.voxelWorld.LoadWorldFromSaveFile(this.voxelWorld.voxelWorldFile);
 		return undefined;
 	}
