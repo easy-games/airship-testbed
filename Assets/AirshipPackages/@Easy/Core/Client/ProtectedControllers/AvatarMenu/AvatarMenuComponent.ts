@@ -784,16 +784,31 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			removeOldClothingAccessories: true,
 		});
 
+        // Grab active accessories from loaded outfit to display current status
 		this.finishedFirstOutfitLoad = true;
 		this.selectedColor = this.viewedOutfit.skinColor;
+        this.selectedAccessories.clear();
+        for(const gear of this.viewedOutfit.gear) {
+            this.selectedAccessories.set(gear.instanceId, true);
+            if(gear.class.gear.subcategory) {
+                const slot = Protected.Avatar.GearClothingSubcategoryToSlot(gear.class.gear.subcategory)
+                this.activeAccessories.set(slot, gear.instanceId);
+                if(slot === AccessorySlot.Face) {
+                    this.selectedFaceId = gear.instanceId;
+                }
+            }
+        }
 		this.UpdateButtonGraphics();
+
+        // Combine Mesh
+        this.accessoryBuilder.UpdateCombinedMesh();
 	}
 
 	private UpdateButtonGraphics() {
 		//Highlight selected items
 		for (let i = 0; i < this.currentContentBtns.size(); i++) {
 			let button = this.currentContentBtns[i];
-			//Found matching class ID or this button is the active color
+			//Found matching instance ID or this button is the active color
 			let active =
 				this.selectedColor === button.id ||
 				this.selectedAccessories.has(this.currentContentBtns[i].id) ||
