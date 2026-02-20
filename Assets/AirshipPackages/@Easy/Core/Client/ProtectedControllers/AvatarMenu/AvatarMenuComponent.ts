@@ -785,6 +785,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		});
 
 		this.finishedFirstOutfitLoad = true;
+		this.selectedColor = this.viewedOutfit.skinColor;
+		this.UpdateButtonGraphics();
 	}
 
 	private UpdateButtonGraphics() {
