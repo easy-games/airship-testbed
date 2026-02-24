@@ -74,13 +74,16 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private activeMainIndex = -1;
 	private activeSubIndex = -1;
-	private activeAccessories = new Map<AccessorySlot, string>();
+
+    // All of the outfits accessories by slot
+	private outfitAccessories = new Map<AccessorySlot, string>();
+    // Just for easy lookup by acc id
+	private outfitAccessoryLookup = new Set<string>();
 	//private currentSlot: AccessorySlot = AccessorySlot.Root;
 	private viewedOutfit?: AirshipOutfit;
 	private currentUserOutfitIndex = -1;
 	private currentContentBtns: { id: string; button: AvatarAccessoryBtn }[] = [];
 	private clientId = -1;
-	private selectedAccessories = new Map<string, boolean>();
 	private selectedColor = "";
 	private selectedFaceId = "";
 	private bin: Bin = new Bin();
@@ -616,7 +619,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (clothingDto.class.gear.airAssets.size() === 0 || !clothingDto.class.gear.subcategory) return;
 		const slot = Protected.Avatar.GearClothingSubcategoryToSlot(clothingDto.class.gear.subcategory);
 
-		const alreadySelected = this.activeAccessories.get(slot) === clothingDto.instanceId;
+		const alreadySelected = this.outfitAccessories.get(slot) === clothingDto.instanceId;
 		this.RemoveItem(slot);
 		if (alreadySelected) {
 			// Already selected this item so just deselect it
@@ -625,8 +628,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		}
 
 		this.mainMenu?.avatarView?.PlayReaction(slot);
-		this.activeAccessories.set(slot, clothingDto.instanceId);
-		this.selectedAccessories.set(clothingDto.instanceId, true);
+		this.outfitAccessories.set(slot, clothingDto.instanceId);
+		this.outfitAccessoryLookup.add(clothingDto.instanceId);
 		this.UpdateButtonGraphics();
 		this.SetDirty(true);
 
@@ -635,7 +638,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			const gear = PlatformGear.DownloadYielding(clothingDto.class.classId, clothingDto.class.gear.airAssets[0]);
 			if (!gear) error("failed to download clothing.");
 			if (gear?.accessoryPrefabs === undefined) error("empty accessory prefabs.");
-			if (!this.selectedAccessories.has(clothingDto.instanceId)) {
+			if (!this.outfitAccessoryLookup.has(clothingDto.instanceId)) {
 				// Item downloaded after user selected a different item
 				return;
 			}
@@ -689,11 +692,11 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private RemoveItem(slot: AccessorySlot) {
 		this.mainMenu?.avatarView?.accessoryBuilder?.RemoveBySlot(slot);
-		let instanceId = this.activeAccessories.get(slot);
+		let instanceId = this.outfitAccessories.get(slot);
 		if (instanceId && instanceId !== "") {
-			this.selectedAccessories.delete(instanceId);
+			this.outfitAccessoryLookup.delete(instanceId);
 		}
-		this.activeAccessories.set(slot, "");
+		this.outfitAccessories.delete(slot);
 	}
 
 	private OnDragAvatar(down: boolean) {
@@ -793,26 +796,28 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
         // Grab active accessories from loaded outfit to display current status
 		this.finishedFirstOutfitLoad = true;
 		this.selectedColor = this.viewedOutfit.skinColor;
-        this.selectedAccessories.clear();
-        const usedSlots = new Map<AccessorySlot, boolean>();
+        this.outfitAccessories.clear();
+        this.outfitAccessoryLookup.clear();
         for(const gear of this.viewedOutfit.gear) {
-            this.selectedAccessories.set(gear.instanceId, true);
             if(gear.class.gear.subcategory) {
                 const slot = Protected.Avatar.GearClothingSubcategoryToSlot(gear.class.gear.subcategory);
-                if(usedSlots.has(slot)) {
+                if(this.outfitAccessories.has(slot)) {
+                    // Ignore duplicate slots. That should not be possible
                     warn("Duplicate slot accessories in loaded outfit: " + slot);
+                    continue;
                 }
-                this.activeAccessories.set(slot, gear.instanceId);
-                if(slot === AccessorySlot.Face) {
+                if(gear.class.gear.category === "FaceDecal") {
                     this.selectedFaceId = gear.instanceId;
+                } else {
+                    this.outfitAccessories.set(slot, gear.instanceId);
+                    this.outfitAccessoryLookup.add(gear.instanceId);
                 }
-                usedSlots.set(slot, true);
             }
         }
 		this.UpdateButtonGraphics();
 
         // Combine Mesh
-        this.accessoryBuilder.UpdateCombinedMesh();
+        // this.accessoryBuilder.UpdateCombinedMesh();
 	}
 
 	private UpdateButtonGraphics() {
@@ -822,7 +827,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			//Found matching instance ID or this button is the active color
 			let active =
 				this.selectedColor === button.id ||
-				this.selectedAccessories.has(this.currentContentBtns[i].id) ||
+				this.outfitAccessoryLookup.has(this.currentContentBtns[i].id) ||
 				this.selectedFaceId === button.id;
 			button.button.SetSelected(active);
 		}
@@ -842,20 +847,22 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		// 	this.saveBtn.interactable = false;
 		// }
 		let accBuilder = this.mainMenu?.avatarView?.accessoryBuilder;
+        if(!accBuilder) {
+            error("Unable to find accessory builder in avatar menu");
+        }
 		let accessoryIds: string[] = [];
-		if (accBuilder) {
-			for (const [key, value] of this.selectedAccessories) {
-				const instanceId = key;
-				if (instanceId === "") {
-					warn("Trying to save avatar accessory without a proper instance ID");
-					continue;
-				}
-				accessoryIds.push(instanceId);
-			}
-			if (this.selectedFaceId !== "") {
-				accessoryIds.push(this.selectedFaceId);
-			}
-		}
+        for (const instanceId of this.outfitAccessoryLookup) {
+            if (instanceId === "") {
+                warn("Trying to save avatar accessory without a proper instance ID");
+                continue;
+            }
+            print("pushing: " + instanceId);
+            accessoryIds.push(instanceId);
+        }
+        if (this.selectedFaceId !== "") {
+            print("pushing: " + this.selectedFaceId);
+            accessoryIds.push(this.selectedFaceId);
+        }
 
 		Protected.Avatar.SaveOutfitAccessories(this.viewedOutfit.outfitId, this.selectedColor, accessoryIds).then(
 			(value) => {
