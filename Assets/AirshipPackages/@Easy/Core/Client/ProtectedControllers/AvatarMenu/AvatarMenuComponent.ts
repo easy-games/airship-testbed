@@ -433,10 +433,16 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 		//Accessories
 		let validClothingItems = Protected.Avatar.ownedClothing.filter(
-			(c) =>
-				c.class.gear.category === AirshipGearCategory.Clothing &&
-				c.class.gear.subcategory !== undefined &&
-				Protected.Avatar.GearClothingSubcategoryToSlot(c.class.gear.subcategory) === slot,
+			(c) =>{
+                if(c.class.gear.subcategory === undefined || c.class.gear.category === "FaceDecal") {
+                    return false;
+                }
+                const accSlot = Protected.Avatar.GearClothingSubcategoryToSlot(c.class.gear.subcategory);
+                if(accSlot === AccessorySlot.Root) {
+                    warn("Invalid sub category on item: " + c.class.name);
+                }
+				return c.class.gear.category === AirshipGearCategory.Clothing &&
+				accSlot === slot},
 		);
 		this.DisplayClothingItems(validClothingItems);
 		this.currentFocusedSlot = slot;
@@ -788,14 +794,19 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		this.finishedFirstOutfitLoad = true;
 		this.selectedColor = this.viewedOutfit.skinColor;
         this.selectedAccessories.clear();
+        const usedSlots = new Map<AccessorySlot, boolean>();
         for(const gear of this.viewedOutfit.gear) {
             this.selectedAccessories.set(gear.instanceId, true);
             if(gear.class.gear.subcategory) {
-                const slot = Protected.Avatar.GearClothingSubcategoryToSlot(gear.class.gear.subcategory)
+                const slot = Protected.Avatar.GearClothingSubcategoryToSlot(gear.class.gear.subcategory);
+                if(usedSlots.has(slot)) {
+                    warn("Duplicate slot accessories in loaded outfit: " + slot);
+                }
                 this.activeAccessories.set(slot, gear.instanceId);
                 if(slot === AccessorySlot.Face) {
                     this.selectedFaceId = gear.instanceId;
                 }
+                usedSlots.set(slot, true);
             }
         }
 		this.UpdateButtonGraphics();
