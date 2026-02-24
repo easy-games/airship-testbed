@@ -101,7 +101,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private finishedFirstOutfitLoad = false;
 
 	private Log(message: string) {
-		print("Avatar Editor: " + message + " (" + Time.time + ")");
+		//print("Avatar Editor: " + message + " (" + Time.time + ")");
 	}
 
 	override Init(mainMenu: MainMenuController, pageType: MainMenuPageType): void {
@@ -182,7 +182,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 										//     outfitStr += gear.class.classId+",";
 										// }
 										// Bridge.CopyToClipboard(outfitStr);
-										// print("OUTFIT GEAR: " + outfitStr);
+										// this.Log("OUTFIT GEAR: " + outfitStr);
 									},
 								},
 							],
@@ -252,9 +252,6 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 				while (!Protected.Avatar.isInventoryLoaded) {
 					task.wait();
 				}
-				// const start = Time.time;
-				// await Protected.Avatar.LoadInventory();
-				// print("Loaded inventory in " + (Time.time - start));
 				this.LoadAllOutfits();
 			});
 		}
@@ -461,7 +458,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (clothing && clothing.size() > 0) {
 			clothing.forEach((c) => {
 				this.AddItemButton(c, async () => {
-					print(`Clicking ${c.class.name} (${c.class.classId})`);
+					this.Log(`Clicking ${c.class.name} (${c.class.classId})`);
 					await this.SelectItem(c);
 					this.accessoryBuilder.UpdateCombinedMesh();
 				});
@@ -660,7 +657,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 
 	private async SelectFaceItem(face: AirshipGearItem): Promise<void> {
 		if (!face) {
-			print("Missing face item: " + face);
+			warn("Missing face item");
 			return;
 		}
 
@@ -770,8 +767,8 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (relevantOutfit.name === newName) return;
 
 		Protected.Avatar.RenameOutfit(relevantOutfit.outfitId, newName).catch((e) => {
-			print("Failed to rename outfit.");
-			print(e);
+			warn("Failed to rename outfit.");
+			warn(e);
 		});
 	}
 
@@ -857,11 +854,9 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
                 warn("Trying to save avatar accessory without a proper instance ID");
                 continue;
             }
-            print("pushing: " + instanceId);
             accessoryIds.push(instanceId);
         }
         if (this.selectedFaceId !== "") {
-            print("pushing: " + this.selectedFaceId);
             accessoryIds.push(this.selectedFaceId);
         }
 
