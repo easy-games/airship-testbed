@@ -28,6 +28,7 @@ import AvatarMenuBtn from "./AvatarMenuBtn";
 import AvatarMenuProfileComponent from "./AvatarMenuProfileComponent";
 import OutfitButton from "./Outfit/OutfitButtonComponent";
 import OutfitButtonNameComponent from "./Outfit/OutfitButtonNameComponent";
+import { Layer } from "@Easy/Core/Shared/Util/Layer";
 
 export default class AvatarMenuComponent extends MainMenuPageComponent {
 	private readonly generalHookupKey = "General";
@@ -245,6 +246,19 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 			}
 		}
 		this.accessoryBuilder = this.mainMenu.avatarView.accessoryBuilder;
+
+        // Force Avatar layer on all objects (For layers AccessoryBuilder doesn't modify like TransparentVFX)
+        this.bin.Add(this.accessoryBuilder.OnAccessoryAdded.Connect((accessories)=> {
+            for(const acc of accessories) {
+                if(acc) {
+                    for(const ren of acc.renderers) {
+                        if(ren) {
+                            ren.gameObject.layer = Layer.AVATAR_EDITOR;
+                        }
+                    }
+                }
+            }
+        }));
 
 		if (!this.downloadedAccessories) {
 			this.downloadedAccessories = true;
