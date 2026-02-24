@@ -624,6 +624,7 @@ export default class AvatarMenuComponent extends MainMenuPageComponent {
 		if (alreadySelected) {
 			// Already selected this item so just deselect it
 			this.UpdateButtonGraphics();
+            this.SetDirty(true);
 			return;
 		}
 
