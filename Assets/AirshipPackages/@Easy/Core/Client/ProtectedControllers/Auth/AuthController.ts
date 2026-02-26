@@ -46,14 +46,23 @@ export class AuthController {
 		task.spawn(() => {
 			while (true) {
 				task.wait(30 * 60);
-				const refreshToken = StateManager.GetString("firebase_refreshToken");
-				if (refreshToken) {
-					task.spawn(() => {
-						const res = this.LoginWithRefreshToken(refreshToken);
-					});
-				}
+				task.spawn(() => {
+					this.RefreshAuth();
+				});
 			}
 		});
+	}
+
+	/**
+	 * Attempts to refresh authentication using refresh token.
+	 * We do this every 30 minutes and when clicking reconnect button.
+	 */
+	public RefreshAuth(): boolean {
+		const refreshToken = StateManager.GetString("firebase_refreshToken");
+		if (refreshToken) {
+			return this.LoginWithRefreshToken(refreshToken);
+		}
+		return false;
 	}
 
 	public async WaitForAuthed(): Promise<void> {

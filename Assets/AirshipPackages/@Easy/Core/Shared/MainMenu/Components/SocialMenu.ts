@@ -1,3 +1,4 @@
+import { AuthController } from "@Easy/Core/Client/ProtectedControllers/Auth/AuthController";
 import { SocketController } from "@Easy/Core/Client/ProtectedControllers/Socket/SocketController";
 import { Asset } from "../../Asset";
 import { Dependency } from "../../Flamework";
@@ -27,7 +28,7 @@ export default class SocialMenu extends AirshipBehaviour {
 
 	@Header("Lost Connection")
 	public lostConnectionNotice!: GameObject;
-	public reconnectButton!: Button;
+	public reconnectButton: Button;
 	public logoutbutton!: Button;
 
 	private bin = new Bin();
@@ -100,8 +101,20 @@ export default class SocialMenu extends AirshipBehaviour {
 		);
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.reconnectButton.gameObject, () => {
-				print("Reconnecting...");
-				socketController.Connect();
+				task.spawn(() => {
+					print("Refreshing auth...");
+					if (!Dependency<AuthController>().RefreshAuth()) {
+						print("Refresh failed. Trying auto login...");
+						if (!Dependency<AuthController>().TryAutoLogin()) {
+							Debug.LogError("Failed auto login. Going back to login screen.");
+							Bridge.LoadScene("Login", true, LoadSceneMode.Single);
+							return;
+						}
+					}
+
+					print("Reconnecting to socket...");
+					socketController.Connect();
+				});
 			}),
 		);
 		this.bin.AddEngineEventConnection(
