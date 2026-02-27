@@ -405,6 +405,10 @@ export class ProtectedSettingsSingleton {
 
 	public SetShadowsEnabled(val: boolean): void {
 		this.data.shadows = val;
+
+		// Prevent dirtying URP asset in editor
+		if (Game.IsEditor()) return;
+
 		const pipelineAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
 		if (val) {
 			if (Game.IsMobile()) {
