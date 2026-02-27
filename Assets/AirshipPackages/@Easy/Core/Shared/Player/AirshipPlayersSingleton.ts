@@ -888,23 +888,29 @@ export class AirshipPlayersSingleton {
 	 * @param userId Id of user you want to get profile picture of. This player doesn't need to be online.
 	 * @param useLocalCache If true this function will return values cached locally. This is usually preferable
 	 * unless you need to guarantee the most up-to-date profile picture. Defaults to ``true``.
+	 * @param profilePictureId If you already have the profile picture image ID, you can skip an additional network call by providing it.
 	 * @returns A Texture2D of the profile picture. If this function fails to fetch the profile picture or it doesn't
 	 * exist it will return the default profile picture for the user.
 	 */
-	public async GetProfilePictureAsync(userId: string, useLocalCache = true): Promise<Texture2D> {
+	public async GetProfilePictureAsync(userId: string, useLocalCache = true, profilePictureId?: string): Promise<Texture2D> {
 		const cachedByUserId = this.cachedProfilePictureTexturesByUserId.get(userId);
 		if (useLocalCache && cachedByUserId) {
 			return cachedByUserId;
 		}
 
-		const [success, user] = Dependency<AirshipUserController>().GetUserById(userId, useLocalCache).await();
-		if (!success || user?.profileImageId === undefined) {
+		let imageId = profilePictureId;
+
+		if (!imageId) {
+			const [success, user] = Dependency<AirshipUserController>().GetUserById(userId, useLocalCache).await();
+			if (success) imageId = user?.profileImageId;
+		}
+		
+		if (!imageId) {
 			const texture = this.GetDefaultProfilePictureFromUserId(userId);
 			this.cachedProfilePictureTexturesByUserId.set(userId, texture);
 			return texture;
 		}
 
-		const imageId = user.profileImageId;
 		const texture = await this.GetProfilePictureFromImageId(imageId, useLocalCache);
 		if (texture) {
 			this.cachedProfilePictureTexturesByUserId.set(userId, texture);

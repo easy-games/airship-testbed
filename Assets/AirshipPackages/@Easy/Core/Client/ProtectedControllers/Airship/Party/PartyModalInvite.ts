@@ -20,7 +20,7 @@ export default class PartyModalInvite extends AirshipBehaviour {
 
 	public Init(notif: PendingSocialNotification, party: GameCoordinatorParty.PartySnapshot): void {
 		task.spawn(async () => {
-			const tex = await Airship.Players.GetProfilePictureAsync(party.leader);
+			const tex = await Airship.Players.GetProfilePictureAsync(party.leader, true, party.members.find((u) => u.uid === party.leader)?.profileImageId);
 			this.leaderAvatarImg.texture = tex;
 		});
 		const leaderMember = party.members.find((m) => m.uid === party.leader)!;

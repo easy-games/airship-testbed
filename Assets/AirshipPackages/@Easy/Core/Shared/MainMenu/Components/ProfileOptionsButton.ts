@@ -90,7 +90,7 @@ export default class ProfileOptionsButton extends AirshipBehaviour {
 			}
 
 			Bridge.UpdateLayout(this.transform as RectTransform, true);
-			Airship.Players.GetProfilePictureAsync(userController.localUser.uid).then((texture) => {
+			Airship.Players.GetProfilePictureAsync(userController.localUser.uid, false, userController.localUser.profileImageId).then((texture) => {
 				if (texture) {
 					this.profileImage.texture = texture;
 					this.profileImage.color = Color.white;

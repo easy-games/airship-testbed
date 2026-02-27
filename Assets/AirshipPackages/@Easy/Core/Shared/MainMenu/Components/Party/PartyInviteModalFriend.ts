@@ -14,10 +14,10 @@ export default class PartyInviteModalFriend extends AirshipBehaviour {
 
 	private bin = new Bin();
 
-	public Init(uid: string, username: string, status: GameCoordinatorUserStatus.UserStatus): void {
+	public Init(uid: string, username: string, status: GameCoordinatorUserStatus.UserStatus, profileImageId?: string): void {
 		this.username.text = username;
 		task.spawn(async () => {
-			const tex = await Airship.Players.GetProfilePictureAsync(uid);
+			const tex = await Airship.Players.GetProfilePictureAsync(uid, false, profileImageId);
 			if (this.avatarImg) {
 				this.avatarImg.texture = tex;
 				this.avatarImg.color = Color.white;

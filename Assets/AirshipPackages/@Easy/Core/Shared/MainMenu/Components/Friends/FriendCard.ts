@@ -171,7 +171,7 @@ export default class FriendCard extends AirshipBehaviour {
 	): void {
 		if (config.loadImage) {
 			task.spawn(async () => {
-				const texture = await Airship.Players.GetProfilePictureAsync(userData.userId);
+				const texture = await Airship.Players.GetProfilePictureAsync(userData.userId, true, userData.profileImageId);
 				if (texture) {
 					this.profileImage.texture = texture;
 				}

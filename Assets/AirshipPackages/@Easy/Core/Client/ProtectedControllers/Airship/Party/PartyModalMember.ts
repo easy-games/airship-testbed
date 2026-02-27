@@ -35,7 +35,7 @@ export default class PartyModalMember extends AirshipBehaviour {
 		this.user = user;
 		this.usernameText.text = user.username;
 		task.spawn(async () => {
-			const tex = await Airship.Players.GetProfilePictureAsync(user.uid);
+			const tex = await Airship.Players.GetProfilePictureAsync(user.uid, true, user.profileImageId);
 			if (this.avatarImage) {
 				this.avatarImage.texture = tex;
 			}

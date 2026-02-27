@@ -25,7 +25,7 @@ export default class IncomingFriendRequestCard extends AirshipBehaviour {
 		}
 
 		task.spawn(async () => {
-			let texture = await Airship.Players.GetProfilePictureAsync(user.uid);
+			let texture = await Airship.Players.GetProfilePictureAsync(user.uid, true, user.profileImageId);
 			if (texture) {
 				this.profileImage.texture = texture;
 			}

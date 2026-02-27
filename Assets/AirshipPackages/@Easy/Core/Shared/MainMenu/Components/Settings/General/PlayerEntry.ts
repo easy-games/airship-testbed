@@ -56,7 +56,7 @@ export default class PlayerEntry extends AirshipBehaviour {
 
 		// Profile picture
 		task.spawn(async () => {
-			const texture = await Airship.Players.GetProfilePictureAsync(player.userId);
+			const texture = await Airship.Players.GetProfilePictureAsync(player.userId, true, player.profileImageId);
 			if (texture) {
 				this.profileImage.texture = texture;
 			}
