@@ -55,7 +55,7 @@ export default class VideoSettingsPage extends AirshipBehaviour {
 
 		this.shadowsToggle.Init("Shadows", Protected.Settings.data.shadows);
 		this.shadowsToggle.toggle.onValueChanged.Connect((val) => {
-			Protected.Settings.data.shadows = val;
+			Protected.Settings.SetShadowsEnabled(val);
 			Protected.Settings.MarkAsDirty();
 		});
 	}

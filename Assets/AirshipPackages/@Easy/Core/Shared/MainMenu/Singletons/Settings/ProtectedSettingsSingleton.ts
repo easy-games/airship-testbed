@@ -406,7 +406,15 @@ export class ProtectedSettingsSingleton {
 	public SetShadowsEnabled(val: boolean): void {
 		this.data.shadows = val;
 		const pipelineAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
-		pipelineAsset.shadowDistance = 0;
+		if (val) {
+			if (Game.IsMobile()) {
+				pipelineAsset.shadowDistance = 100;
+			} else {
+				pipelineAsset.shadowDistance = 40;
+			}
+		} else {
+			pipelineAsset.shadowDistance = 0;
+		}
 	}
 
 	public SetMSAASamples(samples: number): void {
