@@ -1,5 +1,4 @@
 import { Cancellable } from "./Cancellable";
-import { MapUtil } from "./MapUtil";
 
 type SignalParams<T> = Parameters<
 	[T] extends [unknown[]] ? (...args: T) => never : [T] extends [unknown] ? (arg: T) => never : () => never
@@ -43,7 +42,8 @@ function runEventHandlerThread(...params: unknown[]) {
  * A Signal is an object that is used to dispatch and receive arbitrary events.
  */
 export class Signal<T extends unknown[] | unknown = void> {
-	private firing = false;
+	/** Number of processing fires */
+	private activelyFiringCount = 0;
 	private debugLogging = false;
 	private allowYielding = false;
 	private keys: number[] = [];
@@ -101,8 +101,8 @@ export class Signal<T extends unknown[] | unknown = void> {
 	public ConnectWithPriority(priority: SignalPriority, callback: SignalCallback<T>): () => void {
 		const item: CallbackItem<T> = [callback, true];
 
-		if (this.firing) {
-			const queuedConns = MapUtil.GetOrCreate(this.queuedConnections, priority, []);
+		if (this.IsFiring()) {
+			const queuedConns = this.queuedConnections.getOrInsert(priority, []);
 			queuedConns.push(item);
 		} else {
 			this.AddConnection(priority, item);
@@ -128,7 +128,7 @@ export class Signal<T extends unknown[] | unknown = void> {
 
 		return () => {
 			if (!item[1]) return;
-			if (this.firing) {
+			if (this.IsFiring()) {
 				// Mark as disconnected and cleanup later
 				item[1] = false;
 				task.defer(disconnect);
@@ -166,8 +166,7 @@ export class Signal<T extends unknown[] | unknown = void> {
 	 * Invokes all callback functions with the given arguments.
 	 */
 	public Fire(...args: SignalParams<T>): T {
-		assert(!this.firing, "cannot fire signal while signal is currently firing");
-		this.firing = true;
+		this.activelyFiringCount++
 
 		if (this.debugLogging) {
 			let callbackCount = 0;
@@ -238,9 +237,9 @@ export class Signal<T extends unknown[] | unknown = void> {
 
 		// Reset
 		this.disconnectAllRequested = false;
-		this.firing = false;
+		this.activelyFiringCount--;
 
-		this.RegisterQueuedConnections();
+		if (this.activelyFiringCount === 0) this.RegisterQueuedConnections();
 
 		return args[0] as T;
 	}
@@ -282,7 +281,7 @@ export class Signal<T extends unknown[] | unknown = void> {
 	 * Clears all connections.
 	 */
 	public DisconnectAll() {
-		if (this.firing) this.disconnectAllRequested = true;
+		if (this.IsFiring()) this.disconnectAllRequested = true;
 
 		this.connections.clear();
 		this.keys.clear();
@@ -338,5 +337,10 @@ export class Signal<T extends unknown[] | unknown = void> {
 			i += conns.size();
 		}
 		return i;
+	}
+
+	/** Returns true if this signal is currenly firing. */
+	public IsFiring() {
+		return this.activelyFiringCount > 0;
 	}
 }
