@@ -405,7 +405,8 @@ export class ProtectedSettingsSingleton {
 
 	public SetShadowsEnabled(val: boolean): void {
 		this.data.shadows = val;
-		// todo: shadow logic
+		const pipelineAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
+		pipelineAsset.shadowDistance = 0;
 	}
 
 	public SetMSAASamples(samples: number): void {
