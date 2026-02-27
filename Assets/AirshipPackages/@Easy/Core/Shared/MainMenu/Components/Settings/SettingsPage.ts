@@ -312,7 +312,7 @@ export default class SettingsPage extends AirshipBehaviour {
 
 		this.chatFilterToggle.Init("Filter Chat Messages", settings.IsChatFilterEnabled());
 		this.chatFilterToggle.toggle.onValueChanged.Connect((val) => {
-			settings.SetShadowsEnabled(val);
+			settings.SetChatFilterEnabled(val);
 			settings.MarkAsDirty();
 		});
 
