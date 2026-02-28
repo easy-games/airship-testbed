@@ -326,10 +326,12 @@ export class DirectMessageController {
 				messageObj.setMessageText(data.filterResult.transformedMessage);
 				sentMessage.text = data.filterResult.transformedMessage;
 			} else {
-				if (Game.coreContext === CoreContext.GAME) {
-					clientChat.SetBlockedForOthers(messageId);
-				}
 				messageObj.setMessageText(message, data.filterResult.messageBlocked);
+			}
+
+			// Add "blocked" text to chat window if message was blocked
+			if (Game.coreContext === CoreContext.GAME) {
+				if (data.filterResult.messageBlocked) clientChat.SetBlockedForOthers(messageId);
 			}
 		} else {
 			const errorHeader =
