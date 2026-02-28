@@ -517,7 +517,7 @@ export class ClientChatSingleton {
 	}
 
 	private detectUrlInChatMessage(message: string): string | undefined {
-		const cleanMessage = Bridge.RemoveRichText(message).lower();
+		const cleanMessage = Bridge.RemoveRichText(message);
 		const patterns = [
 			"https?://[%w%-%.]+[%w%.%-/?#&=_~]*", // URLs with http protocol
 			"%f[%w][%w%-]+%.[%a]+[%w%.%-/?#&=_~]*%f[%W]", // URLs matching only domain.tld
@@ -538,8 +538,6 @@ export class ClientChatSingleton {
 				if (!string.match(url, "^https?://")) {
 					url = "https://" + url;
 				}
-
-				print("Found chat URL: " + url);
 				return url;
 			}
 		}
