@@ -84,6 +84,7 @@ export class ProtectedFriendsController {
 		username: string,
 		userId: string,
 		extraData: unknown,
+		profileImageId?: string,
 	): void {
 		const pendingNotif: PendingSocialNotification = {
 			type: socialNotificationType,
@@ -91,6 +92,7 @@ export class ProtectedFriendsController {
 			title,
 			username,
 			userId,
+			profileImageId,
 			extraData,
 		};
 		this.pendingSocialNotifications.push(pendingNotif);
@@ -126,7 +128,7 @@ export class ProtectedFriendsController {
 		});
 
 		task.spawn(async () => {
-			const texture = await Airship.Players.GetProfilePictureAsync(userId);
+			const texture = await Airship.Players.GetProfilePictureAsync(userId, true, profileImageId);
 			if (texture) {
 				this.socialNotification.userImage.texture = texture;
 			}
@@ -200,6 +202,7 @@ export class ProtectedFriendsController {
 					notif.username,
 					notif.userId,
 					notif.extraData,
+					notif.profileImageId
 				);
 			}
 		}
@@ -256,6 +259,7 @@ export class ProtectedFriendsController {
 					foundUser.username,
 					foundUser.uid,
 					{},
+					foundUser.profileImageId,
 				);
 
 				// this.socialNotification.bin.Add(
@@ -700,7 +704,7 @@ export class ProtectedFriendsController {
 
 		if (config.loadImage) {
 			task.spawn(async () => {
-				const texture = await Airship.Players.GetProfilePictureAsync(friend.userId);
+				const texture = await Airship.Players.GetProfilePictureAsync(friend.userId, true, friend.profileImageId);
 				if (texture) {
 					profileImage.texture = texture;
 				}

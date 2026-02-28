@@ -6,5 +6,6 @@ export interface PendingSocialNotification {
 	title: string;
 	username: string;
 	userId: string;
+	profileImageId?: string;
 	extraData: unknown;
 }

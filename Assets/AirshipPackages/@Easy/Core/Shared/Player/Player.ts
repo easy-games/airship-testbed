@@ -314,7 +314,7 @@ export class Player {
 	}
 
 	async GetProfileImageTextureAsync(): Promise<Texture2D | undefined> {
-		return await Airship.Players.GetProfilePictureAsync(this.userId);
+		return await Airship.Players.GetProfilePictureAsync(this.userId, true, this.profileImageId);
 	}
 
 	// public SetTeam(team: Team): void {

@@ -165,7 +165,7 @@ export class DirectMessageController {
 					chatSingleton.RenderChatMessage(text, messageId);
 
 					if (data.filterResult.messageBlocked) {
-						chatSingleton.SetBlockedForOthers(messageId)
+						chatSingleton.SetBlockedForOthers(messageId);
 					}
 				}
 			}
@@ -259,7 +259,7 @@ export class DirectMessageController {
 		});
 
 		const directMessagesWindow = this.windowGo!.GetAirshipComponent<DirectMessagesWindow>()!;
-		this.partyController.onPartyUpdated.Connect((party, oldParty) => {
+		this.partyController.onPartyChanged.Connect((party, oldParty) => {
 			directMessagesWindow.UpdatePartyMembers(party?.members ?? []);
 			if (!party || party.members.size() <= 1) {
 				this.Close();

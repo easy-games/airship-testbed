@@ -56,7 +56,7 @@ export default class FriendRecommendation extends AirshipBehaviour {
 		this.context.text = this.GetRecommendationString(context);
 		this.user = user;
 
-		Airship.Players.GetProfilePictureAsync(this.user.uid).then((tex) => {
+		Airship.Players.GetProfilePictureAsync(this.user.uid, true, user.profileImageId).then((tex) => {
 			this.icon.texture = tex;
 		});
 		this.name.text = this.user.username;

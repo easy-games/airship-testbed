@@ -17,7 +17,6 @@ export class DevConsoleProtectedController implements OnStart {
 					openedBin.Add(Mouse.AddUnlocker());
 					openedBin.Add(this.AddEscapeCloser());
 				}
-
 				DevConsole.OnConsoleClosed.Connect(() => {
 					openedBin.Clean();
 				});

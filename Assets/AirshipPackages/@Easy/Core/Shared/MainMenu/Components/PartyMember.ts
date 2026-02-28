@@ -1,12 +1,12 @@
 import { ProtectedPartyController } from "@Easy/Core/Client/ProtectedControllers/Airship/Party/PartyController";
 import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/FriendsController";
 import { Airship } from "../../Airship";
+import { AirshipUser } from "../../Airship/Types/AirshipUser";
 import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
 import { Protected } from "../../Protected";
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI, HoverState } from "../../Util/CanvasAPI";
-import { AirshipUser } from "../../Airship/Types/AirshipUser";
 
 export default class PartyMember extends AirshipBehaviour {
 	@Header("References")
@@ -129,7 +129,7 @@ export default class PartyMember extends AirshipBehaviour {
 
 	public async UpdatePicture() {
 		if (this.user) {
-			const profileTexture = await Airship.Players.GetProfilePictureAsync(this.user.uid);
+			const profileTexture = await Airship.Players.GetProfilePictureAsync(this.user.uid, false, this.user.profileImageId);
 			if (profileTexture) {
 				this.profileImage.texture = profileTexture;
 			}

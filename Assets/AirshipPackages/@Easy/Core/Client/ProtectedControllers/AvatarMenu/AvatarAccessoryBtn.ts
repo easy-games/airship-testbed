@@ -1,5 +1,6 @@
 import { AirshipGearItem } from "@Easy/Core/Shared/Airship/Types/AirshipPlatformInventory";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { Game } from "@Easy/Core/Shared/Game";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { CanvasAPI, HoverState, PointerButton, PointerDirection } from "@Easy/Core/Shared/Util/CanvasAPI";
@@ -33,6 +34,7 @@ export default class AvatarAccessoryBtn extends AirshipBehaviour {
 	public OnEnable(): void {
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnHoverEvent(this.gameObject, (hoverState) => {
+				if (Game.IsMobile()) return;
 				if (this.noColorChanges) return;
 				if (hoverState === HoverState.ENTER && !this.selected) {
 					this.outline.enabled = true;

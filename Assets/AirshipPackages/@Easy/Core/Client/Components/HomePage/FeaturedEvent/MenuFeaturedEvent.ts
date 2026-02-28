@@ -116,7 +116,11 @@ export default class MenuFeaturedEvent extends AirshipBehaviour {
 					days: true,
 					seperator: " : ",
 				});
-				this.startCountdownText.text = `Starts in ${countdown}`;
+				if (Game.deviceType === AirshipDeviceType.Phone) {
+					this.startCountdownText.text = `${countdown}`;
+				} else {
+					this.startCountdownText.text = `Starts in ${countdown}`;
+				}
 			} else {
 				this.startCountdownText.text = `Starting soon...`;
 			}

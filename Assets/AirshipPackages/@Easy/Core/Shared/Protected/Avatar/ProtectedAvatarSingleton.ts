@@ -395,8 +395,16 @@ export class ProtectedAvatarSingleton {
 				return AccessorySlot.Neck;
 			case AirshipGearClothingSubcategory.Torso:
 				return AccessorySlot.Torso;
+			case AirshipGearClothingSubcategory.TorsoOuter:
+				return AccessorySlot.TorsoOuter;
+			case AirshipGearClothingSubcategory.TorsoInner:
+				return AccessorySlot.TorsoInner;
 			case AirshipGearClothingSubcategory.Legs:
 				return AccessorySlot.Legs;
+			case AirshipGearClothingSubcategory.LegsOuter:
+				return AccessorySlot.LegsOuter;
+			case AirshipGearClothingSubcategory.LegsInner:
+				return AccessorySlot.LegsInner;
 			case AirshipGearClothingSubcategory.Feet:
 			case AirshipGearClothingSubcategory.LeftFoot:
 			case AirshipGearClothingSubcategory.RightFoot:
@@ -422,7 +430,6 @@ export class ProtectedAvatarSingleton {
 			// case AirshipGearClothingSubcategory.RightFoot:
 			// 	return AccessorySlot.RightFoot;
 			default:
-				warn("unknown GearClothingSubcategory mapping: " + slot);
 				return AccessorySlot.Root;
 		}
 	}

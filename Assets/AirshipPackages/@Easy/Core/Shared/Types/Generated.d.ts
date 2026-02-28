@@ -3163,11 +3163,11 @@ declare const enum VisibilityMode {
 declare const enum BodyMask {
     NONE = 0,
     HAIR = 1,
-    FACE = 2,
+    HEAD = 2,
     R_ARM_UPPER = 4,
     L_ARM_UPPER = 8,
     EARS = 16,
-    UNUSED1 = 32,
+    FACE = 32,
     UNUSED2 = 64,
     L_ARM_LOWER = 128,
     L_HAND = 256,
@@ -3189,8 +3189,8 @@ declare const enum BodyMask {
     L_FOOT = 16777216,
     R_FOOT = 33554432,
     R_LEG_LOWER = 67108864,
-    UNUSED11 = 134217728,
-    UNUSED12 = 268435456,
+    ABS = 134217728,
+    NECK = 268435456,
     UNUSED13 = 536870912,
     UNUSED14 = 1073741824,
 }
@@ -39653,7 +39653,7 @@ interface MaterialColorURP extends MonoBehaviour {
     GetColorSettingByMaterial(mat: Material): ColorSetting;
     GetSharedMaterials(): Readonly<Material[]>;
     InitializeColorsFromCurrentMaterials(): void;
-    SetColor(indx: number, newColor: Color): void;
+    SetColor(index: number, newColor: Color): void;
     SetColorOnAll(newColor: Color): void;
 
 
@@ -55263,6 +55263,7 @@ interface VoxelWorld extends MonoBehaviour {
     WriteVoxelAt(pos: Vector3, voxelData: number): void;
     WriteVoxelColorAt(pos: Vector3, color: Color, priority: boolean): void;
     WriteVoxelCustomDataAt(pos: Vector3, data: BinaryBlob, priority: boolean): void;
+    WriteVoxelGroupAt(positions: Readonly<Vector3[]>, voxelData: Readonly<number[]>, priority: boolean, asServer: boolean): void;
     WriteVoxelGroupAt(positions: Readonly<Vector3[]>, voxelData: Readonly<number[]>, priority: boolean): void;
 
 
@@ -55357,7 +55358,6 @@ interface Chunk {
     bottomLeftInt: Vector3;
     bounds: Bounds;
     numUpdates: number;
-    currentCamera: Camera;
     colliders: Readonly<BoxCollider[]>;
     chunkKey: Vector3;
 
@@ -55480,6 +55480,9 @@ interface CanvasDistanceCondition extends MonoBehaviour {
 
 
 
+    AddDisabler(): number;
+    IsConditionDisabled(): boolean;
+    RemoveDisabler(id: number): void;
 
 
 }

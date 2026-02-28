@@ -37,6 +37,7 @@ const defaultData: ClientSettingsFile = {
 	lastPushNotifPromptTime: 0,
 	firstLoginTime: os.time(),
 	chatFilterEnabled: true,
+	shadows: !Game.IsMobile(),
 };
 
 interface SavedGameSettings {
@@ -272,7 +273,7 @@ export class ProtectedSettingsSingleton {
 
 			this.data = { ...defaultData, ...this.data };
 
-			// simple reconcile logic
+			// --- Reconcile ---
 			if (this.data.limitFps === undefined) {
 				if (Game.IsMobile()) {
 					this.data.limitFps = 60;
@@ -286,6 +287,17 @@ export class ProtectedSettingsSingleton {
 			if (this.data.firstLoginTime === undefined) {
 				this.data.firstLoginTime = os.time();
 			}
+			if (this.data.chatFilterEnabled === undefined) {
+				this.data.chatFilterEnabled = true;
+			}
+			if (this.data.shadows === undefined) {
+				if (Game.IsMobile()) {
+					this.data.shadows = false;
+				} else {
+					this.data.shadows = true;
+				}
+			}
+			// --- End Reconcile ---
 		} else {
 			this.data = defaultData;
 			if (Game.IsMobile()) {
@@ -303,6 +315,7 @@ export class ProtectedSettingsSingleton {
 		// this.SetShadowLevel(this.data.shadowTier);
 		this.SetVsync(this.data.vsync);
 		this.SetLimitFPS(this.data.limitFps);
+		this.SetShadowsEnabled(this.data.shadows);
 
 		task.spawn(() => {
 			this.settingsLoaded = true;
@@ -387,6 +400,24 @@ export class ProtectedSettingsSingleton {
 			Application.targetFrameRate = 120;
 		} else {
 			Application.targetFrameRate = limit;
+		}
+	}
+
+	public SetShadowsEnabled(val: boolean): void {
+		this.data.shadows = val;
+
+		// Prevent dirtying URP asset in editor
+		if (Game.IsEditor()) return;
+
+		const pipelineAsset = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
+		if (val) {
+			if (Game.IsMobile()) {
+				pipelineAsset.shadowDistance = 100;
+			} else {
+				pipelineAsset.shadowDistance = 40;
+			}
+		} else {
+			pipelineAsset.shadowDistance = 0;
 		}
 	}
 

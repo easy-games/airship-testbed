@@ -7,6 +7,7 @@ export default class VideoSettingsPage extends AirshipBehaviour {
 	public msaaBtnGroup: SettingsButtonGroup;
 	public shadowsBtnGroup: SettingsButtonGroup;
 	public vsyncToggle: SettingsToggle;
+	public shadowsToggle: SettingsToggle;
 
 	override Start(): void {
 		this.msaaBtnGroup.Init("Anti Aliasing", Protected.Settings.data.msaaSamples, [
@@ -51,6 +52,12 @@ export default class VideoSettingsPage extends AirshipBehaviour {
 				Protected.Settings.MarkAsDirty();
 			});
 		}
+
+		this.shadowsToggle.Init("Shadows", Protected.Settings.data.shadows);
+		this.shadowsToggle.toggle.onValueChanged.Connect((val) => {
+			Protected.Settings.SetShadowsEnabled(val);
+			Protected.Settings.MarkAsDirty();
+		});
 	}
 
 	override OnDestroy(): void {}

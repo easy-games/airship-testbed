@@ -74,6 +74,9 @@ export class AirshipCameraSingleton {
 
 	public cameraRig?: CameraRig;
 
+	/** If true, the local player will be able to use the Shift + P cinematic camera mode. */
+	public allowCinematicCameraMode = false;
+
 	constructor() {
 		Airship.Camera = this;
 	}
@@ -122,8 +125,12 @@ export class AirshipCameraSingleton {
 
 			Keyboard.OnKeyDown(Key.P, (event) => {
 				//TODO add easy org check instead of role
-				if (event.uiProcessed || Game.localPlayer?.orgRoleName === undefined) return;
-				if (Keyboard.IsKeyDown(Key.LeftShift)) {
+				if (event.uiProcessed) return;
+
+				if (
+					Keyboard.IsKeyDown(Key.LeftShift) &&
+					(Game.localPlayer?.orgRoleName !== undefined || this.allowCinematicCameraMode)
+				) {
 					if (flyCam) {
 						flyCam = false;
 						flyingBin.Clean();

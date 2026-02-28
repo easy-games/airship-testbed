@@ -24,7 +24,7 @@ export default class PartyCardMember extends AirshipBehaviour {
 		this.user = user;
 
 		task.spawn(async () => {
-			const tex = await Airship.Players.GetProfilePictureAsync(user.uid);
+			const tex = await Airship.Players.GetProfilePictureAsync(user.uid, true, user.profileImageId);
 			if (this.avatarImg) {
 				this.avatarImg.texture = tex;
 				this.avatarImg.color = Color.white;

@@ -17,11 +17,11 @@ export default class PartyModalPlayer extends AirshipBehaviour {
 
 	private bin = new Bin();
 
-	public Init(username: string, uid: string): void {
+	public Init(username: string, uid: string, profileImageId?: string): void {
 		this.checkmark.SetActive(false);
 
 		task.spawn(async () => {
-			const tex = await Airship.Players.GetProfilePictureAsync(uid);
+			const tex = await Airship.Players.GetProfilePictureAsync(uid, true, profileImageId);
 			this.avatarImg.texture = tex;
 		});
 		this.username.text = username;

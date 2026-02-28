@@ -1,3 +1,5 @@
+import { Game } from "@Easy/Core/Shared/Game";
+
 export default class GearUnlockCanvas extends AirshipBehaviour {
 	public titleText: TMP_Text;
 	public messageText: TMP_Text;
@@ -21,7 +23,12 @@ export default class GearUnlockCanvas extends AirshipBehaviour {
 		}
 
 		this.wrapper.anchoredPosition = new Vector2(0, -60);
-		NativeTween.AnchoredPositionY(this.wrapper, 0, 0.5).SetEaseQuadOut();
+		// Something is wrong with android safe area so we go extra high.
+		if (Game.platform === AirshipPlatform.Android) {
+			NativeTween.AnchoredPositionY(this.wrapper, 100, 0.5).SetEaseQuadOut();
+		} else {
+			NativeTween.AnchoredPositionY(this.wrapper, 30, 0.5).SetEaseQuadOut();
+		}
 
 		task.spawn(() => {
 			VibrationManager.Play(VibrationFeedbackType.Heavy);

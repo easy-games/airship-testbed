@@ -38,7 +38,7 @@ export default class PartyInviteModal extends AirshipBehaviour {
 			if (!this.uidToOnlineFriend.has(status.userId)) {
 				comp = Instantiate(this.playerPrefab, this.content).GetAirshipComponent<PartyInviteModalFriend>()!;
 				this.uidToOnlineFriend.set(status.userId, comp);
-				comp.Init(status.userId, status.username, status.status);
+				comp.Init(status.userId, status.username, status.status, status.profileImageId);
 				onlineCount++;
 			}
 		}

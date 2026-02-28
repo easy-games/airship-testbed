@@ -2317,6 +2317,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7391165727542572914}
     m_Modifications:
+    - target: {fileID: 586984483178339522, guid: 8a9da2a421213054b989017e6edfbff1, type: 3}
+      propertyPath: script
+      value: 
+      objectReference: {fileID: 5842661104909546540, guid: f53842464852d1744b908d0f1b4e597f, type: 3}
     - target: {fileID: 1204113646243484721, guid: 8a9da2a421213054b989017e6edfbff1, type: 3}
       propertyPath: colorSettings.Array.data[0].baseColor.b
       value: 0.19215688

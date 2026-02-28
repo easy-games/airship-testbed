@@ -69,11 +69,18 @@ export default class PartyCard extends AirshipBehaviour {
 		task.spawn(async () => {
 			this.UpdateParty(mainMenuPartyController.party);
 			this.bin.Add(
-				mainMenuPartyController.onPartyUpdated.Connect((newParty) => {
+				mainMenuPartyController.onPartyChanged.Connect((newParty) => {
 					this.UpdateParty(newParty);
 				}),
 			);
 		});
+
+		this.bin.Add(
+			mainMenuPartyController.onPartyLeaderStatusChanged.Connect((newStatus) => {
+				this.UpdateStatus(newStatus);
+			}),
+		);
+		this.UpdateStatus(mainMenuPartyController.partyLeaderStatus);
 
 		this.bin.Add(
 			this.inviteBtn.onClick.Connect(() => {

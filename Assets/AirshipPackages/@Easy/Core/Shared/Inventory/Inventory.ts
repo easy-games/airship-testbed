@@ -423,10 +423,11 @@ export default class Inventory extends AirshipBehaviour {
 
 	public GetItemCount(itemType: string): number {
 		let total = 0;
-		for (let itemStack of Object.values(this.items)) {
-			if (itemStack.itemType === itemType) {
-				total += itemStack.amount;
-			}
+		for (const itemStack of this.items.values()) {
+			if (itemStack.itemType !== itemType) continue;
+			if (itemStack.amount >= math.huge) return math.huge;
+
+			total += itemStack.amount;
 		}
 		return total;
 	}
