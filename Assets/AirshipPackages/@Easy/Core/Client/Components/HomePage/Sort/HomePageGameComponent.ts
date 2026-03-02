@@ -1,4 +1,5 @@
 import { TransferController } from "@Easy/Core/Client/ProtectedControllers//Transfer/TransferController";
+import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
 import { AirshipGame } from "@Easy/Core/Shared/Airship/Types/AirshipGame";
 import DateParser from "@Easy/Core/Shared/DateParser";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
@@ -129,7 +130,12 @@ export default class HomePageGameComponent extends AirshipBehaviour {
 			if (this.redirectDrag.isDragging) return;
 			this.loadingOverlay.SetActive(true);
 			print("Joining game " + gameDto.name + "...");
-			const res = await Dependency<TransferController>().TransferToGameAsync(gameDto.id);
+			try {
+				const res = await Dependency<TransferController>().TransferToGameAsync(gameDto.id);
+			} catch (err) {
+				Dependency<MainMenuController>().ShowTransferFailedToast("Too many requests! Please try again soon.");
+				Debug.LogError(err);
+			}
 			this.loadingOverlay.SetActive(false);
 		});
 		this.bin.Add(() => {

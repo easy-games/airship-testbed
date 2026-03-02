@@ -1,4 +1,4 @@
-import { ExternalGameCoordinatorTypes, GameCoordinatorAgones, GameCoordinatorServers, GameCoordinatorTransfers } from "../../TypePackages/game-coordinator-types";
+import { GameCoordinatorAgones, GameCoordinatorServers, GameCoordinatorTransfers } from "../../TypePackages/game-coordinator-types";
 import { AirshipUser } from "./AirshipUser";
 
 export const AirshipServerAccessMode = GameCoordinatorServers.AccessMode;
@@ -19,7 +19,7 @@ export interface AirshipServerConfig {
 	maxPlayers?: number;
 	/** Only allow the players in this list to join the server. */
 	allowedUserIds?: string[];
-	/** An array of tags to associate with this server. You can have up to 100 tags. */
+	/** An array of tags to associate with this server. You can have up to 10 tags. */
 	tags?: string[];
 	/** An object representing game configuration to be passed to the created server. */
 	gameConfig?: object;

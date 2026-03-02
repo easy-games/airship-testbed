@@ -21,6 +21,7 @@ import { MainMenuBeforePageChangeSignal } from "./MainMenuBeforePageChangeSignal
 import { MainMenuPageChangeSignal } from "./MainMenuPageChangeSignal";
 import { MainMenuPageType } from "./MainMenuPageName";
 import { SocketController } from "./Socket/SocketController";
+import TransferFailedToast from "./Transfer/TransferFailedToast";
 import TransferToast from "./Transfer/TransferToast";
 
 @Controller()
@@ -239,25 +240,39 @@ export class MainMenuController {
 		// });
 		const socketController = Dependency<SocketController>();
 		socketController.On<{
+			transferId: string;
 			game: {
 				name: string;
 			};
 		}>("game-coordinator/server-transfer-pending", (data) => {
 			print("pending transfer: " + inspect(data));
-
-			this.ShowTransferPendingToast(data.game.name);
+			this.ShowTransferPendingToast(data.transferId, data.game.name);
 		});
+
+		socketController.On<{
+			transferId: string
+		}>("game-coordinator/server-transfer-cleared", (data) => {
+			if (this.activeTransferToast?.transferId === data.transferId) {
+				this.ClearTransferToast();
+			}
+		})
+
+		socketController.On<{
+			transferId: string,
+		}>("game-coordinator/server-transfer-failed", (data) => {
+			if (this.activeTransferToast?.transferId === data.transferId) {
+				this.ClearTransferToast();
+			}
+			this.ShowTransferFailedToast();
+		})
 	}
 
-	private ShowTransferPendingToast(gameName: string): void {
-		if (this.activeTransferToast) {
-			Object.Destroy(this.activeTransferToast.gameObject);
-			this.activeTransferToast = undefined;
-		}
+	private ShowTransferPendingToast(transferId: string, gameName: string): void {
+		this.ClearTransferToast();
 
 		let parent: Transform | undefined;
 		if (Game.IsInGame()) {
-			parent = GameObject.Find("AirshipEngineOverlay")?.transform.GetChild(0);
+			parent = GameObject.Find("AirshipEngineOverlay")?.transform;
 		} else {
 			parent = this.refs.GetValue<GameObject>("UI", "ToastContainer").transform;
 		}
@@ -270,8 +285,40 @@ export class MainMenuController {
 			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/TransferPendingToast.prefab"),
 			parent,
 		).GetAirshipComponent<TransferToast>()!;
+		toast.transferId = transferId;
 		toast.gameName.text = gameName.upper();
 		this.activeTransferToast = toast;
+	}
+
+	public ShowTransferFailedToast(message?: string) {
+		let parent: Transform | undefined;
+		if (Game.IsInGame()) {
+			parent = GameObject.Find("AirshipEngineOverlay")?.transform;
+		} else {
+			parent = this.refs.GetValue<GameObject>("UI", "ToastContainer").transform;
+		}
+		if (parent === undefined) {
+			Debug.LogError("Missing parent for transfer toast.");
+			return;
+		}
+
+		const toast = Object.Instantiate(
+			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/TransferFailedToast.prefab"),
+			parent,
+		).GetAirshipComponent<TransferFailedToast>();
+		if (toast && message) toast.message.text = message;
+
+		task.delayDetached(5, () => {
+			if (toast?.gameObject) {
+				Object.Destroy(toast.gameObject);
+			}
+		})
+	}
+
+	public ClearTransferToast() {
+		if (!this.activeTransferToast) return;
+		Object.Destroy(this.activeTransferToast.gameObject);
+		this.activeTransferToast = undefined;
 	}
 
 	public RouteToPage(pageType: MainMenuPageType, force = false, noTween = false, params?: unknown) {

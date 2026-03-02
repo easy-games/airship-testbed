@@ -9,6 +9,7 @@ import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeReques
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { MainMenuController } from "../MainMenuController";
 import { MainMenuPartyController } from "../Social/MainMenuPartyController";
 import { SocketController } from "../Socket/SocketController";
 
@@ -71,7 +72,7 @@ export class TransferController {
 					CrossSceneState.ServerTransferData.loadingImageUrl = data.loadingScreenImageId
 						? `${AirshipUrl.CDN}/images/${data.loadingScreenImageId}`
 						: "";
-				} catch (err) {}
+				} catch (err) { }
 			};
 
 			let startedTransfer = false;
@@ -110,20 +111,32 @@ export class TransferController {
 	public async TransferToGameAsync(gameId: string, preferredServerId?: string): Promise<AirshipTransferResult> {
 		let isPartyLeader = Dependency<MainMenuPartyController>().IsPartyLeader();
 
-		return await client.transfers.requestSelfTransfer({
+		const result = await client.transfers.requestSelfTransfer({
 			gameId: gameId,
 			preferredServerId,
 			withParty: isPartyLeader,
 		});
+
+		if (result.transfersRequested === false) {
+			Dependency<MainMenuController>().ShowTransferFailedToast(result.reason);
+		}
+
+		return result;
 	}
 
 	public async TransferToFriendOrPartyMember(targetUserId: string) {
 		let isPartyLeader = Dependency<MainMenuPartyController>().IsPartyLeader();
 
-		return await client.transfers.requestSelfTransferToPlayer({
+		const result = await client.transfers.requestSelfTransferToPlayer({
 			targetUserId,
 			withParty: isPartyLeader,
 		});
+
+		if (result.transfersRequested === false) {
+			Dependency<MainMenuController>().ShowTransferFailedToast(result.reason)
+		}
+
+		return result;
 	}
 
 	/**
@@ -131,7 +144,13 @@ export class TransferController {
 	 * or the client is not in a party, this function will have no effect.
 	 */
 	public async TransferToPartyLeader(): Promise<AirshipTransferResult> {
-		return await client.transfers.requestSelfToPartyTransfer();
+		const result = await client.transfers.requestSelfToPartyTransfer();
+
+		if (result.transfersRequested === false) {
+			Dependency<MainMenuController>().ShowTransferFailedToast(result.reason)
+		}
+
+		return result;
 	}
 
 	/**
@@ -139,6 +158,12 @@ export class TransferController {
 	 * Only the party leader can send this request.
 	 */
 	public async TransferPartyMembersToLeader(): Promise<AirshipTransferResult> {
-		return await client.transfers.requestTransferPartyToSelf();
+		const result = await client.transfers.requestTransferPartyToSelf();
+
+		if (result.transfersRequested === false) {
+			Dependency<MainMenuController>().ShowTransferFailedToast(result.reason)
+		}
+
+		return result;
 	}
 }

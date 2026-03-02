@@ -21,10 +21,10 @@ TagManager:
   - AvatarEditor
   - LocalStencilMask
   - StencilMask
-  - 
-  - 
-  - 
-  - 
+  - AirshipReserved0
+  - AirshipReserved1
+  - AirshipReserved2
+  - AirshipReserved3
   - GameLayer0
   - GameLayer1
   - GameLayer2

@@ -21,9 +21,13 @@ export default class MainMenuComponent extends AirshipBehaviour {
 	public mobilePartyCard: PartyCard; // Part of mobile navbar
 
 	protected Awake(): void {
-		if (Game.IsLandscape()) {
+		if (!MainMenuComponent.ShouldUseMobilePartyCard()) {
 			this.mobilePartyCard.gameObject.SetActive(false);
 		}
+	}
+
+	public static ShouldUseMobilePartyCard(): boolean {
+		return Game.IsMobile() && !Game.IsInGame();
 	}
 
 	protected Start(): void {
@@ -43,7 +47,7 @@ export default class MainMenuComponent extends AirshipBehaviour {
 			this.partyCard.gameObject.SetActive(!shouldBeHidden);
 		});
 
-		if (Game.IsPortrait()) {
+		if (MainMenuComponent.ShouldUseMobilePartyCard()) {
 			this.partyCard.gameObject.SetActive(false);
 
 			const partyController = Dependency<ProtectedPartyController>();

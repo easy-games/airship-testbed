@@ -18,10 +18,12 @@ export interface ClientSettingsFile {
 	voiceToggleEnabled: boolean;
 	vsync: boolean;
 	shadowTier: number;
+	shadows: boolean;
 	msaaSamples: number;
 	limitFps: number;
 	coreKeybindOverrides: { [key in CoreAction]?: SerializableAction } | undefined;
 	gameKeybindOverrides: { [key: string]: { [key: string]: SerializableAction } };
 	lastPushNotifPromptTime: number;
 	firstLoginTime: number;
+	chatFilterEnabled: boolean;
 }

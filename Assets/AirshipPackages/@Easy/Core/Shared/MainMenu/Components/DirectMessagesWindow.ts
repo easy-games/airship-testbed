@@ -2,10 +2,10 @@ import { ProtectedFriendsController } from "@Easy/Core/Client/ProtectedControlle
 import { TransferController } from "@Easy/Core/Client/ProtectedControllers/Transfer/TransferController";
 import inspect from "@Easy/Core/Shared/Util/Inspect";
 import { Airship } from "../../Airship";
+import { AirshipUser, AirshipUserStatusData } from "../../Airship/Types/AirshipUser";
 import { Dependency } from "../../Flamework";
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";
-import { AirshipUser, AirshipUserStatusData } from "../../Airship/Types/AirshipUser";
 
 export default class DirectMessagesWindow extends AirshipBehaviour {
 	public offlineNotice!: TMP_Text;
@@ -96,7 +96,7 @@ export default class DirectMessagesWindow extends AirshipBehaviour {
 			const member = members[i];
 			const go = Object.Instantiate(this.profilePicturePrefab, parentTransform);
 			task.spawn(async () => {
-				const tex = await Airship.Players.GetProfilePictureAsync(member.uid);
+				const tex = await Airship.Players.GetProfilePictureAsync(member.uid, true, member.profileImageId);
 				if (tex && go) {
 					const rawImage = go.GetComponent<RawImage>();
 					if (rawImage) {

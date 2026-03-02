@@ -1,8 +1,14 @@
 import { Singleton } from "../../Flamework";
+import { Game } from "../../Game";
 import { BridgedPlayer } from "../../Player/BridgedPlayer";
 import { ProtectedPlayer } from "../../Player/ProtectedPlayer";
 import { Protected } from "../../Protected";
+import { ModerationServiceClient, ModerationServiceUserReport } from "../../TypePackages/moderation-service-types";
+import { UnityMakeRequest } from "../../TypePackages/UnityMakeRequest";
+import { AirshipUrl } from "../../Util/AirshipUrl";
 import { Signal, SignalPriority } from "../../Util/Signal";
+
+const client = new ModerationServiceClient(UnityMakeRequest(AirshipUrl.ModerationService));
 
 /**
  * @internal
@@ -87,6 +93,18 @@ export class ProtectedPlayersSingleton {
 				cleanup();
 			}
 		};
+	}
+
+	public async ReportPlayer(userIdToReport: string, reasons: ModerationServiceUserReport.ReportedContent[]) {
+		if (!Game.IsClient()) {
+			warn("Players can only be reported on the client.");
+			return;
+		}
+		await client.userReport.reportUser({
+			uid: userIdToReport,
+			gameId: Game.gameId,
+			reasons: reasons,
+		});
 	}
 
 	protected OnStart(): void {}

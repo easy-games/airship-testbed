@@ -1,5 +1,4 @@
-import { MainMenuController } from "@Easy/Core/Client/ProtectedControllers/MainMenuController";
-import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
+import { Singleton } from "@Easy/Core/Shared/Flamework";
 import { Asset } from "../../Asset";
 import { CoreRefs } from "../../CoreRefs";
 import { Game } from "../../Game";
@@ -134,16 +133,13 @@ export class MainMenuSingleton {
 	 * @param confirmButtonText Text displayed on confirm button
 	 */
 	public async ShowConfirmModal(title: string, message: string, confirmButtonText = "Confirm"): Promise<boolean> {
-		const go = Object.Instantiate(
+		const go = AppManager.OpenModal(
 			Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/Modals/AirshipConfirmModal.prefab"),
-			Dependency<MainMenuController>().mainContentCanvas.transform,
 		);
 		const confirmModal = go.GetAirshipComponent<ConfirmModal>()!;
 		confirmModal.title.text = title;
 		confirmModal.message.text = message;
 		confirmModal.confirmText.text = confirmButtonText;
-
-		AppManager.OpenModal(go);
 
 		const result = confirmModal.onResult.Wait();
 		return result;

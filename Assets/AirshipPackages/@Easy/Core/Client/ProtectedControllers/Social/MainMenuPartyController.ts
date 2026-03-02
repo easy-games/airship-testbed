@@ -4,20 +4,16 @@ import { AudioManager } from "@Easy/Core/Shared/Audio/AudioManager";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import PartyCard from "@Easy/Core/Shared/MainMenu/Components/Party/PartyCard";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { Result } from "@Easy/Core/Shared/Types/Result";
-import { CoreUI } from "@Easy/Core/Shared/UI/CoreUI";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { CanvasAPI } from "@Easy/Core/Shared/Util/CanvasAPI";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
 import { ProtectedFriendsController } from "./FriendsController";
-import { MainMenuAddFriendsController } from "./MainMenuAddFriendsController";
 import { SocialNotificationType } from "./SocialNotificationType";
 
 const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordinator));
@@ -25,20 +21,14 @@ const client = new GameCoordinatorClient(UnityMakeRequest(AirshipUrl.GameCoordin
 @Controller({})
 export class MainMenuPartyController {
 	public party: AirshipPartyInternalSnapshot | undefined;
-	public onPartyUpdated = new Signal<
+	public onPartyChanged = new Signal<
 		[newParty: AirshipPartyInternalSnapshot | undefined, oldParty: AirshipPartyInternalSnapshot | undefined]
 	>();
 
-	private partyCard!: PartyCard;
-	private partyCardContents!: GameObject;
-	private emptyPartyGO!: GameObject;
-
-	private partyMemberPrefab = AssetBridge.Instance.LoadAsset<GameObject>(
-		"AirshipPackages/@Easy/Core/Prefabs/UI/MainMenu/PartyMember.prefab",
-	);
-
-	private partyUpdateReceived = false;
-	private partyLeaderStatusReceived = false;
+	public partyLeaderStatus: AirshipUserStatusData | undefined;
+	public onPartyLeaderStatusChanged = new Signal<
+		[newStatus: AirshipUserStatusData | undefined, oldStatus: AirshipUserStatusData | undefined]
+	>();
 
 	constructor(
 		private readonly mainMenuController: MainMenuController,
@@ -58,15 +48,9 @@ export class MainMenuPartyController {
 	protected OnStart(): void {
 		this.socketController.On<AirshipPartyInternalSnapshot>("game-coordinator/party-update", (data) => {
 			if (!Game.IsInGame()) print("game-coordinator/party-member-status-update-multi:", data);
-			this.partyUpdateReceived = true;
 			let oldParty = this.party;
 			this.party = data;
-			this.onPartyUpdated.Fire(data, oldParty);
-			this.UpdateParty();
-
-			if (this.party === undefined) {
-				this.partyCard.UpdateStatus(undefined);
-			}
+			this.onPartyChanged.Fire(data, oldParty);
 		});
 
 		this.socketController.On<AirshipUserStatusData[]>(
@@ -75,9 +59,10 @@ export class MainMenuPartyController {
 				if (!Game.IsInGame()) print("game-coordinator/party-member-status-update-multi:", data);
 				if (!this.party) return;
 
-				this.partyLeaderStatusReceived = true;
 				const partyLeader = data.find((d) => d.userId === this.party!.leader);
-				this.partyCard.UpdateStatus(partyLeader);
+				const oldLeaderStatus = this.partyLeaderStatus;
+				this.partyLeaderStatus = partyLeader;
+				this.onPartyLeaderStatusChanged.Fire(partyLeader, oldLeaderStatus);
 			},
 		);
 
@@ -145,84 +130,6 @@ export class MainMenuPartyController {
 		// 			this.partyCard.UpdateInfo(json.decode(partyLeaderStatusString));
 		// 		}
 		// 	}
-		// });
-	}
-
-	private SetupReferences(): void {
-		this.partyCard = this.mainMenuController.refs.GetValue("Social", "PartyCard").GetAirshipComponent<PartyCard>()!;
-		this.emptyPartyGO = this.mainMenuController.refs.GetValue("Social", "EmptyPartyCard");
-		this.partyCardContents = this.mainMenuController.refs.GetValue("Social", "PartyCardContents");
-		this.partyCardContents.SetActive(false);
-
-		task.spawn(() => {
-			Game.WaitForLocalPlayerLoaded();
-			Game.localPlayer.onUsernameChanged.Connect(() => {
-				this.UpdateParty();
-			});
-		});
-
-		const addFriendsButton = this.mainMenuController.refs.GetValue("Social", "AddFriendsButton");
-		CoreUI.SetupButton(addFriendsButton);
-		CanvasAPI.OnClickEvent(addFriendsButton, () => {
-			Dependency<MainMenuAddFriendsController>().Open();
-		});
-	}
-
-	private UpdateParty(dontUpdateCache = false): void {
-		// if (!dontUpdateCache) {
-		// 	if (this.party) {
-		// 		StateManager.SetString("airship:party", json.encode(this.party));
-		// 	} else {
-		// 		StateManager.RemoveString("airship:party");
-		// 	}
-		// }
-		// if (this.party === undefined || (this.party.members.size() <= 1 && this.party.invited.size() === 0)) {
-		// 	this.partyCardContents.SetActive(false);
-		// 	this.emptyPartyGO.SetActive(true);
-		// 	return;
-		// }
-		// this.partyCardContents.SetActive(true);
-		// this.emptyPartyGO.SetActive(false);
-		// const partyContent = this.mainMenuController.refs.GetValue("Social", "PartyContent");
-		// const partyMemberUids = this.party.members.map((m) => m.uid);
-		// const leaveButton = this.mainMenuController.refs.GetValue("Social", "LeavePartyButton");
-		// const isLocalPlayerThePartyLeader = this.party.leader === Game.localPlayer.userId;
-		// if (isLocalPlayerThePartyLeader) {
-		// 	leaveButton.SetActive(false);
-		// } else {
-		// 	leaveButton.SetActive(true);
-		// }
-		// // CoreLogger.Log("party: " + json.encode(this.party));
-		// // Remove old
-		// let membersToRemove: GameObject[] = [];
-		// let alreadyAddedUids: string[] = [];
-		// let childCount = partyContent.transform.childCount;
-		// for (let i = 0; i < childCount; i++) {
-		// 	const child = partyContent.transform.GetChild(i);
-		// 	if (partyMemberUids.includes(child.gameObject.name)) {
-		// 		alreadyAddedUids.push(child.gameObject.name);
-		// 	} else {
-		// 		membersToRemove.push(child.gameObject);
-		// 	}
-		// }
-		// for (const go of membersToRemove) {
-		// 	Object.Destroy(go);
-		// }
-		// // Add new & update existing
-		// for (const member of this.party.members) {
-		// 	let go: GameObject;
-		// 	let init = false;
-		// 	if (alreadyAddedUids.includes(member.uid)) {
-		// 		go = partyContent.transform.FindChild(member.uid)!.gameObject;
-		// 	} else {
-		// 		go = Instantiate(this.partyMemberPrefab, partyContent.transform);
-		// 		init = true;
-		// 	}
-		// 	const partyMemberComponent = go.GetAirshipComponent<PartyMember>()!;
-		// 	partyMemberComponent.SetUser(member, member.uid === this.party.leader, isLocalPlayerThePartyLeader);
-		// }
-		// CanvasAPI.OnClickEvent(leaveButton, () => {
-		// 	client.party.removeFromParty({ userToRemove: Game.localPlayer.userId }).expect();
 		// });
 	}
 

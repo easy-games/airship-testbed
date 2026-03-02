@@ -5,6 +5,7 @@ import { Player } from "@Easy/Core/Shared/Player/Player";
 import { Bin } from "@Easy/Core/Shared/Util/Bin";
 import { Signal, SignalPriority } from "@Easy/Core/Shared/Util/Signal";
 import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
+import { FlyCameraMode } from "../Camera/DefaultCameraModes/FlyCameraMode";
 import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import AirshipEmoteSingleton from "../Emote/AirshipEmoteSingleton";
@@ -172,13 +173,13 @@ export default class Character extends AirshipBehaviour {
 	public OnCompareSnapshots = new Signal<
 		[Map<string, unknown>, CharacterSnapshotData, Map<string, unknown>, CharacterSnapshotData]
 	>();
-    
-    /**
-     * Signals that the players outfit has finished loading onto the character. 
-     * Fires from autoLoadAvatarOutfit or when calling Character.LoadOutfit().
-     * Will not fire on future Accessory changes. 
-     */
-    public OnAvatarOutfitLoaded = new Signal<[outfitDto: AirshipOutfit]>();
+
+	/**
+	 * Signals that the players outfit has finished loading onto the character.
+	 * Fires from autoLoadAvatarOutfit or when calling Character.LoadOutfit().
+	 * Will not fire on future Accessory changes.
+	 */
+	public OnAvatarOutfitLoaded = new Signal<[outfitDto: AirshipOutfit]>();
 
 	public Awake(): void {
 		this.inventory = this.gameObject.GetAirshipComponent<Inventory>()!;
@@ -515,7 +516,7 @@ export default class Character extends AirshipBehaviour {
 				await Airship.Avatar.LoadOutfit(this.accessoryBuilder, outfitDto, {
 					removeOldClothingAccessories: true,
 				});
-                this.OnAvatarOutfitLoaded.Fire(outfitDto);
+				this.OnAvatarOutfitLoaded.Fire(outfitDto);
 			});
 
 			// Viewmodel
@@ -524,7 +525,7 @@ export default class Character extends AirshipBehaviour {
 					await Airship.Avatar.LoadOutfit(Airship.Characters.viewmodel!.accessoryBuilder, outfitDto, {
 						removeOldClothingAccessories: true,
 					});
-                    this.OnAvatarOutfitLoaded.Fire(outfitDto);
+					this.OnAvatarOutfitLoaded.Fire(outfitDto);
 				});
 			}
 		}
@@ -907,6 +908,7 @@ export default class Character extends AirshipBehaviour {
 		// Scroll to select held item:
 		this.bin.Add(
 			Mouse.onScrolled.Connect((event) => {
+				if (Airship.Camera.GetMode() instanceof FlyCameraMode) return;
 				if (!this.controlsEnabled || event.uiProcessed || event.IsCancelled()) return;
 				if (Mouse.IsOverUI()) return;
 				// print("scroll: " + delta);

@@ -11,12 +11,12 @@ export default class SettingsToggle extends AirshipBehaviour {
 
 	public Init(title: string, startingValue: boolean): void {
 		this.titleText.text = title;
-		this.toggle.SetValue(startingValue);
+		this.toggle.SetValue(startingValue, true);
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.toggle.gameObject, () => {
 				if (Game.IsMobile()) VibrationManager.Play(VibrationFeedbackType.Medium);
-			})
+			}),
 		);
 	}
 

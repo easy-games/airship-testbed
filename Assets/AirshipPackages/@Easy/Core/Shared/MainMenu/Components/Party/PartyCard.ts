@@ -14,6 +14,9 @@ import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
 import FriendCard from "../Friends/FriendCard";
 import PartyCardMember from "./PartyCardMember";
 
+/**
+ * The floating party card in main menu.
+ */
 export default class PartyCard extends AirshipBehaviour {
 	public inviteBtn: Button;
 	public warpButton: Button;
@@ -23,9 +26,8 @@ export default class PartyCard extends AirshipBehaviour {
 	public emptyPartyLabel: GameObject;
 	public partyMemberPrefab: GameObject;
 
-	private loadedGameImageId: string | undefined;
 	private bin = new Bin();
-	private uidToMember = new Map<string, PartyCardMember>();
+	private uidToMemberComponent = new Map<string, PartyCardMember>();
 
 	protected Awake(): void {
 		this.warpButton.gameObject.SetActive(false);
@@ -67,11 +69,18 @@ export default class PartyCard extends AirshipBehaviour {
 		task.spawn(async () => {
 			this.UpdateParty(mainMenuPartyController.party);
 			this.bin.Add(
-				mainMenuPartyController.onPartyUpdated.Connect((newParty) => {
+				mainMenuPartyController.onPartyChanged.Connect((newParty) => {
 					this.UpdateParty(newParty);
 				}),
 			);
 		});
+
+		this.bin.Add(
+			mainMenuPartyController.onPartyLeaderStatusChanged.Connect((newStatus) => {
+				this.UpdateStatus(newStatus);
+			}),
+		);
+		this.UpdateStatus(mainMenuPartyController.partyLeaderStatus);
 
 		this.bin.Add(
 			this.inviteBtn.onClick.Connect(() => {
@@ -87,28 +96,32 @@ export default class PartyCard extends AirshipBehaviour {
 
 	private SetupDragFriendHooks() {
 		// If hovering with a friend card
-		CanvasAPI.OnHoverEvent(this.gameObject, (hoverState, data) => {
-			// Check if dragging a friend card
-			const friendCard = data.pointerDrag?.GetAirshipComponent<FriendCard>();
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnHoverEvent(this.gameObject, (hoverState, data) => {
+				// Check if dragging a friend card
+				const friendCard = data.pointerDrag?.GetAirshipComponent<FriendCard>();
 
-			const hovering = hoverState === HoverState.ENTER && friendCard !== undefined;
-			this.SetFriendHoverState(hovering);
-		});
+				const hovering = hoverState === HoverState.ENTER && friendCard !== undefined;
+				this.SetFriendHoverState(hovering);
+			}),
+		);
 
 		// Watch for dropping friends on party card
-		CanvasAPI.OnDropEvent(this.gameObject, (data) => {
-			this.SetFriendHoverState(false);
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnDropEvent(this.gameObject, (data) => {
+				this.SetFriendHoverState(false);
 
-			const draggedObject = data.pointerDrag;
-			const friendId = draggedObject.GetAirshipComponent<FriendCard>()?.userId;
-			if (friendId) {
-				Dependency<ProtectedPartyController>()
-					.InviteToParty(friendId)
-					.catch((reason: unknown) => {
-						Debug.LogError("Failed to invite to party: " + reason);
-					});
-			}
-		});
+				const draggedObject = data.pointerDrag;
+				const friendId = draggedObject.GetAirshipComponent<FriendCard>()?.userId;
+				if (friendId) {
+					Dependency<ProtectedPartyController>()
+						.InviteToParty(friendId)
+						.catch((reason: unknown) => {
+							Debug.LogError("Failed to invite to party: " + reason);
+						});
+				}
+			}),
+		);
 	}
 
 	private SetFriendHoverState(hovering: boolean) {
@@ -118,7 +131,7 @@ export default class PartyCard extends AirshipBehaviour {
 	private UpdateParty(party: GameCoordinatorParty.PartySnapshot | undefined): void {
 		if (party === undefined) {
 			this.leaveBtn.gameObject.SetActive(false);
-			this.uidToMember.clear();
+			this.uidToMemberComponent.clear();
 			for (let child of this.transform) {
 				if (child.gameObject.name.includes("PartyCardMember")) {
 					Destroy(child.gameObject);
@@ -131,8 +144,8 @@ export default class PartyCard extends AirshipBehaviour {
 		this.emptyPartyLabel.SetActive(party.members.size() <= 1);
 
 		for (let user of party.members) {
-			if (this.uidToMember.has(user.uid)) {
-				const partyMemberComp = this.uidToMember.get(user.uid)!;
+			if (this.uidToMemberComponent.has(user.uid)) {
+				const partyMemberComp = this.uidToMemberComponent.get(user.uid)!;
 				partyMemberComp.SetLeader(user.uid === party.leader);
 				continue;
 			}
@@ -145,18 +158,18 @@ export default class PartyCard extends AirshipBehaviour {
 			if (user.uid === party.leader) {
 				partyMemberComp.transform.SetAsFirstSibling();
 			}
-			this.uidToMember.set(user.uid, partyMemberComp);
+			this.uidToMemberComponent.set(user.uid, partyMemberComp);
 		}
 
 		const toRemove = [];
-		for (let uid of ObjectUtils.keys(this.uidToMember)) {
+		for (let uid of ObjectUtils.keys(this.uidToMemberComponent)) {
 			if (party.members.find((p) => p.uid === uid) === undefined) {
 				toRemove.push(uid);
 			}
 		}
 		for (let uid of toRemove) {
-			Destroy(this.uidToMember.get(uid)!.gameObject);
-			this.uidToMember.delete(uid);
+			Destroy(this.uidToMemberComponent.get(uid)!.gameObject);
+			this.uidToMemberComponent.delete(uid);
 		}
 	}
 
@@ -198,5 +211,7 @@ export default class PartyCard extends AirshipBehaviour {
 		// this.gameText.text = `Playing ${userStatus.game.name}`;
 	}
 
-	override OnDestroy(): void {}
+	override OnDestroy(): void {
+		this.bin.Clean();
+	}
 }

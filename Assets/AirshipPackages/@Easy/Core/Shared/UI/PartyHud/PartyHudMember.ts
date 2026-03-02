@@ -7,7 +7,7 @@ export default class PartyHudMember extends AirshipBehaviour {
 	public Init(user: AirshipUser): void {
 		this.avatarImg.color = new Color(1, 1, 1, 0);
 		task.spawn(async () => {
-			const tex = await Airship.Players.GetProfilePictureAsync(user.uid);
+			const tex = await Airship.Players.GetProfilePictureAsync(user.uid, true, user.profileImageId);
 			this.avatarImg.texture = tex;
 			this.avatarImg.color = new Color(1, 1, 1, 1);
 		});

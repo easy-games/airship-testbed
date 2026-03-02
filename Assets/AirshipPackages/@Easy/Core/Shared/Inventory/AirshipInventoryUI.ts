@@ -93,6 +93,12 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	// Track current hotbar cleanup function
 	private currentHotbarCleanup?: () => void;
 
+	/**
+	 * When true, dragging an item onto the drop zone (onDraggedOutsideInventory) will move the item
+	 * from the pickup slot back into the inventory.
+	 */
+	private moveBackOnDraggedOutsideInventory = true;
+
 	override Awake() {
 		this.hotbarCanvas.enabled = false;
 		this.backpackCanvas.gameObject.SetActive(false);
@@ -141,7 +147,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							};
 
 							Airship.Inventory.localInventory?.onDraggedOutsideInventory.Fire(draggingState);
-							this.CleanupClickPickupState();
+							this.CleanupClickPickupState(this.moveBackOnDraggedOutsideInventory);
 						}
 					}
 					if (this.closeOnClickOutside) {
@@ -555,17 +561,20 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	}
 
 	/**
-	 * Cleans up the click pickup state, destroying the visual and clearing connections
+	 * Cleans up the click pickup state, destroying the visual and clearing connections.
+	 * @param moveBackToInventory If true, move item from pickup slot back to inventory (default).
 	 */
-	private CleanupClickPickupState(): void {
+	private CleanupClickPickupState(moveBackToInventory = true): void {
 		if (this.clickPickupState) {
-			const pickupStack = this.clickPickupState.inventory.GetItem(DESIGNATED_PICKUP_SLOT);
-			Airship.Inventory.MoveToInventory(
-				this.clickPickupState.inventory,
-				DESIGNATED_PICKUP_SLOT,
-				this.clickPickupState.inventory,
-				pickupStack?.amount ?? this.clickPickupState.amount,
-			);
+			if (moveBackToInventory) {
+				const pickupStack = this.clickPickupState.inventory.GetItem(DESIGNATED_PICKUP_SLOT);
+				Airship.Inventory.MoveToInventory(
+					this.clickPickupState.inventory,
+					DESIGNATED_PICKUP_SLOT,
+					this.clickPickupState.inventory,
+					pickupStack?.amount ?? this.clickPickupState.amount,
+				);
+			}
 			this.clickPickupBin.Clean();
 			this.clickPickupState = undefined;
 		}
@@ -1930,6 +1939,14 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 	public IsBackpackShown(): boolean {
 		return this.backpackShown;
+	}
+
+	/**
+	 * Sets whether to move the item back to the inventory when dragged outside.
+	 * @param moveBack True to move the item back, false to leave it in the pickup state.
+	 */
+	public SetMoveBackOnDraggedOutsideInventory(moveBack: boolean): void {
+		this.moveBackOnDraggedOutsideInventory = moveBack;
 	}
 
 	protected OnDestroy(): void {

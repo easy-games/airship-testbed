@@ -206,6 +206,9 @@ export class AirshipInputSingleton {
 			if (event.uiProcessed) return;
 			if (!this.IsSprintToggleEnabled()) return;
 
+			const inventoryUI = Airship.Inventory.ui;
+			if (inventoryUI && inventoryUI.IsBackpackShown()) return;
+
 			this.isSprintToggleSprinting = !this.isSprintToggleSprinting;
 		});
 

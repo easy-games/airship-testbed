@@ -3,3 +3,10 @@ export interface DirectMessage {
 	sender: string;
 	sentAt: number;
 }
+
+export interface DirectMessageWithFilterResult extends DirectMessage {
+	filterResult: {
+		messageBlocked: boolean;
+		transformedMessage: string | undefined;
+	};
+}

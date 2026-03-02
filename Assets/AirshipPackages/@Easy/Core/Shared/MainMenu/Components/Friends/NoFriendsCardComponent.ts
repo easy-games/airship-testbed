@@ -1,6 +1,7 @@
-import { MainMenuAddFriendsController } from "@Easy/Core/Client/ProtectedControllers/Social/MainMenuAddFriendsController";
 import { SteamFriendsProtectedController } from "@Easy/Core/Client/ProtectedControllers/Social/SteamFriendsProtectedController";
+import { Asset } from "@Easy/Core/Shared/Asset";
 import { Dependency } from "@Easy/Core/Shared/Flamework";
+import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
 
 export default class NoFriendsCardComponent extends AirshipBehaviour {
 	public addFriendsBtn: Button;
@@ -25,7 +26,10 @@ export default class NoFriendsCardComponent extends AirshipBehaviour {
 		});
 
 		this.addFriendsBtn.onClick.Connect(() => {
-			Dependency<MainMenuAddFriendsController>().Open();
+			VibrationManager.Play(VibrationFeedbackType.Heavy);
+			AppManager.OpenModal(
+				Asset.LoadAsset("Assets/AirshipPackages/@Easy/Core/Prefabs/UI/Modals/AirshipAddFriendModal.prefab"),
+			);
 		});
 	}
 }

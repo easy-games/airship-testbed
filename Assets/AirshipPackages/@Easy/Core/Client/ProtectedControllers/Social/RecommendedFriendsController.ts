@@ -96,7 +96,7 @@ export class RecommendedFriendsController implements OnStart {
 		}
 
 		// Monitor party
-		Dependency<MainMenuPartyController>().onPartyUpdated.Connect((newParty) => {
+		Dependency<MainMenuPartyController>().onPartyChanged.Connect((newParty) => {
 			const localUid = Protected.User.WaitForLocalUser().uid;
 			const friendsController = Dependency<ProtectedFriendsController>();
 			for (const member of newParty?.members ?? []) {

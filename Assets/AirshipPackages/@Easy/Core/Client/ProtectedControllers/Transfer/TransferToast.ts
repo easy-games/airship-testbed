@@ -10,6 +10,9 @@ export default class TransferToast extends AirshipBehaviour {
 	public cancelButton: Button;
 	public canvasGroup: CanvasGroup;
 
+	@NonSerialized()
+	public transferId: string;
+
 	private bin = new Bin();
 
 	override Start(): void {
@@ -23,7 +26,7 @@ export default class TransferToast extends AirshipBehaviour {
 		this.bin.Add(
 			this.cancelButton.onClick.Connect(() => {
 				task.spawn(async () => {
-					await client.transfers.cancelTransfer();
+					client.transfers.cancelTransfer().await();
 					if (this.gameObject.activeInHierarchy) {
 						Object.Destroy(this.gameObject);
 					}

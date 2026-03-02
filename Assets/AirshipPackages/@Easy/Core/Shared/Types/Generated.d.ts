@@ -55483,6 +55483,9 @@ interface CanvasDistanceCondition extends MonoBehaviour {
 
 
 
+    AddDisabler(): number;
+    IsConditionDisabled(): boolean;
+    RemoveDisabler(id: number): void;
 
 
 }

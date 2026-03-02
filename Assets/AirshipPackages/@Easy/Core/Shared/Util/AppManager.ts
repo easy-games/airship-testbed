@@ -110,7 +110,7 @@ export class AppManager {
 			// sortingOrderOffset?: number;
 		},
 		onClose?: () => void,
-	): void {
+	): GameObject {
 		/*
 		 * Canvas MUST be in Render Mode `RenderMode.ScreenSpaceOverlay`.
 		 * This enforced on the C# side.
@@ -121,7 +121,7 @@ export class AppManager {
 			Game.IsProtectedLuauContext() ? CoreRefs.protectedTransform : CoreRefs.rootTransform,
 		).GetComponent<Canvas>()!;
 
-		Instantiate(modalPrefab, canvas.transform);
+		const go = Instantiate(modalPrefab, canvas.transform);
 
 		let sortOrderOffset = 0;
 		if (Game.IsProtectedLuauContext()) {
@@ -153,6 +153,8 @@ export class AppManager {
 
 		/* Handle mouse locking. */
 		bin.Add(Mouse.AddUnlocker());
+
+		return go;
 	}
 
 	/**

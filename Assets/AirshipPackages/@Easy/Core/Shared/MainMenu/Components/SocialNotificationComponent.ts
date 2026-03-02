@@ -30,30 +30,30 @@ export default class SocialNotificationComponent extends AirshipBehaviour {
 
 	override OnEnable(): void {
 		// Accept
-		{
-			const conn = CanvasAPI.OnClickEvent(this.acceptButton.gameObject, () => {
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnClickEvent(this.acceptButton.gameObject, () => {
 				this.onResult.Fire(true);
-			});
-			this.bin.Add(() => Bridge.DisconnectEvent(conn));
-		}
-		// Decline
-		{
-			const conn = CanvasAPI.OnClickEvent(this.declineButton.gameObject, () => {
-				this.onResult.Fire(false);
-			});
-			this.bin.Add(() => Bridge.DisconnectEvent(conn));
-		}
+			}),
+		);
 
-		// animation
+		// Decline
+		this.bin.AddEngineEventConnection(
+			CanvasAPI.OnClickEvent(this.declineButton.gameObject, () => {
+				this.onResult.Fire(false);
+			}),
+		);
+
+		// Animation
 		let inner = this.transform.GetChild(0) as RectTransform;
 		inner.localScale = Vector3.zero;
 		NativeTween.LocalScale(inner, Vector3.one, 0.15).SetEaseBounceOut().SetUseUnscaledTime(true);
 	}
 
 	public OnDisable(): void {
-		this.onResult.DisconnectAll();
 		this.bin.Clean();
 	}
 
-	override OnDestroy(): void {}
+	override OnDestroy(): void {
+		this.onResult.DisconnectAll();
+	}
 }

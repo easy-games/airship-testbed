@@ -59,7 +59,7 @@ export default class PartyModal extends AirshipBehaviour {
 		task.spawn(async () => {
 			this.UpdateParty(mainMenuPartyController.party);
 			this.bin.Add(
-				mainMenuPartyController.onPartyUpdated.Connect((newParty) => {
+				mainMenuPartyController.onPartyChanged.Connect((newParty) => {
 					this.UpdateParty(newParty);
 				}),
 			);
@@ -84,7 +84,7 @@ export default class PartyModal extends AirshipBehaviour {
 
 				const go = Instantiate(this.playerPrefab, this.playersParent);
 				const modalPlayer = go.GetAirshipComponent<PartyModalPlayer>()!;
-				modalPlayer.Init(p.username, p.userId);
+				modalPlayer.Init(p.username, p.userId, p.profileImageId);
 				this.uidToPlayer.set(p.userId, modalPlayer);
 
 				return () => {

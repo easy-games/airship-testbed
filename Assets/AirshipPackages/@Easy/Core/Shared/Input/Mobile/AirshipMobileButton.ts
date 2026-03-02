@@ -33,6 +33,7 @@ export default class AirshipMobileButton extends AirshipButton {
 	}
 
 	protected OnEnable(): void {
+		super.OnEnable();
 		if (this.fadeIn && this.image) {
 			NativeTween.GraphicAlpha(this.iconImage, 1, 0.5).SetUseUnscaledTime(true);
 		}

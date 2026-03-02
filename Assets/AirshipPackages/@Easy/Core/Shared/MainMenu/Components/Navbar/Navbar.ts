@@ -66,10 +66,14 @@ export default class Navbar extends AirshipBehaviour {
 					this.left.offsetMax = this.defaultLeftOffsetMax!;
 				}
 
+				if (Game.IsPortrait()) {
+					this.avatarBtn.gameObject.SetActive(false);
+				}
+
 				const useSmallSearch = Game.IsPortrait();
 				const hideNavButtons = Game.IsInGame() && st === "sm";
 				this.searchWrapper.gameObject.SetActive(!hideNavButtons && !useSmallSearch);
-				this.homeBtn.gameObject.SetActive(!hideNavButtons);
+				this.homeBtn.gameObject.SetActive(!hideNavButtons && !Game.IsPortrait());
 				this.runningGameBtn.gameObject.SetActive(Game.IsInGame() && !hideNavButtons);
 				this.smallSearchBtn.gameObject.SetActive(useSmallSearch);
 				this.account.SetActive(useSmallSearch);

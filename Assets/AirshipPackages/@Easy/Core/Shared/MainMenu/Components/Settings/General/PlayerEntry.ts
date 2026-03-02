@@ -56,7 +56,7 @@ export default class PlayerEntry extends AirshipBehaviour {
 
 		// Profile picture
 		task.spawn(async () => {
-			const texture = await Airship.Players.GetProfilePictureAsync(player.userId);
+			const texture = await Airship.Players.GetProfilePictureAsync(player.userId, true, player.profileImageId);
 			if (texture) {
 				this.profileImage.texture = texture;
 			}
@@ -133,6 +133,10 @@ export default class PlayerEntry extends AirshipBehaviour {
 		}
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnClickEvent(this.reportBtn.gameObject, () => {
+				task.spawn(async () => {
+					await Protected.ProtectedPlayers.ReportPlayer(player.userId, [{ type: "username" }]);
+					print(`Reported ${player.username}`);
+				});
 				task.spawn(() => {
 					if (Dependency<MainMenuBlockSingleton>().IsUserIdBlocked(player.userId)) {
 						Dependency<MainMenuBlockSingleton>().UnblockUserAsync(player.userId);

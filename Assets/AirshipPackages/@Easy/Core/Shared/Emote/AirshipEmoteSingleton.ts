@@ -30,6 +30,7 @@ export default class AirshipEmoteSingleton implements OnStart {
 	}
 
 	public OnStart() {
+		if (!Game.IsInGame()) return;
 		if (Game.IsServer()) this.StartServer();
 		if (Game.IsClient()) this.StartClient();
 	}

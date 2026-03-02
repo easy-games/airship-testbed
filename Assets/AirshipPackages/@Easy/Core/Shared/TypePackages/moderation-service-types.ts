@@ -1,4 +1,3 @@
-import { encodeURIComponent } from "./UnityMakeRequest";
 
 export type AuthenticationProvider = string | (() => string | Promise<string>);
 export type AllowedQueryTypes =
