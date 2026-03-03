@@ -343,6 +343,10 @@ export class AirshipInventorySingleton {
 
 		CoreNetwork.ClientToServer.Inventory.MoveToSlot.server.OnClientEvent(
 			(player, fromInvId, fromSlot, toInvId, toSlot, amount) => {
+				const lastTest = this.lastPlayerMoveSlotRequest.get(player.userId) ?? 0;
+				if (lastTest + this.moveCooldown > Time.time) return;
+				this.lastPlayerMoveSlotRequest.set(player.userId, Time.time);
+
 				const fromInv = this.GetInventory(fromInvId);
 				if (!fromInv) return;
 
@@ -736,6 +740,10 @@ export class AirshipInventorySingleton {
 		}
 	}
 
+	private readonly moveCooldown = 0.2;
+	private lastLocalMoveSlotRequest = 0;
+	private lastPlayerMoveSlotRequest = new Map<string, number>();
+
 	/**
 	 * Moves items or the slot from a source inventory, to a destination inventory slot
 	 * @param fromInv The source inventory
@@ -746,6 +754,10 @@ export class AirshipInventorySingleton {
 	 * @returns
 	 */
 	public MoveToSlot(fromInv: Inventory, fromSlot: number, toInv: Inventory, toSlot: number, amount?: number): void {
+		if (this.lastLocalMoveSlotRequest + this.moveCooldown > Time.time) return;
+		this.lastLocalMoveSlotRequest = Time.time;
+		
+
 		if (!fromInv.CanPlayerModifyInventory(Game.localPlayer) || !toInv.CanPlayerModifyInventory(Game.localPlayer)) {
 			return;
 		}
