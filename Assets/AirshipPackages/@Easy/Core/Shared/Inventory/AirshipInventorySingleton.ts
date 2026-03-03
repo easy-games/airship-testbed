@@ -396,6 +396,10 @@ export class AirshipInventorySingleton {
 
 		CoreNetwork.ClientToServer.Inventory.QuickMoveSlot.server.OnClientEvent(
 			(player, fromInvId, fromSlot, fromHotbarSize, toInvId) => {
+				const lastTest = this.lastPlayerMoveSlotRequest.get(player.userId) ?? 0;
+				if (lastTest + this.moveCooldown > Time.time) return;
+				this.lastPlayerMoveSlotRequest.set(player.userId, Time.time);
+
 				const character = player.character;
 				if (!character) return;
 
@@ -740,7 +744,7 @@ export class AirshipInventorySingleton {
 		}
 	}
 
-	private readonly moveCooldown = 0.2;
+	private readonly moveCooldown = 0.05;
 	private lastLocalMoveSlotRequest = 0;
 	private lastPlayerMoveSlotRequest = new Map<string, number>();
 
