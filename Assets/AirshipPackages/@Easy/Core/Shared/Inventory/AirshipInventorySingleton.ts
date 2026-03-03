@@ -667,6 +667,9 @@ export class AirshipInventorySingleton {
 	}
 
 	public QuickMoveSlot(inv: Inventory, slot: number, hotbarSize: number): void {
+		if (this.lastLocalMoveSlotRequest + this.moveCooldown > Time.time) return;
+		this.lastLocalMoveSlotRequest = Time.time;
+
 		const itemStack = inv.GetItem(slot);
 		if (!itemStack) return;
 
