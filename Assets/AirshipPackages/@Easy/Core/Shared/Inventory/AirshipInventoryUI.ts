@@ -1,6 +1,5 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
 import Character from "@Easy/Core/Shared/Character/Character";
-import { InventoryHotbarAction } from "@Easy/Core/Shared/Inventory/InventoryHotbarAction";
 import { ItemStack } from "@Easy/Core/Shared/Inventory/ItemStack";
 import { Mouse } from "@Easy/Core/Shared/UserInput";
 import { AppManager } from "@Easy/Core/Shared/Util/AppManager";
@@ -1422,7 +1421,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	private UpdateHotbarSlotKeybindText(tileComponent: AirshipInventoryTile, slot: number): void {
 		if (!tileComponent.slotNumberText) return;
 
-		const hotbarActionName = `Hotbar Slot ${slot + 1}` as InventoryHotbarAction;
+		const hotbarActionName = `Hotbar Slot ${slot + 1}`;
 		const actions = Airship.Input.GetActions(hotbarActionName);
 
 		const action = actions.find((a) => {
@@ -1454,7 +1453,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	 */
 	private SetupHotbarKeybindListeners(): void {
 		for (let slot = 0; slot < this.hotbarSlots; slot++) {
-			const hotbarActionName = `Hotbar Slot ${slot + 1}` as InventoryHotbarAction;
+			const hotbarActionName = `Hotbar Slot ${slot + 1}`;
 			const lowerActionName = hotbarActionName.lower();
 
 			this.keybindBin.Add(
