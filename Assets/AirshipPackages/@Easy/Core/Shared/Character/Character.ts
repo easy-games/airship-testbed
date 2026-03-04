@@ -12,6 +12,7 @@ import AirshipEmoteSingleton from "../Emote/AirshipEmoteSingleton";
 import { Dependency } from "../Flamework";
 import { ItemStack } from "../Inventory/ItemStack";
 import { BeforeLocalInventoryHeldSlotChanged } from "../Inventory/Signal/BeforeLocalInventoryHeldSlotChanged";
+import { HotbarSlotKeyPressedEvent } from "./Signal/HotbarSlotKeyPressedEvent";
 import NametagComponent from "../Nametag/NametagComponent";
 import { Mouse } from "../UserInput";
 import ObjectUtils from "../Util/ObjectUtils";
@@ -86,6 +87,8 @@ export default class Character extends AirshipBehaviour {
 	@NonSerialized() public readonly onHeldSlotChanged = new Signal<number>();
 	/** Used to cancel changing held item slots. */
 	@NonSerialized() public readonly onBeforeLocalHeldSlotChanged = new Signal<BeforeLocalInventoryHeldSlotChanged>();
+	/** Fires when a hotbar key is pressed, before the held slot changes. Cancel to prevent the change. */
+	@NonSerialized() public readonly onHotbarSlotKeyPressed = new Signal<HotbarSlotKeyPressedEvent>();
 	private observeHeldItemBins: Bin[] = [];
 	private observeHeldSlotBins: Bin[] = [];
 
@@ -890,6 +893,9 @@ export default class Character extends AirshipBehaviour {
 			this.bin.Add(
 				Airship.Input.OnDown(`Hotbar Slot ${hotbarIndex + 1}`).Connect((event) => {
 					if (event.uiProcessed) return;
+					const e = new HotbarSlotKeyPressedEvent(hotbarIndex, this.GetHeldSlot());
+					this.onHotbarSlotKeyPressed.Fire(e);
+					if (e.IsCancelled()) return;
 					this.SetHeldSlot(hotbarIndex);
 				}),
 			);

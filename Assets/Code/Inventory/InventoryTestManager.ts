@@ -74,6 +74,20 @@ export default class InventoryTestManager extends AirshipSingleton {
 			print("inventory was closed", event.inventory.id);
 		});
 
+		// Test function to deselect held slot if the slot is currently selected and pressed
+		if (Game.IsClient()) {
+			Game.localPlayer.ObserveCharacter((character) => {
+				if (!character) return;
+				character.onHotbarSlotKeyPressed.Connect((e) => {
+					if (e.requestedSlot === 3 && e.currentSlot === 3) {
+						print("deselecting held slot");
+						character.SetHeldSlot(-1);
+						e.SetCancelled(true);
+					}
+				});
+			});
+		}
+
 		// Click to swap
 		// Airship.Inventory.onInventorySlotClicked.Connect((interaction) => {
 		// 	const inventoryUI = Airship.Inventory.ui;
@@ -170,5 +184,5 @@ export default class InventoryTestManager extends AirshipSingleton {
 		}
 	}
 
-	override OnDestroy(): void {}
+	override OnDestroy(): void { }
 }
