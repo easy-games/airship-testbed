@@ -34,6 +34,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 	public hotbarCanvas!: Canvas;
 	public hotbarContent!: RectTransform;
 	public hotbarSlots = 9;
+	public enableHotbarScroll = true;
 
 	@Header("Backpack")
 	public backpackLabel?: TMP_Text;

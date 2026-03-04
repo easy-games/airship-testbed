@@ -12,13 +12,13 @@ import AirshipEmoteSingleton from "../Emote/AirshipEmoteSingleton";
 import { Dependency } from "../Flamework";
 import { ItemStack } from "../Inventory/ItemStack";
 import { BeforeLocalInventoryHeldSlotChanged } from "../Inventory/Signal/BeforeLocalInventoryHeldSlotChanged";
-import { HotbarSlotKeyPressedEvent } from "./Signal/HotbarSlotKeyPressedEvent";
 import NametagComponent from "../Nametag/NametagComponent";
 import { Mouse } from "../UserInput";
 import ObjectUtils from "../Util/ObjectUtils";
 import CharacterAnimation from "./Animation/CharacterAnimation";
 import CharacterConfigSetup from "./CharacterConfigSetup";
 import { EmoteStartSignal } from "./Signal/EmoteStartSignal";
+import { HotbarSlotKeyPressedEvent } from "./Signal/HotbarSlotKeyPressedEvent";
 
 /**
  * A character is a (typically human) object in the scene. It controls movement and default animation.
@@ -77,7 +77,6 @@ export default class Character extends AirshipBehaviour {
 	 * Can be undefined if the Inventory component is removed from Character prefab.
 	 */
 	@Header("Inventory")
-	public enableHotbarScroll: boolean = true;
 	@NonSerialized()
 	public inventory: Inventory;
 	/**
@@ -906,7 +905,7 @@ export default class Character extends AirshipBehaviour {
 		this.bin.Add(
 			Mouse.onScrolled.Connect((event) => {
 				if (Airship.Camera.GetMode() instanceof FlyCameraMode) return;
-				if (!this.controlsEnabled || event.uiProcessed || event.IsCancelled() || !this.enableHotbarScroll) return;
+				if (!this.controlsEnabled || event.uiProcessed || event.IsCancelled() || (Airship.Inventory.ui && !Airship.Inventory.ui.enableHotbarScroll)) return;
 				if (Mouse.IsOverUI()) return;
 				// print("scroll: " + delta);
 				if (math.abs(event.delta) < 0.05) return;
