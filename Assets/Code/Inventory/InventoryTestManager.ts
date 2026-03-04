@@ -184,5 +184,5 @@ export default class InventoryTestManager extends AirshipSingleton {
 		}
 	}
 
-	override OnDestroy(): void { }
+	override OnDestroy(): void {}
 }
