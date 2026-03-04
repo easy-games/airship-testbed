@@ -301,6 +301,22 @@ export class AirshipInventorySingleton {
 				inv.SetItem(slot, itemStack);
 			},
 		);
+
+		CoreNetwork.ServerToClient.SwapInventorySlot.client.OnServerEvent((
+			srcInvId, srcSlot, srcStackDto, dstInvId, dstSlot, dstStackDto, clientPredicted
+		) => {
+			if (Game.IsHosting()) return;
+			const srcInv = this.GetInventory(srcInvId);
+			const dstInv = this.GetInventory(dstInvId);
+			if (!srcInv || !dstInv) return;
+
+			const srcStack = srcStackDto !== undefined ? ItemStack.Decode(srcStackDto) : undefined;
+			const dstStack = dstStackDto !== undefined ? ItemStack.Decode(dstStackDto) : undefined;
+
+			srcInv.SetItem(srcSlot, srcStack);
+			dstInv.SetItem(dstSlot, dstStack);
+		})
+
 		CoreNetwork.ServerToClient.UpdateInventorySlot.client.OnServerEvent((invId, slot, itemStackDto) => {
 			const inv = this.GetInventory(invId);
 			if (!inv) return;
@@ -343,10 +359,6 @@ export class AirshipInventorySingleton {
 
 		CoreNetwork.ClientToServer.Inventory.MoveToSlot.server.OnClientEvent(
 			(player, fromInvId, fromSlot, toInvId, toSlot, amount) => {
-				const lastTest = this.lastPlayerMoveSlotRequest.get(player.userId) ?? 0;
-				if (lastTest + this.moveCooldown > Time.time) return;
-				this.lastPlayerMoveSlotRequest.set(player.userId, Time.time);
-
 				const fromInv = this.GetInventory(fromInvId);
 				if (!fromInv) return;
 
@@ -396,10 +408,6 @@ export class AirshipInventorySingleton {
 
 		CoreNetwork.ClientToServer.Inventory.QuickMoveSlot.server.OnClientEvent(
 			(player, fromInvId, fromSlot, fromHotbarSize, toInvId) => {
-				const lastTest = this.lastPlayerMoveSlotRequest.get(player.userId) ?? 0;
-				if (lastTest + this.moveCooldown > Time.time) return;
-				this.lastPlayerMoveSlotRequest.set(player.userId, Time.time);
-
 				const character = player.character;
 				if (!character) return;
 
@@ -580,15 +588,7 @@ export class AirshipInventorySingleton {
 			clientPredicted: boolean;
 		},
 	): void {
-		const fromItem = fromInventory.GetItem(fromSlot);
-		const toItem = toInventory.GetItem(toSlot);
-
-		toInventory.SetItem(toSlot, fromItem, {
-			clientPredicted: config?.clientPredicted,
-		});
-		fromInventory.SetItem(fromSlot, toItem, {
-			clientPredicted: config?.clientPredicted,
-		});
+		fromInventory.SwapSlots(fromSlot, toSlot, toInventory);
 	}
 
 	private MoveAmountToSlot(
@@ -667,8 +667,8 @@ export class AirshipInventorySingleton {
 	}
 
 	public QuickMoveSlot(inv: Inventory, slot: number, hotbarSize: number): void {
-		if (this.lastLocalMoveSlotRequest + this.moveCooldown > Time.time) return;
-		this.lastLocalMoveSlotRequest = Time.time;
+		// if (this.lastLocalMoveSlotRequest + this.moveCooldown > Time.time) return;
+		// this.lastLocalMoveSlotRequest = Time.time;
 
 		const itemStack = inv.GetItem(slot);
 		if (!itemStack) return;
@@ -761,8 +761,8 @@ export class AirshipInventorySingleton {
 	 * @returns
 	 */
 	public MoveToSlot(fromInv: Inventory, fromSlot: number, toInv: Inventory, toSlot: number, amount?: number): void {
-		if (this.lastLocalMoveSlotRequest + this.moveCooldown > Time.time) return;
-		this.lastLocalMoveSlotRequest = Time.time;
+		// if (this.lastLocalMoveSlotRequest + this.moveCooldown > Time.time) return;
+		// this.lastLocalMoveSlotRequest = Time.time;
 		
 
 		if (!fromInv.CanPlayerModifyInventory(Game.localPlayer) || !toInv.CanPlayerModifyInventory(Game.localPlayer)) {

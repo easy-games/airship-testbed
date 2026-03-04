@@ -191,6 +191,100 @@ export default class Inventory extends AirshipBehaviour {
 		return () => bin.Clean();
 	}
 
+	private DisconnectSlotConnections(slot: number) {
+		this.slotConnections.get(slot)?.Clean();
+		this.slotConnections.delete(slot);
+	}
+
+	private AddSlotConnections(slot: number, itemStack: ItemStack) {
+		const bin = new Bin();
+		bin.Add(
+			itemStack.destroyed.Connect(() => {
+				this.SetItem(slot, undefined);
+				this.onChanged.Fire();
+			}),
+		);
+		bin.Add(
+			itemStack.changed.Connect(() => {
+				this.onChanged.Fire();
+			}),
+		);
+		this.slotConnections.set(slot, bin);
+
+		if (Game.IsServer()) {
+			bin.Add(
+				itemStack.amountChanged.Connect((e) => {
+					if (e.noNetwork) return;
+					if (Game.IsHosting()) return;
+
+					CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
+						this.id,
+						slot,
+						e.itemStack.Encode(),
+					);
+				}),
+			);
+			bin.Add(
+				itemStack.itemTypeChanged.Connect((e) => {
+					if (e.noNetwork) return;
+					if (Game.IsHosting()) return;
+
+					CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
+						this.id,
+						slot,
+						e.itemStack.Encode(),
+					);
+				}),
+			);
+		}
+	}
+
+	public SwapSlots(fromSlot: number, toSlot: number, toInventory: Inventory = this) {
+		if (this.slotModifyLock.has(fromSlot) || toInventory.slotModifyLock.has(toSlot)) {
+			warn("cannot modify locked slots");
+			return;
+		}
+
+		this.slotModifyLock.add(fromSlot);
+		toInventory.slotModifyLock.add(toSlot);
+		{
+			const sourceSlotStack = this.GetItem(fromSlot)?.Clone();
+			const targetSlotStack = toInventory.GetItem(toSlot)?.Clone();
+			this.UpdateSlot(fromSlot, targetSlotStack);
+			this.UpdateSlot(toSlot, sourceSlotStack);
+
+			this.onSlotChanged.Fire(fromSlot, targetSlotStack);
+			toInventory.onSlotChanged.Fire(toSlot, sourceSlotStack);
+			this.onChanged.Fire();
+			toInventory.onChanged.Fire();
+
+			if (Game.IsServer() && this.finishedInitialReplication) {
+				CoreNetwork.ServerToClient.SwapInventorySlot.server.FireAllClients(
+					this.id,
+					fromSlot,
+					targetSlotStack?.Encode(),
+					toInventory.id,
+					toSlot,
+					sourceSlotStack?.Encode(),
+					false,
+				)
+			}
+		}
+		this.slotModifyLock.delete(fromSlot);
+		toInventory.slotModifyLock.delete(toSlot);
+	}
+
+	private UpdateSlot(slot: number, itemStack: ItemStack | undefined) {
+		this.DisconnectSlotConnections(slot);
+		if (itemStack) {
+			this.items.set(slot, itemStack);
+			this.AddSlotConnections(slot, itemStack);
+		} else {
+			this.items.delete(slot);
+		}
+	}
+
+	private slotModifyLock = new Set<number>();
 	public SetItem(
 		slot: number,
 		itemStack: ItemStack | undefined,
@@ -198,69 +292,36 @@ export default class Inventory extends AirshipBehaviour {
 			clientPredicted?: boolean;
 		},
 	): void {
-		this.slotConnections.get(slot)?.Clean();
-		this.slotConnections.delete(slot);
-
-		if (itemStack) {
-			this.items.set(slot, itemStack);
-		} else {
-			this.items.delete(slot);
+		if (this.slotModifyLock.has(slot)) {
+			warn("Slot at index", slot, "in inventory", this.id, "is already being modified");
+			return;
 		}
 
-		if (itemStack) {
-			const bin = new Bin();
-			bin.Add(
-				itemStack.destroyed.Connect(() => {
-					this.SetItem(slot, undefined);
-					this.onChanged.Fire();
-				}),
-			);
-			bin.Add(
-				itemStack.changed.Connect(() => {
-					this.onChanged.Fire();
-				}),
-			);
-			this.slotConnections.set(slot, bin);
+		this.slotModifyLock.add(slot);
+		{
+			this.DisconnectSlotConnections(slot);
 
-			if (Game.IsServer()) {
-				bin.Add(
-					itemStack.amountChanged.Connect((e) => {
-						if (e.noNetwork) return;
-						if (Game.IsHosting()) return;
+			if (itemStack) {
+				this.items.set(slot, itemStack);
+			} else {
+				this.items.delete(slot);
+			}
 
-						CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
-							this.id,
-							slot,
-							e.itemStack.Encode(),
-						);
-					}),
-				);
-				bin.Add(
-					itemStack.itemTypeChanged.Connect((e) => {
-						if (e.noNetwork) return;
-						if (Game.IsHosting()) return;
+			if (itemStack) this.AddSlotConnections(slot, itemStack);
+			this.onSlotChanged.Fire(slot, itemStack);
+			this.onChanged.Fire();
 
-						CoreNetwork.ServerToClient.UpdateInventorySlot.server.FireAllClients(
-							this.id,
-							slot,
-							e.itemStack.Encode(),
-						);
-					}),
+			if (Game.IsServer() && this.finishedInitialReplication) {
+				// todo: figure out which clients to include
+				CoreNetwork.ServerToClient.SetInventorySlot.server.FireAllClients(
+					this.id,
+					slot,
+					itemStack?.Encode(),
+					config?.clientPredicted ?? false,
 				);
 			}
 		}
-		this.onSlotChanged.Fire(slot, itemStack);
-		this.onChanged.Fire();
-
-		if (Game.IsServer() && this.finishedInitialReplication) {
-			// todo: figure out which clients to include
-			CoreNetwork.ServerToClient.SetInventorySlot.server.FireAllClients(
-				this.id,
-				slot,
-				itemStack?.Encode(),
-				config?.clientPredicted ?? false,
-			);
-		}
+		this.slotModifyLock.delete(slot);
 	}
 
 	/**

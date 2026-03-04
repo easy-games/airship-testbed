@@ -61,6 +61,11 @@ export const CoreNetwork = {
 		SetInventorySlot: new NetworkSignal<
 			[invId: number, slot: number, itemStack: ItemStackDto | undefined, clientPredicted: boolean]
 		>("SetInventorySlot"),
+		SwapInventorySlot: new NetworkSignal<[
+			srcInvId: number, srcSlot: number, srcStackDto: ItemStackDto | undefined, 
+			dstInvId: number, dstSlot: number, dstStackDto: ItemStackDto | undefined,
+			clientPredicted: boolean,
+		]>("SwapInventorySlot"),
 		/** Updates properties of an `ItemStack` without creating a new instance of an `ItemStack`. */
 		UpdateInventorySlot: new NetworkSignal<[invId: number, slot: number, itemStackDto?: ItemStackDto]>(
 			"UpdateInventorySlot",
