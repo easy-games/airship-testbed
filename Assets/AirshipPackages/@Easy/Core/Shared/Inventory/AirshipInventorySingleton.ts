@@ -343,8 +343,8 @@ export class AirshipInventorySingleton {
 
 		CoreNetwork.ClientToServer.Inventory.MoveToSlot.server.OnClientEvent(
 			(player, fromInvId, fromSlot, toInvId, toSlot, amount) => {
-				const touchesPickupSlot = fromSlot === -2 || toSlot === -2;
-				if (!touchesPickupSlot) {
+				const usesPickupSlot = fromSlot === -2 || toSlot === -2;
+				if (!usesPickupSlot) {
 					const lastTest = this.lastPlayerMoveSlotRequest.get(player.userId) ?? 0;
 					if (lastTest + this.moveCooldown > Time.time) return;
 					this.lastPlayerMoveSlotRequest.set(player.userId, Time.time);
