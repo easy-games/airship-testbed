@@ -122,6 +122,9 @@ export class AirshipInputSingleton {
 
 	public isSprintToggleSprinting = false;
 
+	// Core actions that have been disabled, this tracks actions so they are disabled if code is added in start
+	private disabledCoreActions = new Set<string>();
+
 	constructor() {
 		Airship.Input = this;
 	}
@@ -156,6 +159,11 @@ export class AirshipInputSingleton {
 		}
 
 		Airship.Input.onActionBound.Connect((action) => {
+			if (this.disabledCoreActions.has(action.internalName)) {
+				this.DisableCoreActions([action.name as CoreAction]);
+				return;
+			}
+
 			if (!action.binding.IsUnset()) {
 				if (this.unsetOnDuplicateKeybind) {
 					this.UnsetDuplicateBindings(action);
@@ -206,7 +214,7 @@ export class AirshipInputSingleton {
 			if (event.uiProcessed) return;
 			if (!this.IsSprintToggleEnabled()) return;
 
-			const inventoryUI = Airship.Inventory.ui;
+			const inventoryUI = Airship.Inventory?.ui;
 			if (inventoryUI && inventoryUI.IsBackpackShown()) return;
 
 			this.isSprintToggleSprinting = !this.isSprintToggleSprinting;
@@ -371,6 +379,8 @@ export class AirshipInputSingleton {
 	 */
 	public DisableCoreActions(coreActions: CoreAction[]) {
 		for (const actionName of coreActions) {
+			this.disabledCoreActions.add((actionName as string).lower());
+
 			this.GetActions(actionName).forEach((a) => {
 				a.UnsetBinding();
 			});

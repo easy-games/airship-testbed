@@ -9,7 +9,6 @@ import { CoreAction } from "../../Input/AirshipCoreAction";
 import { Binding } from "../../Input/Binding";
 import { InputKeybindCategory } from "../../Input/InputAction";
 import Inventory from "../../Inventory/Inventory";
-import { InventoryHotbarAction } from "../../Inventory/InventoryHotbarAction";
 import { CharacterInput } from "./CharacterInput";
 import { LocalCharacterInputSignal } from "./LocalCharacterInputSignal";
 import { MoveDirectionMode } from "./MoveDirectionMode";
@@ -202,59 +201,44 @@ export class LocalCharacterSingleton {
 
 	/** Sets up keybinds for hotbar slots if the character prefab has an inventory */
 	private CreateHotbarActions(): void {
-		const hotbarActions = [
-			{ name: CoreAction.Inventory, binding: Binding.Key(Key.E), category: InputKeybindCategory.Actions },
-			{
-				name: CoreAction.InventoryQuickMoveModifierKey,
-				binding: Binding.Key(Key.LeftShift),
-				category: InputKeybindCategory.Actions,
-			},
-			{
-				name: InventoryHotbarAction.HotbarSlot1,
-				binding: Binding.Key(Key.Digit1),
-				category: InputKeybindCategory.Hotbar,
-			},
-			{
-				name: InventoryHotbarAction.HotbarSlot2,
-				binding: Binding.Key(Key.Digit2),
-				category: InputKeybindCategory.Hotbar,
-			},
-			{
-				name: InventoryHotbarAction.HotbarSlot3,
-				binding: Binding.Key(Key.Digit3),
-				category: InputKeybindCategory.Hotbar,
-			},
-			{
-				name: InventoryHotbarAction.HotbarSlot4,
-				binding: Binding.Key(Key.Digit4),
-				category: InputKeybindCategory.Hotbar,
-			},
-			{
-				name: InventoryHotbarAction.HotbarSlot5,
-				binding: Binding.Key(Key.Digit5),
-				category: InputKeybindCategory.Hotbar,
-			},
-			{
-				name: InventoryHotbarAction.HotbarSlot6,
-				binding: Binding.Key(Key.Digit6),
-				category: InputKeybindCategory.Hotbar,
-			},
-			{
-				name: InventoryHotbarAction.HotbarSlot7,
-				binding: Binding.Key(Key.Digit7),
-				category: InputKeybindCategory.Hotbar,
-			},
-			{
-				name: InventoryHotbarAction.HotbarSlot8,
-				binding: Binding.Key(Key.Digit8),
-				category: InputKeybindCategory.Hotbar,
-			},
-			{
-				name: InventoryHotbarAction.HotbarSlot9,
-				binding: Binding.Key(Key.Digit9),
-				category: InputKeybindCategory.Hotbar,
-			},
+		const ui = Airship.Inventory.ui;
+		const hotbarSlots = ui ? ui.GetHotbarSlotCount() : 9;
+		const clampedSlots = math.clamp(hotbarSlots, 0, 9);
+
+		if (clampedSlots <= 0) return;
+
+		const digitKeys = [
+			Key.Digit1,
+			Key.Digit2,
+			Key.Digit3,
+			Key.Digit4,
+			Key.Digit5,
+			Key.Digit6,
+			Key.Digit7,
+			Key.Digit8,
+			Key.Digit9,
 		];
-		Airship.Input.CreateActions(hotbarActions);
+
+		const actions = [];
+
+		actions.push({ name: CoreAction.Inventory, binding: Binding.Key(Key.E), category: InputKeybindCategory.Actions });
+		actions.push({
+			name: CoreAction.InventoryQuickMoveModifierKey,
+			binding: Binding.Key(Key.LeftShift),
+			category: InputKeybindCategory.Actions,
+		});
+
+		for (let i = 0; i < clampedSlots; i++) {
+			const actionName = `Hotbar Slot ${i + 1}`;
+			const key = digitKeys[i];
+
+			actions.push({
+				name: actionName,
+				binding: Binding.Key(key),
+				category: InputKeybindCategory.Hotbar,
+			});
+		}
+
+		Airship.Input.CreateActions(actions);
 	}
 }

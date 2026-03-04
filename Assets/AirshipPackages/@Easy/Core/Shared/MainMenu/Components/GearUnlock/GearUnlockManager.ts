@@ -70,9 +70,8 @@ export default class GearUnlockManager extends AirshipBehaviour {
 		}
 
 		print("Downloaded! Showing now...");
-		this.container.SetActive(false);
-		this.ui.Init(notificationId);
 		this.container.SetActive(true);
+		this.ui.Init(notificationId);
 		this.ui.SetGear(gear, data.messageTitle, data.messageBody);
 	}
 

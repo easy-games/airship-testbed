@@ -10,7 +10,6 @@ import { CoreNetwork } from "../CoreNetwork";
 import { DamageInfo, DamageInfoCustomData } from "../Damage/DamageInfo";
 import AirshipEmoteSingleton from "../Emote/AirshipEmoteSingleton";
 import { Dependency } from "../Flamework";
-import { InventoryHotbarAction } from "../Inventory/InventoryHotbarAction";
 import { ItemStack } from "../Inventory/ItemStack";
 import { BeforeLocalInventoryHeldSlotChanged } from "../Inventory/Signal/BeforeLocalInventoryHeldSlotChanged";
 import NametagComponent from "../Nametag/NametagComponent";
@@ -884,21 +883,12 @@ export default class Character extends AirshipBehaviour {
 	}
 
 	private SetupHotbarControls() {
-		// Controls using registered inventory actions
-		const hotbarActions = [
-			InventoryHotbarAction.HotbarSlot1,
-			InventoryHotbarAction.HotbarSlot2,
-			InventoryHotbarAction.HotbarSlot3,
-			InventoryHotbarAction.HotbarSlot4,
-			InventoryHotbarAction.HotbarSlot5,
-			InventoryHotbarAction.HotbarSlot6,
-			InventoryHotbarAction.HotbarSlot7,
-			InventoryHotbarAction.HotbarSlot8,
-			InventoryHotbarAction.HotbarSlot9,
-		];
-		for (const hotbarIndex of $range(0, hotbarActions.size() - 1)) {
+		const ui = Airship.Inventory.ui;
+		const maxHotbarSlots = ui ? ui.GetHotbarSlotCount() : 9;
+
+		for (const hotbarIndex of $range(0, maxHotbarSlots - 1)) {
 			this.bin.Add(
-				Airship.Input.OnDown(hotbarActions[hotbarIndex]).Connect((event) => {
+				Airship.Input.OnDown(`Hotbar Slot ${hotbarIndex + 1}`).Connect((event) => {
 					if (event.uiProcessed) return;
 					this.SetHeldSlot(hotbarIndex);
 				}),
@@ -924,18 +914,19 @@ export default class Character extends AirshipBehaviour {
 				const selectedSlot = this.GetHeldSlot();
 				if (selectedSlot === undefined) return;
 
+				if (maxHotbarSlots <= 0) return;
+
 				const inc = event.delta < 0 ? 1 : -1;
 				let trySlot = selectedSlot;
 
 				// Find the next available item in the hotbar:
-				for (const _ of $range(1, hotbarActions.size())) {
+				for (const _ of $range(1, maxHotbarSlots)) {
 					trySlot += inc;
 
-					// Clamp index to hotbar items:
-					if (inc === 1 && trySlot >= hotbarActions.size()) {
+					if (inc === 1 && trySlot >= maxHotbarSlots) {
 						trySlot = 0;
 					} else if (inc === -1 && trySlot < 0) {
-						trySlot = hotbarActions.size() - 1;
+						trySlot = maxHotbarSlots - 1;
 					}
 
 					this.SetHeldSlot(trySlot);
