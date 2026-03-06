@@ -529,7 +529,7 @@ export class AirshipInventorySingleton {
 		// Merge what can be merged into the target slot first
 		const maxStackSize = toItemStack.GetMaxStackSize();
 		const spaceAvailable = maxStackSize - toItemStack.amount;
-		const amountToMerge = math.min(amount, spaceAvailable);
+		const amountToMerge = math.min(amount, spaceAvailable, fromItemStack.amount);
 
 		if (amountToMerge <= 0) return false;
 
