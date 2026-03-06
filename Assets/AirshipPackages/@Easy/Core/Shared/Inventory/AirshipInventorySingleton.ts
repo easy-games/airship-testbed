@@ -321,10 +321,8 @@ export class AirshipInventorySingleton {
 
 				if (itemStack.itemType !== decodedStack.itemType || hasCustomDataInDto || currentHasCustomData) {
 					inv.SetItem(slot, decodedStack);
-				} else {
-					if (itemStack.amount !== decodedStack.amount) {
-						itemStack.SetAmount(decodedStack.amount, { noNetwork: Game.IsHosting() });
-					}
+				} else if (itemStack.amount !== decodedStack.amount) {
+					itemStack.SetAmount(decodedStack.amount, { noNetwork: Game.IsHosting() });
 				}
 			}
 		});
@@ -375,15 +373,20 @@ export class AirshipInventorySingleton {
 				const fromItemStack = fromInv.GetItem(fromSlot);
 				if (!fromItemStack) return;
 
+				if (amount === undefined || amount <= 0) {
+					amount = fromItemStack.amount;
+				} else {
+					amount = math.min(amount, fromItemStack.amount);
+				}
+
 				const toItemStack = toInv.GetItem(toSlot);
 				if (
 					toItemStack !== undefined &&
 					toItemStack.itemType === fromItemStack.itemType &&
-					event.allowMerging
+					event.allowMerging &&
+					this.MergeToSlotWithExcessHandling(toInv, toSlot, toItemStack, fromItemStack, amount, true)
 				) {
-					if (this.MergeToSlotWithExcessHandling(toInv, toSlot, toItemStack, fromItemStack, amount, true)) {
-						return;
-					}
+					return;
 				}
 
 				// If < fromItemStack we wanna "split"
@@ -783,6 +786,12 @@ export class AirshipInventorySingleton {
 
 		const fromItemStack = fromInv.GetItem(fromSlot);
 		if (!fromItemStack) return;
+
+		if (amount === undefined || amount <= 0) {
+			amount = fromItemStack.amount;
+		} else {
+			amount = math.min(amount, fromItemStack.amount);
+		}
 
 		const toItemStack = toInv.GetItem(toSlot);
 		if (toItemStack !== undefined && toItemStack.itemType === fromItemStack.itemType && event.allowMerging) {
