@@ -640,7 +640,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			this.clickPickupState.initialClickFlag &&
 			targetSlotIndex === this.clickPickupState.slot &&
 			targetInventory === pickupFromInventory &&
--			!this.clickPickupState.swapStack
+			!this.clickPickupState.swapStack
 		) {
 			this.clickPickupState.initialClickFlag = false;
 			this.isInitialPickupPhase = false;
