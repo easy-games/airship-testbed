@@ -440,9 +440,13 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 							const endInventory = this.FindInventoryForButton(endButton);
 
 							if (endSlotIndex !== undefined && endInventory) {
+								const pickupFromInventory =
+									this.clickPickupState.sourceInventory !== undefined
+										? this.clickPickupState.sourceInventory
+										: this.clickPickupState.inventory;
 								const isDifferentButton =
 									endSlotIndex !== this.clickPickupState.slot ||
-									endInventory !== this.clickPickupState.inventory;
+									endInventory !== pickupFromInventory;
 
 								if (isDifferentButton) {
 									this.isInitialPickupPhase = false;
@@ -464,11 +468,15 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 					return;
 				const targetSlotIndex = this.GetSlotIndexFromButton(button);
 				if (targetSlotIndex === undefined) return;
+				const pickupFromInventory =
+					this.clickPickupState.sourceInventory !== undefined
+						? this.clickPickupState.sourceInventory
+						: this.clickPickupState.inventory;
 				// Prevent immediate placement back on the same slot where we picked up
 				if (
 					this.clickPickupState.initialClickFlag &&
 					targetSlotIndex === this.clickPickupState.slot &&
-					inventory === this.clickPickupState.inventory &&
+					inventory === pickupFromInventory &&
 					!this.clickPickupState.swapStack
 				) {
 					// Clear the flag so future UP events on different slots can place
@@ -480,7 +488,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				// Check for double-click merge if there is a 2nd click within the time window
 				// Only trigger if clicking on the same slot and inventory where we picked up
 				const isSameSlot =
-					targetSlotIndex === this.clickPickupState.slot && inventory === this.clickPickupState.inventory;
+					targetSlotIndex === this.clickPickupState.slot && inventory === pickupFromInventory;
 				if (
 					this.doubleClickTimerCancel &&
 					pointerButton === PointerButton.LEFT &&
@@ -530,7 +538,7 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 						!existingItemStack ||
 						targetSlotIndex !== this.clickPickupState.slot ||
 						this.clickPickupState.swapStack ||
-						inventory !== this.clickPickupState.inventory;
+						inventory !== pickupFromInventory;
 
 					if (canPlaceOnSlot) {
 						this.HandleSingleItemPlacement(inventory, targetSlotIndex, existingItemStack, button);
@@ -624,11 +632,15 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		targetButton: Button,
 	): void {
 		if (!this.clickPickupState || !this.IsBackpackShown()) return;
+		const pickupFromInventory =
+			this.clickPickupState.sourceInventory !== undefined
+				? this.clickPickupState.sourceInventory
+				: this.clickPickupState.inventory;
 		if (
 			this.clickPickupState.initialClickFlag &&
 			targetSlotIndex === this.clickPickupState.slot &&
-			targetInventory === this.clickPickupState.inventory &&
-			!this.clickPickupState.swapStack
+			targetInventory === pickupFromInventory &&
+-			!this.clickPickupState.swapStack
 		) {
 			this.clickPickupState.initialClickFlag = false;
 			this.isInitialPickupPhase = false;
@@ -1016,9 +1028,12 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		const isFullPickup = pointerButton === PointerButton.LEFT || itemStack.amount <= 1;
 		const pickupAmount = isFullPickup ? itemStack.amount : math.ceil(itemStack.amount / 2);
 
+		const localInventory = Airship.Inventory.localInventory;
+		const pickupInv = localInventory ?? inventory;
+
 		const { itemAmountText, itemAmountImage, itemNameText } = this.CreatePickupVisual(button, itemStack);
 		this.clickPickupState = {
-			inventory,
+			inventory: pickupInv,
 			slot: slotIndex,
 			itemType: itemStack.itemType,
 			amount: pickupAmount,
@@ -1029,9 +1044,12 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			initialClickFlag: true,
 			isFirstClickDrag: true,
 		};
+		if (localInventory) {
+			this.clickPickupState.sourceInventory = inventory;
+		}
 
 		this.isInitialPickupPhase = true;
-		Airship.Inventory.MoveToSlot(inventory, slotIndex, inventory, DESIGNATED_PICKUP_SLOT, pickupAmount);
+		Airship.Inventory.MoveToSlot(inventory, slotIndex, pickupInv, DESIGNATED_PICKUP_SLOT, pickupAmount);
 
 		if (!isFullPickup) {
 			this.UpdatePickupAmount(pickupAmount);
