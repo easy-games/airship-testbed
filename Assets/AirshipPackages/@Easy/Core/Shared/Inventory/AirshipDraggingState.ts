@@ -10,7 +10,10 @@ export type DraggingState = {
 };
 
 export type ClickPickupState = {
+	/** Inventory that holds the pickup stack (slot -2), the local player's inventory mostly. */
 	inventory: Inventory;
+	/** The inventory where we picked up the item from (for same-slot / double-click detection). */
+	sourceInventory?: Inventory;
 	slot: number;
 	itemType: string;
 	amount: number;
