@@ -16,6 +16,8 @@ export interface ClientSettingsFile {
 	micDeviceName: string | undefined;
 	microphoneEnabled: boolean;
 	voiceToggleEnabled: boolean;
+	/** When disabled player is unable to hear voice chat (or speak) */
+	voiceChatFeatureEnabled: boolean;
 	vsync: boolean;
 	shadowTier: number;
 	shadows: boolean;

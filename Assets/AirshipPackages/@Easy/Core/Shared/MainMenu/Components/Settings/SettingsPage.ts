@@ -335,7 +335,7 @@ export default class SettingsPage extends AirshipBehaviour {
 			this.mouseSensitivitySlider.gameObject.SetActive(false);
 			this.mouseSmoothingSlider.gameObject.SetActive(false);
 			this.sprintToggle.gameObject.SetActive(false);
-			this.microphonePage.SetActive(false);
+			// this.microphonePage.SetActive(false);
 
 			this.touchSensitibitySlider.Init("Touch Sensitivity", settings.GetTouchSensitivity(), 0.01, 2, 0.01);
 			this.touchSensitibitySlider.onChange.Connect((val) => {

@@ -47,12 +47,12 @@ export default class MicIndicator extends AirshipBehaviour {
 			Airship.Input.OnDown("PushToTalk").Connect((event) => {
 				if (event.uiProcessed) return;
 
-				if (!Protected.Settings.data.microphoneEnabled) {
+				if (!Protected.Settings.CanSpeak()) {
 					if (Time.time - this.errorMsgTime > 4) {
 						this.errorMsgTime = Time.time;
 						Game.localPlayer.SendMessage(
 							ChatColor.Red(
-								"You tried to use voice chat when microphone was disabled. Enable it in settings.",
+								"You tried to use voice chat when microphone was disabled. Enable it in voice settings.",
 							),
 						);
 					}
