@@ -16,23 +16,30 @@ export class BotCommand extends ChatCommand {
 
 	public Execute(player: Player, args: string[]): void {
 		let amount = 1;
-		if (args.size() === 1) {
+		if (args.size() >= 1) {
 			let a = tonumber(args[0]);
 			if (a === undefined || a <= 0) {
-				player.SendMessage("Invalid usage. /bot [amount]");
+				player.SendMessage("Invalid usage. /bot (amount) [-s]");
 				return;
 			}
 			amount = a;
 		}
 
 		player.SendMessage(`Spawning ${amount} bot${amount > 1 ? "s" : ""}...`);
+
+		let doMovement = true;
+		if (args.includes("-s")) {
+			doMovement = false;
+		}
 		for (let i = 0; i < amount; i++) {
 			const bot = Airship.Players.AddBotPlayer();
-			bot.ObserveCharacter((character) => {
-				if (character) {
-					this.StartRandomMovement(character);
-				}
-			});
+			if (doMovement) {
+				bot.ObserveCharacter((character) => {
+					if (character) {
+						this.StartRandomMovement(character);
+					}
+				});
+			}
 		}
 		player.SendMessage(
 			ColorUtil.ColoredText(Theme.green, `Finished spawning ${amount} bot${amount > 1 ? "s" : ""}!`),
