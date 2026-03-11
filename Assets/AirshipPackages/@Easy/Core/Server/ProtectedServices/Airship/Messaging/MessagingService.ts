@@ -72,6 +72,7 @@ interface SetMutedUserEvent {
     type: "SET_MUTED_USER";
     uid: string;
     messageToUser: string;
+    source: "platform" | "game";
 	muteInfo: {
 		muted: boolean;
 		expiresAt: string | undefined;
@@ -189,19 +190,21 @@ export class MessagingService {
 				const player = this.protectedPlayers.FindByUserId(data.uid);
 				if (!player) return;
 
-				// Set player to muted in the protected context
 				const airshipPlayer = Dependency<AirshipPlayersSingleton>().FindByUserId(data.uid);
 				if (airshipPlayer) {
-					airshipPlayer.muteInfo = data.muteInfo;
-					if (data.muteInfo?.muted) {
-						airshipPlayer.MuteVoiceChat(true);
+					if (data.source === "platform") {
+						airshipPlayer.muteInfo.platform = data.muteInfo;
+					} else {
+						airshipPlayer.muteInfo.game = data.muteInfo;
 					}
+					const isMuted = airshipPlayer.muteInfo.platform?.muted || airshipPlayer.muteInfo.game?.muted;
+					airshipPlayer.MuteVoiceChat(!!isMuted);
 				}
 
-				// Sending this info to the game from protected context
-				contextbridge.broadcast<(userId: string, muteInfo: { muted: boolean, expiresAt: string | undefined } | undefined, message: string) => void>(
-					"Player:SetPlatformMuted",
+				contextbridge.broadcast<(userId: string, source: "platform" | "game", muteInfo: { muted: boolean, expiresAt: string | undefined } | undefined, message: string) => void>(
+					"Player:SetMutedUser",
 					data.uid,
+					data.source,
 					data.muteInfo,
 					data.messageToUser,
 				);

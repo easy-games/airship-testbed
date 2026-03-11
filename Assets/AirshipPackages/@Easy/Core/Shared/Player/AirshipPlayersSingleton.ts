@@ -412,13 +412,16 @@ export class AirshipPlayersSingleton {
 		}
 
 		if (Game.IsGameLuauContext()) {
-			// Sync platform mute state across contexts
-			contextbridge.subscribe<(from: LuauContext, userId: string, muteInfo: { muted: boolean, expiresAt: string | undefined }, message: string) => void>(
-				"Player:SetPlatformMuted",
-				(from, userId, muteInfo, message) => {
+			contextbridge.subscribe<(from: LuauContext, userId: string, source: "platform" | "game", muteInfo: { muted: boolean, expiresAt: string | undefined } | undefined, message: string) => void>(
+				"Player:SetMutedUser",
+				(from, userId, source, muteInfo, message) => {
 					const player = this.FindByUserId(userId);
 					if (player) {
-						player.muteInfo = muteInfo;
+						if (source === "platform") {
+							player.muteInfo.platform = muteInfo;
+						} else {
+							player.muteInfo.game = muteInfo;
+						}
 						if (message) {
 							player.SendMessage(message);
 						}

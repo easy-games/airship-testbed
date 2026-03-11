@@ -56,9 +56,12 @@ export class Player {
 	public readonly team: Team | undefined;
 
 	/**
-	 * Platform mute info if the player is muted (prevented from sending public text chat messages).
+	 * Mute info for this player, split by platform and game level.
 	 */
-	public muteInfo: { muted: boolean, expiresAt: string | undefined } | undefined;
+	public muteInfo: {
+		platform: { muted: boolean; expiresAt: string | undefined } | undefined;
+		game: { muted: boolean; expiresAt: string | undefined } | undefined;
+	} = { platform: undefined, game: undefined };
 
 	/**
 	 * The server only transfer data provided with the request that transfered the player to this server. This is not available
@@ -166,7 +169,7 @@ export class Player {
 			this.clientTransferData = data.clientTransferData;
 			this.serverTransferData = data.serverTransferData;
 			this.muteInfo = data.muteInfo;
-			if (this.muteInfo?.muted) {
+			if (this.muteInfo.platform?.muted || this.muteInfo.game?.muted) {
 				this.MuteVoiceChat(true);
 			}
 		}
