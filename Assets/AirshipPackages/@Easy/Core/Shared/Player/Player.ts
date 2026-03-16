@@ -168,7 +168,10 @@ export class Player {
 			let data = json.decode(transferPacket) as GameCoordinatorTransfers.ServerTransferData;
 			this.clientTransferData = data.clientTransferData;
 			this.serverTransferData = data.serverTransferData;
-			this.muteInfo = data.muteInfo;
+			this.muteInfo = {
+				platform: data.muteInfo?.platform,
+				game: data.muteInfo?.game,
+			};
 			if (this.muteInfo.platform?.muted || this.muteInfo.game?.muted) {
 				this.MuteVoiceChat(true);
 			}

@@ -1530,9 +1530,11 @@ export namespace GameCoordinatorTransfers {
         orgRoleName: string | undefined;
         isEasyEmployee: boolean;
         muteInfo: {
+            muted: boolean;
+            expiresAt: string | undefined;
             platform: { muted: boolean; expiresAt: string | undefined } | undefined;
             game: { muted: boolean; expiresAt: string | undefined } | undefined;
-        };
+        } | undefined;
         clientTransferData?: unknown;
         serverTransferData?: unknown;
     }
