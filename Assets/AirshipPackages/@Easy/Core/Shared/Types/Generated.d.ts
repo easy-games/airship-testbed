@@ -2866,6 +2866,36 @@ declare const enum FFTWindow {
     Blackman = 4,
     BlackmanHarris = 5,
 }
+declare const enum AudioReverbPreset {
+    Off = 0,
+    Generic = 1,
+    PaddedCell = 2,
+    Room = 3,
+    Bathroom = 4,
+    Livingroom = 5,
+    Stoneroom = 6,
+    Auditorium = 7,
+    Concerthall = 8,
+    Cave = 9,
+    Arena = 10,
+    Hangar = 11,
+    CarpetedHallway = 12,
+    Hallway = 13,
+    StoneCorridor = 14,
+    Alley = 15,
+    Forest = 16,
+    City = 17,
+    Mountains = 18,
+    Quarry = 19,
+    Plain = 20,
+    ParkingLot = 21,
+    SewerPipe = 22,
+    Underwater = 23,
+    Drugged = 24,
+    Dizzy = 25,
+    Psychotic = 26,
+    User = 27,
+}
 declare const enum EaseType {
     Linear = 0,
     SineIn = 10,
@@ -33538,6 +33568,7 @@ interface NetworkWriter {
     WriteByte(value: number): void;
     WriteBytes(array: Readonly<number[]>, offset: number, count: number): void;
     WriteBytes(ptr: Byte, offset: number, size: number): boolean;
+    WriteBytes(source: ReadOnlySpan<number>): void;
 
 
 }
@@ -37829,6 +37860,306 @@ interface AudioSourceConstructor {
 
 }
 declare const AudioSource: AudioSourceConstructor;
+    
+interface AudioLowPassFilter extends Behaviour {
+    /**
+     * Returns or sets the current custom frequency cutoff curve.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioLowPassFilter-customCutoffCurve.html | AudioLowPassFilter.customCutoffCurve}
+     */
+    customCutoffCurve: AnimationCurve;
+    /**
+     * Lowpass cutoff frequency in hz. 10.0 to 22000.0. Default = 5000.0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioLowPassFilter-cutoffFrequency.html | AudioLowPassFilter.cutoffFrequency}
+     */
+    cutoffFrequency: number;
+    /**
+     * Determines how much the filter's self-resonance is dampened.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioLowPassFilter-lowpassResonanceQ.html | AudioLowPassFilter.lowpassResonanceQ}
+     */
+    lowpassResonanceQ: number;
+
+
+
+
+
+}
+    
+interface AudioLowPassFilterConstructor {
+
+
+    new(): AudioLowPassFilter;
+
+
+
+}
+declare const AudioLowPassFilter: AudioLowPassFilterConstructor;
+    
+interface AudioHighPassFilter extends Behaviour {
+    /**
+     * Highpass cutoff frequency in hz. 10.0 to 22000.0. Default = 5000.0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioHighPassFilter-cutoffFrequency.html | AudioHighPassFilter.cutoffFrequency}
+     */
+    cutoffFrequency: number;
+    /**
+     * Determines how much the filter's self-resonance isdampened.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioHighPassFilter-highpassResonanceQ.html | AudioHighPassFilter.highpassResonanceQ}
+     */
+    highpassResonanceQ: number;
+
+
+
+
+
+}
+    
+interface AudioHighPassFilterConstructor {
+
+
+    new(): AudioHighPassFilter;
+
+
+
+}
+declare const AudioHighPassFilter: AudioHighPassFilterConstructor;
+    
+interface AudioChorusFilter extends Behaviour {
+    /**
+     * Volume of original signal to pass to output. 0.0 to 1.0. Default = 0.5.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioChorusFilter-dryMix.html | AudioChorusFilter.dryMix}
+     */
+    dryMix: number;
+    /**
+     * Volume of 1st chorus tap. 0.0 to 1.0. Default = 0.5.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioChorusFilter-wetMix1.html | AudioChorusFilter.wetMix1}
+     */
+    wetMix1: number;
+    /**
+     * Volume of 2nd chorus tap. This tap is 90 degrees out of phase of the first tap. 0.0 to 1.0. Default = 0.5.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioChorusFilter-wetMix2.html | AudioChorusFilter.wetMix2}
+     */
+    wetMix2: number;
+    /**
+     * Volume of 3rd chorus tap. This tap is 90 degrees out of phase of the second tap. 0.0 to 1.0. Default = 0.5.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioChorusFilter-wetMix3.html | AudioChorusFilter.wetMix3}
+     */
+    wetMix3: number;
+    /**
+     * Chorus delay in ms. 0.1 to 100.0. Default = 40.0 ms.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioChorusFilter-delay.html | AudioChorusFilter.delay}
+     */
+    delay: number;
+    /**
+     * Chorus modulation rate in hz. 0.0 to 20.0. Default = 0.8 hz.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioChorusFilter-rate.html | AudioChorusFilter.rate}
+     */
+    rate: number;
+    /**
+     * Chorus modulation depth. 0.0 to 1.0. Default = 0.03.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioChorusFilter-depth.html | AudioChorusFilter.depth}
+     */
+    depth: number;
+
+
+
+
+
+}
+    
+interface AudioChorusFilterConstructor {
+
+
+    new(): AudioChorusFilter;
+
+
+
+}
+declare const AudioChorusFilter: AudioChorusFilterConstructor;
+    
+interface AudioDistortionFilter extends Behaviour {
+    /**
+     * Distortion value. 0.0 to 1.0. Default = 0.5.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioDistortionFilter-distortionLevel.html | AudioDistortionFilter.distortionLevel}
+     */
+    distortionLevel: number;
+
+
+
+
+
+}
+    
+interface AudioDistortionFilterConstructor {
+
+
+    new(): AudioDistortionFilter;
+
+
+
+}
+declare const AudioDistortionFilter: AudioDistortionFilterConstructor;
+    
+interface AudioEchoFilter extends Behaviour {
+    /**
+     * Echo delay in ms. 10 to 5000. Default = 500.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioEchoFilter-delay.html | AudioEchoFilter.delay}
+     */
+    delay: number;
+    /**
+     * Echo decay per delay. 0 to 1. 1.0 = No decay, 0.0 = total decay (i.e. simple 1 line delay). Default = 0.5.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioEchoFilter-decayRatio.html | AudioEchoFilter.decayRatio}
+     */
+    decayRatio: number;
+    /**
+     * Volume of original signal to pass to output. 0.0 to 1.0. Default = 1.0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioEchoFilter-dryMix.html | AudioEchoFilter.dryMix}
+     */
+    dryMix: number;
+    /**
+     * Volume of echo signal to pass to output. 0.0 to 1.0. Default = 1.0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioEchoFilter-wetMix.html | AudioEchoFilter.wetMix}
+     */
+    wetMix: number;
+
+
+
+
+
+}
+    
+interface AudioEchoFilterConstructor {
+
+
+    new(): AudioEchoFilter;
+
+
+
+}
+declare const AudioEchoFilter: AudioEchoFilterConstructor;
+    
+interface AudioReverbFilter extends Behaviour {
+    /**
+     * Set/Get reverb preset properties.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioReverbFilter-reverbPreset.html | AudioReverbFilter.reverbPreset}
+     */
+    reverbPreset: AudioReverbPreset;
+    /**
+     * Mix level of dry signal in output in millibels (mB). Ranges from -10000.0 to 0.0. Default is 0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioReverbFilter-dryLevel.html | AudioReverbFilter.dryLevel}
+     */
+    dryLevel: number;
+    /**
+     * Room effect level at low frequencies in millibels (mB). Ranges from -10000.0 to 0.0. Default is 0.0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioReverbFilter-room.html | AudioReverbFilter.room}
+     */
+    room: number;
+    /**
+     * Room effect high-frequency level re. low frequency level in millibels (mB). Ranges from -10000.0 to 0.0. Default is 0.0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioReverbFilter-roomHF.html | AudioReverbFilter.roomHF}
+     */
+    roomHF: number;
+    /**
+     * Reverberation decay time at low-frequencies in seconds. Ranges from 0.1 to 20.0. Default is 1.0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioReverbFilter-decayTime.html | AudioReverbFilter.decayTime}
+     */
+    decayTime: number;
+    /**
+     * Decay HF Ratio : High-frequency to low-frequency decay time ratio. Ranges from 0.1 to 2.0. Default is 0.5.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioReverbFilter-decayHFRatio.html | AudioReverbFilter.decayHFRatio}
+     */
+    decayHFRatio: number;
+    /**
+     * Early reflections level relative to room effect in millibels (mB). Ranges from -10000.0 to 1000.0. Default is -10000.0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioReverbFilter-reflectionsLevel.html | AudioReverbFilter.reflectionsLevel}
+     */
+    reflectionsLevel: number;
+    /**
+     * Late reverberation level relative to room effect in millibels (mB). Ranges from -10000.0 to 2000.0. Default is 0.0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioReverbFilter-reflectionsDelay.html | AudioReverbFilter.reflectionsDelay}
+     */
+    reflectionsDelay: number;
+    /**
+     * Late reverberation level relative to room effect in millibels (mB). Ranges from -10000.0 to 2000.0. Default is 0.0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioReverbFilter-reverbLevel.html | AudioReverbFilter.reverbLevel}
+     */
+    reverbLevel: number;
+    /**
+     * Late reverberation delay time relative to first reflection in seconds. Ranges from 0.0 to 0.1. Default is 0.04.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioReverbFilter-reverbDelay.html | AudioReverbFilter.reverbDelay}
+     */
+    reverbDelay: number;
+    /**
+     * Reverberation diffusion (echo density) in percent. Ranges from 0.0 to 100.0. Default is 100.0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioReverbFilter-diffusion.html | AudioReverbFilter.diffusion}
+     */
+    diffusion: number;
+    /**
+     * Reverberation density (modal density) in percent. Ranges from 0.0 to 100.0. Default is 100.0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioReverbFilter-density.html | AudioReverbFilter.density}
+     */
+    density: number;
+    /**
+     * Reference high frequency in hertz (Hz). Ranges from 1000.0 to 20000.0. Default is 5000.0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioReverbFilter-hfReference.html | AudioReverbFilter.hfReference}
+     */
+    hfReference: number;
+    /**
+     * Room effect low-frequency level in millibels (mB). Ranges from -10000.0 to 0.0. Default is 0.0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioReverbFilter-roomLF.html | AudioReverbFilter.roomLF}
+     */
+    roomLF: number;
+    /**
+     * Reference low-frequency in hertz (Hz). Ranges from 20.0 to 1000.0. Default is 250.0.
+     * 
+     * More info: {@link https://docs.unity3d.com/ScriptReference/AudioReverbFilter-lfReference.html | AudioReverbFilter.lfReference}
+     */
+    lfReference: number;
+
+
+
+
+
+}
+    
+interface AudioReverbFilterConstructor {
+
+
+    new(): AudioReverbFilter;
+
+
+
+}
+declare const AudioReverbFilter: AudioReverbFilterConstructor;
     
 interface ITween {
 
@@ -55501,6 +55832,7 @@ interface Singleton<T extends MonoBehaviour> extends MonoBehaviour {
 
 
 
+    Awake(): void;
     OnApplicationQuit(): void;
 
 
@@ -55961,6 +56293,7 @@ interface MirrorServer extends IAudioServer<number> {
     readonly OnServerStart: MonoSignal<void>;
     readonly OnServerStop: MonoSignal<void>;
     readonly OnClientVoiceSettingsUpdated: MonoSignal<void>;
+    readonly OnAudioFrameReceived: MonoSignal<[number, Readonly<number[]>]>;
 
 
     Dispose(): void;
