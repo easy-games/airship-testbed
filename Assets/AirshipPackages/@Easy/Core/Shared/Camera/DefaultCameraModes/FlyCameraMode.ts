@@ -140,7 +140,7 @@ export class FlyCameraMode extends CameraMode {
 		}
 
 		// Handle camera rotation when right-clicking:
-		const rightClick = Mouse.onRightDown;
+		const rightClick = Mouse.isRightDown;
 		if (rightClick) {
 			const sensFovScalar = MathUtil.Map(this.currentFov, MIN_FOV, MAX_FOV, 0.2, 1);
 			const mouseDelta = Mouse.GetDelta();
