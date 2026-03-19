@@ -1115,9 +1115,7 @@ export namespace GameCoordinatorServers {
         params: {
             gameId: string;
         };
-        query?: {
-            page?: number;
-        };
+        query?: GameCoordinatorServers.GetServerListQuery;
     };
 
     export type GetServerListOfFriendsArgs = {
@@ -1125,6 +1123,11 @@ export namespace GameCoordinatorServers {
             gameId: string;
         };
     };
+
+    export interface GetServerListQuery {
+        tags?: string[];
+        page?: number;
+    }
 
     export type GetServersArgs = {
         query: GameCoordinatorServers.QueryServersDto;
@@ -1497,6 +1500,13 @@ export namespace GameCoordinatorTransfers {
         userIdToken: string;
     }
 
+    export interface MuteInfo {
+        muted: boolean;
+        expiresAt: string | undefined;
+        platform: { muted: boolean; expiresAt: string | undefined } | undefined;
+        game: { muted: boolean; expiresAt: string | undefined } | undefined;
+    }
+
     export type RequestSelfTransferArgs = {
         data: GameCoordinatorTransfers.ClientTransferRequestDto;
     };
@@ -1529,12 +1539,7 @@ export namespace GameCoordinatorTransfers {
         user: GameCoordinatorUsers.PublicUser;
         orgRoleName: string | undefined;
         isEasyEmployee: boolean;
-        muteInfo: {
-            muted: boolean;
-            expiresAt: string | undefined;
-            platform: { muted: boolean; expiresAt: string | undefined } | undefined;
-            game: { muted: boolean; expiresAt: string | undefined } | undefined;
-        } | undefined;
+        muteInfo: GameCoordinatorTransfers.MuteInfo | undefined;
         clientTransferData?: unknown;
         serverTransferData?: unknown;
     }
