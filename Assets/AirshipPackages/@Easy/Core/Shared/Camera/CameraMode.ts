@@ -101,14 +101,7 @@ export abstract class CameraMode {
 	}
 
 	protected GetDpiAdjustedMouseSensitivity(): number {
-		const dpi = Screen.dpi;
-
-		// If Unity cannot determine DPI, it will be zero
-		if (dpi === 0) {
-			return Airship.Input.GetMouseSensitivity();
-		}
-
-		return Airship.Input.GetMouseSensitivity() * (dpi / BASE_DPI);
+		return Airship.Input.GetMouseSensitivity();
 	}
 
 	/** Called when the camera mode is enabled. */

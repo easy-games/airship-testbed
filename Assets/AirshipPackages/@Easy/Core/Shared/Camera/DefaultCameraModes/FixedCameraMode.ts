@@ -172,12 +172,18 @@ export class FixedCameraMode extends CameraMode {
 				}
 				let moveDelta = mouseDelta;
 
-				if (this.mouseSmoothingEnabled) {
-					const smoothFactor = math.pow(1 / (1 + Airship.Input.GetMouseSmoothing()), Time.deltaTime * 120);
+				const mouseSmoothing =  Airship.Input.GetMouseSmoothing();
+				if (this.mouseSmoothingEnabled && mouseSmoothing !== 0) {
+					// Smoothing of 2 retains .33 of the delta per frame, smoothing of 1 will retain .55 of the delta
+					// Smaller numbers will be more smooth since we are retaining less of the delta per frame and therefore need more frames
+					// to apply the same movement delta.
+					const deltaToRetain = 1 / (1 + mouseSmoothing);
+					const deltaToApply = 1 - deltaToRetain; // Calculate how much delta the lerp should apply. (.33 retained means .66 is applied)
+					const smoothFactor = 1 - math.pow(deltaToApply, Time.deltaTime * 120); // Converts applied delta to current framerate from reference framerate of 120
 					this.smoothVector = new Vector2(
-						math.lerpClamped(this.smoothVector.x, mouseDelta.x, smoothFactor),
-						math.lerpClamped(this.smoothVector.y, mouseDelta.y, smoothFactor),
-					);
+						math.lerpClamped(this.smoothVector.x, mouseDelta.x, smoothFactor), // Apply smooth factor (apply the lerp that would give us .66 delta per frame at 120)
+						math.lerpClamped(this.smoothVector.y, mouseDelta.y, smoothFactor)
+					)
 					moveDelta = this.smoothVector;
 				}
 
