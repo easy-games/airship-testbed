@@ -70,9 +70,16 @@ interface KickUserEvent {
 
 interface SetMutedUserEvent {
     type: "SET_MUTED_USER";
+	/** The user being (un)muted */
     uid: string;
+	/** The message to display to the user */
     messageToUser: string;
+	/** Which source the user was (un)muted from */
     source: "platform" | "game";
+	 /** If undefined => user has been unmuted
+     * If muted is true + expiresAt is a string => temporary mute
+     * If muted is true + expiresAt is undefined => permanent mute
+     */
 	muteInfo: {
 		muted: boolean;
 		expiresAt: string | undefined;
