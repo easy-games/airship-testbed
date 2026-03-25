@@ -1,15 +1,16 @@
+import { AirshipMatchmakingGroup, AirshipQueueStats } from "@Easy/Core/Shared/Airship/Types/Matchmaking";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import { SocketController } from "../../Socket/SocketController";
 import { GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
-import { AirshipMatchmakingGroup } from "@Easy/Core/Shared/Airship/Types/Matchmaking";
+import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import { SocketController } from "../../Socket/SocketController";
 
 export const enum MatchmakingControllerBridgeTopics {
 	GetGroupForSelf = "MatchmakingController:GetGroupForSelf",
 	LeaveQueue = "MatchmakingController:LeaveQueue",
 	OnGroupChange = "MatchmakingController:OnGroupChange",
+	OnQueueStats = "MatchmakingController:OnQueueStats",
 }
 
 export type ClientBridgeApiGetGroupForSelf = () => AirshipMatchmakingGroup | undefined;
@@ -32,6 +33,10 @@ export class ProtectedMatchmakingController {
 
 		this.socketController.On<AirshipMatchmakingGroup>("game-coordinator/group-change", (data) => {
 			contextbridge.invoke(MatchmakingControllerBridgeTopics.OnGroupChange, LuauContext.Game, data);
+		});
+
+		this.socketController.On<AirshipQueueStats>("game-coordinator/queue-stats", (data) => {
+			contextbridge.invoke(MatchmakingControllerBridgeTopics.OnQueueStats, LuauContext.Game, data);
 		});
 	}
 
