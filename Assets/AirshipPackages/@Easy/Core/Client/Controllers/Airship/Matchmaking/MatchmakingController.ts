@@ -4,7 +4,7 @@ import {
 	MatchmakingControllerBridgeTopics,
 } from "@Easy/Core/Client/ProtectedControllers/Airship/Matchmaking/MatchmakingController";
 import { Platform } from "@Easy/Core/Shared/Airship";
-import { AirshipMatchmakingGroup } from "@Easy/Core/Shared/Airship/Types/Matchmaking";
+import { AirshipMatchmakingGroup, AirshipQueueStats } from "@Easy/Core/Shared/Airship/Types/Matchmaking";
 import { Controller } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
@@ -12,6 +12,9 @@ import { Signal } from "@Easy/Core/Shared/Util/Signal";
 @Controller({})
 export class AirshipMatchmakingController {
 	public readonly onGroupChange: Signal<[newGroup: AirshipMatchmakingGroup, oldGroup?: AirshipMatchmakingGroup]> = new Signal();
+	/** Fired when new queue stats are calculated. */
+	public readonly onQueueStats: Signal<[queueStats: AirshipQueueStats]> = new Signal();
+
 	private currentGroup: AirshipMatchmakingGroup | undefined;
 
 	constructor() {
@@ -23,6 +26,10 @@ export class AirshipMatchmakingController {
 			const previous = this.currentGroup;
 			this.currentGroup = group;
 			this.onGroupChange.Fire(group, previous);
+		});
+
+		contextbridge.callback(MatchmakingControllerBridgeTopics.OnQueueStats, (_, queueStats) => {
+			this.onQueueStats.Fire(queueStats);
 		});
 	}
 
