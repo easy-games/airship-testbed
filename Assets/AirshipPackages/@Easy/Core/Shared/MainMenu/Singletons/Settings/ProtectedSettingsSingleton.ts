@@ -338,7 +338,11 @@ export class ProtectedSettingsSingleton {
 
 		// Voice chat
 		if (!this.data.voiceChatFeatureEnabled) {
-			AirshipUniVoice.ClientSetDeafened(true);
+			// Task.spawn & wait can be removed. This is a temporary TS fix to an issue that will be solved in C#.
+			task.spawn(() => {
+				while (AirshipUniVoice.ClientSession.Client.ID === -1) task.wait();
+				AirshipUniVoice.ClientSetDeafened(true);
+			});
 		}
 
 		// Microphone
