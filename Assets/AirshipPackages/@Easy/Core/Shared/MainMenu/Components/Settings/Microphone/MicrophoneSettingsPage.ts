@@ -10,6 +10,9 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 	public muteToggle!: AirshipToggle;
 	public voiceChatFeatureToggle!: AirshipToggle;
 
+	/** List of game objects to disable if Mic isn't supported */
+	public hideIfNoMicSupport: GameObject[] = [];
+
 	override OnEnable(): void {
 		// Purge settings for mic unsupported devices
 		this.PurgeUnsupportedSettings();
@@ -97,6 +100,8 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 	private PurgeUnsupportedSettings() {
 		const isMicDevice = this.IsMicSupported();
 		if (!isMicDevice) {
+			this.hideIfNoMicSupport.forEach((go) => go.SetActive(false));
+
 			this.muteToggle.gameObject.SetActive(false);
 			this.voiceChatToggle.gameObject.SetActive(false);
 			this.content.gameObject.SetActive(false);
