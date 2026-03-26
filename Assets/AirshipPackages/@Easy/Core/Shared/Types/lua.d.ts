@@ -486,8 +486,26 @@ declare namespace string {
 }
 
 declare namespace math {
-	/** The number π is a mathematical constant. Originally defined as the ratio of a circle's circumference to its diameter, it now has various equivalent definitions and appears in many formulas in all areas of mathematics and physics. It is approximately equal to 3.14159. */
+	/** The number `π` (pi) is a mathematical constant. Originally defined as the ratio of a circle's circumference to its diameter, it now has various equivalent definitions and appears in many formulas in all areas of mathematics and physics. It is approximately equal to 3.14159. */
 	const pi: number;
+
+	/** The number `τ` (tau) is a mathematical constant. It is equal to 2π (`math.pi * 2`). */
+	const tau: number;
+
+	/** The number `e` (Euler's number) is a mathematical constant and is the base of natural logarithms. It is approximately equal to 2.71828. */
+	const e: number;
+
+	/** The number `φ` (phi) is a mathematical constant. It is known as the golden ratio. It is approximately equal to 1.61803. */
+	const phi: number;
+
+	/** The `math.sqrt2` constant is the square root of 2 (`math.sqrt(2)`). */
+	const sqrt2: number;
+
+	/**
+	 * NaN (not-a-number). By design, NaNs are never equal to each other, thus `math.nan != math.nan`. The `math.isnan`
+	 * function can be used to determine if a value is NaN.
+	 */
+	const nan: number;
 
 	/** The value HUGE_VAL, a value larger than or equal to any other numerical value. */
 	const huge: number;
@@ -678,7 +696,23 @@ declare namespace math {
 	): LuaTuple<[angle: number, velocity: number]>;
 
 	/** Checks if `value` is NaN. */
-	function isNaN(value: number | Vector2 | Vector3 | Vector4): boolean;
+	function isNaN(value: Vector2 | Vector3 | Vector4): boolean;
+
+	/**
+	 * @deprecated Use `math.isnan` instead.
+	 * 
+	 * Checks if `value` is NaN.
+	 * */
+	function isNaN(value: number): boolean;
+
+	/** Checks if `value` is NaN. */
+	function isnan(value: number): boolean;
+
+	/** Checks if `value` is infinity. */
+	function isinf(value: number): boolean;
+
+	/** Checks if `value` is finite (not infinity and not NaN). */
+	function isfinite(value: number): boolean;
 
 	/** Returns `n` mapped from one range `[inMin, inMax]` to another `[outMin, outMax]`. */
 	function map(n: number, inMin: number, inMax: number, outMin: number, outMax: number): number;

@@ -178,7 +178,7 @@ export class NametagController {
 	}
 
 	public FindAndDestroyNametag(root: GameObject) {
-		this.DestroyNametag(root.GetAirshipComponentInChildren<NametagComponent>());
+		this.DestroyNametag(root.GetAirshipComponentInChildren<NametagComponent>(true));
 	}
 
 	public SetNametagsEnabled(enabled: boolean) {
