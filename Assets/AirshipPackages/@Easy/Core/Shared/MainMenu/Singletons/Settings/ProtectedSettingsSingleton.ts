@@ -33,6 +33,7 @@ const defaultData: ClientSettingsFile = {
 	shadowTier: 1,
 	msaaSamples: 2,
 	voiceToggleEnabled: false,
+	voiceChatFeatureEnabled: false,
 	limitFps: -1,
 	lastPushNotifPromptTime: 0,
 	firstLoginTime: os.time(),
@@ -271,6 +272,11 @@ export class ProtectedSettingsSingleton {
 				this.data.shadowTier = Bridge.IsLowEndDevice() ? 1 : 2;
 			}
 
+			// If player had mic enabled automatically enable voice chat feature for them
+			if (this.data.voiceChatFeatureEnabled === undefined) {
+				this.data.voiceChatFeatureEnabled = this.data.microphoneEnabled ?? defaultData.voiceChatFeatureEnabled;
+			}
+
 			this.data = { ...defaultData, ...this.data };
 
 			// --- Reconcile ---
@@ -330,10 +336,15 @@ export class ProtectedSettingsSingleton {
 			}
 		});
 
+		// Voice chat
+		if (!this.data.voiceChatFeatureEnabled) {
+			AirshipUniVoice.ClientSetDeafened(true);
+		}
+
 		// Microphone
 		task.spawn(() => {
 			if (Game.IsMobile()) return;
-			if (!this.data.microphoneEnabled) {
+			if (!this.CanSpeak()) {
 				return;
 			}
 			if (!Bridge.HasMicrophonePermission()) {
@@ -372,6 +383,7 @@ export class ProtectedSettingsSingleton {
 		} else {
 			Bridge.StopMicRecording();
 		}
+		this.unsavedChanges = true;
 	}
 
 	public StartMicRecording(): void {
@@ -522,6 +534,16 @@ export class ProtectedSettingsSingleton {
 		this.unsavedChanges = true;
 	}
 
+	public SetVoiceChatFeatureEnabled(value: boolean): void {
+		this.data.voiceChatFeatureEnabled = value;
+		AirshipUniVoice.ClientSetDeafened(!value)
+		this.unsavedChanges = true;
+	}
+
+	public IsVoiceChatFeatureEnabled(): boolean {
+		return this.data.voiceChatFeatureEnabled ?? false;
+	}
+
 	public SetMouseSensitivity(value: number): void {
 		this.data.mouseSensitivity = value;
 		this.unsavedChanges = true;
@@ -599,5 +621,10 @@ export class ProtectedSettingsSingleton {
 
 	public GetScreenshotRenderHD(): boolean {
 		return this.data.screenshotRenderHD;
+	}
+
+	/** Returns true if microphone and voice chat are both enabled */
+	public CanSpeak() {
+		return this.data.voiceChatFeatureEnabled && this.data.microphoneEnabled;
 	}
 }

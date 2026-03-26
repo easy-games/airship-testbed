@@ -1,3 +1,4 @@
+import { Game } from "@Easy/Core/Shared/Game";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import AirshipToggle from "../../AirshipToggle";
 import MicDevice from "./MicDevice";
@@ -7,27 +8,36 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 	public content!: RectTransform;
 	public voiceChatToggle!: AirshipToggle;
 	public muteToggle!: AirshipToggle;
+	public voiceChatFeatureToggle!: AirshipToggle;
+
+	/** List of game objects to disable if Mic isn't supported */
+	public hideIfNoMicSupport: GameObject[] = [];
 
 	override OnEnable(): void {
-		this.content.gameObject.ClearChildren();
-
-		const currentDeviceIndex = Bridge.GetCurrentMicDeviceIndex();
-		const deviceNames = Bridge.GetMicDevices();
-		for (const i of $range(0, deviceNames.size() - 1)) {
-			const deviceName = deviceNames[i];
-			const btnGo = Object.Instantiate(
-				AssetBridge.Instance.LoadAsset(
-					"Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/SettingsPage/MicDevice.prefab",
-				),
-				this.content,
-			);
-			const micDeviceComponent = btnGo.GetAirshipComponent<MicDevice>()!;
-			micDeviceComponent.Init(i, deviceName, () => {
-				this.SelectMicIndex(i, deviceName);
-			});
-			micDeviceComponent.SetSelected(currentDeviceIndex === i);
+		// Purge settings for mic unsupported devices
+		this.PurgeUnsupportedSettings();
+		
+		if (this.IsMicSupported()) {
+			this.OnEnableOnMicSupportedDevice();
 		}
 
+		// Listen for disabling voice chat feature
+		this.voiceChatFeatureToggle.SetValue(Protected.Settings.IsVoiceChatFeatureEnabled(), true);
+		this.voiceChatFeatureToggle.onValueChanged.Connect((val) => {
+			// Disable mic if voice chat feature is disabled
+			if (!val && this.IsMicSupported()) {
+				this.voiceChatToggle.SetValue(false, false);
+			}
+
+			Protected.Settings.SetVoiceChatFeatureEnabled(val);
+		});
+	}
+
+	private OnEnableOnMicSupportedDevice() {
+		// Load device selector
+		this.LoadMicDeviceSelector();
+
+		// Hook into settings
 		const clientSettings = Protected.Settings;
 		task.spawn(() => {
 			const permission = Bridge.HasMicrophonePermission() && clientSettings.data.microphoneEnabled;
@@ -36,6 +46,9 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 		this.voiceChatToggle.onValueChanged.Connect((val) => {
 			task.spawn(() => {
 				if (val) {
+					// If you enable your mic you must have voice chat enabled!
+					this.voiceChatFeatureToggle.SetValue(true, false);
+
 					if (Bridge.HasMicrophonePermission()) {
 						clientSettings.PickMicAndStartRecording();
 						clientSettings.SetMicrophoneEnabled(true);
@@ -63,6 +76,38 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 		});
 	}
 
+	private LoadMicDeviceSelector() {
+		this.content.gameObject.ClearChildren();
+
+		const currentDeviceIndex = Bridge.GetCurrentMicDeviceIndex();
+		const deviceNames = Bridge.GetMicDevices();
+		for (const i of $range(0, deviceNames.size() - 1)) {
+			const deviceName = deviceNames[i];
+			const btnGo = Object.Instantiate(
+				AssetBridge.Instance.LoadAsset(
+					"Assets/AirshipPackages/@Easy/Core/Prefabs/MainMenu/SettingsPage/MicDevice.prefab",
+				),
+				this.content,
+			);
+			const micDeviceComponent = btnGo.GetAirshipComponent<MicDevice>()!;
+			micDeviceComponent.Init(i, deviceName, () => {
+				this.SelectMicIndex(i, deviceName);
+			});
+			micDeviceComponent.SetSelected(currentDeviceIndex === i);
+		}
+	}
+
+	private PurgeUnsupportedSettings() {
+		const isMicDevice = this.IsMicSupported();
+		if (!isMicDevice) {
+			this.hideIfNoMicSupport.forEach((go) => go.SetActive(false));
+
+			this.muteToggle.gameObject.SetActive(false);
+			this.voiceChatToggle.gameObject.SetActive(false);
+			this.content.gameObject.SetActive(false);
+		}
+	}
+
 	public SelectMicIndex(deviceIndex: number, deviceName: string): void {
 		if (!Bridge.HasMicrophonePermission()) {
 			Bridge.RequestMicrophonePermissionAsync();
@@ -83,6 +128,11 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 			const deviceComponent = go.gameObject.GetAirshipComponent<MicDevice>();
 			deviceComponent?.SetSelected(i === deviceIndex);
 		}
+	}
+
+	/** Is this a device that supports speaking */
+	public IsMicSupported() {
+		return !Game.IsMobile();
 	}
 
 	override OnDisable(): void {}
