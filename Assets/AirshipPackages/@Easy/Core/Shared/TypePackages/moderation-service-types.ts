@@ -114,7 +114,7 @@ export namespace ModerationServiceDatabaseTypes {
 
 // ====+==== Internal Types ====+====
 export namespace InternalModerationServiceTypes {
-    export type Override<T1, T2> = Omit<T1, keyof T2> & T2;
+    export type Override<T1, T2> = Omit<T1, keyof T2 & keyof T1> & T2;
 }
 
 // ====+==== External Types ====+====
