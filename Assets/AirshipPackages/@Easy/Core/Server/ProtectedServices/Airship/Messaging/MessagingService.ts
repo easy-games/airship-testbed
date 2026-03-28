@@ -229,7 +229,7 @@ export class MessagingService {
 
 		MessagingManager.Instance.OnDisconnected((reason) => {
 			reason = reason || "Unknown reason";
-			if (time() - this.lastReconnectAttempt < 5) {
+			if (os.time() - this.lastReconnectAttempt < 5) {
 				this.unsuccessfulReconnectAttempts++;
 			} else {
 				this.unsuccessfulReconnectAttempts = 0;
@@ -297,7 +297,7 @@ export class MessagingService {
 
 	public Connect(): void {
 		if (Game.IsEditor()) return;
-		this.lastReconnectAttempt = time();
+		this.lastReconnectAttempt = os.time();
 		this.doReconnect = true;
 		let connected = MessagingManager.ConnectAsyncInternal();
 
