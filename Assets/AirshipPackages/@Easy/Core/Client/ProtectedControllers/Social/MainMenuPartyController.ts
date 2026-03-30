@@ -11,6 +11,7 @@ import { Result } from "@Easy/Core/Shared/Types/Result";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
+import { ProtectedPartyController } from "../Airship/Party/PartyController";
 import { MainMenuController } from "../MainMenuController";
 import { SocketController } from "../Socket/SocketController";
 import { ProtectedFriendsController } from "./FriendsController";
@@ -46,11 +47,12 @@ export class MainMenuPartyController {
 	}
 
 	protected OnStart(): void {
-		this.socketController.On<AirshipPartyInternalSnapshot>("game-coordinator/party-update", (data) => {
-			if (!Game.IsInGame()) print("game-coordinator/party-member-status-update-multi:", data);
-			let oldParty = this.party;
-			this.party = data;
-			this.onPartyChanged.Fire(data, oldParty);
+		// TODO: We should remove this.party and this.onParty change and convert all
+		// usages to the ProtectedPartyController or AirshipPartyController
+		Dependency<ProtectedPartyController>().ObserveParty((newParty) => {
+			const previous = this.party;
+			this.party = newParty;
+			this.onPartyChanged.Fire(newParty, previous);
 		});
 
 		this.socketController.On<AirshipUserStatusData[]>(
