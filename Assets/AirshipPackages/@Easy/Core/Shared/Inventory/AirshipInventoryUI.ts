@@ -271,23 +271,21 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		this.hotbarCanvas.enabled = true;
 		this.SetupHotbarKeybindListeners();
 
-		let init = true;
 		return Game.localPlayer.ObserveCharacter((character) => {
 			if (!character) {
 				return;
 			}
 
-			return this.SetupHotbarForCharacter(character, init);
+			return this.SetupHotbarForCharacter(character);
 		});
 	}
 
 	/**
 	 * Sets up the hotbar to display inventory for any character. This will disconnect the current hotbar setup connections.
 	 * @param character The character whose inventory to display
-	 * @param init Whether this is the initial setup
 	 * @returns Cleanup function
 	 */
-	private SetupHotbarForCharacter(character: Character, init: boolean = false): () => void {
+	private SetupHotbarForCharacter(character: Character): () => void {
 		const invBin = new Bin();
 		const slotBinMap = new Map<number, Bin>();
 
@@ -337,8 +335,24 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 		// Initial setup of all hotbar slots
 		for (let i = 0; i < this.hotbarSlots; i++) {
+			const slotIndex = i;
 			const itemStack = character.inventory?.GetItem(i);
-			this.UpdateHotbarSlot(i, character.GetHeldSlot(), itemStack, init, true);
+			this.UpdateHotbarSlot(slotIndex, character.GetHeldSlot(), itemStack);
+
+			const tileComponent = this.slotToHotbarTileComponentMap.get(slotIndex);
+			if (tileComponent) {
+				invBin.Add(
+					tileComponent.button.onClick.Connect(() => {
+						const inv = character.inventory;
+						if (inv) {
+							Airship.Inventory.onInventorySlotClicked.Fire(
+								new InventorySlotMouseClickEvent(inv, slotIndex, PointerButton.LEFT),
+							);
+						}
+						character.SetHeldSlot(slotIndex);
+					}),
+				);
+			}
 
 			// Sets up item stacks that may exist before the hotbar is setup (e.g. from spectating a character)
 			if (itemStack) {
@@ -377,10 +391,10 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		}
 
 		if (character) {
-			this.currentHotbarCleanup = this.SetupHotbarForCharacter(character, true);
+			this.currentHotbarCleanup = this.SetupHotbarForCharacter(character);
 		} else {
 			for (let i = 0; i < this.hotbarSlots; i++) {
-				this.UpdateHotbarSlot(i, 0, undefined, true, true);
+				this.UpdateHotbarSlot(i, 0, undefined, true);
 			}
 		}
 	}
@@ -1493,7 +1507,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 		slot: number,
 		selectedSlot: number,
 		itemStack: ItemStack | undefined,
-		init = false,
 		reset = false,
 	): void {
 		let go: GameObject;
@@ -1528,18 +1541,6 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 			});
 		}
 
-		if (init) {
-			let tileComponent = this.slotToHotbarTileComponentMap.get(slot);
-			if (!tileComponent) {
-				tileComponent = go.GetAirshipComponent<AirshipInventoryTile>()!;
-				this.slotToHotbarTileComponentMap.set(slot, tileComponent);
-			}
-			this.bin.Add(
-				tileComponent.button.onClick.Connect(() => {
-					Game.localPlayer.character?.SetHeldSlot(slot);
-				}),
-			);
-		}
 	}
 
 	/**
