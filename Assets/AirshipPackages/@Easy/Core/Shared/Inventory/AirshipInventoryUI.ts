@@ -344,11 +344,10 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				invBin.Add(
 					tileComponent.button.onClick.Connect(() => {
 						const inv = character.inventory;
-						if (inv) {
-							Airship.Inventory.onInventorySlotClicked.Fire(
-								new InventorySlotMouseClickEvent(inv, slotIndex, PointerButton.LEFT),
-							);
-						}
+						if (!inv) return;
+						const slotClickEvent = new InventorySlotMouseClickEvent(inv, slotIndex, PointerButton.LEFT);
+						Airship.Inventory.onInventorySlotClicked.Fire(slotClickEvent);
+						if (slotClickEvent.IsCancelled()) return;
 						character.SetHeldSlot(slotIndex);
 					}),
 				);
@@ -416,9 +415,9 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 					return;
 				}
 
-				Airship.Inventory.onInventorySlotClicked.Fire(
-					new InventorySlotMouseClickEvent(inventory, slotIndex, pointerButton),
-				);
+				const slotClickEvent = new InventorySlotMouseClickEvent(inventory, slotIndex, pointerButton);
+				Airship.Inventory.onInventorySlotClicked.Fire(slotClickEvent);
+				if (slotClickEvent.IsCancelled()) return;
 
 				const targetSlotIndex = this.GetSlotIndexFromButton(button);
 				if (targetSlotIndex === undefined) return;
@@ -1720,9 +1719,9 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 				CanvasAPI.OnPointerEvent(tile.button.gameObject, (direction, button) => {
 					if (direction !== PointerDirection.UP || this.isDraggingPickedUpItem) return;
 
-					Airship.Inventory.onInventorySlotClicked.Fire(
-						new InventorySlotMouseClickEvent(inventory, i, button),
-					);
+					const slotClickEvent = new InventorySlotMouseClickEvent(inventory, i, button);
+					Airship.Inventory.onInventorySlotClicked.Fire(slotClickEvent);
+					if (slotClickEvent.IsCancelled()) return;
 				}),
 			);
 
@@ -1924,17 +1923,19 @@ export default class AirshipInventoryUI extends AirshipBehaviour {
 
 						if (i < this.hotbarSlots) {
 							// hotbar
+							const slotClickEvent = new InventorySlotMouseClickEvent(inv, i, button);
 							if (this.IsBackpackShown()) {
-								Airship.Inventory.onInventorySlotClicked.Fire(
-									new InventorySlotMouseClickEvent(inv, i, button),
-								);
+								Airship.Inventory.onInventorySlotClicked.Fire(slotClickEvent);
+								if (slotClickEvent.IsCancelled()) return;
 							} else {
+								Airship.Inventory.onInventorySlotClicked.Fire(slotClickEvent);
+								if (slotClickEvent.IsCancelled()) return;
 								Game.localPlayer.character?.SetHeldSlot(i);
 							}
 						} else {
-							Airship.Inventory.onInventorySlotClicked.Fire(
-								new InventorySlotMouseClickEvent(inv, i, button),
-							);
+							const slotClickEvent = new InventorySlotMouseClickEvent(inv, i, button);
+							Airship.Inventory.onInventorySlotClicked.Fire(slotClickEvent);
+							if (slotClickEvent.IsCancelled()) return;
 						}
 					}),
 				);
