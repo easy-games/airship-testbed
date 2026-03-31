@@ -128,7 +128,6 @@ export class ProtectedPartyController {
 	}
 
 	private ProcessPartyUpdate(newParty: AirshipPartyInternalSnapshot) {
-		print("new party data:", newParty)
 		const previous = this.currentParty;
 		this.currentParty = newParty;
 		this.onPartyChange.Fire(newParty, previous);
