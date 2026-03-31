@@ -23,12 +23,14 @@ interface InventorySlotEvent {
 	IsLocalInventory(): boolean;
 }
 
-export class InventorySlotMouseClickEvent implements InventorySlotEvent {
+export class InventorySlotMouseClickEvent extends Cancellable implements InventorySlotEvent {
 	public constructor(
 		public readonly inventory: Inventory,
 		public readonly slotIndex: number,
 		public readonly button: PointerButton,
-	) {}
+	) {
+		super();
+	}
 
 	public IsExternalInventory(): boolean {
 		return this.inventory === Airship.Inventory.ui?.GetActiveExternalInventory();

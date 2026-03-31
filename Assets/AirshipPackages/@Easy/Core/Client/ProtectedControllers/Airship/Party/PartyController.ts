@@ -50,6 +50,11 @@ export class ProtectedPartyController {
 
 	public async GetParty(): Promise<ReturnType<ClientBridgeApiGetParty>> {
 		const result = await client.party.getSelfParty();
+		if (!this.currentParty || result.party.lastUpdated > this.currentParty?.lastUpdated) {
+			task.defer(() => {
+				this.ProcessPartyUpdate(result.party);
+			})
+		}
 		return result.party;
 	}
 
@@ -91,16 +96,45 @@ export class ProtectedPartyController {
 		};
 	}
 
+	public ObserveParty(observer: (party: AirshipPartyInternalSnapshot | undefined) => CleanupFunc): () => void {
+		let currentCleanup: CleanupFunc;
+
+		const onChanged = (party: AirshipPartyInternalSnapshot | undefined) => {
+			currentCleanup?.();
+			currentCleanup = observer(party);
+		};
+
+		const bin = new Bin();
+		bin.Add(
+			this.onPartyChange.Connect((newParty) => {
+				onChanged(newParty);
+			}),
+		);
+		onChanged(this.currentParty);
+
+		return () => {
+			bin.Clean();
+			currentCleanup?.();
+		};
+	}
+
 	protected OnStart(): void {
 		this.socketController.On<AirshipPartyInternalSnapshot>("game-coordinator/party-update", (data) => {
-			const previous = this.currentParty;
-			this.currentParty = data;
-			this.onPartyChange.Fire(data, previous);
-
-			// We only invoke when in-game because it's the only time a callback is registered.
-			if (Game.IsInGame()) {
-				contextbridge.invoke(PartyControllerBridgeTopics.OnPartyChange, LuauContext.Game, data);
-			}
+			this.ProcessPartyUpdate(data);
 		});
+
+		// Initialize party (update is processed internally)
+		this.GetParty();
+	}
+
+	private ProcessPartyUpdate(newParty: AirshipPartyInternalSnapshot) {
+		const previous = this.currentParty;
+		this.currentParty = newParty;
+		this.onPartyChange.Fire(newParty, previous);
+
+		// We only invoke when in-game because it's the only time a callback is registered.
+		if (Game.IsInGame()) {
+			contextbridge.invoke(PartyControllerBridgeTopics.OnPartyChange, LuauContext.Game, newParty);
+		}
 	}
 }
