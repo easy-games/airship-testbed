@@ -18,8 +18,8 @@ export class CharacterInput {
 
 	/** If true holding the sprint key will not result in sprinting */
 	private blockSprint = false;
-
-	private queuedMoveDirection = Vector3.zero;
+	
+	private queuedMoveDirections: ({direction: Vector3, dt: number})[] = [];
 
 	constructor(private readonly character: Character) {
 		this.movement = character.movement;
@@ -45,7 +45,7 @@ export class CharacterInput {
 	}
 
 	public SetQueuedMoveDirection(dir: Vector3): void {
-		this.queuedMoveDirection = dir;
+		this.queuedMoveDirections.push({direction: dir, dt: Time.deltaTime});
 	}
 
 	/** Returns `true` if the Humanoid Driver is enabled. */
@@ -97,12 +97,26 @@ export class CharacterInput {
 				const forward = w === s ? 0 : w ? 1 : -1;
 				const sideways = d === a ? 0 : d ? 1 : -1;
 
-				this.queuedMoveDirection = new Vector3(sideways, 0, forward);
+				this.queuedMoveDirections.push({direction: new Vector3(sideways, 0, forward), dt});
 			});
 			if (!success) {
 				print(err);
 			}
 		};
+
+		// Switch controls based on preferred user input:
+		preferred.ObserveControlScheme((controlScheme) => {
+			const controlSchemeBin = new Bin();
+
+			if (controlScheme === ControlScheme.MouseKeyboard) {
+				controlSchemeBin.Connect(OnUpdate, updateMouseKeyboardControls);
+			}
+
+			// Clean up current controls when preferred input scheme changes:
+			return () => {
+				controlSchemeBin.Clean();
+			};
+		});
 
 		this.bin.Add(
 			OnUpdate.Connect((dt) => {
@@ -110,7 +124,15 @@ export class CharacterInput {
 				if (!this.movement) return;
 
 				let sprinting = this.IsSprinting();
-				let moveDir = this.queuedMoveDirection;
+
+				let moveDir = Vector3.zero;
+				if (this.queuedMoveDirections.size() !== 0) {
+					const totalDt = this.queuedMoveDirections.reduce((acc, input) => (acc += input.dt), 0);
+					moveDir = this.queuedMoveDirections.reduce((acc, input) => {
+						return acc.add(input.direction.mul(dt));
+					}, new Vector3(0, 0, 0)).div(totalDt);
+				}
+
 				if (Game.playerFlags.has("HasTransformMoveDirection")) {
 					moveDir = this.movement.TransformMoveDirection(moveDir, localCharacterSingleton.GetMoveDirMode());
 				}
@@ -141,25 +163,18 @@ export class CharacterInput {
 				}
 			}),
 		);
+
+		this.bin.Add(this.character.OnAddCustomInputData.Connect(() => {
+			// We clear queued input only when it is consumed by C#. OnAddCustomInputData is the callback
+			// for character movement generating a new move input and consuming the queued input. 
+			this.queuedMoveDirections.clear();
+		}));
+
 		this.bin.Add(
 			this.character.onDespawn.Connect(() => {
 				this.Destroy();
 			}),
 		);
-
-		// Switch controls based on preferred user input:
-		preferred.ObserveControlScheme((controlScheme) => {
-			const controlSchemeBin = new Bin();
-
-			if (controlScheme === ControlScheme.MouseKeyboard) {
-				controlSchemeBin.Connect(OnUpdate, updateMouseKeyboardControls);
-			}
-
-			// Clean up current controls when preferred input scheme changes:
-			return () => {
-				controlSchemeBin.Clean();
-			};
-		});
 	}
 
 	public Destroy() {
