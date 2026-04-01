@@ -19,7 +19,6 @@ export class CharacterInput {
 	/** If true holding the sprint key will not result in sprinting */
 	private blockSprint = false;
 
-	private clearQueueNextFrame = false;
 	private queuedMoveDirections: { direction: Vector3; dt: number }[] = [];
 
 	constructor(private readonly character: Character) {
@@ -52,7 +51,7 @@ export class CharacterInput {
 	}
 
 	public SetQueuedMoveDirection(dir: Vector3): void {
-		this.queuedMoveDirections.push({ direction: dir, dt: Time.deltaTime });
+		this.queuedMoveDirections.push({ direction: dir, dt: Time.unscaledDeltaTime });
 	}
 
 	/** Returns `true` if the Humanoid Driver is enabled. */
@@ -104,35 +103,22 @@ export class CharacterInput {
 				const forward = w === s ? 0 : w ? 1 : -1;
 				const sideways = d === a ? 0 : d ? 1 : -1;
 
-				if (this.clearQueueNextFrame) {
-					this.queuedMoveDirections.clear();
-					this.clearQueueNextFrame = false;
-				}
-				this.queuedMoveDirections.push({ direction: new Vector3(sideways, 0, forward), dt });
+				this.queuedMoveDirections.push({ direction: new Vector3(sideways, 0, forward), dt: Time.unscaledDeltaTime });
 			});
 			if (!success) {
 				print(err);
 			}
 		};
 
-		// Switch controls based on preferred user input:
-		preferred.ObserveControlScheme((controlScheme) => {
-			const controlSchemeBin = new Bin();
-
-			if (controlScheme === ControlScheme.MouseKeyboard) {
-				controlSchemeBin.Connect(OnUpdate, updateMouseKeyboardControls);
-			}
-
-			// Clean up current controls when preferred input scheme changes:
-			return () => {
-				controlSchemeBin.Clean();
-			};
-		});
-
 		this.bin.Add(
 			OnUpdate.Connect((dt) => {
 				if (!localCharacterSingleton.IsDefaultMovementEnabled()) return;
 				if (!this.movement) return;
+
+				// Read input for preferred control scheme
+				if (preferred.GetControlScheme() === ControlScheme.MouseKeyboard) {
+					updateMouseKeyboardControls(dt);
+				}
 
 				let sprinting = this.IsSprinting();
 
@@ -184,9 +170,7 @@ export class CharacterInput {
 			this.character.OnAddCustomInputData.Connect(() => {
 				// We clear queued input only when it is consumed by C#. OnAddCustomInputData is the callback
 				// for character movement generating a new move input and consuming the queued input.
-				// We clear next frame since we may run multiple fixed updates per frame, and we don't want to clear
-				// input before we process all pending fixed updates.
-				this.clearQueueNextFrame = true;
+				this.queuedMoveDirections.clear();
 			}),
 		);
 
