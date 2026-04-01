@@ -18,8 +18,9 @@ export class CharacterInput {
 
 	/** If true holding the sprint key will not result in sprinting */
 	private blockSprint = false;
-	
-	private queuedMoveDirections: ({direction: Vector3, dt: number})[] = [];
+
+	private clearQueueNextFrame = false;
+	private queuedMoveDirections: { direction: Vector3; dt: number }[] = [];
 
 	constructor(private readonly character: Character) {
 		this.movement = character.movement;
@@ -39,13 +40,19 @@ export class CharacterInput {
 			if (Game.playerFlags.has("HasTransformMoveDirection")) {
 				this.movement?.SetMoveInput(Vector3.zero, false, false, false);
 			} else {
-				this.movement?.SetMoveInput(Vector3.zero, false, false, false, localCharacterSingleton.GetMoveDirMode());
+				this.movement?.SetMoveInput(
+					Vector3.zero,
+					false,
+					false,
+					false,
+					localCharacterSingleton.GetMoveDirMode(),
+				);
 			}
 		}
 	}
 
 	public SetQueuedMoveDirection(dir: Vector3): void {
-		this.queuedMoveDirections.push({direction: dir, dt: Time.deltaTime});
+		this.queuedMoveDirections.push({ direction: dir, dt: Time.deltaTime });
 	}
 
 	/** Returns `true` if the Humanoid Driver is enabled. */
@@ -97,7 +104,11 @@ export class CharacterInput {
 				const forward = w === s ? 0 : w ? 1 : -1;
 				const sideways = d === a ? 0 : d ? 1 : -1;
 
-				this.queuedMoveDirections.push({direction: new Vector3(sideways, 0, forward), dt});
+				if (this.clearQueueNextFrame) {
+					this.queuedMoveDirections.clear();
+					this.clearQueueNextFrame = false;
+				}
+				this.queuedMoveDirections.push({ direction: new Vector3(sideways, 0, forward), dt });
 			});
 			if (!success) {
 				print(err);
@@ -128,9 +139,14 @@ export class CharacterInput {
 				let moveDir = Vector3.zero;
 				if (this.queuedMoveDirections.size() !== 0) {
 					const totalDt = this.queuedMoveDirections.reduce((acc, input) => (acc += input.dt), 0);
-					moveDir = this.queuedMoveDirections.reduce((acc, input) => {
-						return acc.add(input.direction.mul(dt));
-					}, new Vector3(0, 0, 0)).div(totalDt);
+					moveDir = this.queuedMoveDirections
+						.reduce(
+							(acc, input) => {
+								return acc.add(input.direction.mul(input.dt));
+							},
+							new Vector3(0, 0, 0),
+						)
+						.div(totalDt);
 				}
 
 				if (Game.playerFlags.has("HasTransformMoveDirection")) {
@@ -158,17 +174,21 @@ export class CharacterInput {
 						moveSignal.jump,
 						moveSignal.sprinting,
 						moveSignal.crouch,
-						localCharacterSingleton.GetMoveDirMode()
+						localCharacterSingleton.GetMoveDirMode(),
 					);
 				}
 			}),
 		);
 
-		this.bin.Add(this.character.OnAddCustomInputData.Connect(() => {
-			// We clear queued input only when it is consumed by C#. OnAddCustomInputData is the callback
-			// for character movement generating a new move input and consuming the queued input. 
-			this.queuedMoveDirections.clear();
-		}));
+		this.bin.Add(
+			this.character.OnAddCustomInputData.Connect(() => {
+				// We clear queued input only when it is consumed by C#. OnAddCustomInputData is the callback
+				// for character movement generating a new move input and consuming the queued input.
+				// We clear next frame since we may run multiple fixed updates per frame, and we don't want to clear
+				// input before we process all pending fixed updates.
+				this.clearQueueNextFrame = true;
+			}),
+		);
 
 		this.bin.Add(
 			this.character.onDespawn.Connect(() => {
