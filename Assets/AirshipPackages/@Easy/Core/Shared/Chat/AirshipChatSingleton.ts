@@ -18,7 +18,7 @@ import TeamsCommand from "@Easy/Core/Server/Services/Chat/Commands/TeamsCommand"
 import { TpAllCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpAllCommand";
 import { TpCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpCommand";
 import { TpsCommand } from "@Easy/Core/Server/Services/Chat/Commands/TpsCommand";
-import { Singleton } from "@Easy/Core/Shared/Flamework";
+import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Airship } from "../Airship";
 import { ChatCommand } from "../Commands/ChatCommand";
 import { ChatMessageNetworkEvent, CoreNetwork } from "../CoreNetwork";
@@ -30,6 +30,9 @@ import { ChatColor } from "../Util/ChatColor";
 import { ChatUtil } from "../Util/ChatUtil";
 import ObjectUtils from "../Util/ObjectUtils";
 import { Signal } from "../Util/Signal";
+import { Asset } from "../Asset";
+import { CoreRefs } from "../CoreRefs";
+import { CoreUIController } from "@Easy/Core/Client/ProtectedControllers/CoreUIController";
 
 class ChatMessageEvent extends Cancellable {
 	/**
@@ -53,7 +56,7 @@ export class AirshipChatSingleton {
 	private messageIdCounter: number = 1;
 	private commands = new Map<string, ChatCommand>();
 	private commandPermissions = new Map<string, Set<string>>(); // ChatCommand Label, Player Id
-	private chatUIPrefab: GameObject | undefined;
+	public chatUIPrefab: GameObject | undefined;
 	public readonly canUseRichText = true;
 	/**
 	 * Event fired when a player chats.
@@ -69,6 +72,18 @@ export class AirshipChatSingleton {
 	}
 
 	protected OnStart(): void {
+		const coreUIController = Dependency<CoreUIController>();
+		const coreUIGO = coreUIController.coreUIGO;
+
+		let chatUI: GameObject;
+		if (this.chatUIPrefab) {
+			chatUI = this.chatUIPrefab;
+		} else {
+			chatUI = Asset.LoadAsset(`AirshipPackages/@Easy/Core/Prefabs/UI/Chat.prefab`);
+		}
+
+		Instantiate(chatUI, coreUIGO.transform);
+
 		if (Game.IsInGame()) {
 			this.RegisterCoreCommands();
 

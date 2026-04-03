@@ -1,4 +1,3 @@
-import { CoreUIController } from "@Easy/Core/Client/ProtectedControllers/CoreUIController";
 import { Airship } from "@Easy/Core/Shared/Airship";
 import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
@@ -91,6 +90,11 @@ export default class ClientChatSingleton extends AirshipSingleton {
 	public chatWindow: ChatWindow;
 
 	protected Awake(): void {
+		this.chatWindow = this.canvas.gameObject.GetAirshipComponent<ChatWindow>()!;
+		this.inputWrapperImage = this.inputTransform.GetComponent<Image>()!;
+		this.chatMessagePrefab = Object.Instantiate(this.chatMessagePrefab);
+		this.content.gameObject.ClearChildren();
+
 		if (Game.IsProtectedLuauContext()) {
 			this.RegisterCommand(new MessageCommand());
 			this.RegisterCommand(new ReplyCommand());
@@ -144,13 +148,6 @@ export default class ClientChatSingleton extends AirshipSingleton {
 			this.wrapper.GetComponent<Mask>()!.enabled = false;
 		}
 	}
-
-	protected Start(): void {
-		this.chatWindow = this.canvas.gameObject.GetAirshipComponent<ChatWindow>()!;
-		this.inputWrapperImage = this.inputTransform.GetComponent<Image>()!;
-		this.chatMessagePrefab = Object.Instantiate(this.chatMessagePrefab);
-		this.content.gameObject.ClearChildren();
-	};
 
 	/**
 	 * Scales down the size of font and profile picture in the chat message prefab.
@@ -220,7 +217,7 @@ export default class ClientChatSingleton extends AirshipSingleton {
 		this.RenderChatMessage(rawText, messageId, sender, nameWithPrefix);
 	}
 
-	protected OnStart(): void {
+	protected Start(): void {
 		const isMainMenu = Game.coreContext === CoreContext.MAIN_MENU;
 		if (isMainMenu) return;
 

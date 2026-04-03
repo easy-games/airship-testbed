@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4502174759117723092}
-  - component: {fileID: 3457784393470883160}
+  - component: {fileID: -3358069642004896459}
   m_Layer: 0
   m_Name: CoreUI
   m_TagString: Untagged
@@ -29,11 +29,10 @@ Transform:
   m_LocalPosition: {x: 995.8471, y: 525.2025, z: -15.299737}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2993180120630511965}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3457784393470883160
+--- !u!114 &-3358069642004896459
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,130 +41,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 4502174759117723093}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e87e0668ae7abb47800944852d422c9, type: 3}
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isStaticInstance: 0
-  staticBundleId: UniqueID
-  bundledReferences:
-  - key: Apps
-    keyValuePairs:
-    - key: Chat
-      value: {fileID: 2993180120630511964}
-    - key: TabList
-      value: {fileID: 0}
-    - key: Inventory
-      value: {fileID: 0}
-    - key: Abilities
-      value: {fileID: 0}
---- !u!1001 &1694004334268165147
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 4502174759117723092}
-    m_Modifications:
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130474952007, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_Name
-      value: Chat
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470850130923203887, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
---- !u!1 &2993180120630511964 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4470850130474952007, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-  m_PrefabInstance: {fileID: 1694004334268165147}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &2993180120630511965 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4470850130474952006, guid: 62fbe961e180141a6ad235acf4ab7fe9, type: 3}
-  m_PrefabInstance: {fileID: 1694004334268165147}
-  m_PrefabAsset: {fileID: 0}
+  guid: 8af3b863-000e-47fb-84f0-957b80c05c51
+  script: {fileID: 1462859493581201196, guid: 89a72be71fee6f247b46657cf42e8b32, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Client/ProtectedControllers/CoreUIController.lua
+  forceContext: 0
+  metadata:
+    name: CoreUIController
+    singleton: 0
+    decorators: []
+    properties:
+    - name: coreUIGO
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 0}
+      modified: 0
+    displayIcon: {fileID: 0}
+    displayName: 
