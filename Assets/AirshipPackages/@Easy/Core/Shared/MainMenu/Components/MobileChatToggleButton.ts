@@ -2,7 +2,7 @@ import { Dependency } from "../../Flamework";
 import { Game } from "../../Game";
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";
-import { ClientChatSingleton } from "../Singletons/Chat/ClientChatSingleton";
+import ClientChatSingleton from "../Singletons/Chat/ClientChatSingleton";
 
 export default class MobileChatToggleButton extends AirshipBehaviour {
 	@Header("Variables")
@@ -20,7 +20,7 @@ export default class MobileChatToggleButton extends AirshipBehaviour {
 	private notifCount = 0;
 
 	public OnEnable(): void {
-		const clientChat = Dependency<ClientChatSingleton>();
+		const clientChat = ClientChatSingleton.Get();
 		this.SetActiveVisuals(clientChat.IsOpenMobile());
 
 		this.notifWrapper.SetActive(false);

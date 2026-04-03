@@ -68,15 +68,14 @@ class ChatMessageElement {
 	}
 }
 
-@Singleton()
-export class ClientChatSingleton {
+export default class ClientChatSingleton extends AirshipSingleton {
 	public canvas!: Canvas;
-	private content: GameObject;
-	private wrapper: RectTransform;
-	private chatMessagePrefab: GameObject;
-	private inputField: TMP_InputField;
-	private inputWrapperImage: Image;
-	private inputTransform!: RectTransform;
+	public content: GameObject;
+	public wrapper: RectTransform;
+	public chatMessagePrefab: GameObject;
+	public inputField: TMP_InputField;
+	public inputWrapperImage: Image;
+	public inputTransform!: RectTransform;
 
 	private selected = false;
 	private selectedBin = new Bin();
@@ -91,17 +90,20 @@ export class ClientChatSingleton {
 
 	public chatWindow: ChatWindow;
 
-	constructor() {
-		const refs = Dependency<CoreUIController>().refs.GetValue("Apps", "Chat").GetComponent<GameObjectReferences>()!;
-		this.canvas = refs.GetValue("UI", "Canvas").GetComponent<Canvas>()!;
-		this.content = refs.GetValue("UI", "Content");
-		this.wrapper = refs.GetValue("UI", "Wrapper");
-		this.chatMessagePrefab = Object.Instantiate(refs.GetValue("UI", "ChatMessagePrefab"));
-		this.inputField = refs.GetValue("UI", "InputField");
-		this.inputTransform = refs.GetValue("UI", "Input");
-		this.chatWindow = this.canvas.gameObject.GetAirshipComponent<ChatWindow>()!;
-		this.inputWrapperImage = this.inputTransform.GetComponent<Image>()!;
-		this.content.gameObject.ClearChildren();
+	protected Awake(): void {
+		if (Game.IsProtectedLuauContext()) {
+			this.RegisterCommand(new MessageCommand());
+			this.RegisterCommand(new ReplyCommand());
+			this.RegisterCommand(new PartyCommand());
+
+			contextbridge.callback<() => boolean>("ClientChatSingleton:IsOpen", () => {
+				return this.IsOpen();
+			});
+
+			contextbridge.callback<(val: boolean) => void>("ClientChatSingleton:SetUIEnabled", (from, val) => {
+				this.canvas.gameObject.SetActive(val);
+			});
+		}
 
 		task.spawn(() => {
 			Dependency<MainMenuSingleton>().ObserveScreenSize((st, size) => {
@@ -136,25 +138,11 @@ export class ClientChatSingleton {
 			});
 		});
 
-		if (Game.IsProtectedLuauContext()) {
-			this.RegisterCommand(new MessageCommand());
-			this.RegisterCommand(new ReplyCommand());
-			this.RegisterCommand(new PartyCommand());
-
-			contextbridge.callback<() => boolean>("ClientChatSingleton:IsOpen", () => {
-				return this.IsOpen();
-			});
-		}
-
 		if (Game.IsMobile()) {
 			this.canvas.enabled = false;
 		} else {
 			this.wrapper.GetComponent<Mask>()!.enabled = false;
 		}
-
-		contextbridge.callback<(val: boolean) => void>("ClientChatSingleton:SetUIEnabled", (from, val) => {
-			this.canvas.gameObject.SetActive(val);
-		});
 	}
 
 	/**
