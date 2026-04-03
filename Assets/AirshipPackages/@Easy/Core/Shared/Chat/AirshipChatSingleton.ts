@@ -53,6 +53,7 @@ export class AirshipChatSingleton {
 	private messageIdCounter: number = 1;
 	private commands = new Map<string, ChatCommand>();
 	private commandPermissions = new Map<string, Set<string>>(); // ChatCommand Label, Player Id
+	private chatUIPrefab: GameObject | undefined;
 	public readonly canUseRichText = true;
 	/**
 	 * Event fired when a player chats.
@@ -186,6 +187,15 @@ export class AirshipChatSingleton {
 		if (!Game.IsClient()) return;
 
 		contextbridge.invoke<(val: boolean) => void>("ClientChatSingleton:SetUIEnabled", LuauContext.Protected, val);
+	}
+
+	/**
+	 * Sets the prefab used for creating the chat window.
+	 * 
+	 * @param prefab A customized chat window prefab.
+	 */
+	public SetChatUIPrefab(prefab: GameObject) {
+		this.chatUIPrefab = prefab;
 	}
 
 	/**

@@ -62,7 +62,12 @@ public class CharacterConfigEditor : AirshipEditor {
                 }
             } else if (selectedTabIndex == 2) {
                 // UI
-                PropertyField("showChat");
+                var showChat = serializedObject.FindAirshipProperty("showChat");
+                PropertyField(showChat);
+                if (showChat.boolValue) {
+                    PropertyField("chatUIPrefab");
+                }
+                
                 var visibility = serializedObject.FindAirshipProperty("inventoryVisibility");
                 PropertyField(visibility);
                 if (visibility.enumValue.name != "Never") {
