@@ -145,6 +145,13 @@ export default class ClientChatSingleton extends AirshipSingleton {
 		}
 	}
 
+	protected Start(): void {
+		this.chatWindow = this.canvas.gameObject.GetAirshipComponent<ChatWindow>()!;
+		this.inputWrapperImage = this.inputTransform.GetComponent<Image>()!;
+		this.chatMessagePrefab = Object.Instantiate(this.chatMessagePrefab);
+		this.content.gameObject.ClearChildren();
+	};
+
 	/**
 	 * Scales down the size of font and profile picture in the chat message prefab.
 	 */
