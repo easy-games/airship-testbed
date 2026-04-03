@@ -179,22 +179,6 @@ export class ProtectedSettingsSingleton {
 			this.gameSettingsOrdered.push("space");
 		});
 
-		/** *********** **/
-		contextbridge.callback("Settings:AddCategory", (from: LuauContext, name: string) => {
-			if (this.gameSettings.has(name)) {
-				error(`A category named "${name}" already exists.`);
-			}
-
-			const setting: InternalGameSetting = {
-				name,
-				type: InternalGameSettingType.Category,
-				value: name,
-			};
-
-			// this.gameSettingsOrdered.push("space");
-			this.gameSettingsOrdered.push(setting);
-		});
-
 		// Screenshot:
 		Keyboard.OnKeyDown(Key.F2, (event) => {
 			if (event.uiProcessed) return;

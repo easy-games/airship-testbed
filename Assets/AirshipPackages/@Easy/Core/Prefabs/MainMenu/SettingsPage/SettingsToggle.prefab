@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -7}
-  m_SizeDelta: {x: 154.95, y: 30}
+  m_SizeDelta: {x: 146.32, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &6966837405641051170
 CanvasRenderer:
@@ -228,11 +228,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  guid: c79541f4-e704-41f6-a47f-e1af747fb32a
-  script: {fileID: 8698240206822664949, guid: a822c156012ca4ec096f55c4f1a07501, type: 3}
-  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/Controls/SettingsToggle.lua
-  forceContext: 0
-  metadata:
+  scriptFile: {fileID: 8698240206822664949, guid: a822c156012ca4ec096f55c4f1a07501, type: 3}
+  m_fileFullPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Components/Settings/Controls/SettingsToggle.lua
+  m_error: 0
+  m_yielded: 0
+  m_canResume: 0
+  m_asyncYield: 0
+  m_onUpdateHandle: -1
+  m_onLateUpdateHandle: -1
+  m_shortFileName: 
+  m_metadata:
     name: SettingsToggle
     singleton: 0
     decorators: []
@@ -247,9 +252,6 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: AirshipPackages/@Easy/Core/Shared/MainMenu/Components/AirshipToggle.ts
-      jsDocs:
-        text: []
-        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -265,9 +267,6 @@ MonoBehaviour:
         objectRefs: []
       refPath: 
       fileRef: 
-      jsDocs:
-        text: []
-        tags: []
       decorators: []
       nullable: 0
       serializedValue: 
@@ -275,6 +274,7 @@ MonoBehaviour:
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
+  contextOverwritten: 0
 --- !u!1 &7036364850923834808
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,7 +322,7 @@ PrefabInstance:
     - target: {fileID: 423383805372366, guid: af684300ee43c4ea08781c5e262dde25, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 1146958252955428272, guid: af684300ee43c4ea08781c5e262dde25, type: 3}
       propertyPath: m_Name
       value: AirshipToggle
@@ -330,7 +330,7 @@ PrefabInstance:
     - target: {fileID: 3064494543369037050, guid: af684300ee43c4ea08781c5e262dde25, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 2100000, guid: 517dcfc7bf08549efa5108b97eb2e6cc, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 5338058208321882734, guid: af684300ee43c4ea08781c5e262dde25, type: 3}
       propertyPath: m_Pivot.x
       value: 1

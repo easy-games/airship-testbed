@@ -5248,24 +5248,6 @@ MonoBehaviour:
       serializedValue: 
       serializedObject: {fileID: 1379165800388771806}
       modified: 1
-    - name: categoryPrefab
-      type: object
-      objectType: GameObject
-      items:
-        type: 
-        objectType: 
-        serializedItems: []
-        objectRefs: []
-      refPath: 
-      fileRef: 
-      jsDocs:
-        text: []
-        tags: []
-      decorators: []
-      nullable: 0
-      serializedValue: 
-      serializedObject: {fileID: 6535133029163651272, guid: 096927f0c442a5c4f96e45ce3a399204, type: 3}
-      modified: 1
     displayIcon: {fileID: 0}
     displayName: 
 --- !u!114 &2627436865825335969

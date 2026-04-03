@@ -84,12 +84,4 @@ export class AirshipSettingsSingleton {
 	public AddSpacer(): void {
 		contextbridge.invoke("Settings:AddSpacer", LuauContext.Protected);
 	}
-
-	/**
-	 * Adds a title and spacer to the settings menu.
-	 * @param name The name of the settings category
-	 */
-	public AddCategory(name: string): void {
-		contextbridge.invoke("Settings:AddCategory", LuauContext.Protected, name);
-	}
 }
