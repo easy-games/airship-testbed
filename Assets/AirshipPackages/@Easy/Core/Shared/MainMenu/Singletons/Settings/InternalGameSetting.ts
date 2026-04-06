@@ -1,6 +1,7 @@
 export enum InternalGameSettingType {
 	Slider = "Slider",
 	Toggle = "Toggle",
+	CustomButton = "CustomButton",
 }
 
 export interface InternalGameSetting {

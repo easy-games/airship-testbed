@@ -61,6 +61,19 @@ export class AirshipSettingsSingleton {
 		contextbridge.invoke("Settings:AddToggle", LuauContext.Protected, name, startingValue);
 	}
 
+	/** Adds a clickable custom button row in in-game settings; use ObserveButtonClick to handle presses. */
+	public AddCustomButton(name: string): void {
+		contextbridge.invoke("Settings:AddCustomButton", LuauContext.Protected, name);
+	}
+
+	public ObserveButtonClick(name: string, callback: () => void): () => void {
+		return contextbridge.subscribe("Settings:Button:OnClicked", (from: LuauContext, name2: string) => {
+			if (name2 === name) {
+				callback();
+			}
+		});
+	}
+
 	public ObserveToggle(name: string, callback: (val: boolean) => void): () => void {
 		const startingVal = contextbridge.invoke("Settings:Toggle:GetValue", LuauContext.Protected, name);
 		task.spawn(() => {

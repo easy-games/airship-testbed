@@ -10,6 +10,7 @@ import {
 	InternalGameSettingType,
 	InternalSliderGameSetting,
 } from "../../Singletons/Settings/InternalGameSetting";
+import SettingsButton from "./Controls/SettingsButton";
 import SettingsButtonGroup from "./Controls/SettingsButtonGroup";
 import SettingsSlider from "./Controls/SettingsSlider";
 import SettingsToggle from "./Controls/SettingsToggle";
@@ -59,6 +60,7 @@ export default class SettingsPage extends AirshipBehaviour {
 	@Header("Prefabs")
 	public sliderPrefab: GameObject;
 	public togglePrefab: GameObject;
+	public customButtonPrefab: GameObject;
 	public spacerPrefab: GameObject;
 
 	@Header("Pages")
@@ -275,6 +277,16 @@ export default class SettingsPage extends AirshipBehaviour {
 							Protected.Settings.SetGameSetting(setting.name, val);
 						}),
 					);
+				}
+
+				// Custom button added by the specific game that can be listened to with ObserveButtonClick.
+				if (gameSetting.type === InternalGameSettingType.CustomButton) {
+					const setting = gameSetting as InternalGameSetting;
+					const go = Object.Instantiate(this.customButtonPrefab, this.gamePageSettingsContainer);
+					const row = go.GetAirshipComponent<SettingsButton>()!;
+					row.Init(gameSetting.name, () => {
+						Protected.Settings.NotifyGameSettingButtonClicked(setting.name);
+					});
 				}
 			}
 		}

@@ -50,6 +50,13 @@ export default class DemoManager extends AirshipBehaviour {
 		Airship.Settings.AddSpacer();
 		Airship.Settings.AddToggle("Secret Toggle", false);
 
+		Airship.Settings.AddCustomButton("Adding a button");
+		this.bin.Add(
+			Airship.Settings.ObserveButtonClick("Adding a button", () => {
+				print("[Settings Test Button] clicked");
+			}),
+		);
+
 		// task.spawn(() => {
 		// 	while (task.wait(1)) {
 		// 		AudioManager.PlayClipGlobal(this.TestSound);

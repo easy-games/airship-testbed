@@ -165,6 +165,20 @@ export class ProtectedSettingsSingleton {
 			this.gameSettingsOrdered.push(setting);
 		});
 
+		contextbridge.callback("Settings:AddCustomButton", (fromContext, name: string) => {
+			if (this.gameSettings.has(name)) {
+				error(`A setting named "${name}" already exists.`);
+			}
+
+			const setting: InternalGameSetting = {
+				name,
+				type: InternalGameSettingType.CustomButton,
+				value: undefined,
+			};
+			this.gameSettings.set(name, setting);
+			this.gameSettingsOrdered.push(setting);
+		});
+
 		contextbridge.callback("Settings:Toggle:GetValue", (from: LuauContext, name: string) => {
 			const setting = this.gameSettings.get(name);
 			if (!setting) {
@@ -233,6 +247,16 @@ export class ProtectedSettingsSingleton {
 			contextbridge.broadcast("Settings:Toggle:OnChanged", name, value);
 		}
 		this.MarkAsDirty();
+	}
+
+	public NotifyGameSettingButtonClicked(name: string): void {
+		const setting = this.gameSettings.get(name);
+		assert(setting, `Tried to notify click for unknown game setting: ${name}`);
+		assert(
+			setting.type === InternalGameSettingType.CustomButton,
+			`Tried to notify button click for non-button setting: ${name}`,
+		);
+		contextbridge.broadcast("Settings:Button:OnClicked", name);
 	}
 
 	private LoadGameSettingsFromDisk(): void {
@@ -488,14 +512,16 @@ export class ProtectedSettingsSingleton {
 		DiskManager.WriteFileAsync("ClientSettings.json", json.encode(this.data));
 		if (Game.gameData) {
 			let saved: SavedGameSettings = {
-				gameSettings: ObjectUtils.values(this.gameSettings).map((s) => {
-					// strip un-needed data
-					return {
-						name: s.name,
-						type: s.type,
-						value: s.value,
-					};
-				}),
+				gameSettings: ObjectUtils.values(this.gameSettings)
+					.filter((s) => s.type !== InternalGameSettingType.CustomButton)
+					.map((s) => {
+						// strip un-needed data
+						return {
+							name: s.name,
+							type: s.type,
+							value: s.value,
+						};
+					}),
 			};
 			DiskManager.EnsureDirectory("GameSettings");
 			DiskManager.WriteFileAsync(`GameSettings/${Game.gameId}.json`, json.encode(saved));
