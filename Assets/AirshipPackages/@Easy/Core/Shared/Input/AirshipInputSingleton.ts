@@ -116,7 +116,7 @@ export class AirshipInputSingleton {
 	/*
 	 * Core mobile inputs
 	 */
-	private mobileControlCanvas: MobileControlsCanvas;
+	public mobileControlCanvas: MobileControlsCanvas;
 
 	public preferredControls = new PreferredControls();
 
@@ -549,9 +549,9 @@ export class AirshipInputSingleton {
 	 * @param config A `MobileButtonConfig` that describes the look and feel of this button.
 	 */
 	public CreateMobileButton(actionName: string, anchoredPosition: Vector2, config?: MobileButtonConfig): GameObject {
-		const mobileButton = Object.Instantiate(config?.prefab ?? this.mobileButtonPrefab);
+		const buttonParent = this.mobileControlCanvas.buttonContainer;
+		const mobileButton = Object.Instantiate(config?.prefab ?? this.mobileButtonPrefab, buttonParent);
 		mobileButton.name = "Mobile Button (" + actionName + ")";
-		mobileButton.transform.SetParent(this.mobileControlsContainer.transform);
 
 		const airshipButton = mobileButton.GetAirshipComponent<AirshipMobileButton>();
 		airshipButton?.SetStartingScale(config?.scale ? new Vector3(config.scale.x, config.scale.y, 1) : Vector3.one);

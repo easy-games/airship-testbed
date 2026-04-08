@@ -12,6 +12,8 @@ import TouchJoystick from "./TouchJoystick";
 export default class MobileControlsCanvas extends AirshipBehaviour {
 	public staticJoystick: TouchJoystick;
 	public dynamicJoystick: DynamicJoystick;
+	
+	public buttonContainer: Transform;
 	private isJoystickDynamic = true;
 
 	private crouchToggleBtn: GameObject;
