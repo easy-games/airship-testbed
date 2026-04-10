@@ -13,7 +13,7 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 	private touchStartPos = Vector2.zero;
 	private touchStartRotX = 0;
 	private touchStartRotY = 0;
-	private touchPointerId = 0;
+	private touchPointerId = -1;
 	private image: Image;
 
 	protected Awake(): void {
@@ -25,15 +25,7 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 
 		this.bin.AddEngineEventConnection(
 			CanvasAPI.OnBeginDragEvent(this.gameObject, (data) => {
-				const camSystem = Dependency<AirshipCameraSingleton>().cameraSystem;
-				if (!camSystem) return;
-				const camMode = camSystem.GetMode();
-
-				// print("Begin drag. pointerId=" + data.pointerId + ", position=" + data.position);
-				this.touchPointerId = data.pointerId;
-				this.touchStartPos = data.position;
-				this.touchStartRotX = camMode.rotationX;
-				this.touchStartRotY = camMode.rotationY;
+				this.BeginDragEvent(data);
 			}),
 		);
 
@@ -52,6 +44,7 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 	protected override OnDisable(): void {
 		this.bin.Clean();
 		this.image.enabled = false;
+		this.touchPointerId = -1;
 	}
 
 	public SetActive(active: boolean) {
@@ -61,9 +54,11 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 	public BeginDragEvent(data: PointerEventData) {
 		const camSystem = Dependency<AirshipCameraSingleton>().cameraSystem;
 		if (!camSystem) return;
+		if (this.touchPointerId >= 0 && this.touchPointerId !== data.pointerId) {
+			return;
+		}
 		const camMode = camSystem.GetMode();
 
-		// print("Begin drag. pointerId=" + data.pointerId + ", position=" + data.position);
 		this.touchPointerId = data.pointerId;
 		this.touchStartPos = data.position;
 		this.touchStartRotX = camMode.rotationX;
@@ -75,7 +70,6 @@ export default class MobileCameraMovement extends AirshipBehaviour {
 		if (!camSystem) return;
 		const camMode = camSystem.GetMode();
 
-		// print("Dragging. pointerId=" + data.pointerId + ", position=" + data.position);
 		if (this.touchPointerId !== data.pointerId) return;
 
 		const deltaPosSinceStart = data.position.sub(this.touchStartPos);
