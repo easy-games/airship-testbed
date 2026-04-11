@@ -177,45 +177,49 @@ export default class MobileControlsCanvas extends AirshipBehaviour {
 
 	private isFlyingCache = false;
 	protected Update(dt: number): void {
-		if (Game.IsMobile()) {
-			let input: Vector2;
-			if (this.isJoystickDynamic) {
-				input = this.dynamicJoystick.input;
-			} else {
-				input = this.staticJoystick.input;
-			}
-
-			// Clap the direction to .01 intervals so that predicted inputs in server auth mode have
-			// a better chance of being correct
-			const clampInterval = 0.01;
-			input = new Vector2(
-				math.round(input.x / clampInterval) * clampInterval,
-				math.round(input.y / clampInterval) * clampInterval,
-			);
-
-			const inputMagnitude = input.magnitude;
-
-			const shouldSprint = inputMagnitude >= this.sprintThreshold;
-
-			if (shouldSprint) {
-				Airship.Input.SetDown(CoreAction.Sprint);
-			} else {
-				Airship.Input.SetUp(CoreAction.Sprint);
-			}
-
-			Airship.Characters.localCharacterManager.input?.SetQueuedMoveDirection(new Vector3(input.x, 0, input.y));
-
-			// Show crouch btn instead of crouch-toggle btn while flying
-			const isFlying = Game.localPlayer.character?.movement?.IsFlying();
-			if (isFlying && !this.isFlyingCache) {
-				this.isFlyingCache = true;
-				this.crouchBtn.SetActive(true);
-				this.crouchToggleBtn.SetActive(false);
-			} else if (!isFlying && this.isFlyingCache) {
-				this.isFlyingCache = false;
-				this.crouchBtn.SetActive(false);
-				this.crouchToggleBtn.SetActive(true);
-			}
+		if (!Game.IsMobile()) return;
+		
+		// Show crouch btn instead of crouch-toggle btn while flying
+		const isFlying = Game.localPlayer.character?.movement?.IsFlying();
+		if (isFlying && !this.isFlyingCache) {
+			this.isFlyingCache = true;
+			this.crouchBtn.SetActive(true);
+			this.crouchToggleBtn.SetActive(false);
+		} else if (!isFlying && this.isFlyingCache) {
+			this.isFlyingCache = false;
+			this.crouchBtn.SetActive(false);
+			this.crouchToggleBtn.SetActive(true);
 		}
+	}
+
+	public GetMoveInput() {
+		if (!Game.IsMobile()) return new Vector3(0, 0, 0);
+
+		let input: Vector2;
+		if (this.isJoystickDynamic) {
+			input = this.dynamicJoystick.input;
+		} else {
+			input = this.staticJoystick.input;
+		}
+
+		// Clap the direction to .01 intervals so that predicted inputs in server auth mode have
+		// a better chance of being correct
+		const clampInterval = 0.01;
+		input = new Vector2(
+			math.round(input.x / clampInterval) * clampInterval,
+			math.round(input.y / clampInterval) * clampInterval,
+		);
+
+		const inputMagnitude = input.magnitude;
+
+		const shouldSprint = inputMagnitude >= this.sprintThreshold;
+
+		if (shouldSprint) {
+			Airship.Input.SetDown(CoreAction.Sprint);
+		} else {
+			Airship.Input.SetUp(CoreAction.Sprint);
+		}
+
+		return new Vector3(input.x, 0, input.y);
 	}
 }

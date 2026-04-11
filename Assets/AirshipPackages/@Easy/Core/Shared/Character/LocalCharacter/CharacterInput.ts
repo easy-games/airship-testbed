@@ -110,6 +110,10 @@ export class CharacterInput {
 			}
 		};
 
+		const updateTouchControls = (dt: number) => {
+			this.queuedMoveDirections.push({ direction: Airship.Input.mobileControlCanvas.GetMoveInput(), dt: Time.unscaledDeltaTime });
+		};
+
 		this.bin.Add(
 			OnUpdate.Connect((dt) => {
 				if (!localCharacterSingleton.IsDefaultMovementEnabled()) return;
@@ -118,6 +122,8 @@ export class CharacterInput {
 				// Read input for preferred control scheme
 				if (preferred.GetControlScheme() === ControlScheme.MouseKeyboard) {
 					updateMouseKeyboardControls(dt);
+				} else if (preferred.GetControlScheme() === ControlScheme.Touch) {
+					updateTouchControls(dt);
 				}
 
 				let sprinting = this.IsSprinting();
