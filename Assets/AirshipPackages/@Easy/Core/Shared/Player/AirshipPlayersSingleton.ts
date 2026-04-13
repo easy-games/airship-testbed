@@ -417,14 +417,14 @@ export class AirshipPlayersSingleton {
 				(from, userId, source, muteInfo, message) => {
 					const player = this.FindByUserId(userId);
 					if (player) {
-						const initialMutedState = !!(player.muteInfo.platform?.muted || player.muteInfo.game?.muted);
+						const wasMuted = !!(player.muteInfo.platform || player.muteInfo.game);
 						if (source === "platform") {
 							player.muteInfo.platform = muteInfo;
 						} else {
 							player.muteInfo.game = muteInfo;
 						}
-						const newMutedState = !!(player.muteInfo.platform?.muted || player.muteInfo.game?.muted);
-						if (message && initialMutedState !== newMutedState) {
+						const isMuted = !!(player.muteInfo.platform || player.muteInfo.game);
+						if (message && wasMuted !== isMuted) {
 							player.SendMessage(message);
 						}
 					}

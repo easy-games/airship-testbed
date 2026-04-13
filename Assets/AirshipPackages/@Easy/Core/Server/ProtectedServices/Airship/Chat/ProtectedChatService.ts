@@ -28,6 +28,8 @@ export class ProtectedChatService implements OnStart {
 				const muteInfo = player.muteInfo[source];
 				if (!muteInfo) return false;
 
+				const sourceLabel = source === "platform" ? "Airship" : "this game";
+
 				if (muteInfo.expiresAt) {
 					const expiresAt = DateTime.fromISO(muteInfo.expiresAt);
 					if (DateTime.now().TimestampSeconds >= expiresAt.TimestampSeconds) {
@@ -44,10 +46,10 @@ export class ProtectedChatService implements OnStart {
 					if (minutes > 0) parts.push(`${minutes}m`);
 					if (seconds > 0 || parts.size() === 0) parts.push(`${seconds}s`);
 
-					player.SendMessage(ChatColor.Red(`You are muted until ${expiresAt.FormatLocalTime("%Y-%m-%d %H:%M:%S")} (${parts.join(" ")} remaining).`));
+					player.SendMessage(ChatColor.Red(`You are muted by ${sourceLabel} until ${expiresAt.FormatLocalTime("%Y-%m-%d %H:%M:%S")} (${parts.join(" ")} remaining).`));
 					return true;
 				} else {
-					player.SendMessage(ChatColor.Red("You are permanently muted and cannot send messages."));
+					player.SendMessage(ChatColor.Red(`You are permanently muted by ${sourceLabel} and cannot send messages.`));
 					return true;
 				}
 			};

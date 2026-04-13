@@ -204,8 +204,8 @@ export class MessagingService {
 					} else {
 						airshipPlayer.muteInfo.game = data.muteInfo;
 					}
-					const isMuted = airshipPlayer.muteInfo.platform?.muted || airshipPlayer.muteInfo.game?.muted;
-					airshipPlayer.MuteVoiceChat(!!isMuted);
+					const isMuted = !!(airshipPlayer.muteInfo.platform || airshipPlayer.muteInfo.game);
+					airshipPlayer.MuteVoiceChat(isMuted);
 				}
 
 				contextbridge.broadcast<(userId: string, source: "platform" | "game", muteInfo: { muted: boolean, expiresAt: string | undefined } | undefined, message: string) => void>(
