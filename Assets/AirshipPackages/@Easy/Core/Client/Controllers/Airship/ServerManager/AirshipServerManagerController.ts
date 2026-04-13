@@ -50,6 +50,7 @@ export class AirshipServerManagerController {
 	/**
 	 * Gets a page of the server list.
 	 * @param page The page to retrieve. Starts at 0.
+	 * @param tags The tags to filter the servers by.
 	 */
 	public async GetServerList(page: number = 0, tags: string[] = []): Promise<{ entries: AirshipServer[] }> {
 		return contextbridge.invoke<ClientBridgeApiGetServerList>(
