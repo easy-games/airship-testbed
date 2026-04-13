@@ -12,7 +12,7 @@ export const enum ServerManagerControllerBridgeTopics {
 	GetRegionLatencies = "UserController:GetRegionLatencies",
 }
 
-export type ClientBridgeApiGetServerList = (page?: number) => { entries: AirshipServer[] };
+export type ClientBridgeApiGetServerList = (page?: number, tags?: string[]) => { entries: AirshipServer[] };
 export type ClientBridgeApiGetFriendServers = () => { entries: AirshipServerWithFriends[] };
 export type ClientBridgeApiGetRegionLatencies = () => { [regionId: string]: number };
 
@@ -23,8 +23,8 @@ export class ProtectedServerManagerController {
 	constructor() {
 		if (!Game.IsClient()) return;
 
-		contextbridge.callback<ClientBridgeApiGetServerList>(ServerManagerControllerBridgeTopics.GetServerList, (_) => {
-			return this.GetServerList().expect();
+		contextbridge.callback<ClientBridgeApiGetServerList>(ServerManagerControllerBridgeTopics.GetServerList, (_, page, tags) => {
+			return this.GetServerList(page, tags).expect();
 		});
 
 		contextbridge.callback<ClientBridgeApiGetFriendServers>(
@@ -43,10 +43,10 @@ export class ProtectedServerManagerController {
 		);
 	}
 
-	public async GetServerList(page: number = 0): Promise<ReturnType<ClientBridgeApiGetServerList>> {
+	public async GetServerList(page: number = 0, tags: string[] = []): Promise<ReturnType<ClientBridgeApiGetServerList>> {
 		const result = await client.servers.getServerList({
 			params: { gameId: Game.gameId },
-			query: { page },
+			query: { page, tags },
 		});
 
 		return result;
