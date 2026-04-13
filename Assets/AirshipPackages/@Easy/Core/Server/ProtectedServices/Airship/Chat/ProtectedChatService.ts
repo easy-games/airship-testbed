@@ -26,32 +26,18 @@ export class ProtectedChatService implements OnStart {
 
 			const isMuted = (source: "platform" | "game"): boolean => {
 				const muteInfo = player.muteInfo[source];
-				if (!muteInfo) return false;
-
-				const sourceLabel = source === "platform" ? "Airship" : "this game";
+				if (!muteInfo?.muted) return false;
 
 				if (muteInfo.expiresAt) {
 					const expiresAt = DateTime.fromISO(muteInfo.expiresAt);
 					if (DateTime.now().TimestampSeconds >= expiresAt.TimestampSeconds) {
 						player.muteInfo[source] = undefined;
+						player.SendMessage(ChatColor.Green("You have been unmuted and can now send messages."));
 						return false;
 					}
-					const remainingSeconds = expiresAt.TimestampSeconds - DateTime.now().TimestampSeconds;
-					const hours = math.floor(remainingSeconds / 3600);
-					const minutes = math.floor((remainingSeconds % 3600) / 60);
-					const seconds = math.floor(remainingSeconds % 60);
-
-					const parts: string[] = [];
-					if (hours > 0) parts.push(`${hours}h`);
-					if (minutes > 0) parts.push(`${minutes}m`);
-					if (seconds > 0 || parts.size() === 0) parts.push(`${seconds}s`);
-
-					player.SendMessage(ChatColor.Red(`You are muted by ${sourceLabel} until ${expiresAt.FormatLocalTime("%Y-%m-%d %H:%M:%S")} (${parts.join(" ")} remaining).`));
-					return true;
-				} else {
-					player.SendMessage(ChatColor.Red(`You are permanently muted by ${sourceLabel} and cannot send messages.`));
-					return true;
 				}
+				player.SendMuteMessage(source);
+				return true;
 			};
 
 			if (isMuted("platform")) return;

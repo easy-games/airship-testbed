@@ -1,4 +1,5 @@
 import { Airship } from "@Easy/Core/Shared/Airship";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import Character from "@Easy/Core/Shared/Character/Character";
 import { ChatMessageNetworkEvent, CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Game } from "@Easy/Core/Shared/Game";
@@ -174,6 +175,8 @@ export class Player {
 			};
 			if (this.muteInfo.platform?.muted || this.muteInfo.game?.muted) {
 				this.MuteVoiceChat(true);
+				if (this.muteInfo.platform?.muted) this.SendMuteMessage("platform");
+				if (this.muteInfo.game?.muted) this.SendMuteMessage("game");
 			}
 		}
 
@@ -355,6 +358,27 @@ export class Player {
 					message,
 				});
 			});
+		}
+	}
+
+	public SendMuteMessage(source: "platform" | "game"): void {
+		const muteInfo = this.muteInfo[source];
+		if (!muteInfo?.muted) return;
+		
+		const sourceLabel = source === "platform" ? "Airship" : "this game";
+		if (muteInfo.expiresAt) {
+			const expiresAt = DateTime.fromISO(muteInfo.expiresAt);
+			const remainingSeconds = expiresAt.TimestampSeconds - DateTime.now().TimestampSeconds;
+			const hours = math.floor(remainingSeconds / 3600);
+			const minutes = math.floor((remainingSeconds % 3600) / 60);
+			const seconds = math.floor(remainingSeconds % 60);
+			const parts: string[] = [];
+			if (hours > 0) parts.push(`${hours}h`);
+			if (minutes > 0) parts.push(`${minutes}m`);
+			if (seconds > 0 || parts.size() === 0) parts.push(`${seconds}s`);
+			this.SendMessage(ChatColor.Red(`You are muted by ${sourceLabel} until ${expiresAt.FormatLocalTime("%Y-%m-%d %H:%M:%S")} (${parts.join(" ")} remaining).`));
+		} else {
+			this.SendMessage(ChatColor.Red(`You are permanently muted by ${sourceLabel} and cannot send messages.`));
 		}
 	}
 

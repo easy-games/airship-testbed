@@ -3,6 +3,7 @@ import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ProtectedPlayersSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/ProtectedPlayersSingleton";
 import { AirshipPlayersSingleton } from "@Easy/Core/Shared/Player/AirshipPlayersSingleton";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 
@@ -204,16 +205,14 @@ export class MessagingService {
 					} else {
 						airshipPlayer.muteInfo.game = data.muteInfo;
 					}
-					const isMuted = !!(airshipPlayer.muteInfo.platform || airshipPlayer.muteInfo.game);
+					const isMuted = !!(airshipPlayer.muteInfo.platform?.muted || airshipPlayer.muteInfo.game?.muted);
 					airshipPlayer.MuteVoiceChat(isMuted);
 				}
-
-				contextbridge.broadcast<(userId: string, source: "platform" | "game", muteInfo: { muted: boolean, expiresAt: string | undefined } | undefined, message: string) => void>(
+				contextbridge.broadcast<(userId: string, source: "platform" | "game", muteInfo: { muted: boolean, expiresAt: string | undefined } | undefined) => void>(
 					"Player:SetMutedUser",
 					data.uid,
 					data.source,
 					data.muteInfo,
-					data.messageToUser,
 				);
 			}
 		});
