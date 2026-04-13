@@ -51,10 +51,12 @@ export class AirshipServerManagerController {
 	 * Gets a page of the server list.
 	 * @param page The page to retrieve. Starts at 0.
 	 */
-	public async GetServerList(page: number = 0): Promise<{ entries: AirshipServer[] }> {
+	public async GetServerList(page: number = 0, tags: string[] = []): Promise<{ entries: AirshipServer[] }> {
 		return contextbridge.invoke<ClientBridgeApiGetServerList>(
 			ServerManagerControllerBridgeTopics.GetServerList,
 			LuauContext.Protected,
+			page,
+			tags
 		);
 	}
 

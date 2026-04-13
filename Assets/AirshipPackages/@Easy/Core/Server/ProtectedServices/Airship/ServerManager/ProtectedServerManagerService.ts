@@ -39,7 +39,7 @@ export type ServerBridgeApiGetServers = (serverIds: string[]) => {
 export type ServerBridgeApiShutdownServer = () => void;
 export type ServerBridgeApiListServer = (config?: { name?: string; description?: string }) => boolean;
 export type ServerBridgeApiDelistServer = () => boolean;
-export type ServerBridgeApiGetServerList = (page?: number) => { entries: AirshipServer[] };
+export type ServerBridgeApiGetServerList = (page?: number, tags?: string[]) => { entries: AirshipServer[] };
 export type ServerBridgeApiSetAccessMode = (mode: AirshipServerAccessMode) => boolean;
 export type ServerBridgeApiGetGameConfig<T> = () => T | undefined;
 export type ServerBridgeApiGetAllowedPlayers = () => Readonly<string[]>;
@@ -93,8 +93,8 @@ export class ProtectedServerManagerService {
 
 		contextbridge.callback<ServerBridgeApiGetServerList>(
 			ServerManagerServiceBridgeTopics.GetServerList,
-			(_, page) => {
-				return this.GetServerList(page).expect();
+			(_, page, tags) => {
+				return this.GetServerList(page, tags).expect();
 			},
 		);
 
@@ -209,8 +209,8 @@ export class ProtectedServerManagerService {
 		return res;
 	}
 
-	public async GetServerList(page: number = 0): Promise<ReturnType<ServerBridgeApiGetServerList>> {
-		return await client.servers.getServerList({ params: { gameId: Game.gameId }, query: { page } });
+	public async GetServerList(page: number = 0, tags: string[] = []): Promise<ReturnType<ServerBridgeApiGetServerList>> {
+		return await client.servers.getServerList({ params: { gameId: Game.gameId }, query: { page, tags } });
 	}
 
 	public async SetAccessMode(mode: AirshipServerAccessMode): Promise<ReturnType<ServerBridgeApiSetAccessMode>> {
