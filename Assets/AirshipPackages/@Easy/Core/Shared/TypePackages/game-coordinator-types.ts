@@ -1058,8 +1058,9 @@ export namespace GameCoordinatorServers {
     } as const;
     export type AccessMode = (typeof AccessMode)[keyof typeof AccessMode];
 
-    export interface AllocatedServerData
-        extends GameCoordinatorServers.BaseServerData<typeof AllocationState.ALLOCATED> {
+    export interface AllocatedServerData extends GameCoordinatorServers.BaseServerData<
+        typeof AllocationState.ALLOCATED
+    > {
         cluster: string;
         gameServer: GameCoordinatorAgones.GameServer;
         status: {
@@ -1500,13 +1501,6 @@ export namespace GameCoordinatorTransfers {
         userIdToken: string;
     }
 
-    export interface MuteInfo {
-        muted: boolean;
-        expiresAt: string | undefined;
-        platform: { muted: boolean; expiresAt: string | undefined } | undefined;
-        game: { muted: boolean; expiresAt: string | undefined } | undefined;
-    }
-
     export type RequestSelfTransferArgs = {
         data: GameCoordinatorTransfers.ClientTransferRequestDto;
     };
@@ -1539,7 +1533,7 @@ export namespace GameCoordinatorTransfers {
         user: GameCoordinatorUsers.PublicUser;
         orgRoleName: string | undefined;
         isEasyEmployee: boolean;
-        muteInfo: GameCoordinatorTransfers.MuteInfo | undefined;
+        muteInfo: { muted: boolean; expiresAt: string | undefined } | undefined;
         clientTransferData?: unknown;
         serverTransferData?: unknown;
     }
