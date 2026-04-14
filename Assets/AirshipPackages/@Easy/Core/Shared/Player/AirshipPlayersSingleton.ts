@@ -412,15 +412,24 @@ export class AirshipPlayersSingleton {
 		}
 
 		if (Game.IsGameLuauContext()) {
-			// Sync platform mute state across contexts
-			contextbridge.subscribe<(from: LuauContext, userId: string, muteInfo: { muted: boolean, expiresAt: string | undefined }, message: string) => void>(
-				"Player:SetPlatformMuted",
-				(from, userId, muteInfo, message) => {
+			contextbridge.subscribe<(from: LuauContext, userId: string, source: "platform" | "game", muteInfo: { muted: boolean, expiresAt: string | undefined } | undefined) => void>(
+				"Player:SetMutedUser",
+				(from, userId, source, muteInfo) => {
 					const player = this.FindByUserId(userId);
 					if (player) {
-						player.muteInfo = muteInfo;
-						if (message) {
-							player.SendMessage(message);
+						const wasMuted = !!(player.muteInfo.platform?.muted || player.muteInfo.game?.muted);
+						if (source === "platform") {
+							player.muteInfo.platform = muteInfo;
+						} else {
+							player.muteInfo.game = muteInfo;
+						}
+						const isMuted = !!(player.muteInfo.platform?.muted || player.muteInfo.game?.muted);
+						if (wasMuted !== isMuted) {
+							if (isMuted) {
+								player.SendMuteMessage(source);
+							} else {
+								player.SendMessage(ChatColor.Green("You have been unmuted and can now send messages."));
+							}
 						}
 					}
 				},

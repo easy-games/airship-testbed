@@ -3,6 +3,7 @@ import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ProtectedPlayersSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/ProtectedPlayersSingleton";
 import { AirshipPlayersSingleton } from "@Easy/Core/Shared/Player/AirshipPlayersSingleton";
+import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
 
@@ -70,8 +71,16 @@ interface KickUserEvent {
 
 interface SetMutedUserEvent {
     type: "SET_MUTED_USER";
+	/** The user being (un)muted */
     uid: string;
+	/** The message to display to the user */
     messageToUser: string;
+	/** Which source the user was (un)muted from */
+    source: "platform" | "game";
+	 /** If undefined => user has been unmuted
+     * If muted is true + expiresAt is a string => temporary mute
+     * If muted is true + expiresAt is undefined => permanent mute
+     */
 	muteInfo: {
 		muted: boolean;
 		expiresAt: string | undefined;
@@ -189,21 +198,21 @@ export class MessagingService {
 				const player = this.protectedPlayers.FindByUserId(data.uid);
 				if (!player) return;
 
-				// Set player to muted in the protected context
 				const airshipPlayer = Dependency<AirshipPlayersSingleton>().FindByUserId(data.uid);
 				if (airshipPlayer) {
-					airshipPlayer.muteInfo = data.muteInfo;
-					if (data.muteInfo?.muted) {
-						airshipPlayer.MuteVoiceChat(true);
+					if (data.source === "platform") {
+						airshipPlayer.muteInfo.platform = data.muteInfo;
+					} else {
+						airshipPlayer.muteInfo.game = data.muteInfo;
 					}
+					const isMuted = !!(airshipPlayer.muteInfo.platform?.muted || airshipPlayer.muteInfo.game?.muted);
+					airshipPlayer.MuteVoiceChat(isMuted);
 				}
-
-				// Sending this info to the game from protected context
-				contextbridge.broadcast<(userId: string, muteInfo: { muted: boolean, expiresAt: string | undefined } | undefined, message: string) => void>(
-					"Player:SetPlatformMuted",
+				contextbridge.broadcast<(userId: string, source: "platform" | "game", muteInfo: { muted: boolean, expiresAt: string | undefined } | undefined) => void>(
+					"Player:SetMutedUser",
 					data.uid,
+					data.source,
 					data.muteInfo,
-					data.messageToUser,
 				);
 			}
 		});
