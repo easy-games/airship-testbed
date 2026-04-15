@@ -121,7 +121,7 @@ export class SocketController {
 					task.wait(0.25);
 				}
 			}
-			if (regionLatencies[regionId] === undefined) {
+			if (!Game.IsEditor() && regionLatencies[regionId] === undefined) {
 				let message = `Unable to calculate latency for "${regionId}" (${serverUrl}). This region will not be reported.`;
 				warn(
 					message,
