@@ -30,6 +30,15 @@ import { ChatColor } from "../Util/ChatColor";
 import { ChatUtil } from "../Util/ChatUtil";
 import ObjectUtils from "../Util/ObjectUtils";
 import { Signal } from "../Util/Signal";
+import { GameModBanCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModBanCommand";
+import { GameModKickCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModKickCommand";
+import { GameModMuteCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModMuteCommand";
+import { GameModUnbanCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModUnbanCommand";
+import { GameModUnmuteCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModUnmuteCommand";
+import { GameModUserLookupCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModUserLookupCommand";
+import { GameModNoteCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModNoteCommand";
+import { GameModTempBanCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModTempBanCommand";
+import { GameModTempMuteCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModTempMuteCommand";
 
 class ChatMessageEvent extends Cancellable {
 	/**
@@ -216,6 +225,18 @@ export class AirshipChatSingleton {
 		this.RegisterCommand(new HelpCommand());
 		this.RegisterCommand(new KickCommand());
 		this.RegisterCommand(new TeamsCommand());
+
+		/** Mod Commands */
+		this.RegisterCommand(new GameModUserLookupCommand());
+		this.RegisterCommand(new GameModKickCommand());
+		this.RegisterCommand(new GameModMuteCommand());
+		this.RegisterCommand(new GameModBanCommand());
+		this.RegisterCommand(new GameModTempMuteCommand());
+		this.RegisterCommand(new GameModTempBanCommand());
+		this.RegisterCommand(new GameModUnmuteCommand());
+		this.RegisterCommand(new GameModUnbanCommand());
+		this.RegisterCommand(new GameModNoteCommand());
+
 	}
 
 	/**
