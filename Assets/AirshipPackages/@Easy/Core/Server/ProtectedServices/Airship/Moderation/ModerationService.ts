@@ -29,10 +29,10 @@ export type ServerBridgeApiModerateChat = (
 	message: string,
 ) => ModerationServiceModeration.ModerationResponse;
 
-export type ServerBridgeApiGameModPostAction = (modUserId: string, dto: ModerationServiceGameModeration.GamePostActionDto) => ModerationServiceGameModeration.PublicGameModerationAction | undefined;
-export type ServerBridgeApiGameModRemoveAction = (modUserId: string, dto: ModerationServiceGameModeration.GameRemoveActionDto) => ModerationServiceGameModeration.PublicGameModerationAction | undefined;
-export type ServerBridgeApiGameModUserLookup = (modUserId: string, dto: ModerationServiceGameModeration.GameUserLookupDto) => ModerationServiceGameModeration.GameModerationProfileResponse | undefined;
-export type ServerBridgeApiGameModAddNote = (modUserId: string, dto: ModerationServiceGameModeration.GameAddUserNoteDto) => ModerationServiceGameModeration.PublicGameUserNote | undefined;
+export type ServerBridgeApiGameModPostAction = (moderatorUid: string, dto: ModerationServiceGameModeration.GamePostActionDto) => ModerationServiceGameModeration.PublicGameModerationAction | undefined;
+export type ServerBridgeApiGameModRemoveAction = (moderatorUid: string, dto: ModerationServiceGameModeration.GameRemoveActionDto) => ModerationServiceGameModeration.PublicGameModerationAction | undefined;
+export type ServerBridgeApiGameModUserLookup = (moderatorUid: string, dto: ModerationServiceGameModeration.GameUserLookupDto) => ModerationServiceGameModeration.GameModerationProfileResponse | undefined;
+export type ServerBridgeApiGameModAddNote = (moderatorUid: string, dto: ModerationServiceGameModeration.GameAddUserNoteDto) => ModerationServiceGameModeration.PublicGameUserNote | undefined;
 
 
 const client = new ModerationServiceClient(UnityMakeRequest(AirshipUrl.ModerationService));
@@ -62,29 +62,29 @@ export class ProtectedModerationService {
 
 		contextbridge.callback<ServerBridgeApiGameModPostAction>(
 			ModerationServiceBridgeTopics.GameModerationPostAction,
-			(_, modUserId, dto) => {
-				return this.GameModerationPostAction(modUserId, dto).expect();
+			(_, moderatorUid, dto) => {
+				return this.GameModerationPostAction(moderatorUid, dto).expect();
 			}
 		)
 
 		contextbridge.callback<ServerBridgeApiGameModRemoveAction>(
 			ModerationServiceBridgeTopics.GameModerationRemoveAction,
-			(_, modUserId, dto) => {
-				return this.GameModerationRemoveAction(modUserId, dto).expect();
+			(_, moderatorUid, dto) => {
+				return this.GameModerationRemoveAction(moderatorUid, dto).expect();
 			}
 		)
 
 		contextbridge.callback<ServerBridgeApiGameModUserLookup>(
 			ModerationServiceBridgeTopics.GameModerationUserLookup,
-			(_, modUserId, dto) => {
-				return this.GameModUserLookup(modUserId, dto).expect();
+			(_, moderatorUid, dto) => {
+				return this.GameModUserLookup(moderatorUid, dto).expect();
 			}
 		)
 
 		contextbridge.callback<ServerBridgeApiGameModAddNote>(
 			ModerationServiceBridgeTopics.GameModerationAddNote,
-			(_, modUserId, dto) => {
-				return this.GameModAddNote(modUserId, dto).expect();
+			(_, moderatorUid, dto) => {
+				return this.GameModAddNote(moderatorUid, dto).expect();
 			}
 		)
 
@@ -116,33 +116,33 @@ export class ProtectedModerationService {
 		});
 	}
 
-	public async GameModerationPostAction(modUserId: string, dto: ModerationServiceGameModeration.GamePostActionDto): Promise<ModerationServiceGameModeration.PublicGameModerationAction | undefined> {
+	public async GameModerationPostAction(moderatorUid: string, dto: ModerationServiceGameModeration.GamePostActionDto): Promise<ModerationServiceGameModeration.PublicGameModerationAction | undefined> {
 		try {
-			return await client.gameModeration.postAction(dto);
+			return await client.gameModeration.postAction({ ...dto, moderatorUid });
 		} catch (err) {
 			return undefined;
 		}
 	}
 
-	public async GameModerationRemoveAction(modUserId: string, dto: ModerationServiceGameModeration.GameRemoveActionDto): Promise<ModerationServiceGameModeration.PublicGameModerationAction | undefined>  {
+	public async GameModerationRemoveAction(moderatorUid: string, dto: ModerationServiceGameModeration.GameRemoveActionDto): Promise<ModerationServiceGameModeration.PublicGameModerationAction | undefined>  {
 		try {
-			return await client.gameModeration.deleteAction(dto);
+			return await client.gameModeration.deleteAction({ ...dto, moderatorUid });
 		} catch (err) {
 			return undefined;
 		}
 	}
 
-	public async GameModUserLookup(modUserId: string, dto: ModerationServiceGameModeration.GameUserLookupDto): Promise<ModerationServiceGameModeration.GameModerationProfileResponse | undefined> {
+	public async GameModUserLookup(moderatorUid: string, dto: ModerationServiceGameModeration.GameUserLookupDto): Promise<ModerationServiceGameModeration.GameModerationProfileResponse | undefined> {
 		try {
-			return await client.gameModeration.getUserModerationProfile(dto);
+			return await client.gameModeration.getUserModerationProfile({ ...dto, moderatorUid });
 		} catch (err) {
 			return undefined;
 		}
 	}
 
-	public async GameModAddNote(modUserId: string, dto: ModerationServiceGameModeration.GameAddUserNoteDto): Promise<ModerationServiceGameModeration.PublicGameUserNote | undefined> {
+	public async GameModAddNote(moderatorUid: string, dto: ModerationServiceGameModeration.GameAddUserNoteDto): Promise<ModerationServiceGameModeration.PublicGameUserNote | undefined> {
 		try {
-			return await client.gameModeration.addNote(dto);
+			return await client.gameModeration.addNote({ ...dto, moderatorUid });
 		} catch (err) {
 			return undefined;
 		}
