@@ -13,9 +13,9 @@ export class GameModTempMuteCommand extends ChatCommand {
         this.requiresPermission = true; // Granted by having moderation role and temporary mute permission for current game
     }
 
-    public Execute(player: Player, args: string[]): void {
+    public Execute(modPlayer: Player, args: string[]): void {
         if (args.size() === 0) {
-            player.SendMessage(ChatColor.Red(`Invalid usage: /tempmute <username> <duration> <reason?>`));
+            modPlayer.SendMessage(ChatColor.Red(`Invalid usage: /tempmute <username> <duration> <reason?>`));
             return;
         }
 
@@ -24,19 +24,20 @@ export class GameModTempMuteCommand extends ChatCommand {
         const reason = args[2];
 
         if (duration && !ValidateModerationActionDurationFormat(duration)) {
-            player.SendMessage(ChatColor.Red(`Invalid usage: Duration must be in the format of '#s' '#m' '#h' or '#d'`));
+            modPlayer.SendMessage(ChatColor.Red(`Invalid usage: Duration must be in the format of '#s' '#m' '#h' or '#d'`));
             return;
         }
 
         const target = Airship.Players.FindByFuzzySearch(targetUsername);
         if (!target) {
-            player.SendMessage(ChatColor.Red(`Player not found: ${targetUsername}`));
+            modPlayer.SendMessage(ChatColor.Red(`Player not found: ${targetUsername}`));
             return;
         }
         
         const action = contextbridge.invoke<ServerBridgeApiGameModPostAction>(
             ModerationServiceBridgeTopics.GameModerationPostAction,
             LuauContext.Protected,
+            modPlayer.userId,
             {
                 actionType: ModerationServiceDatabaseTypes.GameModerationActionType.MUTE,
                 uid: target.userId,
@@ -46,9 +47,9 @@ export class GameModTempMuteCommand extends ChatCommand {
             }
         );
         if (action) {
-            player.SendMessage(`Temporarily muted ${target.username} with duration ${duration} for reason: ${action.reason}`);
+            modPlayer.SendMessage(`Temporarily muted ${target.username} with duration ${duration} for reason: ${action.reason}`);
         } else {
-            player.SendMessage(ChatColor.Red(`Failed to temporarily mute ${target.username}.`));
+            modPlayer.SendMessage(ChatColor.Red(`Failed to temporarily mute ${target.username}.`));
         }
     }
 }

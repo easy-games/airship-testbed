@@ -13,9 +13,9 @@ export class GameModUnmuteCommand extends ChatCommand {
         this.requiresPermission = true; // Granted by having moderation role and remove mute permission for current game
     }
 
-    public Execute(player: Player, args: string[]): void {
+    public Execute(modPlayer: Player, args: string[]): void {
         if (args.size() === 0) {
-            player.SendMessage(ChatColor.Red(`Invalid usage: /unmute <username> <reason?>`));
+            modPlayer.SendMessage(ChatColor.Red(`Invalid usage: /unmute <username> <reason?>`));
             return;
         }
 
@@ -24,13 +24,14 @@ export class GameModUnmuteCommand extends ChatCommand {
 
         const target = Airship.Players.FindByFuzzySearch(targetUsername);
         if (!target) {
-            player.SendMessage(ChatColor.Red(`Player not found: ${targetUsername}`));
+            modPlayer.SendMessage(ChatColor.Red(`Player not found: ${targetUsername}`));
             return;
         }
         
         const action = contextbridge.invoke<ServerBridgeApiGameModRemoveAction>(
             ModerationServiceBridgeTopics.GameModerationRemoveAction,
             LuauContext.Protected,
+            modPlayer.userId,
             {
                 actionType: ModerationServiceDatabaseTypes.GameModerationActionType.MUTE,
                 uid: target.userId,
@@ -39,9 +40,9 @@ export class GameModUnmuteCommand extends ChatCommand {
             }
         );
         if (action) {
-            player.SendMessage(`Unmuted ${target.username} for reason: ${action.reason}`);
+            modPlayer.SendMessage(`Unmuted ${target.username} for reason: ${action.reason}`);
         } else {
-            player.SendMessage(ChatColor.Red(`Failed to unmute ${target.username}.`));
+            modPlayer.SendMessage(ChatColor.Red(`Failed to unmute ${target.username}.`));
         }
     }
 }

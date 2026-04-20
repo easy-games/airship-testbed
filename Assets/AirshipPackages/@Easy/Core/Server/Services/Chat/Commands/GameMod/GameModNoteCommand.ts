@@ -12,9 +12,9 @@ export class GameModNoteCommand extends ChatCommand {
         this.requiresPermission = true; // Granted by having moderation role and note permission for current game
     }
 
-    public Execute(player: Player, args: string[]): void {
+    public Execute(modPlayer: Player, args: string[]): void {
         if (args.size() === 0) {
-            player.SendMessage(ChatColor.Red(`Invalid usage: /mute <username> <note>`));
+            modPlayer.SendMessage(ChatColor.Red(`Invalid usage: /mute <username> <note>`));
             return;
         }
 
@@ -23,13 +23,14 @@ export class GameModNoteCommand extends ChatCommand {
 
         const target = Airship.Players.FindByFuzzySearch(targetUsername);
         if (!target) {
-            player.SendMessage(ChatColor.Red(`Player not found: ${targetUsername}`));
+            modPlayer.SendMessage(ChatColor.Red(`Player not found: ${targetUsername}`));
             return;
         }
         
         const note = contextbridge.invoke<ServerBridgeApiGameModAddNote>(
             ModerationServiceBridgeTopics.GameModerationAddNote,
             LuauContext.Protected,
+            modPlayer.userId,
             {
                 uid: target.userId,
                 gameId: Game.gameId,
@@ -37,9 +38,9 @@ export class GameModNoteCommand extends ChatCommand {
             }
         );
         if (note) {
-            player.SendMessage(`Added note to ${target.username} with content: ${note.reason}`);
+            modPlayer.SendMessage(`Added note to ${target.username} with content: ${note.reason}`);
         } else {
-            player.SendMessage(ChatColor.Red(`Failed to add note to ${target.username}.`));
+            modPlayer.SendMessage(ChatColor.Red(`Failed to add note to ${target.username}.`));
         }
     }
 }

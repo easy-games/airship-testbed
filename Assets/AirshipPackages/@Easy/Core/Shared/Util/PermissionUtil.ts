@@ -7,7 +7,7 @@ export function hasPermission(
 	let node: ExternalGameCoordinatorTypes.PermissionEntry = permissionData.permissions;
 
 	for (const key of path) {
-		if (typeof node !== "object") return false;
+		if (typeOf(node) !== "table") return false;
 		node = (node as ExternalGameCoordinatorTypes.PermissionGroup)[key];
 		if (node === undefined) return false;
 	}

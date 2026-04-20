@@ -14,9 +14,9 @@ export class GameModKickCommand extends ChatCommand {
         this.requiresPermission = true; // Granted by having moderation role and kick permission for current game
     }
 
-    public Execute(player: Player, args: string[]): void {
+    public Execute(modPlayer: Player, args: string[]): void {
         if (args.size() === 0) {
-            player.SendMessage(ChatColor.Red(`Invalid usage: /modkick <player> <reason?>`));
+            modPlayer.SendMessage(ChatColor.Red(`Invalid usage: /modkick <player> <reason?>`));
             return;
         }
 
@@ -25,13 +25,14 @@ export class GameModKickCommand extends ChatCommand {
 
         const target = Airship.Players.FindByFuzzySearch(targetUsername);
         if (!target) {
-            player.SendMessage(ChatColor.Red(`Player not found: ${targetUsername}`));
+            modPlayer.SendMessage(ChatColor.Red(`Player not found: ${targetUsername}`));
             return;
         }
         
         const action = contextbridge.invoke<ServerBridgeApiGameModPostAction>(
             ModerationServiceBridgeTopics.GameModerationPostAction,
             LuauContext.Protected,
+            modPlayer.userId,
             {
                 actionType: ModerationServiceDatabaseTypes.GameModerationActionType.KICK,
                 uid: target.userId,
@@ -40,9 +41,9 @@ export class GameModKickCommand extends ChatCommand {
             }
         );
         if (action) {
-            player.SendMessage(`Kicked ${target.username} for reason: ${action.reason}`);
+            modPlayer.SendMessage(`Kicked ${target.username} for reason: ${action.reason}`);
         } else {
-            player.SendMessage(ChatColor.Red(`Failed to kick ${target.username}.`));
+            modPlayer.SendMessage(ChatColor.Red(`Failed to kick ${target.username}.`));
         }
     }
 }

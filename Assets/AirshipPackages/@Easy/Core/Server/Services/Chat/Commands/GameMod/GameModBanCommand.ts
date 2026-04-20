@@ -13,9 +13,9 @@ export class GameModBanCommand extends ChatCommand {
         this.requiresPermission = true; // Granted by having moderation role and permanent ban permission for current game
     }
 
-    public Execute(player: Player, args: string[]): void {
+    public Execute(modPlayer: Player, args: string[]): void {
         if (args.size() === 0) {
-            player.SendMessage(ChatColor.Red(`Invalid usage: /ban <username> <reason?>`));
+            modPlayer.SendMessage(ChatColor.Red(`Invalid usage: /ban <username> <reason?>`));
             return;
         }
 
@@ -24,13 +24,14 @@ export class GameModBanCommand extends ChatCommand {
 
         const target = Airship.Players.FindByFuzzySearch(targetUsername);
         if (!target) {
-            player.SendMessage(ChatColor.Red(`Player not found: ${targetUsername}`));
+            modPlayer.SendMessage(ChatColor.Red(`Player not found: ${targetUsername}`));
             return;
         }
         
         const action = contextbridge.invoke<ServerBridgeApiGameModPostAction>(
             ModerationServiceBridgeTopics.GameModerationPostAction,
             LuauContext.Protected,
+            modPlayer.userId,
             {
                 actionType: ModerationServiceDatabaseTypes.GameModerationActionType.BAN,
                 uid: target.userId,
@@ -39,9 +40,9 @@ export class GameModBanCommand extends ChatCommand {
             }
         );
         if (action) {
-            player.SendMessage(`Permanently banned ${target.username} for reason: ${action.reason}`);
+            modPlayer.SendMessage(`Permanently banned ${target.username} for reason: ${action.reason}`);
         } else {
-            player.SendMessage(ChatColor.Red(`Failed to permanently ban ${target.username}.`));
+            modPlayer.SendMessage(ChatColor.Red(`Failed to permanently ban ${target.username}.`));
         }
     }
 }

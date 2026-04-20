@@ -29,10 +29,10 @@ export type ServerBridgeApiModerateChat = (
 	message: string,
 ) => ModerationServiceModeration.ModerationResponse;
 
-export type ServerBridgeApiGameModPostAction = (dto: ModerationServiceGameModeration.GamePostActionDto) => ModerationServiceGameModeration.PublicGameModerationAction | undefined;
-export type ServerBridgeApiGameModRemoveAction = (dto: ModerationServiceGameModeration.GameRemoveActionDto) => ModerationServiceGameModeration.PublicGameModerationAction | undefined;
-export type ServerBridgeApiGameModUserLookup = (dto: ModerationServiceGameModeration.GameUserLookupDto) => ModerationServiceGameModeration.GameModerationProfileResponse | undefined;
-export type ServerBridgeApiGameModAddNote = (dto: ModerationServiceGameModeration.GameAddUserNoteDto) => ModerationServiceGameModeration.PublicGameUserNote | undefined;
+export type ServerBridgeApiGameModPostAction = (modUserId: string, dto: ModerationServiceGameModeration.GamePostActionDto) => ModerationServiceGameModeration.PublicGameModerationAction | undefined;
+export type ServerBridgeApiGameModRemoveAction = (modUserId: string, dto: ModerationServiceGameModeration.GameRemoveActionDto) => ModerationServiceGameModeration.PublicGameModerationAction | undefined;
+export type ServerBridgeApiGameModUserLookup = (modUserId: string, dto: ModerationServiceGameModeration.GameUserLookupDto) => ModerationServiceGameModeration.GameModerationProfileResponse | undefined;
+export type ServerBridgeApiGameModAddNote = (modUserId: string, dto: ModerationServiceGameModeration.GameAddUserNoteDto) => ModerationServiceGameModeration.PublicGameUserNote | undefined;
 
 
 const client = new ModerationServiceClient(UnityMakeRequest(AirshipUrl.ModerationService));
@@ -62,29 +62,29 @@ export class ProtectedModerationService {
 
 		contextbridge.callback<ServerBridgeApiGameModPostAction>(
 			ModerationServiceBridgeTopics.GameModerationPostAction,
-			(_, dto) => {
-				return this.GameModerationPostAction(dto).expect();
+			(_, modUserId, dto) => {
+				return this.GameModerationPostAction(modUserId, dto).expect();
 			}
 		)
 
 		contextbridge.callback<ServerBridgeApiGameModRemoveAction>(
 			ModerationServiceBridgeTopics.GameModerationRemoveAction,
-			(_, dto) => {
-				return this.GameModerationRemoveAction(dto).expect();
+			(_, modUserId, dto) => {
+				return this.GameModerationRemoveAction(modUserId, dto).expect();
 			}
 		)
 
 		contextbridge.callback<ServerBridgeApiGameModUserLookup>(
 			ModerationServiceBridgeTopics.GameModerationUserLookup,
-			(_, dto) => {
-				return this.GameModUserLookup(dto).expect();
+			(_, modUserId, dto) => {
+				return this.GameModUserLookup(modUserId, dto).expect();
 			}
 		)
 
 		contextbridge.callback<ServerBridgeApiGameModAddNote>(
 			ModerationServiceBridgeTopics.GameModerationAddNote,
-			(_, dto) => {
-				return this.GameModAddNote(dto).expect();
+			(_, modUserId, dto) => {
+				return this.GameModAddNote(modUserId, dto).expect();
 			}
 		)
 
@@ -116,7 +116,7 @@ export class ProtectedModerationService {
 		});
 	}
 
-	public async GameModerationPostAction(dto: ModerationServiceGameModeration.GamePostActionDto): Promise<ModerationServiceGameModeration.PublicGameModerationAction | undefined> {
+	public async GameModerationPostAction(modUserId: string, dto: ModerationServiceGameModeration.GamePostActionDto): Promise<ModerationServiceGameModeration.PublicGameModerationAction | undefined> {
 		try {
 			return await client.gameModeration.postAction(dto);
 		} catch (err) {
@@ -124,7 +124,7 @@ export class ProtectedModerationService {
 		}
 	}
 
-	public async GameModerationRemoveAction(dto: ModerationServiceGameModeration.GameRemoveActionDto): Promise<ModerationServiceGameModeration.PublicGameModerationAction | undefined>  {
+	public async GameModerationRemoveAction(modUserId: string, dto: ModerationServiceGameModeration.GameRemoveActionDto): Promise<ModerationServiceGameModeration.PublicGameModerationAction | undefined>  {
 		try {
 			return await client.gameModeration.deleteAction(dto);
 		} catch (err) {
@@ -132,7 +132,7 @@ export class ProtectedModerationService {
 		}
 	}
 
-	public async GameModUserLookup(dto: ModerationServiceGameModeration.GameUserLookupDto): Promise<ModerationServiceGameModeration.GameModerationProfileResponse | undefined> {
+	public async GameModUserLookup(modUserId: string, dto: ModerationServiceGameModeration.GameUserLookupDto): Promise<ModerationServiceGameModeration.GameModerationProfileResponse | undefined> {
 		try {
 			return await client.gameModeration.getUserModerationProfile(dto);
 		} catch (err) {
@@ -140,7 +140,7 @@ export class ProtectedModerationService {
 		}
 	}
 
-	public async GameModAddNote(dto: ModerationServiceGameModeration.GameAddUserNoteDto): Promise<ModerationServiceGameModeration.PublicGameUserNote | undefined> {
+	public async GameModAddNote(modUserId: string, dto: ModerationServiceGameModeration.GameAddUserNoteDto): Promise<ModerationServiceGameModeration.PublicGameUserNote | undefined> {
 		try {
 			return await client.gameModeration.addNote(dto);
 		} catch (err) {
