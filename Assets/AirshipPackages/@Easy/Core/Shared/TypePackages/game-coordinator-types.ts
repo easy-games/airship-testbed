@@ -51,6 +51,18 @@ export namespace ExternalGameCoordinatorTypes {
         UNLISTED: "UNLISTED",
     } as const;
     export type GameVisibility = (typeof GameVisibility)[keyof typeof GameVisibility];
+
+    export interface ModerationRolePermissionsData {
+        permissions: ExternalGameCoordinatorTypes.PermissionEntry;
+    }
+
+    export type PermissionEntry<
+        T extends ExternalGameCoordinatorTypes.PermissionGroup = ExternalGameCoordinatorTypes.PermissionGroup,
+    > = T | boolean;
+
+    export interface PermissionGroup {
+        [permissionKey: string]: PermissionEntry;
+    }
 }
 
 // ====+==== Agones Types ====+====
@@ -1539,6 +1551,9 @@ export namespace GameCoordinatorTransfers {
         transferSource: GameCoordinatorTransfers.TransferSourceData;
         user: GameCoordinatorUsers.PublicUser;
         orgRoleName: string | undefined;
+        gameModerationRole:
+            | { roleName: string; permissionData: ExternalGameCoordinatorTypes.ModerationRolePermissionsData }
+            | undefined;
         isEasyEmployee: boolean;
         muteInfo: GameCoordinatorTransfers.MuteInfo | undefined;
         clientTransferData?: unknown;
