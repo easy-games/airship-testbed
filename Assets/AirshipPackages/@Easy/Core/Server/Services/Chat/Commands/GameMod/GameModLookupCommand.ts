@@ -4,11 +4,11 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { ModerationServiceBridgeTopics, ServerBridgeApiGameModUserLookup } from "@Easy/Core/Server/ProtectedServices/Airship/Moderation/ModerationService";
-import { GetModerationActionDuration } from "./GameModCommandHelper";
+import { GameModerationCommand, GetModerationActionDuration } from "./GameModCommandHelper";
 
-export class GameModUserLookupCommand extends ChatCommand {
+export class GameModLookupCommand extends ChatCommand {
     constructor() {
-        super("modlookup", [], "/modlookup <username>", "Fetches a user's moderation history.", true);
+        super(GameModerationCommand.LOOKUP, [], "/modlookup <username>", "Fetches a user's moderation history.", true);
         this.requiresPermission = true; // Granted by having moderation role and user lookup permission for current game
     }
 

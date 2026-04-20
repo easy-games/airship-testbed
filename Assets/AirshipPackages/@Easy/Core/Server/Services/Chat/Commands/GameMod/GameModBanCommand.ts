@@ -5,10 +5,11 @@ import { Player } from "@Easy/Core/Shared/Player/Player";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { ModerationServiceDatabaseTypes } from "@Easy/Core/Shared/TypePackages/moderation-service-types";
 import { ModerationServiceBridgeTopics, ServerBridgeApiGameModPostAction } from "@Easy/Core/Server/ProtectedServices/Airship/Moderation/ModerationService";
+import { GameModerationCommand } from "./GameModCommandHelper";
 
 export class GameModBanCommand extends ChatCommand {
     constructor() {
-        super("ban", [], "/ban <username> <reason?>", "Permanently bans a player.", true);
+        super(GameModerationCommand.BAN, [], "/ban <username> <reason?>", "Permanently bans a player.", true);
         this.requiresPermission = true; // Granted by having moderation role and permanent ban permission for current game
     }
 

@@ -1,5 +1,8 @@
+import { GameModerationCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModCommandHelper";
+import { Airship } from "@Easy/Core/Shared/Airship";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { Player } from "@Easy/Core/Shared/Player/Player";
 import {
 	ModerationServiceClient,
 	ModerationServiceGameModeration,
@@ -7,6 +10,8 @@ import {
 } from "@Easy/Core/Shared/TypePackages/moderation-service-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
+import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
+import { hasPermission } from "@Easy/Core/Shared/Util/PermissionUtil";
 
 export const enum ModerationServiceBridgeTopics {
 	ModerateText = "ModerationService:ModerateText",
@@ -82,6 +87,14 @@ export class ProtectedModerationService {
 				return this.GameModAddNote(dto).expect();
 			}
 		)
+
+		Airship.Players.onPlayerJoined.Connect((player) => {
+			this.GrantModerationCommandPermissions(player);
+		});
+
+		Airship.Players.onPlayerDisconnected.Connect((player) => {
+			this.RevokeModerationCommandPermissions(player);
+		});
 	}
 
 	public async ModerateChatMessage(
@@ -133,5 +146,41 @@ export class ProtectedModerationService {
 		} catch (err) {
 			return undefined;
 		}
+	}
+
+	/** Grants permission to use game moderation commands based on the player's moderation role */
+	public async GrantModerationCommandPermissions(player: Player) {
+		if (!player.gameModerationRole) return;
+
+		const permData = player.gameModerationRole.permissionData;
+		const commandPermMap: Record<GameModerationCommand, string[]> = {
+			[GameModerationCommand.KICK]:     ["moderation", "manageActions", "manageKick", "kick"],
+			[GameModerationCommand.TEMPBAN]:  ["moderation", "manageActions", "manageBan", "temporary"],
+			[GameModerationCommand.BAN]:      ["moderation", "manageActions", "manageBan", "permanent"],
+			[GameModerationCommand.TEMPMUTE]: ["moderation", "manageActions", "manageMute", "temporary"],
+			[GameModerationCommand.MUTE]:     ["moderation", "manageActions", "manageMute", "permanent"],
+			[GameModerationCommand.NOTE]:     ["moderation", "note"],
+			[GameModerationCommand.UNBAN]:    ["moderation", "manageActions", "manageBan", "remove"],
+			[GameModerationCommand.UNMUTE]:   ["moderation", "manageActions", "manageMute", "remove"],
+			[GameModerationCommand.LOOKUP]:   ["moderation", "viewProfile"],
+		};
+
+		for (const [command, path] of ObjectUtils.entries(commandPermMap)) {
+			if (hasPermission(permData, path)) {
+				Airship.Chat.GiveCommandPermission(command as GameModerationCommand, player.userId);
+			}
+		}
+	}
+
+	/** Removes all granted moderation command permissions, to be used on player leave */
+	public RevokeModerationCommandPermissions(player: Player) {
+		const allGrantedCommands = Airship.Chat.GetCommandPermissions(player.userId);
+		const modCommands = new Set(ObjectUtils.values(GameModerationCommand));
+
+		allGrantedCommands
+			.filter((c) => modCommands.has(c as GameModerationCommand))
+			.forEach((c) => {
+				Airship.Chat.RemoveCommandPermission(c, player.userId);
+			});
 	}
 }

@@ -5,11 +5,12 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { ModerationServiceDatabaseTypes } from "@Easy/Core/Shared/TypePackages/moderation-service-types";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
+import { GameModerationCommand } from "./GameModCommandHelper";
 
 /** We already have a kick command so not sure how we want to handle this kick... edit old one or use a diff name for the new one? */
 export class GameModKickCommand extends ChatCommand {
     constructor() {
-        super("modkick", [], "/modkick <player> <reason?>", "Kicks a player.", true);
+        super(GameModerationCommand.KICK, [], "/modkick <player> <reason?>", "Kicks a player.", true);
         this.requiresPermission = true; // Granted by having moderation role and kick permission for current game
     }
 

@@ -35,7 +35,7 @@ import { GameModKickCommand } from "@Easy/Core/Server/Services/Chat/Commands/Gam
 import { GameModMuteCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModMuteCommand";
 import { GameModUnbanCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModUnbanCommand";
 import { GameModUnmuteCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModUnmuteCommand";
-import { GameModUserLookupCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModUserLookupCommand";
+import { GameModLookupCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModLookupCommand";
 import { GameModNoteCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModNoteCommand";
 import { GameModTempBanCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModTempBanCommand";
 import { GameModTempMuteCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModTempMuteCommand";
@@ -227,7 +227,7 @@ export class AirshipChatSingleton {
 		this.RegisterCommand(new TeamsCommand());
 
 		/** Mod Commands */
-		this.RegisterCommand(new GameModUserLookupCommand());
+		this.RegisterCommand(new GameModLookupCommand());
 		this.RegisterCommand(new GameModKickCommand());
 		this.RegisterCommand(new GameModMuteCommand());
 		this.RegisterCommand(new GameModBanCommand());
@@ -307,5 +307,21 @@ export class AirshipChatSingleton {
 
 		perms.delete(playerId);
 		this.commandPermissions.set(parsedLabel, perms);
+	}
+
+	/**
+	 * [Server only]
+	 *
+	 * Gets all the commands that a player has been granted permission for
+	 *
+	 */
+	public GetCommandPermissions(playerId: string): string[] {
+		const result: string[] = [];
+		for (const [label, playerIds] of this.commandPermissions) {
+			if (playerIds.has(playerId)) {
+				result.push(label);
+			}
+		}
+		return result;
 	}
 }

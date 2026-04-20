@@ -4,10 +4,11 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { ModerationServiceBridgeTopics, ServerBridgeApiGameModAddNote } from "@Easy/Core/Server/ProtectedServices/Airship/Moderation/ModerationService";
+import { GameModerationCommand } from "./GameModCommandHelper";
 
 export class GameModNoteCommand extends ChatCommand {
     constructor() {
-        super("note", [], "/note <username> <note>", "Adds a note to a player's moderation profile.", true);
+        super(GameModerationCommand.NOTE, [], "/note <username> <note>", "Adds a note to a player's moderation profile.", true);
         this.requiresPermission = true; // Granted by having moderation role and note permission for current game
     }
 

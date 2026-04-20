@@ -3,13 +3,13 @@ import { ChatCommand } from "@Easy/Core/Shared/Commands/ChatCommand";
 import { Game } from "@Easy/Core/Shared/Game";
 import { Player } from "@Easy/Core/Shared/Player/Player";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
-import { ValidateModerationActionDurationFormat } from "./GameModCommandHelper";
+import { GameModerationCommand, ValidateModerationActionDurationFormat } from "./GameModCommandHelper";
 import { ModerationServiceDatabaseTypes } from "@Easy/Core/Shared/TypePackages/moderation-service-types";
 import { ModerationServiceBridgeTopics, ServerBridgeApiGameModPostAction } from "@Easy/Core/Server/ProtectedServices/Airship/Moderation/ModerationService";
 
 export class GameModTempBanCommand extends ChatCommand {
     constructor() {
-        super("tempban", [], "/tempban <username> <duration> <reason?>", "Temporarily bans a player.", true);
+        super(GameModerationCommand.TEMPBAN, [], "/tempban <username> <duration> <reason?>", "Temporarily bans a player.", true);
         this.requiresPermission = true; // Granted by having moderation role and temporary ban permission for current game
     }
 

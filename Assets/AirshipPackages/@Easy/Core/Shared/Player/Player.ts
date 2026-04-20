@@ -6,10 +6,11 @@ import { Game } from "@Easy/Core/Shared/Game";
 import { AirshipOutfit } from "../Airship/Types/AirshipPlatformInventory";
 import { CoreLogger } from "../Logger/CoreLogger";
 import { Team } from "../Team/Team";
-import { GameCoordinatorTransfers } from "../TypePackages/game-coordinator-types";
+import { ExternalGameCoordinatorTypes, GameCoordinatorTransfers } from "../TypePackages/game-coordinator-types";
 import { Bin } from "../Util/Bin";
 import { Signal } from "../Util/Signal";
 import { TaskUtil } from "../Util/TaskUtil";
+import { ProtectedModerationService } from "@Easy/Core/Server/ProtectedServices/Airship/Moderation/ModerationService";
 
 /** @internal */
 export interface PlayerDto {
@@ -46,6 +47,12 @@ export class Player {
 	 * This will be undefined if they are not a member of the organization.
 	 */
 	public readonly orgRoleName: string | undefined;
+
+	/**
+	 * The name of the role for this game's moderation
+	 * This will be undefined if they are not a moderator for the game.
+	 */
+	public readonly gameModerationRole: { roleName: string; permissionData: ExternalGameCoordinatorTypes.ModerationRolePermissionsData } | undefined;
 
 	/**
 	 * The player's current team.
@@ -169,6 +176,8 @@ export class Player {
 			let data = json.decode(transferPacket) as GameCoordinatorTransfers.ServerTransferData;
 			this.clientTransferData = data.clientTransferData;
 			this.serverTransferData = data.serverTransferData;
+			this.gameModerationRole = data.gameModerationRole;
+			
 			this.muteInfo = {
 				platform: data.muteInfo?.platform,
 				game: data.muteInfo?.game,

@@ -5,10 +5,11 @@ import { Player } from "@Easy/Core/Shared/Player/Player";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { ModerationServiceDatabaseTypes } from "@Easy/Core/Shared/TypePackages/moderation-service-types";
 import { ModerationServiceBridgeTopics, ServerBridgeApiGameModRemoveAction } from "@Easy/Core/Server/ProtectedServices/Airship/Moderation/ModerationService";
+import { GameModerationCommand } from "./GameModCommandHelper";
 
 export class GameModUnbanCommand extends ChatCommand {
     constructor() {
-        super("unban", [], "/unban <username> <reason?>", "Unbans a player.", true);
+        super(GameModerationCommand.UNBAN, [], "/unban <username> <reason?>", "Unbans a player.", true);
         this.requiresPermission = true; // Granted by having moderation role and remove ban permission for current game
     }
 

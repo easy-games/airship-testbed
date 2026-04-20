@@ -5,10 +5,11 @@ import { Player } from "@Easy/Core/Shared/Player/Player";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { ModerationServiceDatabaseTypes } from "@Easy/Core/Shared/TypePackages/moderation-service-types";
 import { ModerationServiceBridgeTopics, ServerBridgeApiGameModPostAction } from "@Easy/Core/Server/ProtectedServices/Airship/Moderation/ModerationService";
+import { GameModerationCommand } from "./GameModCommandHelper";
 
 export class GameModMuteCommand extends ChatCommand {
     constructor() {
-        super("mute", [], "/mute <username> <reason?>", "Permanently mutes a player.", true);
+        super(GameModerationCommand.MUTE, [], "/mute <username> <reason?>", "Permanently mutes a player.", true);
         this.requiresPermission = true; // Granted by having moderation role and permanent mute permission for current game
     }
 
