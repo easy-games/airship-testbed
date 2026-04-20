@@ -14,7 +14,7 @@ export class GameModNoteCommand extends ChatCommand {
 
     public Execute(modPlayer: Player, args: string[]): void {
         if (args.size() === 0) {
-            modPlayer.SendMessage(ChatColor.Red(`Invalid usage: /mute <username> <note>`));
+            modPlayer.SendMessage(ChatColor.Red(`Invalid usage: /note <username> <note>`));
             return;
         }
 
