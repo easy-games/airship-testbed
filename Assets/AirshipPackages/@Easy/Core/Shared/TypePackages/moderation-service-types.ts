@@ -63,8 +63,7 @@ export namespace ModerationServiceDatabaseTypes {
     export type GameModerationRole = {
         roleName: string;
         createdAt: string;
-        organizationId: string;
-        associatedGameIds: string[];
+        gameId: string;
         permissionsData: unknown;
     };
 
@@ -119,6 +118,43 @@ export namespace InternalModerationServiceTypes {
 
 // ====+==== External Types ====+====
 export namespace ExternalModerationServiceTypes {
+    export const DeploymentPlatform = {
+        WINDOWS: "Windows",
+        MAC: "Mac",
+        LINUX: "Linux",
+        IOS: "iOS",
+        Android: "Android",
+    } as const;
+    export type DeploymentPlatform = (typeof DeploymentPlatform)[keyof typeof DeploymentPlatform];
+
+    export interface GameLink {
+        type: ExternalModerationServiceTypes.GameLinkType;
+        url: string;
+    }
+
+    export const GameLinkType = {
+        DISCORD: "DISCORD",
+    } as const;
+    export type GameLinkType = (typeof GameLinkType)[keyof typeof GameLinkType];
+
+    export const GameVisibility = {
+        PUBLIC: "PUBLIC",
+        PRIVATE: "PRIVATE",
+        UNLISTED: "UNLISTED",
+    } as const;
+    export type GameVisibility = (typeof GameVisibility)[keyof typeof GameVisibility];
+
+    export type Organization = {
+        id: string;
+        slug: string;
+        slugProperCase: string;
+        name: string;
+        description: string;
+        iconImageId: string;
+        createdAt: string;
+        adminBanned: boolean;
+    };
+
     export type PermissionEntry<
         T extends ExternalModerationServiceTypes.PermissionGroup = ExternalModerationServiceTypes.PermissionGroup,
     > = T | boolean;
@@ -133,6 +169,35 @@ export namespace ExternalModerationServiceTypes {
         identifierName?: string;
         desc?: string;
         subtree?: PermissionNode[];
+    }
+
+    export interface PublicGame {
+        id: string;
+        slug: string | undefined;
+        slugProperCase: string | undefined;
+        name: string;
+        description: string;
+        iconImageId: string;
+        organizationId: string;
+        createdAt: string;
+        visibility: ExternalModerationServiceTypes.GameVisibility;
+        lastVersionUpdate: string | undefined;
+        archivedAt: string | undefined;
+        loadingScreenImageId: string | undefined;
+        logoImageId: string | undefined;
+        videoId: string | undefined;
+        links: ExternalModerationServiceTypes.GameLink[] | undefined;
+        plays: number;
+        favorites: number;
+        plays24h: number;
+        uniquePlays24h: number;
+        platforms: ExternalModerationServiceTypes.DeploymentPlatform[];
+        liveStats?: { playerCount: number };
+        organization?: ExternalModerationServiceTypes.Organization;
+    }
+
+    export interface WithOrg {
+        organization: ExternalModerationServiceTypes.Organization;
     }
 }
 
@@ -161,6 +226,7 @@ export namespace ModerationServiceGameModeration {
     export interface BaseGameUserLookupDto {
         uid: string;
         gameId: string;
+        moderatorUid?: string;
     }
 
     export type DeleteActionArgs = {
@@ -273,6 +339,7 @@ export namespace ModerationServiceGameModeration {
 
     export interface GameRemoveActionDto {
         gameId: string;
+        moderatorUid?: string;
         actionId?: string;
         actionType?: ModerationServiceDatabaseTypes.GameModerationActionType;
         uid?: string;
@@ -285,6 +352,7 @@ export namespace ModerationServiceGameModeration {
         reason?: string;
         duration?: string;
         permanent?: boolean;
+        moderatorUid?: string;
     }
 
     export interface GameUpdateUserNoteDto {
@@ -347,7 +415,6 @@ export namespace ModerationServiceGameModeration {
         relatedActionId: string;
         targetUid: string;
         moderatorUid: string;
-        organizationId: string;
         gameId: string;
         auditLogType: ModerationServiceDatabaseTypes.GameModerationAuditLogType;
         createdAt: string;
@@ -358,7 +425,6 @@ export namespace ModerationServiceGameModeration {
         id: string;
         uid: string;
         moderatorUid: string;
-        organizationId: string;
         gameId: string;
         actionType: ModerationServiceDatabaseTypes.GameModerationActionType;
         status: ModerationServiceDatabaseTypes.GameModerationActionStatus;
@@ -373,7 +439,7 @@ export namespace ModerationServiceGameModeration {
         id: string;
         uid: string;
         moderatorUid: string;
-        organizationId: string;
+        gameId: string;
         reason: string;
         createdAt: string;
         lastUpdatedAt: string;
@@ -763,7 +829,7 @@ export namespace ModerationServiceModeration {
 export namespace ModerationServiceModerationRoles {
     export type AddMemberArgs = {
         params: {
-            orgId: string;
+            gameId: string;
             roleName: string;
         };
         data: { uid: string };
@@ -771,7 +837,7 @@ export namespace ModerationServiceModerationRoles {
 
     export type CreateRoleArgs = {
         params: {
-            orgId: string;
+            gameId: string;
         };
         data: ModerationServiceModerationRoles.CreateRoleDto;
     };
@@ -779,25 +845,36 @@ export namespace ModerationServiceModerationRoles {
     export interface CreateRoleDto {
         name: string;
         permissionsData: ModerationServicePermissions.ModerationRolePermissionsDto;
-        associatedGameIds?: string[];
     }
 
     export type DeleteRoleArgs = {
         params: {
-            orgId: string;
+            gameId: string;
             roleName: string;
         };
     };
 
+    export type GameModerationMembershipByOrg = {
+        organization: ExternalModerationServiceTypes.WithOrg["organization"];
+        memberships: ModerationServiceModerationRoles.GameModerationMembershipEntry[];
+    };
+
+    export type GameModerationMembershipEntry = {
+        gameId: string;
+        roleName: string;
+        permissionsData: ModerationServiceModerationRoles.ModerationRolePermissionsData;
+        game: ExternalModerationServiceTypes.PublicGame;
+    };
+
     export type GetMembersWithRolesArgs = {
         params: {
-            orgId: string;
+            gameId: string;
         };
     };
 
     export type GetRolesArgs = {
         params: {
-            orgId: string;
+            gameId: string;
         };
     };
 
@@ -805,9 +882,9 @@ export namespace ModerationServiceModerationRoles {
         permissions: ExternalModerationServiceTypes.PermissionEntry;
     }
 
-    export type PublicModerationMember = { uid: string; joinedAt: string };
+    export type PublicGameModerationMember = { uid: string; roleName: string; joinedAt: string };
 
-    export type PublicModerationMemberWithRole = ModerationServiceModerationRoles.PublicModerationMember & {
+    export type PublicGameModerationMemberWithRole = ModerationServiceModerationRoles.PublicGameModerationMember & {
         role: ModerationServiceModerationRoles.PublicModerationRole;
     };
 
@@ -817,38 +894,38 @@ export namespace ModerationServiceModerationRoles {
     >;
 
     export type PublicModerationRoleWithMembers = ModerationServiceModerationRoles.PublicModerationRole & {
-        members: ModerationServiceModerationRoles.PublicModerationMember[];
+        members: ModerationServiceModerationRoles.PublicGameModerationMember[];
     };
 
     export type RemoveMemberArgs = {
         params: {
-            orgId: string;
+            gameId: string;
         };
-        data: { uid: string };
+        data: { uid: string; roleName: string };
     };
 
     export type SelfArgs = {
         params: {
-            orgId: string;
             gameId: string;
         };
     };
 
     export type UpdateMemberArgs = {
         params: {
-            orgId: string;
+            gameId: string;
         };
         data: ModerationServiceModerationRoles.UpdateMemberDto;
     };
 
     export interface UpdateMemberDto {
         uid: string;
+        oldRoleName: string;
         newRoleName: string;
     }
 
     export type UpdateRoleArgs = {
         params: {
-            orgId: string;
+            gameId: string;
             roleName: string;
         };
         data: ModerationServiceModerationRoles.UpdateRoleDto;
@@ -857,14 +934,13 @@ export namespace ModerationServiceModerationRoles {
     export interface UpdateRoleDto {
         name: string;
         permissionsData: ModerationServicePermissions.ModerationRolePermissionsDto;
-        associatedGameIds?: string[];
     }
 
     export interface ClientSpec {
         addMember(
             args: AddMemberArgs,
             options?: RequestOptions,
-        ): Promise<{ members: ModerationServiceModerationRoles.PublicModerationMemberWithRole[] }>;
+        ): Promise<{ members: ModerationServiceModerationRoles.PublicGameModerationMemberWithRole[] }>;
         createRole(
             args: CreateRoleArgs,
             options?: RequestOptions,
@@ -876,15 +952,18 @@ export namespace ModerationServiceModerationRoles {
         getMembersWithRoles(
             args: GetMembersWithRolesArgs["params"],
             options?: RequestOptions,
-        ): Promise<{ members: ModerationServiceModerationRoles.PublicModerationMemberWithRole[] }>;
+        ): Promise<{ members: ModerationServiceModerationRoles.PublicGameModerationMemberWithRole[] }>;
         getRoles(
             args: GetRolesArgs["params"],
             options?: RequestOptions,
         ): Promise<{ roles: ModerationServiceModerationRoles.PublicModerationRoleWithMembers[] }>;
+        getSelfMemberships(
+            options?: RequestOptions,
+        ): Promise<{ memberships: ModerationServiceModerationRoles.GameModerationMembershipByOrg[] }>;
         removeMember(
             args: RemoveMemberArgs,
             options?: RequestOptions,
-        ): Promise<{ members: ModerationServiceModerationRoles.PublicModerationMemberWithRole[] }>;
+        ): Promise<{ members: ModerationServiceModerationRoles.PublicGameModerationMemberWithRole[] }>;
         self(
             args: SelfArgs["params"],
             options?: RequestOptions,
@@ -892,7 +971,7 @@ export namespace ModerationServiceModerationRoles {
         updateMember(
             args: UpdateMemberArgs,
             options?: RequestOptions,
-        ): Promise<{ members: ModerationServiceModerationRoles.PublicModerationMemberWithRole[] }>;
+        ): Promise<{ members: ModerationServiceModerationRoles.PublicGameModerationMemberWithRole[] }>;
         updateRole(
             args: UpdateRoleArgs,
             options?: RequestOptions,
@@ -909,11 +988,11 @@ export namespace ModerationServiceModerationRoles {
         async addMember(
             args: AddMemberArgs,
             options?: RequestOptions,
-        ): Promise<{ members: ModerationServiceModerationRoles.PublicModerationMemberWithRole[] }> {
+        ): Promise<{ members: ModerationServiceModerationRoles.PublicGameModerationMemberWithRole[] }> {
             return await this.makeRequest({
                 method: "POST",
                 routeId: "ModerationService:ModerationRoles:addMember",
-                path: `/roles/org-id/${encodeURIComponent(args.params.orgId)}/role-name/${encodeURIComponent(args.params.roleName)}/add-member`,
+                path: `/roles/game-id/${encodeURIComponent(args.params.gameId)}/role-name/${encodeURIComponent(args.params.roleName)}/add-member`,
                 retryKey: options?.retryKey ?? "ModerationService:ModerationRoles:addMember",
                 body: args.data,
             });
@@ -925,7 +1004,7 @@ export namespace ModerationServiceModerationRoles {
             return await this.makeRequest({
                 method: "POST",
                 routeId: "ModerationService:ModerationRoles:createRole",
-                path: `/roles/org-id/${encodeURIComponent(args.params.orgId)}/create`,
+                path: `/roles/game-id/${encodeURIComponent(args.params.gameId)}/create`,
                 retryKey: options?.retryKey ?? "ModerationService:ModerationRoles:createRole",
                 body: args.data,
             });
@@ -937,18 +1016,18 @@ export namespace ModerationServiceModerationRoles {
             return await this.makeRequest({
                 method: "DELETE",
                 routeId: "ModerationService:ModerationRoles:deleteRole",
-                path: `/roles/org-id/${encodeURIComponent(args.orgId)}/role-name/${encodeURIComponent(args.roleName)}`,
+                path: `/roles/game-id/${encodeURIComponent(args.gameId)}/role-name/${encodeURIComponent(args.roleName)}`,
                 retryKey: options?.retryKey ?? "ModerationService:ModerationRoles:deleteRole",
             });
         }
         async getMembersWithRoles(
             args: GetMembersWithRolesArgs["params"],
             options?: RequestOptions,
-        ): Promise<{ members: ModerationServiceModerationRoles.PublicModerationMemberWithRole[] }> {
+        ): Promise<{ members: ModerationServiceModerationRoles.PublicGameModerationMemberWithRole[] }> {
             return await this.makeRequest({
                 method: "GET",
                 routeId: "ModerationService:ModerationRoles:getMembersWithRoles",
-                path: `/roles/org-id/${encodeURIComponent(args.orgId)}/members`,
+                path: `/roles/game-id/${encodeURIComponent(args.gameId)}/members`,
                 retryKey: options?.retryKey ?? "ModerationService:ModerationRoles:getMembersWithRoles",
             });
         }
@@ -959,18 +1038,28 @@ export namespace ModerationServiceModerationRoles {
             return await this.makeRequest({
                 method: "GET",
                 routeId: "ModerationService:ModerationRoles:getRoles",
-                path: `/roles/org-id/${encodeURIComponent(args.orgId)}`,
+                path: `/roles/game-id/${encodeURIComponent(args.gameId)}`,
                 retryKey: options?.retryKey ?? "ModerationService:ModerationRoles:getRoles",
+            });
+        }
+        async getSelfMemberships(
+            options?: RequestOptions,
+        ): Promise<{ memberships: ModerationServiceModerationRoles.GameModerationMembershipByOrg[] }> {
+            return await this.makeRequest({
+                method: "GET",
+                routeId: "ModerationService:ModerationRoles:getSelfMemberships",
+                path: `/roles/self/memberships`,
+                retryKey: options?.retryKey ?? "ModerationService:ModerationRoles:getSelfMemberships",
             });
         }
         async removeMember(
             args: RemoveMemberArgs,
             options?: RequestOptions,
-        ): Promise<{ members: ModerationServiceModerationRoles.PublicModerationMemberWithRole[] }> {
+        ): Promise<{ members: ModerationServiceModerationRoles.PublicGameModerationMemberWithRole[] }> {
             return await this.makeRequest({
                 method: "DELETE",
                 routeId: "ModerationService:ModerationRoles:removeMember",
-                path: `/roles/org-id/${encodeURIComponent(args.params.orgId)}/remove-member`,
+                path: `/roles/game-id/${encodeURIComponent(args.params.gameId)}/remove-member`,
                 retryKey: options?.retryKey ?? "ModerationService:ModerationRoles:removeMember",
                 body: args.data,
             });
@@ -982,18 +1071,18 @@ export namespace ModerationServiceModerationRoles {
             return await this.makeRequest({
                 method: "GET",
                 routeId: "ModerationService:ModerationRoles:self",
-                path: `/roles/org-id/${encodeURIComponent(args.orgId)}/game-id/${encodeURIComponent(args.gameId)}/self`,
+                path: `/roles/game-id/${encodeURIComponent(args.gameId)}/self`,
                 retryKey: options?.retryKey ?? "ModerationService:ModerationRoles:self",
             });
         }
         async updateMember(
             args: UpdateMemberArgs,
             options?: RequestOptions,
-        ): Promise<{ members: ModerationServiceModerationRoles.PublicModerationMemberWithRole[] }> {
+        ): Promise<{ members: ModerationServiceModerationRoles.PublicGameModerationMemberWithRole[] }> {
             return await this.makeRequest({
                 method: "PUT",
                 routeId: "ModerationService:ModerationRoles:updateMember",
-                path: `/roles/org-id/${encodeURIComponent(args.params.orgId)}/update-member`,
+                path: `/roles/game-id/${encodeURIComponent(args.params.gameId)}/update-member`,
                 retryKey: options?.retryKey ?? "ModerationService:ModerationRoles:updateMember",
                 body: args.data,
             });
@@ -1005,7 +1094,7 @@ export namespace ModerationServiceModerationRoles {
             return await this.makeRequest({
                 method: "PUT",
                 routeId: "ModerationService:ModerationRoles:updateRole",
-                path: `/roles/org-id/${encodeURIComponent(args.params.orgId)}/role-name/${encodeURIComponent(args.params.roleName)}`,
+                path: `/roles/game-id/${encodeURIComponent(args.params.gameId)}/role-name/${encodeURIComponent(args.params.roleName)}`,
                 retryKey: options?.retryKey ?? "ModerationService:ModerationRoles:updateRole",
                 body: args.data,
             });
@@ -1050,6 +1139,7 @@ export namespace ModerationServicePlatformModeration {
     export interface ActionCreatedContext {
         reason?: string;
         duration?: string;
+        conversationId?: string;
     }
 
     export interface ActionRemovedContext {
