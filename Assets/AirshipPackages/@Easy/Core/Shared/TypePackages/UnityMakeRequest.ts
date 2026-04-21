@@ -13,6 +13,11 @@ function isArrayLike<T extends defined>(value: unknown): value is T[] {
 
 	// To get the first dictionary "key" of a table, it's the size of the array (last index)
 	const size = (value as defined[]).size();
+
+	if (size === 0) {
+		return true;
+	}
+
 	const [key] = next(value, size); // we check there's no dictionary component to the table
 	return typeIs(key, "nil"); // an array should contain no dictionary keys
 }
