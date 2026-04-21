@@ -8,6 +8,7 @@ import { ModerationServicePermissions } from "@Easy/Core/Shared/TypePackages/mod
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
+import { ProtectedModerationService } from "../Moderation/ModerationService";
 
 export const enum MessagingServiceBridgeTopics {
 	Subscribe = "MessagingService:Subscribe",
@@ -242,6 +243,12 @@ export class MessagingService {
 				const airshipPlayer = Dependency<AirshipPlayersSingleton>().FindByUserId(data.uid);
 				if (airshipPlayer) {
 					airshipPlayer.gameModerationRole = data.gameModerationRoleInfo;
+					
+					const moderationService = Dependency<ProtectedModerationService>();
+					moderationService.RevokeModerationCommandPermissions(airshipPlayer);
+					if (data.gameModerationRoleInfo) {
+						moderationService.GrantModerationCommandPermissions(airshipPlayer);
+					}
 				}
 			}
 		});
