@@ -3,6 +3,8 @@ import { Dependency, Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { ProtectedPlayersSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/ProtectedPlayersSingleton";
 import { AirshipPlayersSingleton } from "@Easy/Core/Shared/Player/AirshipPlayersSingleton";
+import { ExternalGameCoordinatorTypes } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
+import { ModerationServicePermissions } from "@Easy/Core/Shared/TypePackages/moderation-service-types";
 import { ChatColor } from "@Easy/Core/Shared/Util/ChatColor";
 import { Signal } from "@Easy/Core/Shared/Util/Signal";
 import { SetInterval } from "@Easy/Core/Shared/Util/Timer";
@@ -87,8 +89,23 @@ interface SetMutedUserEvent {
 	} | undefined;
 }
 
+interface UpdateUserGameModerationRoleEvent {
+    type: "UPDATE_USER_GAME_MODERATION_ROLE";
+    /** The user whose role is being updated */
+    uid: string;
+    /** If undefined, the user no longer has a game moderation role for this game */
+    gameModerationRoleInfo:
+        | {
+              /** The name of the new game moderation role for the user */
+              roleName: string;
+              /** The permission data for the new game moderation role for the user */
+              permissionData: ExternalGameCoordinatorTypes.ModerationRolePermissionsData;
+          }
+        | undefined;
+}
 
-type AirshipMultiplexEvent = KickUserEvent | SetMutedUserEvent;
+
+type AirshipMultiplexEvent = KickUserEvent | SetMutedUserEvent | UpdateUserGameModerationRoleEvent;
 
 @Service({})
 export class MessagingService {
@@ -214,6 +231,18 @@ export class MessagingService {
 					data.source,
 					data.muteInfo,
 				);
+			}
+		});
+
+		this.airshipGameEvents.Connect((data) => {
+			if (data.type === "UPDATE_USER_GAME_MODERATION_ROLE") {
+				const player = this.protectedPlayers.FindByUserId(data.uid);
+				if (!player) return;
+
+				const airshipPlayer = Dependency<AirshipPlayersSingleton>().FindByUserId(data.uid);
+				if (airshipPlayer) {
+					airshipPlayer.gameModerationRole = data.gameModerationRoleInfo;
+				}
 			}
 		});
 

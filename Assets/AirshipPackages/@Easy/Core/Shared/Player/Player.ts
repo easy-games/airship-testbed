@@ -52,7 +52,7 @@ export class Player {
 	 * The name of the role for this game's moderation
 	 * This will be undefined if they are not a moderator for the game.
 	 */
-	public readonly gameModerationRole: { roleName: string; permissionData: ExternalGameCoordinatorTypes.ModerationRolePermissionsData } | undefined;
+	public gameModerationRole: { roleName: string; permissionData: ExternalGameCoordinatorTypes.ModerationRolePermissionsData } | undefined;
 
 	/**
 	 * The player's current team.
