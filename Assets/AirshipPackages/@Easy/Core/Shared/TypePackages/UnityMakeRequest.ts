@@ -13,6 +13,11 @@ function isArrayLike<T extends defined>(value: unknown): value is T[] {
 
 	// To get the first dictionary "key" of a table, it's the size of the array (last index)
 	const size = (value as defined[]).size();
+
+	if (size === 0) {
+		return true;
+	}
+
 	const [key] = next(value, size); // we check there's no dictionary component to the table
 	return typeIs(key, "nil"); // an array should contain no dictionary keys
 }
@@ -34,6 +39,9 @@ export function encodeURIComponent(component: string): string {
 function encodeQueryString(query: object) {
 	let queryString = "";
 	for (const [key, value] of entries(query)) {
+		const isArray = isArrayLike(value);
+		if (isArray && value.size() === 0) continue;
+
 		if (queryString === "") {
 			queryString = "?";
 		} else {
@@ -42,7 +50,7 @@ function encodeQueryString(query: object) {
 
 		const encodedKey = encodeURIComponent(tostring(key));
 
-		if (isArrayLike<string | boolean | number>(value)) {
+		if (isArray) {
 			queryString += `${encodedKey}[]=${value.map(tostring).map(encodeURIComponent).join(`&${encodedKey}[]=`)}`;
 		} else {
 			queryString += `${tostring(key)}=${encodeURIComponent(tostring(value))}`;
