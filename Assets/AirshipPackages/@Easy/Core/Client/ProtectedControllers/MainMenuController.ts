@@ -23,6 +23,8 @@ import { MainMenuPageType } from "./MainMenuPageName";
 import { SocketController } from "./Socket/SocketController";
 import TransferFailedToast from "./Transfer/TransferFailedToast";
 import TransferToast from "./Transfer/TransferToast";
+import { SettingsPageSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/SettingsPageSingleton";
+import { SettingsTab } from "@Easy/Core/Shared/MainMenu/Components/Settings/SettingsPageName";
 
 @Controller()
 export class MainMenuController {
@@ -136,6 +138,10 @@ export class MainMenuController {
 			this.OpenFromGameInProtectedContext();
 		});
 
+		contextbridge.callback<() => void>("MainMenu:OpenSettingsFromGame", (from) => {
+			this.OpenSettingsFromGameInProtectedContext();
+		});
+
 		// const closeButton = this.refs.GetValue("UI", "CloseButton");
 		// if (Game.context === CoreContext.MAIN_MENU) {
 
@@ -157,9 +163,7 @@ export class MainMenuController {
 		this.mainMenuBG?.SetActive(!show || isMainMenu);
 	}
 
-	public OpenFromGameInProtectedContext(): void {
-		if (this.IsOpen()) return;
-
+	private OpenMenuSetup() {
 		this.gameCursorLocked = InputBridge.Instance.IsMouseLocked();
 
 		contextbridge.broadcast("Game:MenuToggled", true);
@@ -176,11 +180,26 @@ export class MainMenuController {
 		// if (this.currentPage) {
 		// 	this.RouteToPage(this.currentPage.pageType, true, true);
 		// }
-		this.RouteToPage(MainMenuPageType.Game, true, true);
+	}
 
+	public OpenFromGameInProtectedContext(): void {
+		if (this.IsOpen()) return;
+
+		this.OpenMenuSetup();
+
+		this.RouteToPage(MainMenuPageType.Game, true, true);
 		this.onToggled.Fire(true);
 
 		//CloudImage.PrintCache();
+	}
+
+	private OpenSettingsFromGameInProtectedContext(): void {
+		if (this.IsOpen()) return;
+
+		this.OpenMenuSetup();
+
+		Dependency<SettingsPageSingleton>().Open(SettingsTab.Game);
+		this.onToggled.Fire(true);
 	}
 
 	public CloseFromGame(): void {

@@ -74,4 +74,11 @@ export class AirshipMenuSingleton implements OnStart {
 	public OpenMenu(): void {
 		contextbridge.invoke("MainMenu:OpenFromGame", LuauContext.Protected);
 	}
+
+	/**
+	 * Opens the Airship settings menu. This will contain any custom game settings you have added.
+	 */
+	public OpenSettings(): void {
+		contextbridge.invoke("MainMenu:OpenSettingsFromGame", LuauContext.Protected);
+	}
 }
