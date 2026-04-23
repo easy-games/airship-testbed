@@ -1,7 +1,7 @@
 import { Dependency } from "../../Flamework";
 import { Bin } from "../../Util/Bin";
 import { CanvasAPI } from "../../Util/CanvasAPI";
-import { ClientChatSingleton } from "../Singletons/Chat/ClientChatSingleton";
+import ClientChatSingleton from "../Singletons/Chat/ClientChatSingleton";
 import MobileChatToggleButton from "./MobileChatToggleButton";
 
 export default class MobileEmoteButton extends AirshipBehaviour {

@@ -7,7 +7,7 @@ import { Controller, Dependency } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
 import { GameObjectUtil } from "@Easy/Core/Shared/GameObject/GameObjectUtil";
 import DirectMessagesWindow from "@Easy/Core/Shared/MainMenu/Components/DirectMessagesWindow";
-import { ClientChatSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton";
+import ClientChatSingleton from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton";
 import { Protected } from "@Easy/Core/Shared/Protected";
 import { GameCoordinatorChat, GameCoordinatorClient } from "@Easy/Core/Shared/TypePackages/game-coordinator-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
@@ -116,7 +116,7 @@ export class DirectMessageController {
 					ColorUtil.ColoredText(Theme.pink, "From ") +
 					ColorUtil.ColoredText(Theme.white, friend.username) +
 					ColorUtil.ColoredText(Theme.gray, ": " + data.text);
-				const chatSingleton = Dependency<ClientChatSingleton>();
+				const chatSingleton = ClientChatSingleton.Get();
 				const messageId = Guid.NewGuid().ToString();
 				chatSingleton.RenderChatMessage(text, messageId);
 				// We don't set blocked since this is a DM. We are the only recipient.
@@ -160,7 +160,7 @@ export class DirectMessageController {
 						ColorUtil.ColoredText(Theme.pink, "[Party] ") +
 						ColorUtil.ColoredText(Theme.white, member.username) +
 						ColorUtil.ColoredText(Theme.gray, ": " + data.text);
-					const chatSingleton = Dependency<ClientChatSingleton>();
+					const chatSingleton = ClientChatSingleton.Get();
 					const messageId = Guid.NewGuid().ToString();
 					chatSingleton.RenderChatMessage(text, messageId);
 
@@ -293,7 +293,7 @@ export class DirectMessageController {
 
 		if (message === "") return;
 		const messageId = `DirectMessageController:${this.internalMessageId++}`;
-		const clientChat = Dependency<ClientChatSingleton>();
+		const clientChat = ClientChatSingleton.Get();
 
 		this.inputField!.text = "";
 		let sentMessage: DirectMessage = {
@@ -394,7 +394,7 @@ export class DirectMessageController {
 		// 		ColorUtil.ColoredText(Theme.pink, "[Party] ") +
 		// 		ColorUtil.ColoredText(Theme.white, Game.localPlayer.username) +
 		// 		ColorUtil.ColoredText(Theme.gray, ": " + message);
-		// 	Dependency<ClientChatSingleton>().RenderChatMessage(text);
+		// 	ClientChatSingleton.Get().RenderChatMessage(text);
 		// }
 	}
 

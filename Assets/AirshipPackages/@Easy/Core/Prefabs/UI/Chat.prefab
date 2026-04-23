@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 4470850130474952003}
   - component: {fileID: 4470850130474952004}
   - component: {fileID: 4470850130474952005}
-  - component: {fileID: 4470850131987886327}
   - component: {fileID: 905569452693961293}
+  - component: {fileID: -4930107390429151077}
   m_Layer: 5
   m_Name: Chat
   m_TagString: Untagged
@@ -104,35 +104,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &4470850131987886327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4470850130474952007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e87e0668ae7abb47800944852d422c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isStaticInstance: 0
-  staticBundleId: UniqueID
-  bundledReferences:
-  - key: UI
-    keyValuePairs:
-    - key: ChatMessagePrefab
-      value: {fileID: 1166989688023756031, guid: a61ef3c94718149a7ab81c69809f29ef, type: 3}
-    - key: InputField
-      value: {fileID: 4470850131294389245}
-    - key: Content
-      value: {fileID: 4470850130923203888}
-    - key: Input
-      value: {fileID: 4470850131590940502}
-    - key: Wrapper
-      value: {fileID: 4470850130733272441}
-    - key: Canvas
-      value: {fileID: 4470850130474952007}
 --- !u!114 &905569452693961293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,6 +160,173 @@ MonoBehaviour:
       nullable: 0
       serializedValue: 
       serializedObject: {fileID: 4470850130914412303}
+      modified: 1
+    displayIcon: {fileID: 0}
+    displayName: 
+--- !u!114 &-4930107390429151077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4470850130474952007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4feffba88dce746a2607f0ec6233b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guid: 609bf6f4-cf2b-43eb-9f09-7053be801109
+  script: {fileID: -4894282949556773193, guid: 25ceeeab328d7284fa67cdc65cfd1a9a, type: 3}
+  scriptPath: Assets/AirshipPackages/@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientChatSingleton.lua
+  forceContext: 0
+  metadata:
+    name: ClientChatSingleton
+    singleton: 0
+    decorators: []
+    properties:
+    - name: canvas
+      type: object
+      objectType: Canvas
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 4470850130474952003}
+      modified: 1
+    - name: chatWindow
+      type: AirshipBehaviour
+      objectType: ChatWindow
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: AirshipPackages/@Easy/Core/Shared/MainMenu/Singletons/Chat/ChatWindow.ts
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 905569452693961293}
+      modified: 1
+    - name: content
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 4470850130923203888}
+      modified: 1
+    - name: wrapper
+      type: object
+      objectType: RectTransform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 4470850130733272440}
+      modified: 1
+    - name: chatMessagePrefab
+      type: object
+      objectType: GameObject
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 1166989688023756031, guid: a61ef3c94718149a7ab81c69809f29ef, type: 3}
+      modified: 1
+    - name: inputField
+      type: object
+      objectType: TMP_InputField
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 4470850131294389245}
+      modified: 1
+    - name: inputWrapperImage
+      type: object
+      objectType: Image
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 5522199307042657007}
+      modified: 1
+    - name: inputTransform
+      type: object
+      objectType: RectTransform
+      items:
+        type: 
+        objectType: 
+        serializedItems: []
+        objectRefs: []
+      refPath: 
+      fileRef: 
+      jsDocs:
+        text: []
+        tags: []
+      decorators: []
+      nullable: 0
+      serializedValue: 
+      serializedObject: {fileID: 4470850131590940502}
       modified: 1
     displayIcon: {fileID: 0}
     displayName: 
@@ -1153,8 +1291,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 99a1c142dd363426e8de08bd3153cff6, type: 2}
-  m_sharedMaterial: {fileID: -6781410565618704803, guid: 99a1c142dd363426e8de08bd3153cff6, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 39fc97816df3344858585cf3cbaec56e, type: 2}
+  m_sharedMaterial: {fileID: -1186578902683691609, guid: 39fc97816df3344858585cf3cbaec56e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

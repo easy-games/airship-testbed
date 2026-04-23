@@ -38,6 +38,7 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 
 	@Header("UI")
 	public showChat = true;
+	public chatUIPrefab?: GameObject;
 	public inventoryVisibility = InventoryUIVisibility.WhenHasItems;
 	public inventoryUIPrefab?: GameObject;
 
@@ -70,6 +71,9 @@ export default class CharacterConfigSetup extends AirshipBehaviour {
 		Airship.Characters.SetDefaultViewmodelPrefab(this.customViewmodelPrefab);
 		if (this.customViewmodelPrefab !== undefined && Airship.Characters.viewmodel !== undefined) {
 			Airship.Characters.viewmodel.InstantiateFromPrefab(this.customViewmodelPrefab);
+		}
+		if (this.chatUIPrefab) {
+			Airship.Chat.SetChatUIPrefab(this.chatUIPrefab);
 		}
 		if (this.inventoryUIPrefab !== undefined) {
 			Airship.Inventory.SetInventoryUIPrefab(this.inventoryUIPrefab);
