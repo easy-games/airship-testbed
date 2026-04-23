@@ -49,8 +49,6 @@ export class FixedCameraMode extends CameraMode {
 
 	public cameraForwardVector = Vector3.zero;
 
-	private lastCameraPos = new Vector3(0, 0, 0);
-
 	private mouseSmoothingEnabled = true;
 	private smoothVector = new Vector2(0, 0);
 
@@ -228,8 +226,6 @@ export class FixedCameraMode extends CameraMode {
 
 		let yOffset = this.yOffset + this.currentCrouchYOffset;
 		const cameraPos = targetPos.add(new Vector3(0, yOffset, 0)).add(rotation.mul(Vector3.right).mul(this.xOffset));
-		this.lastCameraPos = cameraPos;
-
 		const newCameraPos = cameraPos.add(this.staticOffset ?? posOffset);
 
 		// print(
@@ -244,12 +240,6 @@ export class FixedCameraMode extends CameraMode {
 	}
 
 	OnPostUpdate(cameraHolder: Transform) {
-		// This breaks the camera in first person.
-		// What is the point of this line?
-		if (!Airship.Camera.IsFirstPerson()) {
-			cameraHolder.LookAt(this.lastCameraPos);
-		}
-
 		if (this.shouldBumpForOcclusion && this.lastTargetPos && !Airship.Camera.IsFirstPerson()) {
 			const yOffset = this.yOffset + this.currentCrouchYOffset;
 			let targetPosition = this.lastTargetPos.add(Vector3.up.mul(yOffset));
