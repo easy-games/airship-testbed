@@ -35,6 +35,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DarkRoom.unity
     guid: 7d6039b9289ce4659aa5c4a5f7601d3c
+  - enabled: 1
+    path: Assets/Scenes/VoxelWorldGame/VoxelWorldGame.unity
+    guid: bb26ed4ef8b73af4abfdee2b053b1389
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: db23642ed970b40389a45925eb39009c, type: 2}
   m_UseUCBPForAssetBundles: 0

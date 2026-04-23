@@ -23,7 +23,11 @@ export type ServerBridgeApiDataDeleteKey<T> = (
 	key: string,
 	etag?: string,
 ) => DataStoreServiceData.BlobDataRecord<T> | undefined;
-export type ServerBridgeApiDataSetLock = (key: string, mode?: AirshipDataStoreLockMode, stealFromOwnerId?: string) => boolean;
+export type ServerBridgeApiDataSetLock = (
+	key: string,
+	mode?: AirshipDataStoreLockMode,
+	stealFromOwnerId?: string,
+) => boolean;
 export type ServerBridgeApiDataGetLockData = (key: string) => AirshipDataStoreLockInfo;
 
 const client = new DataStoreServiceData.Client(UnityMakeRequest(AirshipUrl.DataStoreService));
@@ -94,5 +98,5 @@ export class ProtectedDataStoreService {
 		return await client.getLock({ key });
 	}
 
-	protected OnStart(): void { }
+	protected OnStart(): void {}
 }

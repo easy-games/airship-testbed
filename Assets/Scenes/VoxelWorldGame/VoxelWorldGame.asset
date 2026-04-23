@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba323a6048de1a5408ffef08e844ed0c, type: 3}
+  m_Name: VoxelWorldGame
+  m_EditorClassIdentifier: 
+  chunks: []
+  blockIdToScopeName:
+  - id: 0
+    name: air
+  - id: 1
+    name: '@Easy/Default:DefaultDirt'
+  - id: 2
+    name: '@Easy/Default:DefaultGrass'
+  chunksCompressed: 28b52ffda0668001009504001283070de019c60000a600f039b7b794295396b1fc74a6f134fde5b42c8b62080224a030c7a8308c01c0028b24ac4c0fdf35dea803b8f33f834d057d0d4835d8a06d806d13205ed23f80ea3655f8bcd39fd62f006680d90180d5cc01efdf803a6b407d813ca9d95baa01388bbf01a116c1e0066003c47e00fea692716fc50c48bbb24735de520fc0196c6a73c9ffc78fce91
+  chunksCompressedV2: 1

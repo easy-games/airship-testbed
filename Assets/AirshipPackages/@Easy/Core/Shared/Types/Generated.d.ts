@@ -55552,7 +55552,9 @@ interface VoxelWorld extends MonoBehaviour {
     FromBuffer(buffer: buffer): void;
     FullWorldUpdate(): void;
     GenerateWorld(): void;
+    GetAllLoadedChunks(): Readonly<Chunk[]>;
     GetChunkByChunkPos(pos: Vector3): Chunk;
+    GetChunkByWorldPos(pos: Vector3): Chunk;
     GetCollisionType(voxelData: number): CollisionType;
     GetNumProcessingMeshChunks(): number;
     GetNumRadiosityProcessingChunks(): number;
@@ -55695,6 +55697,7 @@ interface Chunk {
 
 
     DestroyAllMeshes(): void;
+    GetAllCustomData(): Readonly<BinaryBlob[]>;
     GetAllPrefabs(): Readonly<GameObject[]>;
     GetCustomDataAt(worldPos: Vector3): BinaryBlob;
     GetGameObject(): GameObject;
