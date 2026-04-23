@@ -15,6 +15,7 @@ import SettingsSlider from "./Controls/SettingsSlider";
 import SettingsToggle from "./Controls/SettingsToggle";
 import { SettingsTab } from "./SettingsPageName";
 import SettingsSidebar from "./SettingsSidebar";
+import SettingsCategory from "./Controls/SettingsCategory";
 
 const MOBILE_NAV_HEIGHT = 60;
 
@@ -60,6 +61,7 @@ export default class SettingsPage extends AirshipBehaviour {
 	public sliderPrefab: GameObject;
 	public togglePrefab: GameObject;
 	public spacerPrefab: GameObject;
+	public categoryPrefab: GameObject;
 
 	@Header("Pages")
 	public microphonePage: GameObject;
@@ -275,6 +277,15 @@ export default class SettingsPage extends AirshipBehaviour {
 							Protected.Settings.SetGameSetting(setting.name, val);
 						}),
 					);
+				}
+
+				// Category
+				if (gameSetting.type === InternalGameSettingType.Category) {
+					const setting = gameSetting as InternalGameSetting;
+					const go = Object.Instantiate(this.categoryPrefab, this.gamePageSettingsContainer);
+					const categoryComp = go.GetAirshipComponent<SettingsCategory>()!;
+
+					categoryComp.Init(setting.name);
 				}
 			}
 		}
