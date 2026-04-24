@@ -226,7 +226,6 @@ export namespace ModerationServiceGameModeration {
     export interface BaseGameUserLookupDto {
         uid: string;
         gameId: string;
-        moderatorUid?: string;
     }
 
     export type DeleteActionArgs = {
@@ -339,7 +338,6 @@ export namespace ModerationServiceGameModeration {
 
     export interface GameRemoveActionDto {
         gameId: string;
-        moderatorUid?: string;
         actionId?: string;
         actionType?: ModerationServiceDatabaseTypes.GameModerationActionType;
         uid?: string;
@@ -352,7 +350,6 @@ export namespace ModerationServiceGameModeration {
         reason?: string;
         duration?: string;
         permanent?: boolean;
-        moderatorUid?: string;
     }
 
     export interface GameUpdateUserNoteDto {

@@ -1,25 +1,15 @@
-import { GameModerationCommand } from "@Easy/Core/Server/Services/Chat/Commands/GameMod/GameModCommandHelper";
-import { Airship } from "@Easy/Core/Shared/Airship";
 import { Service } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
-import { Player } from "@Easy/Core/Shared/Player/Player";
 import {
 	ModerationServiceClient,
-	ModerationServiceGameModeration,
 	ModerationServiceModeration,
 } from "@Easy/Core/Shared/TypePackages/moderation-service-types";
 import { UnityMakeRequest } from "@Easy/Core/Shared/TypePackages/UnityMakeRequest";
 import { AirshipUrl } from "@Easy/Core/Shared/Util/AirshipUrl";
-import ObjectUtils from "@Easy/Core/Shared/Util/ObjectUtils";
-import { hasPermission } from "@Easy/Core/Shared/Util/PermissionUtil";
 
 export const enum ModerationServiceBridgeTopics {
 	ModerateText = "ModerationService:ModerateText",
 	ModerateChat = "ModerationService:ModerateChat",
-	GameModerationPostAction = "ModerationService:GameModerationPostAction",
-	GameModerationRemoveAction = "ModerationService:GameModerationRemoveAction",
-	GameModerationUserLookup = "ModerationService:GameModerationUserLookup",
-	GameModerationAddNote = "ModerationService:GameModerationAddNote",
 }
 
 export type ServerBridgeApiModerateText = (text: string) => ModerationServiceModeration.ModerateTextResponse;
@@ -28,12 +18,6 @@ export type ServerBridgeApiModerateChat = (
 	senderId: string,
 	message: string,
 ) => ModerationServiceModeration.ModerationResponse;
-
-export type ServerBridgeApiGameModPostAction = (moderatorUid: string, dto: ModerationServiceGameModeration.GamePostActionDto) => ModerationServiceGameModeration.PublicGameModerationAction | undefined;
-export type ServerBridgeApiGameModRemoveAction = (moderatorUid: string, dto: ModerationServiceGameModeration.GameRemoveActionDto) => ModerationServiceGameModeration.PublicGameModerationAction | undefined;
-export type ServerBridgeApiGameModUserLookup = (moderatorUid: string, dto: ModerationServiceGameModeration.GameUserLookupDto) => ModerationServiceGameModeration.GameModerationProfileResponse | undefined;
-export type ServerBridgeApiGameModAddNote = (moderatorUid: string, dto: ModerationServiceGameModeration.GameAddUserNoteDto) => ModerationServiceGameModeration.PublicGameUserNote | undefined;
-
 
 const client = new ModerationServiceClient(UnityMakeRequest(AirshipUrl.ModerationService));
 
@@ -59,42 +43,6 @@ export class ProtectedModerationService {
 				return this.ModerateChatMessage(conversationId, senderId, message).expect();
 			},
 		);
-
-		contextbridge.callback<ServerBridgeApiGameModPostAction>(
-			ModerationServiceBridgeTopics.GameModerationPostAction,
-			(_, moderatorUid, dto) => {
-				return this.GameModerationPostAction(moderatorUid, dto).expect();
-			}
-		)
-
-		contextbridge.callback<ServerBridgeApiGameModRemoveAction>(
-			ModerationServiceBridgeTopics.GameModerationRemoveAction,
-			(_, moderatorUid, dto) => {
-				return this.GameModerationRemoveAction(moderatorUid, dto).expect();
-			}
-		)
-
-		contextbridge.callback<ServerBridgeApiGameModUserLookup>(
-			ModerationServiceBridgeTopics.GameModerationUserLookup,
-			(_, moderatorUid, dto) => {
-				return this.GameModUserLookup(moderatorUid, dto).expect();
-			}
-		)
-
-		contextbridge.callback<ServerBridgeApiGameModAddNote>(
-			ModerationServiceBridgeTopics.GameModerationAddNote,
-			(_, moderatorUid, dto) => {
-				return this.GameModAddNote(moderatorUid, dto).expect();
-			}
-		)
-
-		Airship.Players.onPlayerJoined.Connect((player) => {
-			this.GrantModerationCommandPermissions(player);
-		});
-
-		Airship.Players.onPlayerDisconnected.Connect((player) => {
-			this.RevokeModerationCommandPermissions(player);
-		});
 	}
 
 	public async ModerateChatMessage(
@@ -114,73 +62,5 @@ export class ProtectedModerationService {
 		return await client.moderation.moderateText({
 			text,
 		});
-	}
-
-	public async GameModerationPostAction(moderatorUid: string, dto: ModerationServiceGameModeration.GamePostActionDto): Promise<ModerationServiceGameModeration.PublicGameModerationAction | undefined> {
-		try {
-			return await client.gameModeration.postAction({ ...dto, moderatorUid });
-		} catch (err) {
-			return undefined;
-		}
-	}
-
-	public async GameModerationRemoveAction(moderatorUid: string, dto: ModerationServiceGameModeration.GameRemoveActionDto): Promise<ModerationServiceGameModeration.PublicGameModerationAction | undefined>  {
-		try {
-			return await client.gameModeration.deleteAction({ ...dto, moderatorUid });
-		} catch (err) {
-			return undefined;
-		}
-	}
-
-	public async GameModUserLookup(moderatorUid: string, dto: ModerationServiceGameModeration.GameUserLookupDto): Promise<ModerationServiceGameModeration.GameModerationProfileResponse | undefined> {
-		try {
-			return await client.gameModeration.getUserModerationProfile({ ...dto, moderatorUid });
-		} catch (err) {
-			return undefined;
-		}
-	}
-
-	public async GameModAddNote(moderatorUid: string, dto: ModerationServiceGameModeration.GameAddUserNoteDto): Promise<ModerationServiceGameModeration.PublicGameUserNote | undefined> {
-		try {
-			return await client.gameModeration.addNote({ ...dto, moderatorUid });
-		} catch (err) {
-			return undefined;
-		}
-	}
-
-	/** Grants permission to use game moderation commands based on the player's moderation role */
-	public async GrantModerationCommandPermissions(player: Player) {
-		if (!player.gameModerationRole) return;
-
-		const permData = player.gameModerationRole.permissionData;
-		const commandPermMap: Record<GameModerationCommand, string[]> = {
-			[GameModerationCommand.KICK]:     ["moderation", "manageActions", "manageKick", "kick"],
-			[GameModerationCommand.TEMPBAN]:  ["moderation", "manageActions", "manageBan", "temporary"],
-			[GameModerationCommand.BAN]:      ["moderation", "manageActions", "manageBan", "permanent"],
-			[GameModerationCommand.TEMPMUTE]: ["moderation", "manageActions", "manageMute", "temporary"],
-			[GameModerationCommand.MUTE]:     ["moderation", "manageActions", "manageMute", "permanent"],
-			[GameModerationCommand.NOTE]:     ["moderation", "note"],
-			[GameModerationCommand.UNBAN]:    ["moderation", "manageActions", "manageBan", "remove"],
-			[GameModerationCommand.UNMUTE]:   ["moderation", "manageActions", "manageMute", "remove"],
-			[GameModerationCommand.LOOKUP]:   ["moderation", "viewProfile"],
-		};
-
-		for (const [command, path] of ObjectUtils.entries(commandPermMap)) {
-			if (hasPermission(permData, path)) {
-				Airship.Chat.GiveCommandPermission(command as GameModerationCommand, player.userId);
-			}
-		}
-	}
-
-	/** Removes all granted moderation command permissions, to be used on player leave */
-	public RevokeModerationCommandPermissions(player: Player) {
-		const allGrantedCommands = Airship.Chat.GetCommandPermissions(player.userId);
-		const modCommands = new Set(ObjectUtils.values(GameModerationCommand));
-
-		allGrantedCommands
-			.filter((c) => modCommands.has(c as GameModerationCommand))
-			.forEach((c) => {
-				Airship.Chat.RemoveCommandPermission(c, player.userId);
-			});
 	}
 }

@@ -5,6 +5,15 @@ import { CoreContext } from "@Easy/Core/Shared/CoreClientContext";
 import { ChatMessageNetworkEvent, CoreNetwork } from "@Easy/Core/Shared/CoreNetwork";
 import { Dependency, Singleton } from "@Easy/Core/Shared/Flamework";
 import { Game } from "@Easy/Core/Shared/Game";
+import { GameModBanCommand } from "@Easy/Core/Client/ProtectedControllers/Airship/Moderation/Commands/GameModBanCommand";
+import { GameModKickCommand } from "@Easy/Core/Client/ProtectedControllers/Airship/Moderation/Commands/GameModKickCommand";
+import { GameModLookupCommand } from "@Easy/Core/Client/ProtectedControllers/Airship/Moderation/Commands/GameModLookupCommand";
+import { GameModMuteCommand } from "@Easy/Core/Client/ProtectedControllers/Airship/Moderation/Commands/GameModMuteCommand";
+import { GameModNoteCommand } from "@Easy/Core/Client/ProtectedControllers/Airship/Moderation/Commands/GameModNoteCommand";
+import { GameModTempBanCommand } from "@Easy/Core/Client/ProtectedControllers/Airship/Moderation/Commands/GameModTempBanCommand";
+import { GameModTempMuteCommand } from "@Easy/Core/Client/ProtectedControllers/Airship/Moderation/Commands/GameModTempMuteCommand";
+import { GameModUnbanCommand } from "@Easy/Core/Client/ProtectedControllers/Airship/Moderation/Commands/GameModUnbanCommand";
+import { GameModUnmuteCommand } from "@Easy/Core/Client/ProtectedControllers/Airship/Moderation/Commands/GameModUnmuteCommand";
 import { PartyCommand } from "@Easy/Core/Shared/MainMenu/Singletons/Chat/ClientCommands/PartyCommand";
 import { MainMenuSingleton } from "@Easy/Core/Shared/MainMenu/Singletons/MainMenuSingleton";
 import { ProtectedPlayer } from "@Easy/Core/Shared/Player/ProtectedPlayer";
@@ -140,6 +149,15 @@ export class ClientChatSingleton {
 			this.RegisterCommand(new MessageCommand());
 			this.RegisterCommand(new ReplyCommand());
 			this.RegisterCommand(new PartyCommand());
+			this.RegisterCommand(new GameModBanCommand());
+			this.RegisterCommand(new GameModTempBanCommand());
+			this.RegisterCommand(new GameModUnbanCommand());
+			this.RegisterCommand(new GameModMuteCommand());
+			this.RegisterCommand(new GameModTempMuteCommand());
+			this.RegisterCommand(new GameModUnmuteCommand());
+			this.RegisterCommand(new GameModKickCommand());
+			this.RegisterCommand(new GameModNoteCommand());
+			this.RegisterCommand(new GameModLookupCommand());
 
 			contextbridge.callback<() => boolean>("ClientChatSingleton:IsOpen", () => {
 				return this.IsOpen();
