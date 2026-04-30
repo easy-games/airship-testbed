@@ -41,9 +41,26 @@ export class GameModLookupCommand extends ChatCommand {
 					? `Expires at ${activeBan.expiresAt ?? "never"}. Reason: ${activeBan.reason}.`
 					: "None";
 
-				const actionsDisplay = actions && actions.size() > 0
-					? actions.map((a) => `\n  Id: ${a.id}\n  Type: ${a.actionType}\n  Reason: ${a.reason}\n  Duration: ${GetModerationActionDuration(a.createdAt, a.expiresAt)}`).join("")
+				const totalActions = actions?.size() ?? 0;
+
+				const kickCount = actions?.filter((a) => a.actionType === "KICK").size() ?? 0;
+				const muteCount = actions?.filter((a) => a.actionType === "MUTE").size() ?? 0;
+				const banCount = actions?.filter((a) => a.actionType === "BAN").size() ?? 0;
+
+				const actionsSummary = totalActions > 0
+					? `${totalActions} total (${kickCount} kick${kickCount !== 1 ? "s" : ""}, ${muteCount} mute${muteCount !== 1 ? "s" : ""}, ${banCount} ban${banCount !== 1 ? "s" : ""})`
 					: "None";
+
+				const startIndex = math.max(0, totalActions - 3);
+				let actionsDisplay = "None";
+				if (actions && totalActions > 0) {
+					let parts = "";
+					for (let i = startIndex; i < totalActions; i++) {
+						const a = actions[i];
+						parts += `\n  Id: ${a.id}\n  Type: ${a.actionType}\n  Reason: ${a.reason}\n  Duration: ${GetModerationActionDuration(a.createdAt, a.expiresAt)}`;
+					}
+					actionsDisplay = parts;
+				}
 
 				const notesDisplay = notes && notes.size() > 0
 					? notes.map((n) => `\n  Id: ${n.id}\n  Note: ${n.reason}`).join("")
@@ -53,8 +70,9 @@ export class GameModLookupCommand extends ChatCommand {
 				player.SendMessage(ChatColor.White(ChatColor.Bold(`Moderation profile for ${target.username}:`)));
 				player.SendMessage(ChatColor.Yellow(`Active Mute: ${muteDisplay}`));
 				player.SendMessage(ChatColor.Red(`Active Ban: ${banDisplay}`));
-				player.SendMessage(ChatColor.White(`Past Actions: ${actionsDisplay}`));
+				player.SendMessage(ChatColor.White(`Past Actions (${actionsSummary}): ${actionsDisplay}`));
 				player.SendMessage(ChatColor.Blue(`Notes: ${notesDisplay}`));
+				player.SendMessage(ChatColor.Aqua(`Full results: https://create.airship.gg/dashboard/organization/game/moderation-profile-lookup`));
 				player.SendMessage(ChatColor.White(ChatColor.Bold(`-----------------------------------`)));
 			} catch {
 				player.SendMessage(ChatColor.Red(`Failed to fetch moderation profile for ${targetUsername}.`));
