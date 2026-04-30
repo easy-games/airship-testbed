@@ -42,20 +42,20 @@ export class GameModLookupCommand extends ChatCommand {
 					: "None";
 
 				const actionsDisplay = actions && actions.size() > 0
-					? actions.map((a) => `\n    Type: ${a.actionType}. Reason: ${a.reason}. Duration: ${GetModerationActionDuration(a.createdAt, a.expiresAt)}. Id: ${a.id}`).join("")
+					? actions.map((a) => `\n  Id: ${a.id}\n  Type: ${a.actionType}\n  Reason: ${a.reason}\n  Duration: ${GetModerationActionDuration(a.createdAt, a.expiresAt)}`).join("")
 					: "None";
 
 				const notesDisplay = notes && notes.size() > 0
-					? notes.map((n) => `\n    Note: ${n.reason}. Id: ${n.id}`).join("")
+					? notes.map((n) => `\n  Id: ${n.id}\n  Note: ${n.reason}`).join("")
 					: "None";
 
-				player.SendMessage(`------------------------------------------`);
-				player.SendMessage(`Moderation profile for ${target.username}:`);
-				player.SendMessage(`  Active Mute: ${muteDisplay}`);
-				player.SendMessage(`  Active Ban: ${banDisplay}`);
-				player.SendMessage(`  Past Actions: ${actionsDisplay}`);
-				player.SendMessage(`  Notes: ${notesDisplay}`);
-				player.SendMessage(`------------------------------------------`);
+				player.SendMessage(ChatColor.White(ChatColor.Bold(`-----------------------------------`)));
+				player.SendMessage(ChatColor.White(ChatColor.Bold(`Moderation profile for ${target.username}:`)));
+				player.SendMessage(ChatColor.Yellow(`Active Mute: ${muteDisplay}`));
+				player.SendMessage(ChatColor.Red(`Active Ban: ${banDisplay}`));
+				player.SendMessage(ChatColor.White(`Past Actions: ${actionsDisplay}`));
+				player.SendMessage(ChatColor.Blue(`Notes: ${notesDisplay}`));
+				player.SendMessage(ChatColor.White(ChatColor.Bold(`-----------------------------------`)));
 			} catch {
 				player.SendMessage(ChatColor.Red(`Failed to fetch moderation profile for ${targetUsername}.`));
 			}
