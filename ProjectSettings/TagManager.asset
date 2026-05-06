@@ -46,3 +46,6 @@ TagManager:
     locked: 0
   m_RenderingLayers:
   - Default
+  - GameRenderLayer0
+  - GameRenderLayer1
+  - GameRenderLayer2
