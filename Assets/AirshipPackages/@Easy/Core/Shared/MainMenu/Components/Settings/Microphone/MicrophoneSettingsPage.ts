@@ -50,7 +50,6 @@ export default class MicrophoneSettingsPage extends AirshipBehaviour {
 					this.voiceChatFeatureToggle.SetValue(true, false);
 
 					if (Bridge.HasMicrophonePermission()) {
-						clientSettings.PickMicAndStartRecording();
 						clientSettings.SetMicrophoneEnabled(true);
 						clientSettings.MarkAsDirty();
 					} else {
