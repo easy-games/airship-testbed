@@ -100,6 +100,7 @@ export class AirshipCharacterFootstepsSingleton {
 				if (
 					StringUtils.includes(materialNameLower, "dirt") ||
 					StringUtils.includes(materialNameLower, "grass") ||
+					StringUtils.includes(materialNameLower, "moss") ||
 					StringUtils.includes(materialNameLower, "sand")
 				) {
 					foundPaths = this.materialMap.get("Dirt");
